@@ -1,0 +1,158 @@
+/*************************************
+*
+*   Front-end News! Stylesheet
+*
+*   red             : #A61B0B
+*   Orange          : #FF944E
+*   black           : #402B1E
+*   White           : #fff
+*
+*
+**************************************/
+
+body {
+  font-family: Roboto, 'sans-serif';
+  background-color: #0000;
+  color: #FF944E;
+  min-width: 500px;
+}
+
+header {
+  margin-bottom: 40px; 
+}
+
+a {
+  color: #FF944E;
+  transition: all 0.3s ease-in-out;
+}
+
+a:active,
+.search button:active{
+  margin-top: 1px;
+  text-shadow: 0 0 2px #FF944E;
+}
+
+a:active,
+a:hover, 
+a:focus {
+  background-color: #A61B0B;
+  color: #402B1E;
+  text-decoration: none;
+}
+
+/*   Search Bar */
+
+.search {
+  margin-top: 20px;
+  width: 20%;
+  min-width: 300px;
+  top: 40vh;
+  left: 50%;
+  transform: translate(-50%);
+  position: relative;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.search-bar {
+  font-size: 1.5em;
+  color: #FF944E;
+  background-color: #A61B0B;
+  border: 3px solid #FF944E;
+  border-radius: 10px;
+  width: 80%;
+  transition: all 0.3s ease-in-out;
+}
+
+.search-bar:focus,
+.search-bar:active {
+  background-color: #FF944E;
+  color: #A61B0B;
+  border: 3px solid #402B1E;
+  box-shadow: none;
+}
+
+.search label {
+  margin-left: 50px;
+}
+
+.search-icon {
+  font-size: 2.8em;
+  padding-top: 5px;
+}
+
+.search button {
+  background-color: #A61B0B;
+  color: #FF944E;
+  padding: 0 8px;
+  float: left;
+  display: inline-block;
+  transition: all 0.3s ease-in-out;
+}
+
+.search button:active,
+.search button:hover,
+.random:hover,
+.random:active {
+  background-color: #A61B0B;
+  color: #402B1E;
+}
+
+.search button:focus,
+.random:focus {
+  box-shadow: none;
+}
+
+
+/*   Surprise Button */
+
+.random {
+  font-size: 0.8em;
+  background-color: transparent;
+  color: #FF944E;
+  position: absolute;
+  top: 0;
+  right: 20px;
+}
+
+.surprise-icon {
+  font-size: 3em;
+  display: block;
+  text-align: center;
+}
+
+/*   Wiki Articles */
+
+.wiki-articles a {
+  background-color: #FF944E;
+  color: #402B1E;
+  border: 3px solid #402B1E;
+  margin: 10px auto 0;
+  border-radius: 10px;
+  width: 80%;
+  display: block;  
+}
+
+
+.wiki-articles a:hover,
+.wiki-articles a:active,
+.wiki-articles a:focus {
+  background-color: #402B1E;
+  color: #FF944E;
+  border: 3px solid #FF944E;
+}
+
+.media {
+  font-size: 0.8em;
+  padding: 10px;
+}
+
+.title {
+  font-size: 1.8em;
+}
+
+.thumb {
+  border: 1px solid #fff;
+  margin: 10px 10px auto;
+}
+
