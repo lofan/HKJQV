@@ -1,0 +1,30 @@
+<html>
+<header class="container-fluid">
+
+ <link rel="stylesheet" href="styles.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <form id="search" class="search" method="get" action="">
+    <button type="submit" class="btn">
+      <i class="fa fa-search search-icon" id="search-icon"></i>
+    </button>
+    <input type="text" id="search-bar" class="search-bar form-control" autocomplete="on" required>
+    <label id="search-label">Wiki <a href="en.html">EN</a> <a href="index.html">HK</a> <a href="https://ja.wikipedia.org/wiki/%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%9A%E3%83%BC%E3%82%B8" target="_blank">百科事典</a> 
+<a href="https://trends.google.com/trends/trendingsearches/daily?geo=JP" target="_blank">JP</a></label>
+  </form>
+
+  <button class="btn random" id="surprise">
+    <i class="fa fa-gift surprise-icon"></i>Random</button>
+</header>
+
+
+<body>
+
+<main class="main container-fluid">
+  <div id="wiki-articles" class="wiki-articles"></div>
+</main>
+<script src="indexja.js"></script>
+
+</body>
+
+
+</html>
