@@ -2,293 +2,265 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wikipedia & Multi-Engine Search Tool ver0.7</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wikipedia & Multi-Engine Search Tool</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f8f9fa;
-            --header-bg: white;
-            --text-color: #212529;
-            --card-bg: white;
-            --border-color: #ddd;
-            --label-color: #666;
+            --bg-color: #f0f2f5;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #1c1e21;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+            --label-color: #65676b;
+            --accent-color: #0064d1;
+            --header-height: auto;
         }
 
         [data-theme="dark"] {
-            --bg-color: #121212;
-            --header-bg: #1e1e1e;
-            --text-color: #e0e0e0;
-            --card-bg: #1e1e1e;
-            --border-color: #333;
-            --label-color: #aaa;
+            --bg-color: #18191a;
+            --header-bg: rgba(36, 37, 38, 0.95);
+            --text-color: #e4e6eb;
+            --card-bg: #242526;
+            --border-color: #3e4042;
+            --label-color: #b0b3b8;
+            --accent-color: #4599ff;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background 0.3s ease, color 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            transition: background 0.3s ease;
+            margin: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         header {
-            padding: 40px 20px;
-            text-align: center;
+            padding: 20px 15px;
             background: var(--header-bg);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            position: relative;
-            transition: background 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
 
         .theme-toggle {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: 2px solid var(--border-color);
+            top: 15px;
+            right: 15px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             color: var(--text-color);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            background-color: rgba(128, 128, 128, 0.1);
+            z-index: 1001;
         }
 
         .search-container {
             max-width: 800px;
             margin: 0 auto;
-            position: relative;
         }
 
         .search-wrapper {
             position: relative;
             display: flex;
             align-items: center;
+            margin-bottom: 12px;
         }
 
         .search-bar {
-            border-radius: 25px;
-            padding: 12px 50px;
-            border: 2px solid var(--border-color);
+            border-radius: 28px;
+            padding: 12px 45px;
+            border: 1px solid var(--border-color);
             background-color: var(--card-bg);
             color: var(--text-color);
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
+            font-size: 16px; 
             width: 100%;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .search-bar:focus {
-            border-color: #3366cc;
-            box-shadow: 0 0 8px rgba(51, 102, 204, 0.2);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 100, 209, 0.15);
             outline: none;
             background-color: var(--card-bg);
-            color: var(--text-color);
         }
 
         .search-icon {
             position: absolute;
-            left: 20px;
-            color: #888;
+            left: 18px;
+            color: var(--label-color);
+            pointer-events: none;
         }
 
         .clear-icon {
             position: absolute;
-            right: 20px;
-            color: #888;
+            right: 15px;
+            color: var(--label-color);
             cursor: pointer;
+            padding: 5px;
             display: none;
-            transition: color 0.2s;
-        }
-
-        .clear-icon:hover {
-            color: #d9534f;
+            font-size: 1.2rem;
         }
 
         .search-label {
-            margin-top: 15px;
-            display: block;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px;
             color: var(--label-color);
-            font-size: 0.9rem;
-            line-height: 1.8;
+            font-size: 0.85rem;
+            align-items: center;
         }
 
         .search-label a {
-            margin: 0 4px;
             text-decoration: none;
-            color: #3366cc;
-            padding: 2px 6px;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-
-        .search-label a:hover {
-            background-color: rgba(51, 102, 204, 0.1);
-            text-decoration: underline;
+            color: var(--accent-color);
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: rgba(0, 100, 209, 0.05);
+            transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .lang-active {
-            font-weight: bold;
-            color: #d9534f !important;
-            background-color: rgba(217, 83, 79, 0.1);
+            background: var(--accent-color) !important;
+            color: white !important;
+            font-weight: 600;
         }
 
         .action-buttons {
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .btn-action {
             border-radius: 20px;
-            padding: 8px 25px;
-            border: none;
-            transition: all 0.2s;
-            font-weight: 500;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .btn-primary-custom {
-            background-color: #3366cc;
-            color: white;
-        }
+        .btn-primary-custom { background-color: var(--accent-color); color: white; border: none; }
+        .btn-secondary-custom { background-color: #65676b; color: white; border: none; }
 
-        .btn-primary-custom:hover {
-            background-color: #254a99;
-            color: white;
-        }
-
-        .btn-secondary-custom {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary-custom:hover {
-            background-color: #5a6268;
-            color: white;
+        .main {
+            padding-top: 20px;
+            padding-bottom: 40px;
         }
 
         .wiki-articles {
             max-width: 800px;
             margin: 0 auto;
-            padding: 0 20px 50px;
         }
 
         .external-link-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .external-link-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
         .external-box {
-            padding: 12px 15px;
+            padding: 10px;
             border-radius: 12px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            animation: fadeIn 0.5s ease-in;
-            border: 1px solid transparent;
-        }
-
-        .box-britannica { background: #fff3cd; border-color: #ffeeba; color: #856404; }
-        .box-ddg { background: #fdebd0; border-color: #fad7a0; color: #af601a; }
-        .box-youtube { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
-        .box-x { background: #e2e3e5; border-color: #d6d8db; color: #383d41; }
-
-        [data-theme="dark"] .box-britannica { background: #2c2512; border-color: #443c20; color: #e8d08a; }
-        [data-theme="dark"] .box-ddg { background: #2c2112; border-color: #443520; color: #e8b08a; }
-        [data-theme="dark"] .box-youtube { background: #2c0b0e; border-color: #441216; color: #e88a91; }
-        [data-theme="dark"] .box-x { background: #1a1a1a; border-color: #333; color: #ccc; }
-
-        .external-box a {
-            color: white;
+            text-align: center;
+            font-size: 0.75rem;
             text-decoration: none;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            transition: opacity 0.2s;
+            color: inherit;
+            transition: transform 0.2s;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
         }
 
-        .box-britannica a { background: #856404; }
-        .box-ddg a { background: #de5833; }
-        .box-youtube a { background: #c00; }
-        .box-x a { background: #000; }
+        .external-box:active { transform: scale(0.95); }
 
-        .external-box a:hover { opacity: 0.8; }
+        .external-box i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .box-britannica i { color: #856404; }
+        .box-google i { color: #4285F4; }
+        .box-youtube i { color: #ff0000; }
+        .box-x i { color: var(--text-color); }
+        .box-searxng i { color: #5f74bd; }
+        .box-ddg i { color: #de5833; }
 
         .article-card {
             background: var(--card-bg);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 18px;
+            margin-bottom: 12px;
             border-radius: 12px;
-            border-left: 5px solid transparent;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
-            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
             text-decoration: none;
             display: block;
             color: inherit;
-            animation: slideUp 0.4s ease-out forwards;
-            opacity: 0;
+            border: 1px solid transparent;
         }
 
         .article-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-left-color: #3366cc;
+            border-color: var(--accent-color);
             color: inherit;
         }
 
         .article-card h3 {
-            margin-bottom: 10px;
-            color: #3366cc;
-            font-size: 1.25rem;
+            margin: 0 0 8px 0;
+            color: var(--accent-color);
+            font-size: 1.15rem;
+            font-weight: 700;
         }
 
         .article-card p {
             margin: 0;
-            color: var(--text-color);
-            opacity: 0.85;
-            line-height: 1.6;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            font-size: 0.95rem;
+            line-height: 1.5;
+            opacity: 0.9;
         }
 
         .loading-spinner {
             display: none;
             text-align: center;
-            padding: 20px;
+            padding: 40px;
         }
 
-        .no-results {
-            text-align: center;
-            color: var(--label-color);
-            padding: 40px;
+        @media (max-width: 600px) {
+            header { padding: 15px 10px; }
+            .search-bar { padding: 10px 40px; }
+            .search-label { font-size: 0.8rem; }
+            .action-buttons { flex-direction: row; }
+            .btn-action { flex: 1; justify-content: center; padding: 10px; }
         }
     </style>
 </head>
 <body>
 
-<header class="container-fluid">
-    <button class="theme-toggle" id="theme-toggle" title="切換深淺模式">
+<header>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
         <i class="fa fa-moon-o"></i>
     </button>
 
@@ -296,12 +268,11 @@
         <form id="search-form">
             <div class="search-wrapper">
                 <i class="fa fa-search search-icon"></i>
-                <input type="text" id="search-bar" class="search-bar form-control" placeholder="輸入關鍵字..." autocomplete="off" required>
-                <i class="fa fa-times-circle clear-icon" id="clear-search" title="清除搜尋內容"></i>
+                <input type="text" id="search-bar" class="search-bar" placeholder="搜尋維基百科..." autocomplete="off" inputmode="search" required>
+                <i class="fa fa-times-circle clear-icon" id="clear-search"></i>
             </div>
             
-            <label class="search-label" id="lang-selector">
-                維基語言:
+            <div class="search-label" id="lang-selector">
                 <a href="#" onclick="changeLang('zh', this)" class="lang-active">ZH</a> 
                 <a href="#" onclick="changeLang('en', this)">EN</a> 
                 <a href="#" onclick="changeLang('ja', this)">JP</a> 
@@ -310,21 +281,22 @@
                 <a href="#" onclick="changeLang('de', this)">DE</a> 
                 <a href="#" onclick="changeLang('es', this)">ES</a> 
                 <a href="#" onclick="changeLang('it', this)">IT</a> 
-                | 
-                <a href="#" onclick="externalSearch('ddg')">DuckDuckGo</a>
-                <a href="#" onclick="externalSearch('britannica')">Britannica</a> 
-                <a href="#" onclick="externalSearch('youtube')">YouTube</a> 
-                <a href="#" onclick="externalSearch('x')">X.com</a> 
-                <a href="https://trends.google.com/trends/trendingsearches/daily?geo=HK" target="_blank">HK Trends</a>
-            </label>
+                <span style="opacity: 0.3; margin: 0 5px">|</span>
+                <a href="#" onclick="externalSearch('searxng')">SearXNG</a>
+                <a href="#" onclick="externalSearch('ddg')">DDG</a>
+                <a href="#" onclick="externalSearch('britannica')">Britannica</a>
+                <a href="#" onclick="externalSearch('youtube')">YouTube</a>
+                <a href="#" onclick="externalSearch('x')">X</a>
+                <a href="https://trends.google.com/trends/trendingsearches/daily?geo=HK" target="_blank"><i class="fa fa-line-chart"></i> Trends</a>
+            </div>
         </form>
 
         <div class="action-buttons">
             <button class="btn btn-action btn-primary-custom" id="random-topic">
-                <i class="fa fa-lightbulb-o"></i> 隨機主題
+                <i class="fa fa-lightbulb-o"></i> <span>靈感</span>
             </button>
             <button class="btn btn-action btn-secondary-custom" id="surprise">
-                <i class="fa fa-gift"></i> 隨機維基文章
+                <i class="fa fa-random"></i> <span>隨機</span>
             </button>
         </div>
     </div>
@@ -333,7 +305,6 @@
 <main class="main container-fluid">
     <div id="loading" class="loading-spinner">
         <div class="spinner-border text-primary" role="status"></div>
-        <p class="mt-2">搜尋中...</p>
     </div>
     
     <div id="wiki-articles" class="wiki-articles"></div>
@@ -358,6 +329,10 @@
     const clearIcon = document.getElementById('clear-search');
     const body = document.body;
 
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+    }
+
     themeToggle.addEventListener('click', () => {
         const isDark = body.getAttribute('data-theme') === 'dark';
         setTheme(isDark ? 'light' : 'dark');
@@ -367,43 +342,34 @@
         body.setAttribute('data-theme', theme);
         const icon = themeToggle.querySelector('i');
         if (theme === 'dark') {
-            icon.classList.remove('fa-moon-o');
-            icon.classList.add('fa-sun-o');
+            icon.classList.replace('fa-moon-o', 'fa-sun-o');
         } else {
-            icon.classList.remove('fa-sun-o');
-            icon.classList.add('fa-moon-o');
+            icon.classList.replace('fa-sun-o', 'fa-moon-o');
         }
     }
 
     function changeLang(lang, element) {
         currentLang = lang;
-        const links = document.querySelectorAll('#lang-selector a');
-        links.forEach(link => link.classList.remove('lang-active'));
-        if (element) {
-            element.classList.add('lang-active');
-        } else {
-            // Find link by text if called without element reference
-            links.forEach(link => {
-                if(link.innerText.toLowerCase() === lang) link.classList.add('lang-active');
-            });
-        }
-        if(searchBar.value) performSearch(searchBar.value);
+        document.querySelectorAll('#lang-selector a').forEach(link => link.classList.remove('lang-active'));
+        if (element) element.classList.add('lang-active');
+        if(searchBar.value.trim()) performSearch(searchBar.value);
     }
 
     function externalSearch(engine) {
         const term = searchBar.value.trim();
         if (!term) return;
-        
         let url = '';
-        if (engine === 'ddg') url = `https://duckduckgo.com/?q=${encodeURIComponent(term)}`;
+        if (engine === 'searxng') url = `https://searxng.site/search?q=${encodeURIComponent(term)}`;
+        else if (engine === 'ddg') url = `https://duckduckgo.com/?q=${encodeURIComponent(term)}`;
         else if (engine === 'britannica') url = `https://www.britannica.com/search?query=${encodeURIComponent(term)}`;
         else if (engine === 'youtube') url = `https://www.youtube.com/results?search_query=${encodeURIComponent(term)}`;
         else if (engine === 'x') url = `https://x.com/search?q=${encodeURIComponent(term)}`;
-        
         window.open(url, '_blank');
     }
 
     async function performSearch(searchTerm) {
+        if (!searchTerm.trim()) return;
+        
         const resultsContainer = document.getElementById('wiki-articles');
         const loading = document.getElementById('loading');
         
@@ -421,66 +387,46 @@
             externalContainer.className = 'external-link-container';
 
             const engines = [
-                { id: 'britannica', name: 'Britannica', box: 'box-britannica', url: `https://www.britannica.com/search?query=${encodeURIComponent(searchTerm)}` },
-                { id: 'ddg', name: 'DuckDuckGo', box: 'box-ddg', url: `https://duckduckgo.com/?q=${encodeURIComponent(searchTerm)}` },
-                { id: 'youtube', name: 'YouTube', box: 'box-youtube', url: `https://www.youtube.com/results?search_query=${encodeURIComponent(searchTerm)}` },
-                { id: 'x', name: 'X.com', box: 'box-x', url: `https://x.com/search?q=${encodeURIComponent(searchTerm)}` }
+                { name: 'Google', icon: 'fa-google', box: 'box-google', url: `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}` },
+                { name: 'YouTube', icon: 'fa-youtube-play', box: 'box-youtube', url: `https://www.youtube.com/results?search_query=${encodeURIComponent(searchTerm)}` },
+                { name: 'SearXNG', icon: 'fa-user-secret', box: 'box-searxng', url: `https://searxng.site/search?q=${encodeURIComponent(searchTerm)}` },
+                { name: 'DuckDuckGo', icon: 'fa-search', box: 'box-ddg', url: `https://duckduckgo.com/?q=${encodeURIComponent(searchTerm)}` },
+                { name: 'X / Twitter', icon: 'fa-twitter', box: 'box-x', url: `https://x.com/search?q=${encodeURIComponent(searchTerm)}` },
+                { name: 'Britannica', icon: 'fa-book', box: 'box-britannica', url: `https://www.britannica.com/search?query=${encodeURIComponent(searchTerm)}` }
             ];
 
             engines.forEach(engine => {
-                const box = document.createElement('div');
-                box.className = `external-box ${engine.box}`;
-                box.innerHTML = `
-                    <span><strong>${engine.name}</strong></span>
-                    <a href="${engine.url}" target="_blank" class="ext-btn" data-engine="${engine.id}">
-                        <i class="fa fa-search"></i>
-                    </a>
-                `;
-                externalContainer.appendChild(box);
+                const link = document.createElement('a');
+                link.className = `external-box ${engine.box}`;
+                link.href = engine.url;
+                link.target = '_blank';
+                link.innerHTML = `<i class="fa ${engine.icon}"></i><span>${engine.name}</span>`;
+                externalContainer.appendChild(link);
             });
 
             resultsContainer.appendChild(externalContainer);
 
             if (data.query && data.query.pages) {
-                const pages = Object.values(data.query.pages);
-                pages.sort((a, b) => (a.index || 0) - (b.index || 0));
-                
-                pages.forEach((page, index) => {
+                const pages = Object.values(data.query.pages).sort((a, b) => (a.index || 0) - (b.index || 0));
+                pages.forEach(page => {
                     const card = document.createElement('a');
                     card.className = 'article-card';
                     card.href = `https://${currentLang}.wikipedia.org/?curid=${page.pageid}`;
                     card.target = '_blank';
-                    card.style.animationDelay = `${(index + 1) * 0.05}s`;
-                    card.innerHTML = `
-                        <h3>${page.title}</h3>
-                        <p>${page.extract || '點擊閱讀完整內容...'}</p>
-                    `;
+                    card.innerHTML = `<h3>${page.title}</h3><p>${page.extract || '點擊查看全文...'}</p>`;
                     resultsContainer.appendChild(card);
                 });
             } else {
-                const noResults = document.createElement('div');
-                noResults.className = 'no-results';
-                noResults.innerText = `在 ${currentLang.toUpperCase()} 維基百科中找不到相關結果。`;
-                resultsContainer.appendChild(noResults);
+                resultsContainer.innerHTML += `<div class="no-results mt-4">找不到關於 "${searchTerm}" 的維基文章。</div>`;
             }
         } catch (error) {
             loading.style.display = 'none';
-            resultsContainer.innerHTML = '<div class="no-results text-danger">連線發生錯誤，請稍後再試。</div>';
+            resultsContainer.innerHTML = '<div class="no-results text-danger">連線失敗，請檢查網路。</div>';
         }
     }
 
-    searchBar.addEventListener('input', function(e) {
-        const val = e.target.value.trim();
-        clearIcon.style.display = val ? 'block' : 'none';
-
-        const extBtns = document.querySelectorAll('.ext-btn');
-        extBtns.forEach(btn => {
-            const engine = btn.getAttribute('data-engine');
-            if (engine === 'britannica') btn.href = `https://www.britannica.com/search?query=${encodeURIComponent(val)}`;
-            if (engine === 'ddg') btn.href = `https://duckduckgo.com/?q=${encodeURIComponent(val)}`;
-            if (engine === 'youtube') btn.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(val)}`;
-            if (engine === 'x') btn.href = `https://x.com/search?q=${encodeURIComponent(val)}`;
-        });
+    searchBar.addEventListener('input', (e) => {
+        clearIcon.style.display = e.target.value.length > 0 ? 'block' : 'none';
     });
 
     clearIcon.addEventListener('click', () => {
@@ -497,17 +443,19 @@
         performSearch(randomItem);
     });
 
-    document.getElementById('search-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const term = searchBar.value.trim();
-        if (term) performSearch(term);
-    });
-
-    document.getElementById('surprise').addEventListener('click', function() {
+    document.getElementById('surprise').addEventListener('click', () => {
         window.open(`https://${currentLang}.wikipedia.org/wiki/Special:Random`, '_blank');
     });
 
-    window.onload = () => searchBar.focus();
+    document.getElementById('search-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        searchBar.blur(); 
+        performSearch(searchBar.value);
+    });
+
+    window.onload = () => {
+        if (window.innerWidth > 768) searchBar.focus();
+    };
 </script>
 </body>
 </html>
