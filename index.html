@@ -111,6 +111,11 @@
             padding: 5px;
             display: none;
             font-size: 1.2rem;
+            transition: color 0.2s;
+        }
+        
+        .clear-icon:hover {
+            color: #ff4d4d;
         }
 
         .search-label {
@@ -180,7 +185,6 @@
             .external-link-container {
                 grid-template-columns: repeat(4, 1fr);
             }
-            /* Adjusting for 7 icons if search result boxes increase */
             .external-link-container.results-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
@@ -188,7 +192,7 @@
         
         @media (min-width: 992px) {
              .external-link-container.results-grid {
-                grid-template-columns: repeat(7, 1fr);
+                grid-template-columns: repeat(8, 1fr);
             }
         }
 
@@ -221,6 +225,7 @@
         .box-searxng i { color: #5f74bd; }
         .box-ddg i { color: #de5833; }
         .box-blackstump i { color: #222222; }
+        .box-amazon i { color: #ff9900; }
 
         .article-card {
             background: var(--card-bg);
@@ -280,7 +285,7 @@
             <div class="search-wrapper">
                 <i class="fa fa-search search-icon"></i>
                 <input type="text" id="search-bar" class="search-bar" placeholder="搜尋維基百科..." autocomplete="off" inputmode="search" required>
-                <i class="fa fa-times-circle clear-icon" id="clear-search"></i>
+                <i class="fa fa-times-circle clear-icon" id="clear-search" title="Clear search text"></i>
             </div>
             
             <div class="search-label" id="lang-selector">
@@ -293,6 +298,7 @@
                 <a href="#" onclick="changeLang('es', this)">ES</a> 
                 <a href="#" onclick="changeLang('it', this)">IT</a> 
                 <span style="opacity: 0.3; margin: 0 5px">|</span>
+                <a href="#" onclick="externalSearch('amazon')">Amazon</a>
                 <a href="#" onclick="externalSearch('blackstump')">Black Stump</a>
                 <a href="#" onclick="externalSearch('searxng')">SearXNG</a>
                 <a href="#" onclick="externalSearch('ddg')">DDG</a>
@@ -331,12 +337,12 @@
     const topics = {
         'zh': ['量子力學', '黑洞', '工業革命', '印象派', '文藝復興', '人工智慧', '希臘神話', '恐龍', '古埃及', '巴拿馬運河', '珠穆朗瑪峰', '比特幣', '火星探測', '大堡礁', '虛擬實境', '金字塔', '凡爾賽宮', '相對論', '萬里長城', '達文西', '貝多芬', '宇宙大爆炸', '地質學', '基因工程', '南極洲', '古羅馬', '莎士比亞', '維多利亞時代', '法蘭西革命', '亞馬遜雨林', '珊瑚礁', '深海生物', '奈米技術', '核聚變', '黑死病', '絲綢之路', '冷戰', '登月計劃', '大數據', '區塊鏈', '生物多樣性', '可再生能源', '古希臘', '成吉思汗', '啟蒙運動', '神經科學', '氣候變遷', '大腦', '宏觀經濟學', '微觀世界', '星系'],
         'en': ['Quantum Mechanics', 'Black Hole', 'Industrial Revolution', 'Impressionism', 'Renaissance', 'Artificial Intelligence', 'Greek Mythology', 'Dinosaurs', 'Ancient Egypt', 'Panama Canal', 'Mount Everest', 'Bitcoin', 'Mars Exploration', 'Great Barrier Reef', 'Virtual Reality', 'Pyramids', 'Palace of Versailles', 'General Relativity', 'Great Wall of China', 'Leonardo da Vinci', 'Ludwig van Beethoven', 'Big Bang', 'Geology', 'Genetic Engineering', 'Antarctica', 'Ancient Rome', 'William Shakespeare', 'Victorian Era', 'French Revolution', 'Amazon Rainforest', 'Coral Reef', 'Deep Sea Creatures', 'Nanotechnology', 'Nuclear Fusion', 'Black Death', 'Silk Road', 'Cold War', 'Moon Landing', 'Big Data', 'Blockchain', 'Biodiversity', 'Renewable Energy', 'Ancient Greece', 'Genghis Khan', 'Enlightenment', 'Neuroscience', 'Climate Change', 'Human Brain', 'Macroeconomics', 'Microscopic World', 'Galaxy'],
-        'ja': ['量子力学', 'ブラックホール', '産業革命', '印象派', 'ルネサンス', '人工知能', 'ギリシャ神話', '恐竜', '古代エジプト', 'パナマ運河', 'エベレスト', 'ビットコイン', '火星探査', 'グレート・バリア・リーフ', 'バーチャルリアリティ', 'ピラミッド', 'ヴェルサイユ宮殿', '相対性理論', '万里の長城', 'レオナルド・ダ・ヴィンチ', 'ベートーヴェン', 'ビッグバン', '地質学', '遺伝子工学', '南極大陸', '古代ローマ', 'シェイクスピア', 'ヴィクトリア朝', 'フランス革命', 'アマゾン熱帯雨林', 'サンゴ礁', '深海生物', 'ナノテクノロジー', '核融合', 'ペスト', 'シルクロード', '冷戦', 'アポロ計画', 'ビッグデータ', 'ブロックチェーン', '生物多様性', '再生可能エネルギー', '古代ギリシャ', 'チンギス・ハン', '啓蒙思想', '神経科学', '気候変動', '脳', 'マクロ経済学', 'ミクロの世界', '銀河系'],
+        'ja': ['量子力学', 'ブラックホール', '産業革命', '印象派', 'ルネサンス', '人工知能', 'ギリシャ神話', '恐竜', '古代エジプト', 'パナマ運河', 'エベレスト', 'ビットコイン', '火星探査', 'グレート・バリア・リーフ', 'バーチャルリアリティ', 'ピラミッド', 'ヴェルサイユ宮殿', '相対性理論', '万里の長城', 'レオナルド・ダ・ヴィンチ', 'ベートーヴェン', 'ビッグバン', '地質學', '遺伝子工学', '南極大陸', '古代ローマ', 'シェイクスピア', 'ヴィクトリア朝', 'フランス革命', 'アマゾン熱帯雨林', 'サンゴ礁', '深海生物', 'ナノテクノロジー', '核融合', 'ペスト', 'シルクロード', '冷戦', 'アポロ計画', 'ビッグデータ', 'ブロックチェーン', '生物多様性', '再生可能エネルギー', '古代ギリシャ', 'チンギス・ハン', '啓蒙思想', '神経科学', '気候変動', '脳', 'マクロ経済学', 'ミクロの世界', '銀河系'],
         'ko': ['양자역학', '블랙홀', '산업 혁명', '인상주의', '르네상스', '인공지능', '그리스 신화', '공룡', '고대 이집트', '파나마 운하', '에베레스트 산', '비트코인', '화성 탐사', '대산호초', '가상 현실', '피라미드', '베르사유 궁전', '상대성 이론', '만리장성', '레오나르도 다 빈치', '베토벤', '빅뱅', '지질학', '유전공학', '남극 대륙', '고대 로마', '셰익스피어', '빅토리아 시대', '프랑스 혁명', '아마존 열대우림', '산호초', '심해 생물', '나노 기술', '핵융합', '흑사병', '실크로드', '냉전', '달 착륙', '빅데이터', '블록체인', '생물 다양성', '재생 에너지', '고대 그리스', '칭기즈 칸', '계몽주의', '신경과학', '기후 변화', '뇌', '거시경제학', '미시 세계', '은하'],
         'fr': ['Mécanique quantique', 'Trou noir', 'Révolution industrielle', 'Impressionnisme', 'Renaissance', 'Intelligence artificielle', 'Mythologie grecque', 'Dinosaures', 'Égypte antique', 'Canal de Panama', 'Mont Everest', 'Bitcoin', 'Exploration de Mars', 'Grande Barrière de corail', 'Réalité virtuelle', 'Pyramides', 'Château de Versailles', 'Relativité générale', 'Grande Muraille de Chine', 'Léonard de Vinci', 'Beethoven', 'Big Bang', 'Géologie', 'Génie génétique', 'Antarctique', 'Rome antique', 'William Shakespeare', 'Époque victorienne', 'Révolution française', 'Forêt amazonienne', 'Récif corallien', 'Créatures des abysses', 'Nanotechnologie', 'Fusion nucléaire', 'Peste noire', 'Route de la soie', 'Guerre froide', 'Atterrissage sur la Lune', 'Big data', 'Blockchain', 'Biodiversité', 'Énergie renouvelable', 'Grèce antique', 'Gengis Khan', 'Lumières', 'Neurosciences', 'Changement climatique', 'Cerveau humain', 'Macroéconomie', 'Monde microscopique', 'Galaxie'],
         'de': ['Quantenmechanik', 'Schwarzes Loch', 'Industrielle Revolution', 'Impressionismus', 'Renaissance', 'Künstliche Intelligenz', 'Griechische Mythologie', 'Dinosaurier', 'Altes Ägypten', 'Panamakanal', 'Mount Everest', 'Bitcoin', 'Marsexploration', 'Great Barrier Reef', 'Virtuelle Realität', 'Pyramiden', 'Schloss Versailles', 'Relativitätstheorie', 'Chinesische Mauer', 'Leonardo da Vinci', 'Beethoven', 'Urknall', 'Geologie', 'Gentechnik', 'Antarktis', 'Altes Rom', 'William Shakespeare', 'Viktorianisches Zeitalter', 'Französische Revolution', 'Amazonas-Regenwald', 'Korallenriff', 'Tiefseekreaturen', 'Nanotechnologie', 'Kernfusion', 'Schwarzer Tod', 'Seidenstraße', 'Kalter Krieg', 'Mondlandung', 'Big Data', 'Blockchain', 'Biodiversität', 'Erneuerbare Energie', 'Altes Griechenland', 'Dschingis Khan', 'Aufklärung', 'Neurowissenschaften', 'Klimawandel', 'Menschliches Gehirn', 'Makroökonomie', 'Mikrokosmos', 'Galaxie'],
-        'es': ['Mecánica cuántica', 'Agujero negro', 'Revolución Industrial', 'Impresionismo', 'Renacimiento', 'Inteligencia artificial', 'Mitología griega', 'Dinosaurios', 'Antiguo Egipto', 'Canal de Panamá', 'Monte Everest', 'Bitcoin', 'Exploración de Marte', 'Gran Barrera de Coral', 'Realidad virtual', 'Pirámides', 'Palacio de Versalles', 'Relatividad general', 'Gran Muralla China', 'Leonardo da Vinci', 'Beethoven', 'Big Bang', 'Geología', 'Ingeniería genética', 'Antártida', 'Antigua Roma', 'William Shakespeare', 'Época victoriana', 'Revolución francesa', 'Selva amazónica', 'Arrecife de coral', 'Criaturas abisales', 'Nanotecnología', 'Fusión nuclear', 'Peste negra', 'Ruta de la seda', 'Guerra fría', 'Alunizaje', 'Big data', 'Blockchain', 'Biodiversidad', 'Energía renovable', 'Antigua Grecia', 'Gengis Kan', 'Ilustración', 'Neurociencia', 'Cambio climático', 'Cerebro humano', 'Macroeconomía', 'Mundo microscopico', 'Galaxia'],
-        'it': ['Meccanica quantica', 'Buco nero', 'Rivoluzione industriale', 'Impressionismo', 'Rinascimento', 'Intelligenza artificiale', 'Mitologia greca', 'Dinosauri', 'Antico Egitto', 'Canale di Panama', 'Monte Everest', 'Bitcoin', 'Esplorazione di Marte', 'Grande barriera corallina', 'Realtà virtuale', 'Piramidi', 'Reggia di Caserta', 'Relatività generale', 'Grande muraglia cinese', 'Leonardo da Vinci', 'Beethoven', 'Big Bang', 'Geologia', 'Ingegneria genetica', 'Antartide', 'Antica Roma', 'William Shakespeare', 'Epoca vittoriana', 'Rivoluzione francese', 'Foresta amazzonica', 'Barriera corallina', 'Creature degli abissi', 'Nanotecnologia', 'Fusione nucleare', 'Peste nera', 'Via della seta', 'Guerra fredda', 'Sbarco sulla Luna', 'Big data', 'Blockchain', 'Biodiversità', 'Energia rinnovabile', 'Antica Grecia', 'Gengis Khan', 'Illuminismo', 'Neuroscienza', 'Cambiamento climatico', 'Cervello umano', 'Macroeconomia', 'Mondo microscopico', 'Galassia']
+        'es': ['Mecánica cuántica', 'Agujero negro', 'Revolución Industrial', 'Impresionismo', 'Renacimiento', 'Inteligencia artificial', 'Mitología griega', 'Dinosaurios', 'Antiguo Egipto', 'Canal de Panamá', 'Monte Everest', 'Bitcoin', 'Exploración de Marte', 'Gran Barrera de Coral', 'Realidad virtual', 'Pirámides', 'Palacio de Versalles', 'Relatividad general', 'Gran Muralla China', 'Leonardo da Vinci', 'Beethoven', 'Big Bang', 'Geología', 'Ingeniería genética', 'Antártida', 'Antigua Roma', 'William Shakespeare', 'Época victoriana', 'Revolución francesa', 'Selva amazónica', 'Arrecife de coral', 'Criaturas abisales', 'Nanotecnología', 'Fusión nuclear', 'Peste negra', 'Ruta de la seda', 'Guerra fría', 'Alunizaje', 'Big data', 'Blockchain', 'Biodiversidad', 'Energía renovable', 'Antigua Grecia', 'Gengis Kan', 'Ilustración', 'Neurociencia', 'Cambio climático', 'Cerebro humano', 'Macroeconomía', 'Mundo microscópico', 'Galaxia'],
+        'it': ['Meccanica quantica', 'Buco nero', 'Rivoluzione industriale', 'Impressionismo', 'Rinascimento', 'Intelligenza artificiale', 'Mitologia greca', 'Dinosauri', 'Antico Egitto', 'Canale di Panama', 'Monte Everest', 'Bitcoin', 'Esplorazione di Marte', 'Grande barriera corallina', 'Realtà virtuale', 'Piramidi', 'Reggia di Caserta', 'Relatività generale', 'Grande muraglia cinese', 'Leonardo da Vinci', 'Beethoven', 'Big Bang', 'Geologia', 'Ingegneria genetica', 'Antartide', 'Antica Roma', 'William Shakespeare', 'Epoca vittoriana', 'Rivoluzione francese', 'Foresta amazzonica', 'Barriera corallina', 'Creature degli abissi', 'Nanotecnologia', 'Fusione nucleare', 'Peste nera', 'Via della seta', 'Guerra fredda', 'Sbarco sulla Luna', 'Big data', 'Blockchain', 'Biodiversità', 'Energia rinnovabile', 'Antica Grecia', 'Gengis Khan', 'Illuminismo', 'Neuroscienza', 'Cambiamento climatico', 'Cerveau umano', 'Macroeconomia', 'Mundo microscopico', 'Galassia']
     };
 
     const themeToggle = document.getElementById('theme-toggle');
@@ -374,7 +380,8 @@
         const term = searchBar.value.trim();
         if (!term) return;
         let url = '';
-        if (engine === 'searxng') url = `https://searxng.site/search?q=${encodeURIComponent(term)}`;
+        if (engine === 'amazon') url = `https://www.amazon.com/s?k=${encodeURIComponent(term)}`;
+        else if (engine === 'searxng') url = `https://searxng.site/search?q=${encodeURIComponent(term)}`;
         else if (engine === 'blackstump') url = `https://www.blackstump.com.au/tbssearch?query=${encodeURIComponent(term)}`;
         else if (engine === 'ddg') url = `https://duckduckgo.com/?q=${encodeURIComponent(term)}`;
         else if (engine === 'britannica') url = `https://www.britannica.com/search?query=${encodeURIComponent(term)}`;
@@ -404,6 +411,7 @@
 
             const engines = [
                 { name: 'Google', icon: 'fa-google', box: 'box-google', url: `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}` },
+                { name: 'Amazon', icon: 'fa-amazon', box: 'box-amazon', url: `https://www.amazon.com/s?k=${encodeURIComponent(searchTerm)}` },
                 { name: 'BlackStump', icon: 'fa-tree', box: 'box-blackstump', url: `https://www.blackstump.com.au/tbssearch?query=${encodeURIComponent(searchTerm)}` },
                 { name: 'YouTube', icon: 'fa-youtube-play', box: 'box-youtube', url: `https://www.youtube.com/results?search_query=${encodeURIComponent(searchTerm)}` },
                 { name: 'SearXNG', icon: 'fa-user-secret', box: 'box-searxng', url: `https://searxng.site/search?q=${encodeURIComponent(searchTerm)}` },
@@ -449,6 +457,7 @@
     clearIcon.addEventListener('click', () => {
         searchBar.value = '';
         clearIcon.style.display = 'none';
+        document.getElementById('wiki-articles').innerHTML = '';
         searchBar.focus();
     });
 
@@ -472,6 +481,8 @@
 
     window.onload = () => {
         if (window.innerWidth > 768) searchBar.focus();
+        // Ensure clear icon state is correct on load (e.g. browser autofill)
+        if (searchBar.value) clearIcon.style.display = 'block';
     };
 </script>
 </body>
