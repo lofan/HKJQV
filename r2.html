@@ -488,7 +488,9 @@
 
     searchBar.addEventListener('input', (e) => {
         clearIcon.style.display = e.target.value.length > 0 ? 'block' : 'none';
-    });
+    }
+                              renderHistory();
+                              );
 
     clearIcon.addEventListener('click', () => {
         searchBar.value = '';
@@ -521,7 +523,7 @@
         if (searchBar.value) clearIcon.style.display = 'block';
     };
 
-    renderHistory();
+    
 </script>
 </body>
 </html>
