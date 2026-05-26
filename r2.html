@@ -402,6 +402,30 @@
         window.open(url, '_blank');
     }
 
+     function externalSearch(engine) {
+        const term = searchBar.value.trim();
+        if (!term) return;
+        let url = '';
+        if (engine === 'amazon') url = `https://www.amazon.com/s?k=${encodeURIComponent(term)}`;
+        else if (engine === 'youtube') url = `https://www.youtube.com/results?search_query=${encodeURIComponent(term)}`;
+        window.open(url, '_blank');
+    }
+
+    function updateHistory(term) {
+        let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+        history = [term, ...history.filter(t => t !== term)].slice(0, 50);
+        localStorage.setItem('searchHistory', JSON.stringify(history));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+        historyContainer.innerHTML = history.map(t => `<span class="history-tag" onclick="useHistory('${t}')">${t}</span>`).join('');
+    }
+
+    function useHistory(term) { searchBar.value = term; performSearch(term); }
+
+
     async function performSearch(searchTerm) {
         if (!searchTerm.trim()) return;
         
@@ -412,7 +436,7 @@
         resultsContainer.innerHTML = '';
 
         const url = `https://${currentLang}.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&generator=search&exsentences=2&exintro=1&explaintext=1&gsrsearch=${encodeURIComponent(searchTerm)}&origin=*`;
-
+        updateHistory(searchTerm);
         try {
             const response = await fetch(url);
             const data = await response.json();
