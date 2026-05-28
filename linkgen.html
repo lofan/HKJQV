@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Link Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center p-4 transition-colors">
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md transition-colors">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Link Generator</h1>
+            <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200">
+                <span id="theme-icon">🌙</span>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">URL</label>
+                <div class="flex gap-2 relative">
+                    <input type="url" id="url" placeholder="https://finance.yahoo.com/" class="mt-1 w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none pr-10">
+                    <button onclick="clearUrl()" class="absolute right-[10px] top-[14px] text-gray-400 hover:text-red-500">✕</button>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Link Text</label>
+                <div class="flex gap-2 relative">
+                    <select id="emoji-select" onchange="addEmoji()" class="mt-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="">Emoji</option>
+                        <option value="😍">😍</option>
+                        <option value="🗠">🗠</option>
+                        <option value="📰">📰</option>
+                        <option value="✔">✔</option>
+                        <option value="❌">❌</option>
+                        <option value="🔥">🔥</option>
+                        <option value="🐺">🐺</option>
+                        <option value="🐾">🐾</option>
+                        <option value="👀">👀</option>
+                        <option value="👍">👍</option>
+                        <option value="👎">👎</option>
+                        <option value="💀">💀</option>
+                        <option value="💔">💔</option>
+                        <option value="💩">💩</option>
+                        <option value="💪">💪</option>
+                        <option value="💰">💰</option>
+                        <option value="💾">💾</option>
+                        <option value="📁">📁</option>
+                        <option value="📌">📌</option>
+                        <option value="🔑">🔑</option>
+                        <option value="🛠">🛠</option>
+                        <option value="🛒">🛒</option>
+                    </select>
+                    <input type="text" id="text" placeholder="Yahoo Fin" class="mt-1 flex-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none pr-10">
+                    <button onclick="clearText()" class="absolute right-[10px] top-[14px] text-gray-400 hover:text-red-500">✕</button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output Format</label>
+                <div class="grid grid-cols-3 gap-2" id="format-selector">
+                    <button onclick="setFormat('html')" id="btn-html" class="format-btn px-3 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white">HTML</button>
+                    <button onclick="setFormat('markdown')" id="btn-markdown" class="format-btn px-3 py-2 text-sm font-semibold rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">Markdown</button>
+                    <button onclick="setFormat('text')" id="btn-text" class="format-btn px-3 py-2 text-sm font-semibold rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">Plain</button>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="generateCode()" class="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Generate</button>
+                <button onclick="resetAll()" class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200 px-4 py-3 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition">Reset</button>
+            </div>
+        </div>
+
+        <div id="result-container" class="mt-6 hidden">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Resulting Code:</label>
+            <div class="mt-2 p-4 bg-gray-100 dark:bg-gray-900 rounded-lg font-mono text-sm break-all text-blue-900 dark:text-blue-300 border border-gray-200 dark:border-gray-700" id="output"></div>
+            <button onclick="copyToClipboard()" class="mt-3 w-full border border-blue-600 text-blue-600 dark:text-blue-400 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        let currentFormat = 'html';
+
+        function setFormat(format) {
+            currentFormat = format;
+            document.querySelectorAll('.format-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            });
+            document.getElementById(`btn-${format}`).classList.add('bg-blue-600', 'text-white');
+            document.getElementById(`btn-${format}`).classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            document.getElementById('theme-icon').textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+        }
+        document.getElementById('theme-icon').textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+
+        function clearUrl() { document.getElementById('url').value = ''; }
+        function clearText() { document.getElementById('text').value = ''; }
+
+        function resetAll() {
+            document.getElementById('url').value = '';
+            document.getElementById('text').value = '';
+            document.getElementById('emoji-select').value = '';
+            setFormat('html');
+            document.getElementById('result-container').classList.add('hidden');
+        }
+
+        function addEmoji() {
+            const emojiSelect = document.getElementById('emoji-select');
+            const textInput = document.getElementById('text');
+            const emoji = emojiSelect.value;
+            if (emoji) {
+                // Regex to remove any existing leading emoji
+                textInput.value = emoji + ' ' + textInput.value.replace(/^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]\s*/u, '');
+                emojiSelect.value = '';
+            }
+        }
+
+        function generateCode() {
+            const url = document.getElementById('url').value || '#';
+            const text = document.getElementById('text').value || 'Link';
+            let finalCode = '';
+
+            if (currentFormat === 'html') {
+                finalCode = `<a href="${url}" target="_blank">${text}</a>`;
+            } else if (currentFormat === 'markdown') {
+                finalCode = `[${text}](${url})`;
+            } else {
+                finalCode = `${text}: ${url}`;
+            }
+
+            const output = document.getElementById('output');
+            output.textContent = finalCode;
+            document.getElementById('result-container').classList.remove('hidden');
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('output').textContent;
+            const textarea = document.createElement('textarea');
+            textarea.value = output;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+    </script>
+</body>
+</html>
