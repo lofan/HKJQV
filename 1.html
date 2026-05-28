@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wikipedia & Multi-Engine Search Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #1c1e21;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+            --label-color: #65676b;
+            --accent-color: #0064d1;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #18191a;
+            --header-bg: rgba(36, 37, 38, 0.95);
+            --text-color: #e4e6eb;
+            --card-bg: #242526;
+            --border-color: #3e4042;
+            --label-color: #b0b3b8;
+            --accent-color: #4599ff;
+        }
+
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; transition: background 0.3s ease; margin: 0; }
+        header { padding: 20px 15px; background: var(--header-bg); backdrop-filter: blur(10px); box-shadow: 0 1px 2px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .theme-toggle { position: absolute; top: 15px; right: 15px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 50%; width: 36px; height: 36px; color: var(--text-color); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .search-container { max-width: 800px; margin: 0 auto; }
+        .search-wrapper { position: relative; display: flex; align-items: center; margin-bottom: 12px; width: 100%; }
+        .search-bar { border-radius: 28px; padding: 12px 45px; border: 1px solid var(--border-color); background-color: var(--card-bg); color: var(--text-color); font-size: 16px; width: 100%; }
+        .search-bar:focus { border-color: var(--accent-color); outline: none; }
+        .search-icon { position: absolute; left: 18px; color: var(--label-color); pointer-events: none; }
+        .clear-icon { position: absolute; right: 15px; color: var(--label-color); cursor: pointer; display: none; padding: 8px; }
+        
+        .history-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; justify-content: center; }
+        .history-tag { font-size: 0.75rem; background: var(--border-color); color: var(--text-color); padding: 2px 10px; border-radius: 10px; text-decoration: none; cursor: pointer; opacity: 0.8; }
+        .history-tag:hover { opacity: 1; background: var(--accent-color); color: white; }
+
+        .search-label { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; color: var(--label-color); font-size: 0.85rem; align-items: center; margin-top: 10px; }
+        .search-label a { text-decoration: none; color: var(--accent-color); padding: 4px 8px; border-radius: 12px; background: rgba(0, 100, 209, 0.05); cursor: pointer; }
+        .lang-active { background: var(--accent-color) !important; color: white !important; font-weight: 600; }
+        .action-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+        .btn-action { border-radius: 20px; padding: 8px 20px; font-size: 0.9rem; font-weight: 600; border: none; }
+        .btn-primary-custom { background-color: var(--accent-color); color: white; }
+        .btn-secondary-custom { background-color: #65676b; color: white; }
+        .article-card { background: var(--card-bg); padding: 18px; margin-bottom: 12px; border-radius: 12px; display: block; color: inherit; border: 1px solid transparent; text-decoration: none; }
+        .article-card:hover { border-color: var(--accent-color); }
+        .article-card h3 { color: var(--accent-color); font-size: 1.15rem; font-weight: 700; }
+        .loading-spinner { display: none; text-align: center; padding: 40px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <button class="theme-toggle" id="theme-toggle"><i class="fa fa-moon-o"></i></button>
+    <div class="search-container">
+        <form id="search-form">
+            <div class="search-wrapper">
+                <i class="fa fa-search search-icon"></i>
+                <input type="text" id="search-bar" class="search-bar" placeholder="Search..." autocomplete="off" required>
+                <i class="fa fa-times-circle clear-icon" id="clear-search"></i>
+            </div>
+            <div id="history-container" class="history-container"></div>
+            <div class="search-label" id="lang-selector">
+                <a onclick="changeLang('zh', this)" class="lang-active">ZH</a> 
+                <a onclick="changeLang('en', this)">EN</a> 
+                <a onclick="changeLang('ja', this)">JP</a> 
+                <a onclick="changeLang('ko', this)">KR</a> 
+                <a onclick="changeLang('fr', this)">FR</a> 
+                <a onclick="changeLang('de', this)">DE</a> 
+                <a onclick="changeLang('es', this)">ES</a> 
+                <a onclick="changeLang('it', this)">IT</a> 
+                <span style="opacity: 0.3; margin: 0 5px">|</span>
+                <a onclick="externalSearch('amazon')">Amazon</a>
+                <a onclick="externalSearch('blackstump')">Black Stump</a>
+                <a onclick="externalSearch('searxng')">SearXNG</a>
+                <a onclick="externalSearch('ddg')">DDG</a>
+                <a onclick="externalSearch('britannica')">Britannica</a>
+                <a onclick="externalSearch('youtube')">YouTube</a>
+                <a onclick="externalSearch('x')">X</a>
+                <span style="opacity: 0.3; margin: 0 5px">|</span>
+                <a href="https://trends.google.com/trends/trendingsearches/daily?geo=HK" target="_blank">HK 📈</a>
+                <a href="https://trends.google.com/trends/trendingsearches/daily?geo=US" target="_blank">US 📈</a>
+                <a href="https://trends.google.com/trends/trendingsearches/daily?geo=CA" target="_blank">CA 📈</a>
+                <a href="https://trends.google.com/trends/trendingsearches/daily?geo=FR" target="_blank">FR 📈</a>
+                <a href="https://trends.google.com/trends/trendingsearches/daily?geo=JP" target="_blank">JP 📈</a> | 
+                <a href="https://tradingeconomics.com/" target="_blank">TE 🗠</a>
+                <a href="https://www.statista.com/chartoftheday/" target="_blank">STAT 🗠</a>
+                <a href="https://www.numbeo.com/cost-of-living/" target="_blank">NUMB 🗠</a>
+                <a href="https://www.tradingview.com/markets/" target="_blank">Trade 🗠</a>
+                <a href="https://finance.yahoo.com/" target="_blank">Yahoo Fin</a>
+                <a href="https://biztoc.com/" target="_blank">BIZ 📰</a>
+             </div>
+        </form>
+        <div class="action-buttons">
+            <button type="button" class="btn btn-action btn-primary-custom" id="random-topic"><i class="fa fa-lightbulb-o"></i> 靈感</button>
+            <button type="button" class="btn btn-action btn-secondary-custom" id="surprise"><i class="fa fa-random"></i> 隨機</button>
+        </div>
+    </div>
+</header>
+
+<main class="container-fluid py-3">
+    <div id="loading" class="loading-spinner"><div class="spinner-border text-primary"></div></div>
+    <div id="wiki-articles" class="wiki-articles mx-auto" style="max-width: 800px;"></div>
+</main>
+
+<script>
+    let currentLang = 'zh';
+    const searchBar = document.getElementById('search-bar');
+    const historyContainer = document.getElementById('history-container');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    const topics = {
+        'zh': ['量子力學', '黑洞', '工業革命', '印象派', '文藝復興', '人工智慧', '希臘神話', '恐龍', '古埃及', '巴拿馬運河', '珠穆朗瑪峰', '比特幣', '火星探測', '大堡礁', '虛擬實境', '金字塔', '凡爾賽宮', '相對論', '萬里長城', '達文西', '貝多芬', '宇宙大爆炸', '地質學', '基因工程', '南極洲', '古羅馬', '莎士比亞', '維多利亞時代', '法蘭西革命', '亞馬遜雨林', '珊瑚礁', '深海生物', '奈米技術', '核聚變', '黑死病', '絲綢之路', '冷戰', '登月計劃', '大數據', '區塊鏈', '生物多樣性', '可再生能源', '古希臘', '成吉思汗', '啟蒙運動', '神經科學', '氣候變遷', '大腦', '宏觀經濟學', '微觀世界', '星系'],
+        'en': ['Quantum Mechanics', 'Black Hole', 'Industrial Revolution', 'Impressionism', 'Renaissance', 'Artificial Intelligence', 'Greek Mythology', 'Dinosaurs', 'Ancient Egypt', 'Panama Canal', 'Mount Everest', 'Bitcoin', 'Mars Exploration', 'Great Barrier Reef', 'Virtual Reality', 'Pyramids', 'Palace of Versailles', 'General Relativity', 'Great Wall of China', 'Leonardo da Vinci', 'Ludwig van Beethoven', 'Big Bang', 'Geology', 'Genetic Engineering', 'Antarctica', 'Ancient Rome', 'William Shakespeare', 'Victorian Era', 'French Revolution', 'Amazon Rainforest', 'Coral Reef', 'Deep Sea Creatures', 'Nanotechnology', 'Nuclear Fusion', 'Black Death', 'Silk Road', 'Cold War', 'Moon Landing', 'Big Data', 'Blockchain', 'Biodiversity', 'Renewable Energy', 'Ancient Greece', 'Genghis Khan', 'Enlightenment', 'Neuroscience', 'Climate Change', 'Human Brain', 'Macroeconomics', 'Microscopic World', 'Galaxy'],
+        'ja': ['量子力学', 'ブラックホール', '産業革命', '印象派', 'ルネサンス', '人工知能', 'ギリシャ神話', '恐竜', '古代エジプト', 'パナマ運河', 'エベレスト', 'ビットコイン', '火星探査', 'グレート・バリア・リーフ', 'バーチャルリアリティ', 'ピラミッド', 'ヴェルサイユ宮殿', '相対性理論', '万里の長城', 'レオナルド・ダ・ヴィンチ', 'ベートーヴェン', 'ビッグバン', '地質學', '遺伝子工学', '南極大陸', '古代ローマ', 'シェイクスピア', 'ヴィクトリア朝', 'フランス革命', 'アマゾン熱帶雨林', 'サンゴ礁', '深海生物', 'ナノテクノロジー', '核融合', 'ペスト', 'シルクロード', '冷戦', 'アポロ計画', 'ビッグデータ', 'ブロックチェーン', '生物多様性', '再生可能エネルギー', '古代ギリシャ', 'チンギス・ハン', '啓蒙思想', '神経科学', '気候変動', '脳', 'マクロ経済学', 'ミクロの世界', '銀河系'],
+        'ko': ['양자역학', '블랙홀', '산업 혁명', '인상주의', '르네상스', '인공지능', '그리스 신화', '공룡', '고대 이집트', '파나마 운하', '에베레스트 산', '비트코인', '화성 탐사', '대산호초', '가상 현실', '피라미드', '베르사유 궁전', '상대성 이론', '만리장성', '레오나르도 다 빈치', '베토벤', '빅뱅', '지질학', '유전공학', '남극 대륙', '고대 로마', '셰익스피어', '빅토리아 시대', '프랑스 혁명', '아마존 열대우림', '산호초', '심해 생물', '나노 기술', '핵융합', '흑사병', '실크로드', '냉전', '달 착륙', '빅데이터', '블록체인', '생물 다양성', '재생 에너지', '고대 그리스', '칭기즈 칸', '계몽주의', '신경과학', '기후 변화', '뇌', '거시경제학', '미시 세계', '은하'],
+        'fr': ['Mécanique quantique', 'Trou noir', 'Révolution industrielle', 'Impressionnisme', 'Renaissance', 'Intelligence artificielle', 'Mythologie grecque', 'Dinosaures', 'Égypte antique', 'Canal de Panama', 'Mont Everest', 'Bitcoin', 'Exploration de Mars', 'Grande Barrière de corail', 'Réalité virtuelle', 'Pyramides', 'Château de Versailles', 'Relativité générale', 'Grande Muraille de Chine', 'Léonard de Vinci', 'Beethoven', 'Big Bang', 'Géologie', 'Génie génétique', 'Antarctique', 'Rome antique', 'William Shakespeare', 'Époque victorienne', 'Révolution française', 'Forêt amazonienne', 'Récif corallien', 'Créatures des abysses', 'Nanotechnologie', 'Fusion nucléaire', 'Peste noire', 'Route de la soie', 'Guerre froide', 'Atterrissage sur la Lune', 'Big data', 'Blockchain', 'Biodiversité', 'Énergie renouvelable', 'Grèce antique', 'Gengis Khan', 'Lumières', 'Neurosciences', 'Changement climatique', 'Cerveau humain', 'Macroéconomie', 'Monde microscopique', 'Galaxie'],
+        'de': ['Quantenmechanik', 'Schwarzes Loch', 'Industrielle Revolution', 'Impressionismus', 'Renaissance', 'Künstliche Intelligenz', 'Griechische Mythologie', 'Dinosaurier', 'Altes Ägypten', 'Panamakanal', 'Mount Everest', 'Bitcoin', 'Marsexploration', 'Great Barrier Reef', 'Virtuelle Realität', 'Pyramiden', 'Schloss Versailles', 'Relativitätstheorie', 'Chinesische Mauer', 'Leonardo da Vinci', 'Beethoven', 'Urknall', 'Geologie', 'Gentechnik', 'Antarktis', 'Altes Rom', 'William Shakespeare', 'Viktorianisches Zeitalter', 'Französische Revolution', 'Amazonas-Regenwald', 'Korallenriff', 'Tiefseekreaturen', 'Nanotechnologie', 'Kernfusion', 'Schwarzer Tod', 'Seidenstraße', 'Kalter Krieg', 'Mondlandung', 'Big Data', 'Blockchain', 'Biodiversität', 'Erneuerbare Energie', 'Altes Griechenland', 'Dschingis Khan', 'Aufklärung', 'Neurowissenschaften', 'Klimawandel', 'Menschliches Gehirn', 'Makroökonomie', 'Mikrokosmos', 'Galaxie'],
+        'es': ['Mecánica cuántica', 'Agujero negro', 'Revolución Industrial', 'Impresionismo', 'Renacimiento', 'Inteligencia artificial', 'Mitología griega', 'Dinosaurios', 'Antiguo Egipto', 'Canal de Panamá', 'Monte Everest', 'Bitcoin', 'Exploración de Marte', 'Gran Barrera de Coral', 'Realidad virtual', 'Pirámides', 'Palacio de Versalles', 'Relatividad general', 'Gran Muralla China', 'Leonardo da Vinci', 'Beethoven', 'Big Bang', 'Geología', 'Ingeniería genética', 'Antártida', 'Antigua Roma', 'William Shakespeare', 'Época victoriana', 'Revolución francesa', 'Selva amazónica', 'Arrecife de coral', 'Criaturas abisales', 'Nanotecnología', 'Fusión nuclear', 'Peste negra', 'Ruta de la seda', 'Guerra fría', 'Alunizaje', 'Big data', 'Blockchain', 'Biodiversidad', 'Energía renovable', 'Antigua Grecia', 'Gengis Kan', 'Ilustración', 'Neurociencia', 'Cambio climático', 'Cerveau humano', 'Macroeconomía', 'Mundo microscópico', 'Galaxia'],
+        'it': ['Meccanica quantica', 'Buco nero', 'Rivoluzione industriale', 'Impressionismo', 'Rinascimento', 'Intelligenza artificiale', 'Mitologia greca', 'Dinosauri', 'Antico Egitto', 'Canale di Panama', 'Monte Everest', 'Bitcoin', 'Esplorazione di Marte', 'Grande barriera corallina', 'Realtà virtuale', 'Piramidi', 'Reggia di Caserta', 'Relatività generale', 'Grande muraglia cinese', 'Leonardo da Vinci', 'Beethoven', 'Big Bang', 'Geologia', 'Ingegneria genetica', 'Antartide', 'Antica Roma', 'William Shakespeare', 'Epoca vittoriana', 'Rivoluzione francese', 'Foresta amazzonica', 'Barriera corallina', 'Creature degli abissi', 'Nanotecnologia', 'Fusione nucleare', 'Peste nera', 'Via della seta', 'Guerra fredda', 'Sbarco sulla Luna', 'Big data', 'Blockchain', 'Biodiversità', 'Energia rinnovabile', 'Antica Grecia', 'Gengis Khan', 'Illuminismo', 'Neuroscienza', 'Cambiamento climatico', 'Cerveau umano', 'Macroeconomia', 'Mundo microscopico', 'Galassia']
+    };
+
+    themeToggle.addEventListener('click', () => {
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        themeToggle.querySelector('i').className = isDark ? 'fa fa-moon-o' : 'fa fa-sun-o';
+    });
+
+    function changeLang(lang, element) {
+        currentLang = lang;
+        document.querySelectorAll('#lang-selector a').forEach(a => a.classList.remove('lang-active'));
+        if(element) element.classList.add('lang-active');
+        if(searchBar.value.trim()) performSearch(searchBar.value);
+    }
+
+    function externalSearch(engine) {
+        const term = searchBar.value.trim();
+        if (!term) return;
+        const q = encodeURIComponent(term);
+        const map = {
+            'amazon': `https://www.amazon.com/s?k=${q}`,
+            'blackstump': `https://www.blackstump.com.au/tbssearch?query=${q}`,
+            'searxng': `https://searx.be/search?q=${q}`,
+            'ddg': `https://duckduckgo.com/?q=${q}`,
+            'britannica': `https://www.britannica.com/search?query=${q}`,
+            'youtube': `https://www.youtube.com/results?search_query=${q}`,
+            'x': `https://x.com/search?q=${q}`
+        };
+        if (map[engine]) window.open(map[engine], '_blank');
+    }
+
+    function updateHistory(term) {
+        let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+        history = [term, ...history.filter(t => t !== term)].slice(0, 50);
+        localStorage.setItem('searchHistory', JSON.stringify(history));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+        historyContainer.innerHTML = history.map(t => `<span class="history-tag" onclick="useHistory('${t}')">${t}</span>`).join('');
+    }
+
+    function useHistory(term) { searchBar.value = term; performSearch(term); }
+
+    async function performSearch(searchTerm) {
+        if (!searchTerm.trim()) return;
+        updateHistory(searchTerm);
+        const container = document.getElementById('wiki-articles');
+        document.getElementById('loading').style.display = 'block';
+        container.innerHTML = '';
+        try {
+            const res = await fetch(`https://${currentLang}.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&generator=search&exsentences=2&exintro=1&explaintext=1&gsrsearch=${encodeURIComponent(searchTerm)}&origin=*`);
+            const data = await res.json();
+            document.getElementById('loading').style.display = 'none';
+            if (data.query?.pages) {
+                Object.values(data.query.pages).forEach(page => {
+                    container.innerHTML += `<a class="article-card" href="https://${currentLang}.wikipedia.org/?curid=${page.pageid}" target="_blank"><h3>${page.title}</h3><p>${page.extract || '...'}</p></a>`;
+                });
+            } else { container.innerHTML = '<div class="text-center">No results found</div>'; }
+        } catch (e) { document.getElementById('loading').style.display = 'none'; }
+    }
+
+    document.getElementById('clear-search').addEventListener('click', () => { 
+        searchBar.value = ''; 
+        document.getElementById('clear-search').style.display = 'none'; 
+        document.getElementById('wiki-articles').innerHTML = ''; 
+    });
+    
+    searchBar.addEventListener('input', (e) => document.getElementById('clear-search').style.display = e.target.value ? 'block' : 'none');
+    document.getElementById('search-form').addEventListener('submit', (e) => { e.preventDefault(); performSearch(searchBar.value); });
+    
+    document.getElementById('random-topic').addEventListener('click', () => { 
+        const langTopics = topics[currentLang] || topics['en'];
+        const t = langTopics[Math.floor(Math.random() * langTopics.length)];
+        searchBar.value = t; 
+        performSearch(t); 
+    });
+    
+    document.getElementById('surprise').addEventListener('click', () => window.open(`https://${currentLang}.wikipedia.org/wiki/Special:Random`, '_blank'));
+    
+    renderHistory();
+</script>
+</body>
+</html>
