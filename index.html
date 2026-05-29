@@ -54,7 +54,7 @@
         .loading-spinner { display: none; text-align: center; padding: 40px; }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 <div class="tickers">
 <!--    <div class="tradingview-widget-container">-->
 <!-- https://www.tradingview.com/widget-docs/widgets/tickers/ticker-tape/ -->
@@ -146,6 +146,14 @@
         if(searchBar.value.trim()) performSearch(searchBar.value);
     }
 
+    function initHistory() {
+        if (!localStorage.getItem('searchHistory')) {
+            const defaults = ['量子力學', '人工智慧', 'HBM', 'LLM'];
+            localStorage.setItem('searchHistory', JSON.stringify(defaults));
+        }
+    }    
+
+
     function externalSearch(engine) {
         const term = searchBar.value.trim();
         if (!term) return;
@@ -211,7 +219,7 @@
     });
     
     document.getElementById('surprise').addEventListener('click', () => window.open(`https://${currentLang}.wikipedia.org/wiki/Special:Random`, '_blank'));
-    
+    initHistory(); 
     renderHistory();
 </script>
 </body>
