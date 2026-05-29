@@ -54,7 +54,7 @@
         .loading-spinner { display: none; text-align: center; padding: 40px; }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 <div class="tickers">
 <!--    <div class="tradingview-widget-container">-->
 <!-- https://www.tradingview.com/widget-docs/widgets/tickers/ticker-tape/ -->
@@ -193,6 +193,13 @@
         if (map[engine]) window.open(map[engine], '_blank');
     }
 
+    	function initHistory() {
+        if (!localStorage.getItem('searchHistory')) {
+            const defaults = ['量子力學', '人工智慧', 'HBM', 'LLM'];
+            localStorage.setItem('searchHistory', JSON.stringify(defaults));
+        }
+    }    
+
     function updateHistory(term) {
         let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
         history = [term, ...history.filter(t => t !== term)].slice(0, 50);
@@ -242,7 +249,7 @@
     });
     
     document.getElementById('surprise').addEventListener('click', () => window.open(`https://${currentLang}.wikipedia.org/wiki/Special:Random`, '_blank'));
-    
+    initHistory();
     renderHistory();
 </script>
 </body>
