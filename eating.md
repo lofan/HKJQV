@@ -49,6 +49,8 @@ Dr. Sato 指出，麵包、飯、薯仔係全球人類嘅基礎主食，要長�
 ---
 
 ### 總結
+<img width="1195" height="667" alt="Final Sum of Blood Sugar Control Strategies for Diabetes" src="https://github.com/user-attachments/assets/580a13d1-d294-4956-a8fb-d81150c3dcc9" />
+
 
 Dr. Kenji Sato 嘅核心邏輯係：**身體並非運作失敗，而係受到咗錯誤嘅訊號（即食錯方法）**。透過上述小習慣，你可以無需犧牲喜愛嘅食物，就能大幅改善代謝健康。呢啲方法雖然睇落微小，但係長期堅持落嚟，對血糖控制嘅影響係深遠嘅。
 
