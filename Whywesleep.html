@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>為什麼要睡覺 — 影片精華</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;700&family=Noto+Sans+TC:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0e0f14;
+    --surface:   #161820;
+    --border:    #2a2d3a;
+    --accent:    #7c9fff;
+    --accent2:   #a78bfa;
+    --moon:      #f0c040;
+    --text:      #dde1ef;
+    --muted:     #7b82a0;
+    --danger:    #f87171;
+    --safe:      #6ee7b7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300;
+    line-height: 1.85;
+    min-height: 100vh;
+    padding: 2.5rem 1rem 4rem;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .moon-icon {
+    font-size: 2.8rem;
+    display: block;
+    margin-bottom: 0.6rem;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+  }
+
+  header h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: .06em;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  header .sub {
+    margin-top: .5rem;
+    font-size: .8rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .1em;
+  }
+
+  /* ── BOOK TAG ── */
+  .book-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: #1a1c28;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: .45rem 1rem;
+    margin: 1.2rem 0 0;
+    font-size: .78rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .book-tag span { color: var(--accent); }
+
+  /* ── SUMMARY PROSE ── */
+  .summary {
+    font-size: 1.0rem;
+    line-height: 2;
+    color: var(--text);
+    margin-bottom: 2.5rem;
+  }
+
+  .summary p + p {
+    margin-top: 1.2rem;
+  }
+
+  .summary strong {
+    color: var(--moon);
+    font-weight: 600;
+  }
+
+  /* ── SECTION BLOCKS ── */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .section.rem { border-left-color: var(--accent2); }
+  .section.health { border-left-color: var(--danger); }
+  .section.tips { border-left-color: var(--safe); }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: .5rem;
+  }
+
+  .section h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: .7rem;
+  }
+
+  .section p {
+    font-size: .93rem;
+    color: var(--text);
+    line-height: 1.9;
+  }
+
+  /* ── STAT PILLS ── */
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .7rem;
+    margin: 2rem 0;
+  }
+
+  .stat-pill {
+    background: #1a1c28;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: .4rem 1rem;
+    font-size: .82rem;
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+  }
+
+  .stat-pill .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    color: var(--danger);
+    font-size: .95rem;
+  }
+
+  .stat-pill .label { color: var(--muted); }
+
+  /* ── TIPS LIST ── */
+  .tips-list {
+    counter-reset: tip;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+    margin-top: .5rem;
+  }
+
+  .tips-list li {
+    counter-increment: tip;
+    display: flex;
+    align-items: flex-start;
+    gap: .9rem;
+    font-size: .93rem;
+    line-height: 1.8;
+  }
+
+  .tips-list li::before {
+    content: counter(tip, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    color: var(--safe);
+    background: #0d2420;
+    border: 1px solid #1e4a40;
+    border-radius: 4px;
+    padding: .15rem .4rem;
+    flex-shrink: 0;
+    margin-top: .3rem;
+  }
+
+  /* ── QUOTE ── */
+  .quote-block {
+    margin: 2.5rem 0;
+    padding: 1.2rem 1.6rem;
+    border-left: 3px solid var(--moon);
+    background: #17140a;
+    border-radius: 0 8px 8px 0;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.0rem;
+    color: var(--moon);
+    line-height: 1.9;
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: .75rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="moon-icon">🌙</span>
+    <h1>為什麼要睡覺</h1>
+    <div class="sub">WHY WE SLEEP · MATTHEW WALKER · 影片精華摘要</div>
+    <div class="book-tag">
+      📺 <span>YouTube 影片總結</span> · 廣東話 · 約600字
+    </div>
+  </header>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <p>你試過早上嗌鬧鐘，卻只係瘋狂撳掣再多瞓五分鐘嗎？喺香港呢個急速城市，好多人將睡眠視為浪費時間，靠咖啡撐住一日，甚至以「捱夜」為努力嘅勳章。但神經科學家 <strong>Matthew Walker</strong> 用超過20年嘅研究，寫成《為什麼要睡覺》一書，徹底顛覆呢個觀念——睡眠唔係奢侈品，而係支撐生命、大腦同免疫系統嘅最核心基礎。</p>
+    <p>要明白睡眠，首先要認識大腦入面兩大機制：其一係<strong>晝夜節律</strong>，由下視丘交叉上核控制，靠光線訊號指揮分泌褪黑激素；其二係<strong>睡眠動力</strong>，由化學物質腺苷驅動——你醒得越耐，腺苷積聚越多，睡眠壓力越大。咖啡因其實並唔提供能量，只係佔據腺苷受體，暫時屏蔽睏睡訊號，但幾個鐘後咖啡因代謝散，積壓嘅腺苷瞬間湧入大腦，引發強烈嘅「咖啡崩潰」。</p>
+  </div>
+
+  <!-- SLEEP STAGES -->
+  <div class="section">
+    <div class="section-label">睡眠機制</div>
+    <h2>🧠 NREM 深度睡眠 — 大腦嘅備份硬碟</h2>
+    <p>NREM（非快速眼動）睡眠係記憶鞏固嘅黃金期。日頭學到嘅資訊暫存於海馬體，入深度睡眠時大腦發出慢波，將短期記憶搬至大腦皮質長期儲存，清空海馬體以備翌日再學。更重要係，深度睡眠會啟動大腦膠淋巴系統，像強力清潔器般沖走代謝廢物，包括與老人癡呆症高度相關嘅類澱粉蛋白。長期缺乏深度睡眠，等同令大腦毒素不斷積聚。</p>
+  </div>
+
+  <div class="section rem">
+    <div class="section-label">睡眠機制</div>
+    <h2>✨ REM 快速眼動睡眠 — 創造力同情緒治療師</h2>
+    <p>REM 睡眠期間我哋發夢，大腦將新舊記憶重新聯結，從中發現規律同洞見——好多偉大發明都係「瞓一覺」之後頓悟。REM 仲係夜間情緒治療師：喺低壓力激素環境下重放記憶，逐漸剝離情緒中嘅恐懼同創傷，只保留有用嘅經驗。所以「時間治癒一切」，更準確應說係「睡眠治癒一切」。</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-pill"><span class="num">70%</span><span class="label">一晚只瞓4小時，自然殺手細胞急跌幅度</span></div>
+    <div class="stat-pill"><span class="num">+24%</span><span class="label">撥快時鐘少一小時後，心臟病入院率上升</span></div>
+    <div class="stat-pill"><span class="num">+300</span><span class="label">睡眠不足每日額外攝入卡路里</span></div>
+    <div class="stat-pill"><span class="num">5–7h</span><span class="label">咖啡因半衰期，下午茶咖啡夜晚仍在作怪</span></div>
+  </div>
+
+  <!-- HEALTH -->
+  <div class="section health">
+    <div class="section-label">健康風險</div>
+    <h2>⚠️ 睡眠不足係最危險嘅慢性傷害</h2>
+    <p>人類進化史上從未發展出應付睡眠不足嘅安全網。每晚少於七八小時，免疫系統即開始崩潰——研究顯示只要一晚只瞓四小時，負責消滅癌細胞嘅自然殺手細胞數量急跌70%。睡眠不足亦直接引爆心血管疾病，持續令血壓升高、血管硬化。至於減肥難？睡眠不足會同時壓低飽腹感激素、升高飢餓素，令人每日不自覺地多食約300卡路里，且特別渴求高糖高脂垃圾食物。</p>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-block">
+    「每一次捱夜都係對大腦同免疫系統嘅一次無情吹殘。睡眠唔係阻礙進步嘅事，而係每日清空能量、升級大腦系統嘅神聖休息。」
+  </div>
+
+  <!-- TIPS -->
+  <div class="section tips">
+    <div class="section-label">改善方法</div>
+    <h2>✅ 四大科學實証睡眠改善法</h2>
+    <ul class="tips-list">
+      <li><strong>固定作息時間</strong> — 包括週末及公眾假期，每日同一時間上床起床，維持生理時鐘穩定。只能選一個建議執行？就係呢個。</li>
+      <li><strong>保持低室溫</strong> — 身體核心溫度需下降約一度才能啟動睡眠。香港天氣潮濕，建議冷氣調至22–23度配合風扇，或睡前浸熱水浴，利用散熱效應促進深度睡眠。</li>
+      <li><strong>避免咖啡因與酒精</strong> — 咖啡因半衰期長達5至7小時，下午三四點嘅咖啡到夜晚仍在阻擋睡眠訊號。酒精雖令人快速失去意識，但會完全封閉 REM 睡眠，破壞睡眠結構。</li>
+      <li><strong>控制光線接觸</strong> — 睡前一小時調暗室內燈光，遠離手機、平板及電腦藍光。研究顯示睡前看屏幕令褪黑激素分泌減少逾半，且高峰期推遲足足三小時。</li>
+    </ul>
+  </div>
+
+  <footer>
+    書名：《為什麼要睡覺》Why We Sleep · 作者：Matthew Walker<br>
+    影片來源：<a href="https://www.youtube.com/watch?v=wm3q8B4Ggm8" target="_blank">youtube.com/watch?v=wm3q8B4Ggm8</a>
+  </footer>
+
+</div>
+</body>
+</html>
