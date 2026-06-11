@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube 學習頻道目錄 - 新手使用指南</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans HK', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .sidebar-link.active {
+            color: #a78bfa;
+            background-color: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid #8b5cf6;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative flex flex-col justify-between">
+
+    <!-- Background glow effect -->
+    <div class="absolute inset-0 bg-gradient-to-br from-violet-900/10 via-slate-900 to-cyan-900/10 blur-3xl -z-10"></div>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto w-full px-4 py-8 flex-1">
+        
+        <!-- Header -->
+        <header class="text-center mb-12 pb-6 border-b border-slate-800">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-violet-500/10 text-violet-400 mb-3 border border-violet-500/20">
+                📚 USER MANUAL & DOCUMENTATION
+            </span>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-3 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-violet-400">
+                YouTube 學習頻道目錄使用指南
+            </h1>
+            <p class="text-sm md:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                歡迎使用自學神器！呢個平台集結咗 20 個分類共 100 個優質學習頻道。呢份說明書會用廣東話同你一一拆解各項強大功能，助你無縫管理自己嘅自學進度。
+            </p>
+        </header>
+
+        <!-- Content Grid (Sidebar + Main) -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <!-- Sidebar Navigation -->
+            <aside class="lg:col-span-1">
+                <div class="glass-card rounded-2xl p-4 sticky top-6 space-y-2 border border-slate-800">
+                    <p class="px-3 text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">目錄導航</p>
+                    <a href="#quickstart" class="sidebar-link block px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg transition-all">🚀 快速上手</a>
+                    <a href="#tracking" class="sidebar-link block px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg transition-all">✅ 進度追蹤</a>
+                    <a href="#crud" class="sidebar-link block px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg transition-all">✏️ 自由編輯頻道</a>
+                    <a href="#backup" class="sidebar-link block px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg transition-all">💾 數據備份與還原</a>
+                    <a href="#security" class="sidebar-link block px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg transition-all">🔒 數據私隱安全</a>
+                    <a href="#faq" class="sidebar-link block px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg transition-all">❓ 常見問題</a>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="lg:col-span-3 space-y-12">
+                
+                <!-- Section 1: Quickstart -->
+                <section id="quickstart" class="scroll-mt-6">
+                    <div class="glass-card rounded-2xl p-6 md:p-8 border border-slate-800">
+                        <h2 class="text-xl md:text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-violet-400">🚀</span> 快速上手
+                        </h2>
+                        <p class="text-slate-300 text-sm md:text-base leading-relaxed mb-6">
+                            呢個工具係一個<strong>離線可用嘅網頁應用（Single File Web App）</strong>。你唔需要安裝任何程式，亦無需註冊任何帳號，只需 3 秒就可以開始：
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 rounded-full bg-violet-600/20 text-violet-400 border border-violet-500/30 flex items-center justify-center font-bold text-sm shrink-0">1</div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-white mb-1">下載並保存網頁</h3>
+                                    <p class="text-xs text-slate-400">將 <code>youtube_learning_channels.html</code> 檔案下載並儲存到你嘅電腦或手機。</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 rounded-full bg-violet-600/20 text-violet-400 border border-violet-500/30 flex items-center justify-center font-bold text-sm shrink-0">2</div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-white mb-1">雙擊打開（Double Click）</h3>
+                                    <p class="text-xs text-slate-400">直接喺你常用嘅瀏覽器（好似 Chrome, Safari, Edge, Firefox 等）打開呢個檔案。</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 rounded-full bg-violet-600/20 text-violet-400 border border-violet-500/30 flex items-center justify-center font-bold text-sm shrink-0">3</div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-white mb-1">即時自學</h3>
+                                    <p class="text-xs text-slate-400">點擊任何頻道名稱，網頁就會幫你在新分頁打開 YouTube，方便一邊睇網頁一邊睇片！</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Progress Tracking -->
+                <section id="tracking" class="scroll-mt-6">
+                    <div class="glass-card rounded-2xl p-6 md:p-8 border border-slate-800">
+                        <h2 class="text-xl md:text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-emerald-400">✅</span> 進度追蹤與搜尋
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-sm font-bold text-white mb-2">☑️ 點擊剔選（Check/Uncheck）</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                                    當你睇完某個頻道或者已經訂閱咗佢，可以點擊頻道名稱左邊嘅 Checkbox。
+                                </p>
+                                <ul class="space-y-2 text-xs text-slate-300">
+                                    <li class="flex items-center gap-2">
+                                        <span class="text-emerald-400">✔️</span> 剔選後字體會變淡並加上刪除線。
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <span class="text-emerald-400">✔️</span> 頂部嘅「解鎖進度」計數器會即時自動累加。
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-white mb-2">🔍 實時精準篩選</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                                    頻道太多好難搵？頂部嘅搜尋欄支援<strong>實時模糊搜尋</strong>。
+                                </p>
+                                <ul class="space-y-2 text-xs text-slate-300">
+                                    <li class="flex items-center gap-2">
+                                        <span class="text-cyan-400">🔍</span> 輸入「<code>math</code>」：即時列出所有數學類別同相關頻道。
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <span class="text-cyan-400">🔍</span> 輸入頻道名字（e.g. 「<code>Vsauce</code>」）：其他無關卡片會即時收起。
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3: CRUD -->
+                <section id="crud" class="scroll-mt-6">
+                    <div class="glass-card rounded-2xl p-6 md:p-8 border border-slate-800">
+                        <h2 class="text-xl md:text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-amber-400">✏️</span> 自由編輯頻道 (自定義管理)
+                        </h2>
+                        <p class="text-slate-300 text-sm md:text-base leading-relaxed mb-6">
+                            系統賦予你完全自由！如果你有更鍾意嘅頻道，或者原裝某個頻道唔啱睇，隨時可以做出修改：
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800">
+                                <span class="text-2xl">➕</span>
+                                <h3 class="text-sm font-bold text-white mt-2 mb-1.5">新增頻道</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    喺任意分類卡片下方點擊「新增頻道」，填寫頻道名稱同連結，即可一秒加入列表。
+                                </p>
+                            </div>
+                            <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800">
+                                <span class="text-2xl">✏️</span>
+                                <h3 class="text-sm font-bold text-white mt-2 mb-1.5">修改資料</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    滑鼠移到頻道行上，右邊會出現紫色「鉛筆」按鈕。點擊即可彈出視窗修改名或者連結。
+                                </p>
+                            </div>
+                            <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800">
+                                <span class="text-2xl">🗑️</span>
+                                <h3 class="text-sm font-bold text-white mt-2 mb-1.5">刪除頻道</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    點擊紅色「垃圾桶」按鈕，系統會以精美自製 Modal 彈出二次確認，防止手誤刪除。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4: Backup & Import -->
+                <section id="backup" class="scroll-mt-6">
+                    <div class="glass-card rounded-2xl p-6 md:p-8 border border-slate-800">
+                        <h2 class="text-xl md:text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-sky-400">💾</span> 數據備份與還原
+                        </h2>
+                        <p class="text-slate-300 text-sm md:text-base leading-relaxed mb-6">
+                            為免瀏覽器快取被清空、換新電腦或者想同朋友分享你嘅專屬自學地圖，我哋準備咗備份功能：
+                        </p>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-violet-950/20 border border-violet-900/30 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="max-w-xl">
+                                    <h3 class="text-sm font-bold text-violet-300 mb-1">📤 匯出數據 (Export Backup)</h3>
+                                    <p class="text-xs text-slate-400">點擊網頁右上方嘅「匯出數據」按鈕。系統會將所有頻道配置及剔選進度打包成一個 JSON 備份檔案，並自動下載保存。</p>
+                                </div>
+                                <span class="px-3 py-1 bg-violet-500/10 text-violet-400 text-[10px] font-bold rounded-full border border-violet-500/20 shrink-0 self-start md:self-center">產生 .json 檔</span>
+                            </div>
+                            
+                            <div class="p-4 bg-cyan-950/20 border border-cyan-900/30 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="max-w-xl">
+                                    <h3 class="text-sm font-bold text-cyan-300 mb-1">📥 匯入數據 (Import Restore)</h3>
+                                    <p class="text-xs text-slate-400">點擊「匯入數據」，選擇你之前備份嘅 JSON 檔案。系統會即時分析檔案格式，一秒完美復原你嘅所有記錄。</p>
+                                </div>
+                                <span class="px-3 py-1 bg-cyan-500/10 text-cyan-400 text-[10px] font-bold rounded-full border border-cyan-500/20 shrink-0 self-start md:self-center">還原 / 轉移</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: Security -->
+                <section id="security" class="scroll-mt-6">
+                    <div class="glass-card rounded-2xl p-6 md:p-8 border border-slate-800">
+                        <h2 class="text-xl md:text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-teal-400">🔒</span> 數據私隱安全說明
+                        </h2>
+                        <div class="bg-slate-900/40 p-5 rounded-xl border border-slate-800 space-y-3">
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                💡 <strong>運作機制 (Local Storage)</strong>：<br>
+                                網頁使用咗 HTML5 標準中嘅 <code>LocalStorage</code> 技術。你進行嘅所有更改（新增頻道、打勾進度等）只會儲存在<strong>你本機瀏覽器嘅沙盒空間</strong>。
+                            </p>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                🛡️ <strong>無網無伺服器，安全無憂</strong>：<br>
+                                呢個網頁完全無後端伺服器（Serverless），亦無任何第三方統計或廣告追蹤程式碼。你嘅自學數據 100% 掌握喺你自己手，無人可以窺探。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 6: FAQ -->
+                <section id="faq" class="scroll-mt-6">
+                    <div class="glass-card rounded-2xl p-6 md:p-8 border border-slate-800">
+                        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                            <span class="text-rose-400">❓</span> 常見問題 (FAQ)
+                        </h2>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-sm font-bold text-rose-300 mb-1">Q1: 點解我清完瀏覽器垃圾，進度唔見晒？</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    因為本網頁將數據儲存在 LocalStorage。如果你使用清潔軟體、或者點擊「清除網站所有資料/Cookies」，瀏覽器會強制清空此快取。建議每次進行大幅修改後，順手點點「<strong>匯出數據</strong>」下載備份，以防萬一。
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-sm font-bold text-rose-300 mb-1">Q2: 我想喺手機睇同埋喺電腦睇，點樣同步？</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    由於無雲端伺服器，你只需喺電腦版點擊「<strong>匯出數據</strong>」，透過 AirDrop、微信、WhatsApp 或者 Email 將備份 JSON 檔案同 HTML 主檔案傳去手機，再喺手機打開點擊「<strong>匯入數據</strong>」，就可以完美接續學習！
+                                </p>
+                            </div>
+
+                            <div>
+                                <h3 class="text-sm font-bold text-rose-300 mb-1">Q3: 我改到好亂，想全部重頭嚟過，點搞？</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    好簡單！點擊網頁右上角嘅「<strong>恢復預設</strong>」紅色按鈕，喺彈出嘅對話框點擊確定，系統就會將所有 LocalStorage 數據洗乾淨，並重新載入最原始、精挑細選嘅 100 個黃金學習頻道！
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-16 text-center text-xs text-slate-500 border-t border-slate-900/60 py-6">
+        <p>為學習狂熱者而建 · 全功能開源自學管理地圖</p>
+        <p class="mt-1 text-slate-600">© 2026 YouTube 學習目錄網頁版</p>
+    </footer>
+
+    <!-- JS for Active Navigation State -->
+    <script>
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.sidebar-link');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 120)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
