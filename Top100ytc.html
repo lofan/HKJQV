@@ -67,13 +67,26 @@
                     <input type="text" id="searchBar" oninput="filterChannels()" placeholder="搜尋頻道名稱或分類..." class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm placeholder-slate-500 text-white transition-all">
                 </div>
                 
-                <div class="flex items-center gap-3 w-full md:w-auto justify-center">
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-center">
                     <div class="flex items-center gap-2 whitespace-nowrap bg-slate-950 border border-slate-800 px-4 py-2.5 rounded-xl text-xs font-semibold">
                         <span class="text-slate-400">解鎖進度:</span>
                         <span id="progressCount" class="text-violet-400 font-mono">0</span>
                         <span class="text-slate-600">/</span>
                         <span id="totalCount" class="text-slate-400 font-mono">0</span>
                     </div>
+
+                    <!-- Export Backup Button -->
+                    <button onclick="exportData()" title="將現有頻道同進度下載備份" class="px-4 py-2.5 bg-slate-950 hover:bg-violet-950/40 border border-slate-800 hover:border-violet-900/60 text-violet-400 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                        匯出數據
+                    </button>
+
+                    <!-- Import Backup Button -->
+                    <button onclick="triggerImport()" title="上載 JSON 備份檔案還原數據" class="px-4 py-2.5 bg-slate-950 hover:bg-cyan-950/40 border border-slate-800 hover:border-cyan-900/60 text-cyan-400 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>
+                        匯入數據
+                    </button>
+                    <input type="file" id="importFileInput" class="hidden" accept=".json" onchange="handleImport(event)">
 
                     <button onclick="openResetConfirmation()" class="px-4 py-2.5 bg-slate-950 hover:bg-red-950/40 border border-slate-800 hover:border-red-900/60 text-red-400 rounded-xl text-xs font-semibold transition-all flex items-center gap-1">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.5"></path></svg>
@@ -141,6 +154,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Premium Toast Container -->
+    <div id="toastContainer" class="fixed top-5 right-5 z-[100] space-y-3 pointer-events-none"></div>
 
     <script>
         // Default 20 categories with 5 channels each (Total 100 channels)
@@ -429,6 +445,98 @@
         // Save State to Local Storage
         function saveState() {
             localStorage.setItem('yt_hub_all_data', JSON.stringify(categoriesData));
+        }
+
+        // Premium Toast notification system (replacing default web alerts)
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `glass-card p-4 rounded-xl border flex items-center gap-3 shadow-2xl transition-all duration-300 transform translate-x-12 opacity-0 pointer-events-auto max-w-sm ${
+                type === 'success' ? 'border-emerald-500/30 text-emerald-400 bg-slate-900/90' : 'border-red-500/30 text-red-400 bg-slate-900/90'
+            }`;
+            
+            const icon = type === 'success' 
+                ? `<svg class="w-5 h-5 shrink-0 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+                : `<svg class="w-5 h-5 shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+
+            toast.innerHTML = `
+                ${icon}
+                <div class="text-xs font-bold leading-normal">${message}</div>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Trigger animation in
+            setTimeout(() => {
+                toast.classList.remove('translate-x-12', 'opacity-0');
+            }, 10);
+
+            // Trigger animation out and destroy
+            setTimeout(() => {
+                toast.classList.add('translate-x-12', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3500);
+        }
+
+        // Export data state to downloadable JSON backup
+        function exportData() {
+            try {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(categoriesData, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `youtube_learning_channels_backup.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+                showToast("數據匯出成功！已自動下載備份檔案。");
+            } catch (error) {
+                showToast("數據匯出失敗：" + error.message, "error");
+            }
+        }
+
+        // Trigger hidden file input click
+        function triggerImport() {
+            document.getElementById('importFileInput').click();
+        }
+
+        // Read and parse selected JSON backup file
+        function handleImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // Basic sanity structures check
+                    if (!Array.isArray(importedData)) {
+                        throw new Error("備份檔案最外層結構必須係陣列 (Array)");
+                    }
+                    
+                    const isValid = importedData.every(cat => 
+                        cat && typeof cat === 'object' && 'id' in cat && 'title' in cat && Array.isArray(cat.channels)
+                    );
+
+                    if (!isValid) {
+                        throw new Error("數據分類與頻道格式不正確");
+                    }
+
+                    // Save state & re-render
+                    categoriesData = importedData;
+                    saveState();
+                    renderApp();
+                    showToast("備份數據匯入成功！網頁已即時更新。");
+                } catch (error) {
+                    showToast("匯入失敗！請確保上載正確格式嘅備份 JSON 檔案 (" + error.message + ")", "error");
+                } finally {
+                    // Reset value so user can upload the same file again if modified
+                    event.target.value = '';
+                }
+            };
+            reader.readAsText(file);
         }
 
         // Render the App Layout & Cards
