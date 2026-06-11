@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排名前 100 嘅 YouTube 學習頻道 (可編輯版)</title>
+    <!-- Tailwind CSS for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans HK', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .checked-item {
+            opacity: 0.5;
+            text-decoration: line-through;
+            color: #64748b !important;
+        }
+        /* Smooth transitions for management buttons */
+        .channel-row .action-btns {
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+        .channel-row:hover .action-btns,
+        .channel-row:focus-within .action-btns {
+            opacity: 1;
+        }
+        /* Mobile fallback for hover elements */
+        @media (max-width: 768px) {
+            .channel-row .action-btns {
+                opacity: 0.8;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24 relative">
+
+    <!-- Header Section -->
+    <header class="relative overflow-hidden py-12 px-4 text-center border-b border-slate-800 bg-slate-900/50">
+        <div class="absolute inset-0 bg-gradient-to-r from-violet-600/10 via-fuchsia-600/10 to-cyan-600/10 blur-3xl -z-10"></div>
+        <div class="max-w-4xl mx-auto">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400 mb-4 border border-red-500/20">
+                <svg class="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.508 9.388.508 9.388.508s7.518 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                DYNAMIC STUDY PLATFORM
+            </span>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">
+                YouTube 學習頻道目錄
+            </h1>
+            <p class="text-sm md:text-base text-slate-400 max-w-2xl mx-auto mb-6 leading-relaxed">
+                你可以自由**新增、修改、刪除**每個分類入面嘅頻道！剔選你睇過嘅頻道，系統會即時保存。隨時可以點擊「恢復預設」還原最原始嘅 100 個高質素頻道。
+            </p>
+
+            <!-- Search, Progress and Global Actions -->
+            <div class="flex flex-col md:flex-row gap-4 max-w-3xl mx-auto items-center justify-between">
+                <div class="relative w-full md:flex-1">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-500">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
+                    <input type="text" id="searchBar" oninput="filterChannels()" placeholder="搜尋頻道名稱或分類..." class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm placeholder-slate-500 text-white transition-all">
+                </div>
+                
+                <div class="flex items-center gap-3 w-full md:w-auto justify-center">
+                    <div class="flex items-center gap-2 whitespace-nowrap bg-slate-950 border border-slate-800 px-4 py-2.5 rounded-xl text-xs font-semibold">
+                        <span class="text-slate-400">解鎖進度:</span>
+                        <span id="progressCount" class="text-violet-400 font-mono">0</span>
+                        <span class="text-slate-600">/</span>
+                        <span id="totalCount" class="text-slate-400 font-mono">0</span>
+                    </div>
+
+                    <button onclick="openResetConfirmation()" class="px-4 py-2.5 bg-slate-950 hover:bg-red-950/40 border border-slate-800 hover:border-red-900/60 text-red-400 rounded-xl text-xs font-semibold transition-all flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.5"></path></svg>
+                        恢復預設
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-4 mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="categoriesGrid">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+    </main>
+
+    <!-- CUSTOM DIALOGS & MODALS (No alert / confirm window popups) -->
+    <!-- Add / Edit Channel Modal -->
+    <div id="channelModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700/50 overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
+                <h3 id="modalTitle" class="text-lg font-bold text-white">新增學習頻道</h3>
+                <button onclick="closeChannelModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <input type="hidden" id="modalTargetCategoryId">
+                <input type="hidden" id="modalTargetChannelId">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">頻道名稱</label>
+                    <input type="text" id="modalChannelName" placeholder="例如: 3Blue1Brown" class="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">YouTube 連結 / @Handle ID</label>
+                    <input type="text" id="modalChannelUrl" placeholder="https://www.youtube.com/@..." class="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
+                </div>
+                <div id="modalErrorMsg" class="hidden text-xs text-red-400 bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">
+                    請填寫頻道名稱同連結呀！
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-900/50 border-t border-slate-800 flex justify-end gap-3">
+                <button onclick="closeChannelModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-all">取消</button>
+                <button onclick="saveChannelFromModal()" class="px-4 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-violet-500/20 transition-all">儲存頻道</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Dialog Modal -->
+    <div id="confirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="glass-card w-full max-w-sm rounded-2xl border border-slate-700/50 overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div class="p-6 text-center space-y-4">
+                <div class="mx-auto w-12 h-12 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center border border-red-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div>
+                    <h3 id="confirmTitle" class="text-base font-bold text-white">刪除確認</h3>
+                    <p id="confirmDesc" class="text-xs text-slate-400 mt-1 leading-relaxed">你確定要刪除呢個頻道/或者重置所有嘢？呢個操作係無得還原㗎。</p>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-900/50 border-t border-slate-800 flex justify-end gap-3">
+                <button id="confirmCancelBtn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-all">取消</button>
+                <button id="confirmProceedBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-red-500/20 transition-all">確定執行</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default 20 categories with 5 channels each (Total 100 channels)
+        const DEFAULT_CHANNELS_DATA = [
+            {
+                id: "cat-1",
+                title: "科學與技術",
+                code: "SCI & TECH",
+                color: "text-amber-400",
+                channels: [
+                    { id: "ch-vsauce", name: "Vsauce", url: "https://www.youtube.com/@vsauce", checked: false },
+                    { id: "ch-scishow", name: "SciShow", url: "https://www.youtube.com/@SciShow", checked: false },
+                    { id: "ch-veritasium", name: "Veritasium", url: "https://www.youtube.com/@veritasium", checked: false },
+                    { id: "ch-kurzgesagt", name: "Kurzgesagt", url: "https://www.youtube.com/@Kurzgesagt", checked: false },
+                    { id: "ch-asapscience", name: "AsapSCIENCE", url: "https://www.youtube.com/@AsapSCIENCE", checked: false }
+                ]
+            },
+            {
+                id: "cat-2",
+                title: "哲學與思維物理學",
+                code: "PHILOSOPHY",
+                color: "text-emerald-400",
+                channels: [
+                    { id: "ch-carneades", name: "Carneades.org", url: "https://www.youtube.com/@CarneadesOrg", checked: false },
+                    { id: "ch-philosophy-tube", name: "Philosophy Tube", url: "https://www.youtube.com/@PhilosophyTube", checked: false },
+                    { id: "ch-academy-of-ideas", name: "Academy of Ideas", url: "https://www.youtube.com/@AcademyofIdeas", checked: false },
+                    { id: "ch-school-of-life", name: "The School of Life", url: "https://www.youtube.com/@theschooloflifetv", checked: false },
+                    { id: "ch-wireless-phil", name: "Wireless Philosophy", url: "https://www.youtube.com/@WirelessPhilosophy", checked: false }
+                ]
+            },
+            {
+                id: "cat-3",
+                title: "物理學",
+                code: "PHYSICS",
+                color: "text-indigo-400",
+                channels: [
+                    { id: "ch-fermilab", name: "Fermilab", url: "https://www.youtube.com/@Fermilab", checked: false },
+                    { id: "ch-physics-girl", name: "Physics Girl", url: "https://www.youtube.com/@physicsgirl", checked: false },
+                    { id: "ch-minutephysics", name: "MinutePhysics", url: "https://www.youtube.com/@minutephysics", checked: false },
+                    { id: "ch-scienceonline", name: "ScienceOnline", url: "https://www.youtube.com/@ScienceOnline", checked: false },
+                    { id: "ch-lookingglass", name: "Looking Glass Universe", url: "https://www.youtube.com/@LookingGlassUniverse", checked: false }
+                ]
+            },
+            {
+                id: "cat-4",
+                title: "語言學習",
+                code: "LANGUAGES",
+                color: "text-rose-400",
+                channels: [
+                    { id: "ch-linguamarina", name: "Linguamarina", url: "https://www.youtube.com/@linguamarina", checked: false },
+                    { id: "ch-rachel", name: "Rachel's English", url: "https://www.youtube.com/@rachelsenglish", checked: false },
+                    { id: "ch-easy-lang", name: "Easy Languages", url: "https://www.youtube.com/@EasyLanguages", checked: false },
+                    { id: "ch-lucy", name: "English with Lucy", url: "https://www.youtube.com/@EnglishwithLucy", checked: false },
+                    { id: "ch-french-alexa", name: "French with Alexa", url: "https://www.youtube.com/@LearnFrenchWithAlexa", checked: false }
+                ]
+            },
+            {
+                id: "cat-5",
+                title: "生物學與自然學",
+                code: "BIOLOGY",
+                color: "text-green-400",
+                channels: [
+                    { id: "ch-pbs-eons", name: "PBS Eons", url: "https://www.youtube.com/@eons", checked: false },
+                    { id: "ch-deep-look", name: "Deep Look", url: "https://www.youtube.com/@deeplook", checked: false },
+                    { id: "ch-ants-canada", name: "AntsCanada", url: "https://www.youtube.com/@AntsCanada", checked: false },
+                    { id: "ch-stated-clearly", name: "Stated Clearly", url: "https://www.youtube.com/@StatedClearly", checked: false },
+                    { id: "ch-microcosmos", name: "Microcosmos", url: "https://www.youtube.com/@journeytomicro", checked: false }
+                ]
+            },
+            {
+                id: "cat-6",
+                title: "化學",
+                code: "CHEMISTRY",
+                color: "text-sky-400",
+                channels: [
+                    { id: "ch-nilered", name: "NileRed", url: "https://www.youtube.com/@NileRed", checked: false },
+                    { id: "ch-reactions", name: "Reactions", url: "https://www.youtube.com/@PBSReactions", checked: false },
+                    { id: "ch-periodic", name: "Periodic Videos", url: "https://www.youtube.com/@periodicvideos", checked: false },
+                    { id: "ch-chem-nutshell", name: "Chem in a Nutshell", url: "https://www.youtube.com/@chemistryinanutshell9194", checked: false },
+                    { id: "ch-organic-tutor", name: "Organic Chemistry Tutor", url: "https://www.youtube.com/@TheOrganicChemistryTutor", checked: false }
+                ]
+            },
+            {
+                id: "cat-7",
+                title: "歷史",
+                code: "HISTORY",
+                color: "text-teal-400",
+                channels: [
+                    { id: "ch-crashcourse", name: "Crash Course", url: "https://www.youtube.com/@crashcourse", checked: false },
+                    { id: "ch-oversimplified", name: "OverSimplified", url: "https://www.youtube.com/@OverSimplified", checked: false },
+                    { id: "ch-greatwar", name: "The Great War", url: "https://www.youtube.com/@TheGreatWar", checked: false },
+                    { id: "ch-history-matters", name: "History Matters", url: "https://www.youtube.com/@HistoryMatters", checked: false },
+                    { id: "ch-simple-history", name: "Simple History", url: "https://www.youtube.com/@SimpleHistory", checked: false }
+                ]
+            },
+            {
+                id: "cat-8",
+                title: "代碼與編程",
+                code: "PROGRAMMING",
+                color: "text-cyan-400",
+                channels: [
+                    { id: "ch-csdojo", name: "CS Dojo", url: "https://www.youtube.com/@CSDojo", checked: false },
+                    { id: "ch-fcc", name: "freeCodeCamp", url: "https://www.youtube.com/@freecodecamp", checked: false },
+                    { id: "ch-traversy", name: "Traversy Media", url: "https://www.youtube.com/@TraversyMedia", checked: false },
+                    { id: "ch-codingtrain", name: "The Coding Train", url: "https://www.youtube.com/@TheCodingTrain", checked: false },
+                    { id: "ch-mosh", name: "Programming with Mosh", url: "https://www.youtube.com/@programmingwithmosh", checked: false }
+                ]
+            },
+            {
+                id: "cat-9",
+                title: "心理學",
+                code: "PSYCHOLOGY",
+                color: "text-pink-400",
+                channels: [
+                    { id: "ch-psych2go", name: "Psych2Go", url: "https://www.youtube.com/@Psych2go", checked: false },
+                    { id: "ch-scishow-psych", name: "SciShow Psych", url: "https://www.youtube.com/@SciShowPsych", checked: false },
+                    { id: "ch-psychshow", name: "The Psych Show", url: "https://www.youtube.com/@thepsychshow", checked: false },
+                    { id: "ch-practical-psych", name: "Practical Psychology", url: "https://www.youtube.com/@PracticalPsychologyTips", checked: false },
+                    { id: "ch-crash-psych", name: "CrashCourse Psych", url: "https://www.youtube.com/@crashcourse", checked: false }
+                ]
+            },
+            {
+                id: "cat-10",
+                title: "經濟學與金融學",
+                code: "ECON & FINANCE",
+                color: "text-emerald-500",
+                channels: [
+                    { id: "ch-twocents", name: "Two Cents", url: "https://www.youtube.com/@TwoCentsPBS", checked: false },
+                    { id: "ch-plainbagel", name: "The Plain Bagel", url: "https://www.youtube.com/@ThePlainBagel", checked: false },
+                    { id: "ch-findiet", name: "The Financial Diet", url: "https://www.youtube.com/@TheFinancialDiet", checked: false },
+                    { id: "ch-econexplained", name: "Economics Explained", url: "https://www.youtube.com/@EconomicsExplained", checked: false },
+                    { id: "ch-marginalrev", name: "Marginal Revolution", url: "https://www.youtube.com/@MRUniversity", checked: false }
+                ]
+            },
+            {
+                id: "cat-11",
+                title: "工程學",
+                code: "ENGINEERING",
+                color: "text-orange-400",
+                channels: [
+                    { id: "ch-markrober", name: "Mark Rober", url: "https://www.youtube.com/@MarkRober", checked: false },
+                    { id: "ch-appliedsci", name: "Applied Science", url: "https://www.youtube.com/@AppliedScience", checked: false },
+                    { id: "ch-realengineering", name: "Real Engineering", url: "https://www.youtube.com/@RealEngineering", checked: false },
+                    { id: "ch-smartereveryday", name: "SmarterEveryDay", url: "https://www.youtube.com/@smartereveryday", checked: false },
+                    { id: "ch-practicaleng", name: "Practical Engineering", url: "https://www.youtube.com/@PracticalEngineeringChannel", checked: false }
+                ]
+            },
+            {
+                id: "cat-12",
+                title: "音樂與樂器",
+                code: "MUSIC",
+                color: "text-purple-400",
+                channels: [
+                    { id: "ch-rickbeato", name: "Rick Beato", url: "https://www.youtube.com/@everythingmusic", checked: false },
+                    { id: "ch-justinguitar", name: "JustinGuitar", url: "https://www.youtube.com/@justinguitar", checked: false },
+                    { id: "ch-adamneely", name: "Adam Neely", url: "https://www.youtube.com/@AdamNeely", checked: false },
+                    { id: "ch-andrewhuang", name: "Andrew Huang", url: "https://www.youtube.com/@andrewhuang", checked: false },
+                    { id: "ch-signalsmusic", name: "Signals Music", url: "https://www.youtube.com/@SignalsMusicStudio", checked: false }
+                ]
+            },
+            {
+                id: "cat-13",
+                title: "健康與醫學",
+                code: "HEALTH",
+                color: "text-red-400",
+                channels: [
+                    { id: "ch-osmosis", name: "Osmosis", url: "https://www.youtube.com/@Osmosis", checked: false },
+                    { id: "ch-medlife", name: "Medlife Crisis", url: "https://www.youtube.com/@MedlifeCrisis", checked: false },
+                    { id: "ch-healthcare", name: "Healthcare Triage", url: "https://www.youtube.com/@healthcaretriage", checked: false },
+                    { id: "ch-ninjanerd", name: "Ninja Nerd Science", url: "https://www.youtube.com/@NinjaNerdOfficial", checked: false },
+                    { id: "ch-armando", name: "Armando Hasudungan", url: "https://www.youtube.com/@armandohasudungan", checked: false }
+                ]
+            },
+            {
+                id: "cat-14",
+                title: "環境科學",
+                code: "ENVIRONMENT",
+                color: "text-emerald-300",
+                channels: [
+                    { id: "ch-hotmess", name: "Hot Mess", url: "https://www.youtube.com/@HotMessPBS", checked: false },
+                    { id: "ch-minuteearth", name: "MinuteEarth", url: "https://www.youtube.com/@MinuteEarth", checked: false },
+                    { id: "ch-climatetown", name: "Climate Town", url: "https://www.youtube.com/@ClimateTown", checked: false },
+                    { id: "ch-justhaveathink", name: "Just Have a Think", url: "https://www.youtube.com/@JustHaveaThink", checked: false },
+                    { id: "ch-ourchangingclimate", name: "Our Changing Climate", url: "https://www.youtube.com/@OurChangingClimate", checked: false }
+                ]
+            },
+            {
+                id: "cat-15",
+                title: "數學",
+                code: "MATH",
+                color: "text-blue-400",
+                channels: [
+                    { id: "ch-patrickjmt", name: "PatrickJMT", url: "https://www.youtube.com/@patrickjmt", checked: false },
+                    { id: "ch-3blue1brown", name: "3Blue1Brown", url: "https://www.youtube.com/@3blue1brown", checked: false },
+                    { id: "ch-numberphile", name: "Numberphile", url: "https://www.youtube.com/@numberphile", checked: false },
+                    { id: "ch-khanacademy", name: "Khan Academy", url: "https://www.youtube.com/@khanacademy", checked: false },
+                    { id: "ch-mindyourdecisions", name: "MindYourDecisions", url: "https://www.youtube.com/@MindYourDecisions", checked: false }
+                ]
+            },
+            {
+                id: "cat-16",
+                title: "個人發展",
+                code: "GROWTH",
+                color: "text-fuchsia-400",
+                channels: [
+                    { id: "ch-aliabdaal", name: "Ali Abdaal", url: "https://www.youtube.com/@aliabdaal", checked: false },
+                    { id: "ch-betterideas", name: "Better Ideas", url: "https://www.youtube.com/@BetterIdeas", checked: false },
+                    { id: "ch-mattdavella", name: "Matt D'Avella", url: "https://www.youtube.com/@MattDAvella", checked: false },
+                    { id: "ch-improvementpill", name: "Improvement Pill", url: "https://www.youtube.com/@ImprovementPill", checked: false },
+                    { id: "ch-charismaoncommand", name: "Charisma on Command", url: "https://www.youtube.com/@Charismaoncommand", checked: false }
+                ]
+            },
+            {
+                id: "cat-17",
+                title: "烹飪藝術",
+                code: "CULINARY",
+                color: "text-yellow-500",
+                channels: [
+                    { id: "ch-bonappetit", name: "Bon Appétit", url: "https://www.youtube.com/@BonAppetit", checked: false },
+                    { id: "ch-cookingphysics", name: "Physics Girl (Cooking)", url: "https://www.youtube.com/@physicsgirl", checked: false },
+                    { id: "ch-babish", name: "Binging with Babish", url: "https://www.youtube.com/@BingingWithBabish", checked: false },
+                    { id: "ch-yousuckatcooking", name: "You Suck At Cooking", url: "https://www.youtube.com/@yousuckatcooking", checked: false },
+                    { id: "ch-testkitchen", name: "America's Test Kitchen", url: "https://www.youtube.com/@AmericasTestKitchen", checked: false }
+                ]
+            },
+            {
+                id: "cat-18",
+                title: "文學與寫作",
+                code: "LITERATURE",
+                color: "text-emerald-300",
+                channels: [
+                    { id: "ch-teded", name: "TED-Ed", url: "https://www.youtube.com/@TEDEd", checked: false },
+                    { id: "ch-wisecrack", name: "Wisecrack", url: "https://www.youtube.com/@Wisecrack", checked: false },
+                    { id: "ch-thugnotes", name: "Thug Notes", url: "https://www.youtube.com/@Wisecrack", checked: false },
+                    { id: "ch-crashlit", name: "CrashCourse Lit", url: "https://www.youtube.com/@crashcourse", checked: false },
+                    { id: "ch-overlysarcastic", name: "Overly Sarcastic", url: "https://www.youtube.com/@OverlySarcasticProductions", checked: false }
+                ]
+            },
+            {
+                id: "cat-19",
+                title: "藝術與設計",
+                code: "ART & DESIGN",
+                color: "text-rose-400",
+                channels: [
+                    { id: "ch-proko", name: "Proko", url: "https://www.youtube.com/@ProkoTV", checked: false },
+                    { id: "ch-sycra", name: "Sycra", url: "https://www.youtube.com/@Sycra", checked: false },
+                    { id: "ch-alphonsodunn", name: "Alphonso Dunn", url: "https://www.youtube.com/@AlphonsoDunn", checked: false },
+                    { id: "ch-jazza", name: "Draw with Jazza", url: "https://www.youtube.com/@Jazza", checked: false },
+                    { id: "ch-artforkidshub", name: "Art for Kids Hub", url: "https://www.youtube.com/@ArtforKidsHub", checked: false }
+                ]
+            },
+            {
+                id: "cat-20",
+                title: "天文學與太空",
+                code: "ASTRONOMY",
+                color: "text-sky-300",
+                channels: [
+                    { id: "ch-sea", name: "SEA", url: "https://www.youtube.com/@DeepSpaceEveryday", checked: false },
+                    { id: "ch-antonpetrov", name: "Anton Petrov", url: "https://www.youtube.com/@whatdamath", checked: false },
+                    { id: "ch-scottmanley", name: "Scott Manley", url: "https://www.youtube.com/@szyzyg", checked: false },
+                    { id: "ch-pbspacetime", name: "PBS Space Time", url: "https://www.youtube.com/@pbspacetime", checked: false },
+                    { id: "ch-deepskyvideos", name: "Deep Sky Videos", url: "https://www.youtube.com/@DeepSkyVideos", checked: false }
+                ]
+            }
+        ];
+
+        // Reactive Application State
+        let categoriesData = [];
+
+        // Initialize State
+        function initApp() {
+            const savedData = localStorage.getItem('yt_hub_all_data');
+            if (savedData) {
+                try {
+                    categoriesData = JSON.parse(savedData);
+                } catch(e) {
+                    categoriesData = JSON.parse(JSON.stringify(DEFAULT_CHANNELS_DATA));
+                }
+            } else {
+                categoriesData = JSON.parse(JSON.stringify(DEFAULT_CHANNELS_DATA));
+                saveState();
+            }
+            renderApp();
+        }
+
+        // Save State to Local Storage
+        function saveState() {
+            localStorage.setItem('yt_hub_all_data', JSON.stringify(categoriesData));
+        }
+
+        // Render the App Layout & Cards
+        function renderApp() {
+            const grid = document.getElementById('categoriesGrid');
+            grid.innerHTML = '';
+
+            categoriesData.forEach(cat => {
+                const card = document.createElement('div');
+                card.className = "category-card glass-card rounded-2xl p-5 flex flex-col justify-between transition-all hover:scale-[1.01] hover:border-slate-700/60";
+                card.setAttribute('data-category', `${cat.title} ${cat.code}`);
+                card.id = `card-${cat.id}`;
+
+                let channelsListHTML = '';
+                cat.channels.forEach(ch => {
+                    channelsListHTML += `
+                        <li class="channel-row group flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-800/40 transition-all" data-ch-id="${ch.id}">
+                            <div class="flex items-center gap-2.5 flex-1 min-w-0 mr-2">
+                                <input type="checkbox" onchange="toggleChannel('${cat.id}', '${ch.id}')" ${ch.checked ? 'checked' : ''} class="w-4 h-4 rounded border-slate-700 text-violet-600 focus:ring-violet-500 bg-slate-900 cursor-pointer transition-all">
+                                <a href="${ch.url}" target="_blank" rel="noopener noreferrer" class="hover:text-violet-400 truncate text-sm font-medium transition-colors ${ch.checked ? 'checked-item' : ''}">${ch.name}</a>
+                            </div>
+                            <div class="action-btns flex items-center gap-1.5 shrink-0">
+                                <button onclick="openEditChannelModal('${cat.id}', '${ch.id}')" title="編輯" class="p-1 text-slate-500 hover:text-violet-400 hover:bg-slate-800 rounded transition-all">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                </button>
+                                <button onclick="openDeleteConfirmation('${cat.id}', '${ch.id}')" title="刪除" class="p-1 text-slate-500 hover:text-red-400 hover:bg-slate-800 rounded transition-all">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                        </li>
+                    `;
+                });
+
+                if (cat.channels.length === 0) {
+                    channelsListHTML = `<div class="text-xs text-slate-500 py-4 text-center">無頻道，快啲新增一個啦！</div>`;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
+                            <h2 class="font-bold text-lg ${cat.color} flex items-center gap-2">
+                                <span class="text-base">🚀</span> ${cat.title}
+                            </h2>
+                            <span class="text-[10px] text-slate-500 font-mono tracking-wider">${cat.code}</span>
+                        </div>
+                        <ul class="space-y-1">
+                            ${channelsListHTML}
+                        </ul>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800/60">
+                        <button onclick="openAddChannelModal('${cat.id}')" class="w-full py-1.5 bg-slate-800/40 hover:bg-violet-600/20 border border-slate-800 hover:border-violet-500/30 text-slate-300 hover:text-violet-400 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            新增頻道
+                        </button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            updateProgressCount();
+        }
+
+        // Update Stats Counters
+        function updateProgressCount() {
+            let total = 0;
+            let checked = 0;
+
+            categoriesData.forEach(cat => {
+                cat.channels.forEach(ch => {
+                    total++;
+                    if (ch.checked) checked++;
+                });
+            });
+
+            document.getElementById('progressCount').textContent = checked;
+            document.getElementById('totalCount').textContent = total;
+        }
+
+        // Toggle Done State
+        function toggleChannel(catId, chId) {
+            const category = categoriesData.find(c => c.id === catId);
+            if (category) {
+                const channel = category.channels.find(ch => ch.id === chId);
+                if (channel) {
+                    channel.checked = !channel.checked;
+                    saveState();
+                    
+                    // Instantly update item classes without re-rendering the whole page to preserve focus/state
+                    const row = document.querySelector(`[data-ch-id="${chId}"]`);
+                    if (row) {
+                        const link = row.querySelector('a');
+                        if (channel.checked) {
+                            link.classList.add('checked-item');
+                        } else {
+                            link.classList.remove('checked-item');
+                        }
+                    }
+                    updateProgressCount();
+                }
+            }
+        }
+
+        // CUSTOM MODALS HANDLERS
+        // Open Add Channel Modal
+        function openAddChannelModal(catId) {
+            document.getElementById('modalTitle').textContent = "新增學習頻道";
+            document.getElementById('modalTargetCategoryId').value = catId;
+            document.getElementById('modalTargetChannelId').value = "";
+            document.getElementById('modalChannelName').value = "";
+            document.getElementById('modalChannelUrl').value = "";
+            document.getElementById('modalErrorMsg').classList.add('hidden');
+            document.getElementById('channelModal').classList.remove('hidden');
+            document.getElementById('modalChannelName').focus();
+        }
+
+        // Open Edit Channel Modal
+        function openEditChannelModal(catId, chId) {
+            const category = categoriesData.find(c => c.id === catId);
+            if (!category) return;
+            const channel = category.channels.find(ch => ch.id === chId);
+            if (!channel) return;
+
+            document.getElementById('modalTitle').textContent = "修改頻道資料";
+            document.getElementById('modalTargetCategoryId').value = catId;
+            document.getElementById('modalTargetChannelId').value = chId;
+            document.getElementById('modalChannelName').value = channel.name;
+            document.getElementById('modalChannelUrl').value = channel.url;
+            document.getElementById('modalErrorMsg').classList.add('hidden');
+            document.getElementById('channelModal').classList.remove('hidden');
+            document.getElementById('modalChannelName').focus();
+        }
+
+        // Close Channel Modal
+        function closeChannelModal() {
+            document.getElementById('channelModal').classList.add('hidden');
+        }
+
+        // Save Channel Action (Create or Update)
+        function saveChannelFromModal() {
+            const catId = document.getElementById('modalTargetCategoryId').value;
+            const chId = document.getElementById('modalTargetChannelId').value;
+            const name = document.getElementById('modalChannelName').value.trim();
+            let url = document.getElementById('modalChannelUrl').value.trim();
+
+            if (!name || !url) {
+                document.getElementById('modalErrorMsg').classList.remove('hidden');
+                return;
+            }
+
+            // Ensure URL format
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            const category = categoriesData.find(c => c.id === catId);
+            if (category) {
+                if (chId) {
+                    // Update existing
+                    const channel = category.channels.find(ch => ch.id === chId);
+                    if (channel) {
+                        channel.name = name;
+                        channel.url = url;
+                    }
+                } else {
+                    // Create new
+                    const newId = 'ch-' + Date.now();
+                    category.channels.push({
+                        id: newId,
+                        name: name,
+                        url: url,
+                        checked: false
+                    });
+                }
+                saveState();
+                renderApp();
+                closeChannelModal();
+            }
+        }
+
+        // Custom Confirm Dialog wrapper
+        function showCustomConfirm(title, desc, onProceed) {
+            const modal = document.getElementById('confirmModal');
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmDesc').textContent = desc;
+            modal.classList.remove('hidden');
+
+            const cleanUp = () => {
+                modal.classList.add('hidden');
+                // Remove listeners to prevent memory leaks
+                document.getElementById('confirmProceedBtn').onclick = null;
+                document.getElementById('confirmCancelBtn').onclick = null;
+            };
+
+            document.getElementById('confirmProceedBtn').onclick = () => {
+                onProceed();
+                cleanUp();
+            };
+
+            document.getElementById('confirmCancelBtn').onclick = () => {
+                cleanUp();
+            };
+        }
+
+        // Open Delete Confirmation Dialog
+        function openDeleteConfirmation(catId, chId) {
+            const category = categoriesData.find(c => c.id === catId);
+            const channel = category?.channels.find(ch => ch.id === chId);
+            if (!channel) return;
+
+            showCustomConfirm(
+                `確定刪除「${channel.name}」？`,
+                "刪除後此頻道將會從分類中移除，你所有剔選進度都會無咗㗎。",
+                () => {
+                    category.channels = category.channels.filter(ch => ch.id !== chId);
+                    saveState();
+                    renderApp();
+                }
+            );
+        }
+
+        // Open Global Reset Confirmation Dialog
+        function openResetConfirmation() {
+            showCustomConfirm(
+                "確定恢復預設列表？",
+                "此動作將會清除你所有自定義加入、修改嘅頻道，並將所有人氣頻道同剔選進度還原至最原始狀態！",
+                () => {
+                    localStorage.removeItem('yt_hub_all_data');
+                    initApp();
+                }
+            );
+        }
+
+        // Filter / Search engine
+        function filterChannels() {
+            const query = document.getElementById('searchBar').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.category-card');
+
+            categoriesData.forEach(cat => {
+                const card = document.getElementById(`card-${cat.id}`);
+                if (!card) return;
+
+                const categoryName = `${cat.title} ${cat.code}`.toLowerCase();
+                const listItems = card.querySelectorAll('.channel-row');
+                let cardHasMatches = false;
+
+                cat.channels.forEach(ch => {
+                    const row = card.querySelector(`[data-ch-id="${ch.id}"]`);
+                    if (!row) return;
+
+                    const matchChannel = ch.name.toLowerCase().includes(query) || ch.url.toLowerCase().includes(query);
+                    const matchCategory = categoryName.includes(query);
+
+                    if (matchChannel || matchCategory) {
+                        row.style.display = 'flex';
+                        cardHasMatches = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show/hide category card itself
+                if (cardHasMatches || categoryName.includes(query)) {
+                    card.style.display = 'flex';
+                    // If category matches, ensure all of its child rows are visible
+                    if (categoryName.includes(query) && query !== "") {
+                        listItems.forEach(item => item.style.display = 'flex');
+                    }
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Fire on Load
+        window.onload = function() {
+            initApp();
+        };
+    </script>
+</body>
+</html>
