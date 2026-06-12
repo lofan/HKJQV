@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不敗心智作業系統 - 全維度智慧大一統藍圖</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            
+            /* 層次色彩邏輯 */
+            --layer-1-color: #79c0ff; /* 靈魂藍 */
+            --layer-2-color: #7ee787; /* 防禦綠 */
+            --layer-3-color: #ff9b55; /* 架構橘 */
+            --layer-4-color: #d2a8ff; /* 執行紫 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .golden-rule {
+            background: linear-gradient(45deg, #1f242c, #161b22);
+            border-left: 4px solid var(--layer-3-color);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 3rem;
+            font-style: italic;
+            text-align: center;
+            color: #f0f6fc;
+        }
+
+        /* 資訊圖表架構 */
+        .infographic-layer {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .infographic-layer:hover {
+            transform: translateY(-2px);
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .layer-badge {
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 1rem;
+            text-transform: uppercase;
+        }
+
+        .layer-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* 第一層樣式 */
+        .layer-1 { border-top: 4px solid var(--layer-1-color); }
+        .layer-1 .layer-badge { background-color: rgba(121, 192, 255, 0.15); color: var(--layer-1-color); }
+        
+        /* 第二層樣式 */
+        .layer-2 { border-top: 4px solid var(--layer-2-color); }
+        .layer-2 .layer-badge { background-color: rgba(126, 231, 135, 0.15); color: var(--layer-2-color); }
+
+        /* 第三層樣式 */
+        .layer-3 { border-top: 4px solid var(--layer-3-color); }
+        .layer-3 .layer-badge { background-color: rgba(255, 155, 85, 0.15); color: var(--layer-3-color); }
+
+        /* 第四層樣式 */
+        .layer-4 { border-top: 4px solid var(--layer-4-color); }
+        .layer-4 .layer-badge { background-color: rgba(210, 168, 255, 0.15); color: var(--layer-4-color); }
+
+        .system-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .system-grid.split {
+                grid-template-columns: 1fr 1fr;
+            }
+            .system-grid.triple {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .system-card {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 1.2rem;
+        }
+
+        .system-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .layer-1 .system-name { color: var(--layer-1-color); }
+        .layer-2 .system-name { color: var(--layer-2-color); }
+        .layer-3 .system-name { color: var(--layer-3-color); }
+        .layer-4 .system-name { color: var(--layer-4-color); }
+
+        .meta-info {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .meta-info span {
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .bullet-point {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            position: relative;
+            padding-left: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .bullet-point::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* 互動式時間軸區塊 */
+        .timeline-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .timeline-section h2 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .timeline-nav {
+            display: flex;
+            overflow-x: auto;
+            gap: 0.5rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            justify-content: flex-start;
+        }
+
+        @media (min-width: 768px) {
+            .timeline-nav {
+                justify-content: center;
+            }
+        }
+
+        .timeline-btn {
+            background-color: #21262d;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .timeline-btn.active {
+            background-color: #f0f6fc;
+            color: #0d1117;
+            border-color: #f0f6fc;
+        }
+
+        .timeline-content {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 1.5rem;
+            min-height: 150px;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timeline-text {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🧠 不敗心智作業系統 (Stoic OS v1.0)</h1>
+        <p>從靈魂覺醒到亂世實戰的 8 大跨維度智慧矩陣</p>
+    </header>
+
+    <div class="golden-rule">
+        「孫子確保你行得對，武藏確保你打得贏，Taleb 確保你輸得起，斯多葛確保你撐得住，老莊確保你轉得通，佛家確保你放得低。」
+    </div>
+
+    <!-- LEVEL 1 -->
+    <div class="infographic-layer layer-1">
+        <div class="layer-header">
+            <span class="layer-badge">LEVEL 1</span>
+            <span class="layer-title">🌐 靈魂與方向定位 (The Compass)</span>
+        </div>
+        <div class="system-grid split">
+            <div class="system-card">
+                <div class="system-name">🧘 佛家<span>意象：虛空</span></div>
+                <div class="meta-info">
+                    <span><strong>終極問題：</strong>我是誰？（解構我執）</span>
+                    <span><strong>核心技術：</strong>無我、緣起性空</span>
+                </div>
+                <div class="bullet-point">打破對世俗名利的死抓不放，看透一切皆是因緣生滅。</div>
+                <div class="bullet-point">提供生命最底層的「情緒穩定」與徹底放得低的底氣。</div>
+            </div>
+            <div class="system-card">
+                <div class="system-name">☕ 世界盡頭咖啡館<span>意象：菜單</span></div>
+                <div class="meta-info">
+                    <span><strong>終極問題：</strong>我要去邊度？（確立導航）</span>
+                    <span><strong>核心技術：</strong>PFE (存在意義)、綠蠵龜寓言</span>
+                </div>
+                <div class="bullet-point">釐清自己為何存在，拒絕被現代社會的消費主義盲目洗腦。</div>
+                <div class="bullet-point">辨識生命中的「順浪」與「逆浪」，順應趨勢進行推動。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEVEL 2 -->
+    <div class="infographic-layer layer-2">
+        <div class="layer-header">
+            <span class="layer-badge">LEVEL 2</span>
+            <span class="layer-title">🛡️ 防禦與心態修煉 (The Armor)</span>
+        </div>
+        <div class="system-grid split">
+            <div class="system-card">
+                <div class="system-name">🏰 斯多葛主義<span>意象：內心城堡</span></div>
+                <div class="meta-info">
+                    <span><strong>終極問題：</strong>如何面對逆境與外部噪音？</span>
+                    <span><strong>核心技術：</strong>控制兩分法、負面冥想、當下凝視</span>
+                </div>
+                <div class="bullet-point">區分「可控」與「不可控」，100% 的精力只為自己的選擇負責。</div>
+                <div class="bullet-point">築起不可侵犯的精神防線，外界的酸言酸語與變故皆無法傷及靈魂。</div>
+            </div>
+            <div class="system-card">
+                <div class="system-name">🌊 老莊道家<span>意象：流水 / 逍遙大樹</span></div>
+                <div class="meta-info">
+                    <span><strong>終極問題：</strong>如何與荒謬、高壓的現實相處？</span>
+                    <span><strong>核心技術：</strong>無為、物化、心齋坐忘</span>
+                </div>
+                <div class="bullet-point">不與系統硬碰硬，保持靈魂的絕對流動性（上善若水）。</div>
+                <div class="bullet-point">尋找環境中的「無用之用」，在規則的縫隙裡優雅且自由地游走。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEVEL 3 -->
+    <div class="infographic-layer layer-3">
+        <div class="layer-header">
+            <span class="layer-badge">LEVEL 3</span>
+            <span class="layer-title">📊 架構與風險管理 (The Architecture)</span>
+        </div>
+        <div class="system-grid">
+            <div class="system-card">
+                <div class="system-name">🔥 反脆弱理論 (Taleb)<span>意象：越燒越旺的火堆</span></div>
+                <div class="meta-info">
+                    <span><strong>終極問題：</strong>如何面對高度不確定性與黑天鵝事件？</span>
+                    <span><strong>核心技術：</strong>不對稱性 (Upside > Downside)、自主清苦練習</span>
+                </div>
+                <div class="bullet-point">設計「有限壞處、無限好處」的防禦架構，確保自己在極端情況下輸得起。</div>
+                <div class="bullet-point">討厭僵化，熱愛波動。把環境的隨機衝擊和失敗轉化為系統自我進化的燃料。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEVEL 4 -->
+    <div class="infographic-layer layer-4">
+        <div class="layer-header">
+            <span class="layer-badge">LEVEL 4</span>
+            <span class="layer-title">⚔️ 戰略、戰術與執行 (The Weapons & Execution)</span>
+        </div>
+        <div class="system-grid triple">
+            <div class="system-card">
+                <div class="system-name">🐢 孫子兵法</div>
+                <div class="meta-info">
+                    <span><strong>層次：</strong>宏觀戰略 (Macro)</span>
+                    <span><strong>核心：</strong>兵形象水、先勝後戰</span>
+                </div>
+                <div class="bullet-point">絕不因情緒衝動開戰，謀定後動，打有絕對把握的仗。</div>
+                <div class="bullet-point">避其銳氣，擊其惰歸，用最低成本換取最大勝利。</div>
+            </div>
+            <div class="system-card">
+                <div class="system-name">⚔️ 宮本武藏</div>
+                <div class="meta-info">
+                    <span><strong>層次：</strong>微觀戰術 (Micro)</span>
+                    <span><strong>核心：</strong>二刀流、平常心</span>
+                </div>
+                <div class="bullet-point">多技能並行適應，打破教條套路，實用至上，活下去並贏。</div>
+                <div class="bullet-point">在生死的邊緣一線，出刀如本能，保持極致的變通。</div>
+            </div>
+            <div class="system-card">
+                <div class="system-name">🎯 心流理論</div>
+                <div class="meta-info">
+                    <span><strong>層次：</strong>當下執行 (Action)</span>
+                    <span><strong>核心：</strong>4% 挑戰通道</span>
+                </div>
+                <div class="bullet-point">鎖定高於現有水平 4% 的目標，消除一切環境雜音與雜念。</div>
+                <div class="bullet-point">讓自我意識消融在行動中，產出效率暴增 500%。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 互動式時間軸 -->
+    <div class="timeline-section">
+        <h2>⏱️ 24小時一日實戰閉環演練</h2>
+        <div class="timeline-nav">
+            <button class="timeline-btn active" onclick="showTime('morning')">🌅 07:00 清晨預盤</button>
+            <button class="timeline-btn" onclick="showTime('noon')">👔 09:00 局勢觀測</button>
+            <button class="timeline-btn" onclick="showTime('work')">💻 10:00 啟動心流</button>
+            <button class="timeline-btn" onclick="showTime('crisis')">⚡ 15:00 迎擊黑天鵝</button>
+            <button class="timeline-btn" onclick="showTime('night')">🌌 23:00 終極解脫</button>
+        </div>
+        <div class="timeline-content" id="timeline-display">
+            <div class="timeline-title" style="color: var(--layer-1-color);">🌅 斯多葛晨間預盤 × 咖啡館定位</div>
+            <div class="timeline-text">
+                <strong>心態：</strong> 睜開眼，做短暫的「負面冥想」，預期今天會遇到不講理的人或突發混亂，提前劃清控制邊界。<br>
+                <strong>行動：</strong> 閱讀咖啡館餐牌，提醒自己今天的所作所為必須符合個人的 <strong>PFE（存在意義）</strong>，拒絕被無謂的日常慣性拖著走。
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const data = {
+        morning: {
+            title: '🌅 斯多葛晨間預盤 × 咖啡館定位',
+            color: 'var(--layer-1-color)',
+            text: '<strong>心態：</strong> 睜開眼，做短暫的「負面冥想」，預期今天會遇到不講理的人或突發混亂，提前劃清控制邊界。<br><strong>行動：</strong> 閱讀咖啡館餐牌，提醒自己今天的所作所為必須符合個人的 <strong>PFE（存在意義）</strong>，拒絕被無謂的日常慣性拖著走。'
+        },
+        noon: {
+            title: '👔 孫子兵法：宏觀局勢觀測',
+            color: 'var(--layer-3-color)',
+            text: '<strong>心態：</strong> 踏入職場或面對商業博弈時，絕不意氣用事（主不可以怒而興師）。<br><strong>行動：</strong> 像綠蠵龜一樣冷靜觀察環境的「順浪」與「逆浪」。評估五事七計，避其銳氣、擊其惰歸，尋找借勢發力的最省力路徑。'
+        },
+        work: {
+            title: '💻 心流專注 × 武藏二刀流雙刀出擊',
+            color: 'var(--layer-4-color)',
+            text: '<strong>心態：</strong> 忘記「我想贏、我怕輸」的功利執著（武藏空之卷），將干擾徹底過濾。<br><strong>行動：</strong> 關閉手機通知。進入「4% 挑戰通道」核心任務，像武藏雙手持刀一樣靈活調動多項技能，讓自我意識消融在當下的代碼、設計或談判中，高效碾壓對手。'
+        },
+        crisis: {
+            title: '⚡ 遭遇突發危機（反脆弱防線 ＆ 老莊調適）',
+            color: 'var(--layer-2-color)',
+            text: '<strong>心態：</strong> 面對突如其來的專案告吹或市場劇變（黑天鵝），不怨天尤人，也不硬抗硬碰。<br><strong>行動：</strong> 啟動反脆弱系統，因為結構上早有不對稱保護，此時毫無後顧之憂。像流水一樣繞過阻礙（老子），把這個逆境當作淬鍊美德的「精神健身房燃料」（斯多葛），逆境越大，火燒得越旺。'
+        },
+        night: {
+            title: '🌌 佛家深夜內觀：回歸不生不滅的虛空',
+            color: '#ffffff',
+            text: '<strong>心態：</strong> 關燈，打坐內觀（Mindfulness），抽離白天的喧囂與刺激。<br><strong>行動：</strong> 觀照內心，明白今天所有的成敗、賺賠、讚美與羞辱，甚至那個正在焦慮或得意的「我」，本質上都是因緣和合的虛妄現象（無我）。心無罣礙，安然入睡。'
+        }
+    };
+
+    function showTime(key) {
+        // 切換按鈕 active 樣式
+        const buttons = document.querySelectorAll('.timeline-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // 更新顯示內容
+        const display = document.getElementById('timeline-display');
+        display.innerHTML = `
+            <div class="timeline-title" style="color: ${data[key].color};">${data[key].title}</div>
+            <div class="timeline-text">${data[key].text}</div>
+        `;
+    }
+</script>
+
+</body>
+</html>
