@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美股解碼：跌市係威脅定機遇？</title>
+<style>
+  :root {
+    --bg-base: #0d0f14;
+    --bg-card: #141720;
+    --bg-card2: #1a1e2a;
+    --bg-accent-strip: #0f1520;
+    --border: #252a38;
+    --border-glow: #2a3a5c;
+
+    --red:    #e85555;
+    --red-dim: #7a2020;
+    --green:  #3ecf8e;
+    --green-dim: #1a5c3e;
+    --gold:   #f0b840;
+    --gold-dim: #6b4c10;
+    --blue:   #5b9cf6;
+    --blue-dim: #1e3260;
+    --purple: #a78bfa;
+    --purple-dim: #3b2e6e;
+    --teal:   #38bdf8;
+
+    --text-primary: #e8eaf0;
+    --text-secondary: #9aa3b8;
+    --text-muted: #5a6178;
+    --text-heading: #ffffff;
+
+    --font-display: 'Georgia', 'Noto Serif TC', serif;
+    --font-body: 'Helvetica Neue', 'Noto Sans HK', 'PingFang HK', sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,15,20,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 52px;
+    overflow-x: auto;
+  }
+  nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    padding: 0 0.9rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  nav a:hover { color: var(--text-heading); border-color: var(--blue); }
+  nav .nav-brand {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-right: 1rem;
+    border: none;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 2rem 5rem;
+    text-align: center;
+    background: linear-gradient(180deg, #0a0e1a 0%, var(--bg-base) 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,156,246,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 20% 80%, rgba(232,85,85,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 80% 70%, rgba(62,207,142,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: rgba(91,156,246,0.08);
+    border: 1px solid rgba(91,156,246,0.2);
+    padding: 0.3rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 1.6rem;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    color: var(--text-heading);
+    line-height: 1.2;
+    max-width: 820px;
+    margin: 0 auto 1rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--red);
+  }
+  .hero-sub {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    max-width: 540px;
+    margin: 0 auto 2.5rem;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .hstat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 1.1rem 2rem;
+    min-width: 140px;
+  }
+  .hstat .val {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 700;
+    display: block;
+  }
+  .hstat .lbl {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .red-val { color: var(--red); }
+  .green-val { color: var(--green); }
+  .gold-val { color: var(--gold); }
+  .blue-val { color: var(--blue); }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 4rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  .icon-red { background: rgba(232,85,85,0.12); border: 1px solid var(--red-dim); }
+  .icon-gold { background: rgba(240,184,64,0.1); border: 1px solid var(--gold-dim); }
+  .icon-blue { background: rgba(91,156,246,0.1); border: 1px solid var(--blue-dim); }
+  .icon-green { background: rgba(62,207,142,0.1); border: 1px solid var(--green-dim); }
+  .icon-purple { background: rgba(167,139,250,0.1); border: 1px solid var(--purple-dim); }
+
+  .section-title-wrap {}
+  .section-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+  }
+  .section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    font-weight: 700;
+    color: var(--text-heading);
+    line-height: 1.3;
+  }
+
+  /* ── PROSE ── */
+  .prose {
+    color: var(--text-primary);
+    font-size: 0.97rem;
+    line-height: 1.85;
+    max-width: 780px;
+  }
+  .prose p { margin-bottom: 1.1rem; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { color: var(--text-heading); font-weight: 600; }
+  .prose em { color: var(--gold); font-style: normal; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--blue);
+    background: rgba(91,156,246,0.05);
+    padding: 1.1rem 1.4rem;
+    border-radius: 0 4px 4px 0;
+    margin: 1.5rem 0;
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+  }
+  .callout.red { border-color: var(--red); background: rgba(232,85,85,0.05); }
+  .callout.green { border-color: var(--green); background: rgba(62,207,142,0.05); }
+  .callout.gold { border-color: var(--gold); background: rgba(240,184,64,0.05); }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+  .card {
+    background: var(--bg-card);
+    padding: 1.4rem 1.3rem;
+  }
+  .card-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+  .card-value {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .card-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ── DATA TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin: 1.5rem 0;
+  }
+  .data-table th {
+    background: var(--bg-accent-strip);
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.7rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .data-table td:first-child { color: var(--text-primary); font-weight: 500; }
+
+  /* ── SECTOR BAR ── */
+  .sector-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.85rem;
+  }
+  .sector-name { width: 120px; flex-shrink: 0; color: var(--text-secondary); }
+  .bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width .4s ease;
+  }
+  .bar-pct { width: 55px; text-align: right; font-family: var(--font-mono); font-size: 0.8rem; }
+  .bar-neg { background: linear-gradient(90deg, var(--red-dim), var(--red)); }
+  .bar-pos { background: linear-gradient(90deg, var(--green-dim), var(--green)); }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  .tl-dot {
+    position: absolute;
+    left: -1.88rem;
+    top: 0.35rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--blue-dim);
+    border: 2px solid var(--blue);
+  }
+  .tl-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+  .tl-title {
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-bottom: 0.4rem;
+  }
+  .tl-body {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ── STRATEGY CARDS ── */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 1.5rem;
+  }
+  .strategy-card {
+    background: var(--bg-card2);
+    padding: 1.5rem;
+  }
+  .strat-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    margin-bottom: 0.8rem;
+  }
+  .tag-red { background: rgba(232,85,85,0.12); color: var(--red); border: 1px solid var(--red-dim); }
+  .tag-green { background: rgba(62,207,142,0.1); color: var(--green); border: 1px solid var(--green-dim); }
+  .tag-blue { background: rgba(91,156,246,0.1); color: var(--blue); border: 1px solid var(--blue-dim); }
+  .tag-gold { background: rgba(240,184,64,0.08); color: var(--gold); border: 1px solid var(--gold-dim); }
+  .strat-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 0.6rem;
+  }
+  .strat-body {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ── VERDICT ── */
+  .verdict-box {
+    background: linear-gradient(135deg, rgba(62,207,142,0.06), rgba(91,156,246,0.04));
+    border: 1px solid rgba(62,207,142,0.2);
+    border-radius: 4px;
+    padding: 2rem 2.2rem;
+    margin-top: 2rem;
+  }
+  .verdict-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .verdict-body {
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+  .verdict-body strong { color: var(--text-primary); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* ── QUOTE ── */
+  .pullquote {
+    border-left: 3px solid var(--gold);
+    padding: 0.8rem 1.2rem;
+    margin: 1.8rem 0;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--gold);
+    font-style: italic;
+  }
+  .pullquote cite {
+    display: block;
+    font-size: 0.72rem;
+    font-style: normal;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── KEY POINTS ── */
+  .key-points {
+    list-style: none;
+    margin: 1.2rem 0;
+  }
+  .key-points li {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .key-points li:last-child { border-bottom: none; }
+  .kp-dot {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-top: 0.55rem;
+  }
+  .dot-red { background: var(--red); }
+  .dot-green { background: var(--green); }
+  .dot-gold { background: var(--gold); }
+  .dot-blue { background: var(--blue); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 4rem 1.2rem 3rem; }
+    .section { padding: 3rem 1.2rem; }
+    .hstat { min-width: 120px; padding: 0.9rem 1.2rem; }
+    nav { padding: 0 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#">📊 美股解碼</a>
+  <a href="#trigger">跌市誘因</a>
+  <a href="#rates">利率影響</a>
+  <a href="#fed">聯儲局</a>
+  <a href="#capital">資金面</a>
+  <a href="#sectors">板塊分析</a>
+  <a href="#strategy">投資策略</a>
+  <a href="#verdict">總結</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">美股市場深度解析 · 廣東話版</div>
+  <h1>美股大跌：<em>短線恐慌</em>還是<br>長線轉捩點？</h1>
+  <p class="hero-sub">從就業數據、利率週期、資金流向到板塊輪動，全面剖析今次跌市嘅成因與應對之道</p>
+  <div class="hero-stats">
+    <div class="hstat">
+      <span class="val red-val">−2.7%</span>
+      <span class="lbl">標普500跌幅</span>
+    </div>
+    <div class="hstat">
+      <span class="val red-val">−4.5%</span>
+      <span class="lbl">納斯達克跌幅</span>
+    </div>
+    <div class="hstat">
+      <span class="val gold-val">17.2萬</span>
+      <span class="lbl">非農新增職位</span>
+    </div>
+    <div class="hstat">
+      <span class="val blue-val">~45%</span>
+      <span class="lbl">9月加息機率</span>
+    </div>
+    <div class="hstat">
+      <span class="val red-val">−4%</span>
+      <span class="lbl">歷史高通脹後SNP平均回報</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 1: 背景 -->
+<section class="section" id="trigger">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon icon-red">📉</div>
+      <div class="section-title-wrap">
+        <div class="section-eyebrow">第一章 · 市場恐慌成因</div>
+        <h2>點解美股突然大跌？</h2>
+      </div>
+    </div>
+    <div class="prose">
+      <p>上個禮拜，美國股市出現一輪顯著嘅波動，<strong>標準普爾500指數（S&P 500）下跌約2.7個百分點</strong>，而科技股為主嘅<strong>納斯達克更加一度跌穿4.5%</strong>，全球股市亦幾乎無一倖免，齊齊出現不同程度嘅下調。消息一出，市場嘩然，唔少投資者即刻開始憂慮：美股係咪已經估值過高？目前嘅地緣政治局勢會唔會成為壓垮駱駝嘅最後一根稻草？而家係唔係跌市嘅真正開始？</p>
+
+      <p>事實上，今次跌市嘅主要導火線係一份<strong>超預期嘅美國就業數據</strong>。喺上個星期五，美國公佈咗最新一期嘅非農就業報告，當中包括5月份嘅農業以外新增職位數字、失業率等多項重要指標。呢份數據嘅強勁程度，顯然超出市場預期——<strong>非農職位新增達17.2萬人</strong>，不僅高於市場共識預測，上個月嘅就業數據亦大幅向上修訂，近三個月嘅平均新增更達56.5萬人，失業率維持平穩，符合預期。</p>
+
+      <div class="callout red">
+        <strong>市場恐慌邏輯：</strong>就業數據強勁 → 經濟過熱預期升溫 → 通脹捲土重來憂慮加劇 → 聯儲局被迫重啟加息週期 → 企業融資成本急升 → 高估值科技股首當其衝
+      </div>
+
+      <p>呢個「好消息反而係壞消息」嘅邏輯，係而家市場獨特嘅運作方式。當經濟數據太過靚麗，投資者反而憂慮聯儲局唔得不加息去壓抑可能過熱嘅通脹，從而衝擊到整體股市嘅估值。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: 利率 -->
+<section class="section" id="rates">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon icon-gold">📈</div>
+      <div class="section-title-wrap">
+        <div class="section-eyebrow">第二章 · 利率週期</div>
+        <h2>利率對美股嘅深層影響</h2>
+      </div>
+    </div>
+    <div class="prose">
+      <p>要真正理解今次跌市嘅深度同潛在影響，我哋必須從歷史數據出發。翻查近百年嘅美股數據可以發現一個驚人嘅規律：<strong>每當消費者物價指數（CPI）連續數月維持在4%以上，標普500指數喺其後3個月平均會錄得約4%嘅跌幅</strong>，而喺那個月份更可能高達7%。換言之，高通脹幾乎係美股下跌嘅歷史先兆。</p>
+
+      <p>再進一步睇，如果將每一個加息週期同標普500嘅走勢疊圖比較，你就會發現一個清晰嘅模式：<strong>加息週期一旦確立，大跌市往往緊隨其後。</strong>呢個並非巧合，而係有其財務邏輯基礎。</p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-label">歷史規律 #1</div>
+        <div class="card-value red-val">−4%</div>
+        <div class="card-desc">CPI持續高於4%後，標普500其後3個月嘅平均跌幅</div>
+      </div>
+      <div class="card">
+        <div class="card-label">歷史規律 #2</div>
+        <div class="card-value red-val">−7%</div>
+        <div class="card-desc">高通脹最嚴峻單月，標普500嘅平均最大跌幅</div>
+      </div>
+      <div class="card">
+        <div class="card-label">聯儲局理事言論</div>
+        <div class="card-value gold-val">鷹派</div>
+        <div class="card-desc">Hamrick等兩位理事近期發表言論，不排除以加息遏通脹</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>除咗歷史數據，今次市場仲受到聯儲局內部聲音嘅左右。<strong>兩位聯儲局理事，包括Hamrick，近期發表咗相對鷹派嘅言論，</strong>明確表示不排除透過加息手段去遏制通脹壓力。呢番說話進一步強化咗市場對加息嘅憂慮。</p>
+
+      <p>與此同時，地緣政治因素亦係今次跌市嘅背景。美國同伊朗嘅談判進展不如預期，海上攔截事件持續，以色列同黎巴嫩真主黨之間嘅停火協議亦係落空。不過，有一個值得留意嘅反指標：<strong>同期油價並未大幅攀升</strong>，反映市場實際上係預期地緣衝突不會大規模升級，局勢最終傾向以談判方式解決。換言之，地緣政治係情緒層面嘅干擾多過係基本面嘅實質衝擊。</p>
+
+      <div class="callout gold">
+        <strong>分析師拆解：</strong>今次非農就業數據睇落強，但細拆成分可見大部分增長集中於<strong>休閒酒店業（+7萬人）</strong>及政府部門，呢兩個行業嘅就業增長係相對臨時性嘅，可能係由美國舉辦世界盃所帶動。而對就業市場長遠影響較大嘅科技業及金融業，就業增長仍然持續偏弱，反映勞動市場結構未有根本性轉變。
+      </div>
+
+      <p>換言之，今次非農就業數字嘅大幅上升，係有可能係一個<strong>由特定事件（世界盃效應）造成嘅短暫現象</strong>，而唔係反映勞動市場嘅全面復甦。如果呢個分析係正確，市場對加息嘅過度憂慮或許就係一種情緒反應多過理性判斷。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: 聯儲局 -->
+<section class="section" id="fed">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🏛️</div>
+      <div class="section-title-wrap">
+        <div class="section-eyebrow">第三章 · 央行政策</div>
+        <h2>解讀聯儲局嘅真實盤算</h2>
+      </div>
+    </div>
+    <div class="prose">
+      <p>理解聯儲局未來動向，係今次市場判斷嘅核心。分析師傾向認為，<strong>通脹壓力雖然係喺後期慢慢增大，但聯儲局未必會急於加息</strong>；就算真係要加息，其力度亦應該係比較溫和。呢個判斷背後，牽涉幾個重要考量因素：</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-label">政治生態</div>
+        <div class="tl-title">新任聯儲局主席政治傾向較配合政府</div>
+        <div class="tl-body">新任聯儲局主席「鬱」被視為相對容易配合政府施政方向嘅人選，加息空間上受到一定程度嘅政治制約，要確保在任期間唔會採取過激政策令市場劇烈震盪。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--gold); background:var(--gold-dim)"></div>
+        <div class="tl-label">市場預期管理</div>
+        <div class="tl-title">說鷹派說話 ≠ 做鷹派操作</div>
+        <div class="tl-body">聯儲局主席需要管理市場對通脹嘅預期，喺呢個時候發表鷹派言論係「政治正確」嘅做法，係向市場發出信號以防通脹預期失控，但實際操作上未必會真係快速加息。「說一套做一套」喺央行政策上係相當常見嘅手段。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--green); background:var(--green-dim)"></div>
+        <div class="tl-label">市場定價</div>
+        <div class="tl-title">期貨市場加息預期：9月約45%、10月超50%</div>
+        <div class="tl-body">根據利率期貨市場對加息時間點嘅預測，9月份加息嘅概率大約維持喺45%左右，去到10月份則升穿50%，反映市場係逐漸提高加息預期，但並非認為加息係一個確定無疑嘅事情。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--red); background:var(--red-dim)"></div>
+        <div class="tl-label">短期波動</div>
+        <div class="tl-title">SpaceX潛在上市帶來額外波動來源</div>
+        <div class="tl-body">SpaceX嘅潛在上市計劃可能喺短期內抽走部分市場資金，造成美股額外嘅波動，係一個市場需要消化嘅短期因素，但唔影響長期走勢。</div>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      「喺呢個時候，聯儲局主席可能較大機會係去講一啲鷹派啲嘅說話，但係喺實際嘅操作上邊，又唔會走去加息。」
+      <cite>— 影片分析員觀點</cite>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: 資金面 -->
+<section class="section" id="capital">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon icon-purple">💰</div>
+      <div class="section-title-wrap">
+        <div class="section-eyebrow">第四章 · 資金流向</div>
+        <h2>資金面：錢去咗邊？</h2>
+      </div>
+    </div>
+    <div class="prose">
+      <p>除咗宏觀因素，資金面嘅動態亦係今次跌市嘅重要線索。<strong>今次大跌中，資金明顯係由高風險成長型資產，流向相對保守嘅防守型資產。</strong>呢個轉移係有清晰嘅財務邏輯：</p>
+
+      <p>當市場對加息嘅預期越來越強，意味著<strong>企業未來嘅借貸成本將會上升</strong>。對於那些本身已承擔高負債嘅科技及AI概念企業而言，借貸成本上升直接壓縮未來純利，令到投資者重新評估這類企業嘅估值吸引力。加息亦同步提高咗<strong>無風險利率</strong>（即國債收益率），從而提高咗用嚟折現未來現金流嘅折現率，理論上直接拉低咗高增長公司嘅現值（Present Value）。</p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-label">資金流出</div>
+        <div class="card-value red-val">科技/AI</div>
+        <div class="card-desc">高增長、高負債嘅AI概念股成為本輪最大拋售對象，軟件板塊尤其重傷</div>
+      </div>
+      <div class="card">
+        <div class="card-label">資金流入</div>
+        <div class="card-value green-val">防守板塊</div>
+        <div class="card-desc">房地產、公用事業、能源等傳統防守型資產反而成為本周嘅贏家</div>
+      </div>
+      <div class="card">
+        <div class="card-label">回購季影響</div>
+        <div class="card-value gold-val">規模縮減</div>
+        <div class="card-desc">據巴黎銀行估計，成份股回購規模從6月中嘅60億美元，縮減至7月份附近，短期支撐力下降</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>值得注意嘅係，市場上有相當一部分資金係以<strong>納斯達克ETF或三倍槓桿ETF</strong>嘅形式持有，而唔係直接持有AI個股。呢些資金嘅組合其實包含咗大量非AI股票，但喺情緒主導嘅市況下，整個納指仍然成為首要拋售目標。相比之下，<strong>標普500嘅成份股組合更加分散，跌幅相對可控。</strong></p>
+
+      <p>另外，從<strong>基本面嘅角度來睇</strong>，今年美股嘅整體表現仍然有支持：標普500成份股嘅每股盈利（EPS）增長達到近十年平均水平以上，而<strong>市盈率（P/E）今年實際上已經退縮咗約6.93%</strong>，即係話以盈利角度計算，股市其實係比去年稍微便宜咗。派息率雖然因股價上升而有所下降，但整體估值係貴雖有，但並非不合理。</p>
+
+      <div class="callout green">
+        <strong>關鍵觀察：</strong>今次跌市並唔係基本面嘅根本性轉變，因為一個星期唔足夠去扭轉美股長期嘅盈利基礎。分析員傾向將今次調整定性為市場情緒在估值相對高企背景下對消息嘅過度反應。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: 板塊 -->
+<section class="section" id="sectors">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon icon-green">🗂️</div>
+      <div class="section-title-wrap">
+        <div class="section-eyebrow">第五章 · 板塊輪動</div>
+        <h2>上週板塊表現一覽</h2>
+      </div>
+    </div>
+
+    <p style="color:var(--text-muted); font-size:0.82rem; margin-bottom:1.2rem; letter-spacing:0.05em;">估算表現（以加息憂慮升溫背景下嘅相對方向為準）</p>
+
+    <div class="sector-row">
+      <span class="sector-name">納斯達克/科技</span>
+      <div class="bar-track"><div class="bar-fill bar-neg" style="width:90%"></div></div>
+      <span class="bar-pct red-val">−4.5%</span>
+    </div>
+    <div class="sector-row">
+      <span class="sector-name">軟件/AI概念</span>
+      <div class="bar-track"><div class="bar-fill bar-neg" style="width:85%"></div></div>
+      <span class="bar-pct red-val">−4%+</span>
+    </div>
+    <div class="sector-row">
+      <span class="sector-name">標普500整體</span>
+      <div class="bar-track"><div class="bar-fill bar-neg" style="width:55%"></div></div>
+      <span class="bar-pct red-val">−2.7%</span>
+    </div>
+    <div class="sector-row">
+      <span class="sector-name">金融業</span>
+      <div class="bar-track"><div class="bar-fill bar-neg" style="width:40%"></div></div>
+      <span class="bar-pct red-val">偏弱</span>
+    </div>
+    <div class="sector-row">
+      <span class="sector-name">能源</span>
+      <div class="bar-track"><div class="bar-fill bar-pos" style="width:45%"></div></div>
+      <span class="bar-pct green-val">+輕微</span>
+    </div>
+    <div class="sector-row">
+      <span class="sector-name">公用事業</span>
+      <div class="bar-track"><div class="bar-fill bar-pos" style="width:55%"></div></div>
+      <span class="bar-pct green-val">+上升</span>
+    </div>
+    <div class="sector-row">
+      <span class="sector-name">房地產</span>
+      <div class="bar-track"><div class="bar-fill bar-pos" style="width:50%"></div></div>
+      <span class="bar-pct green-val">+上升</span>
+    </div>
+
+    <div class="prose" style="margin-top:2rem;">
+      <p>今次板塊輪動嘅方向係相當清晰：市場係將資金由<strong>高估值、高增長、高負債</strong>嘅科技及AI板塊，轉移到<strong>防守性強、現金流穩定、受惠於加息環境</strong>嘅板塊。呢個現象喺加息預期升溫嘅市況下係完全合理嘅投資者行為。</p>
+
+      <p>不過，分析員強調：<strong>呢個短線板塊輪動唔應該被解讀為AI概念股失去投資邏輯嘅信號。</strong>喺長線角度，AI概念股嘅盈利改善確認性仍然係強嘅，投資AI嘅核心邏輯並未動搖。只不過喺短期嘅市場情緒主導之下，投資者傾向性地將資金移走高風險資產，係一種防禦性動作而唔係趨勢性轉變。</p>
+
+      <p>同時，亦有一個值得長期關注嘅趨勢：隨著AI概念股嘅估值繼續上升，投資者嘅資金配置最終有機會慢慢傾斜返去<strong>具備自由現金流（Free Cash Flow）基礎嘅實質盈利型企業</strong>，即係相對有防守性嘅高質素成長股，而唔係純粹依靠故事同預期推動估值嘅概念股。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: 策略 -->
+<section class="section" id="strategy">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon icon-gold">🎯</div>
+      <div class="section-title-wrap">
+        <div class="section-eyebrow">第六章 · 操作策略</div>
+        <h2>面對短線波動嘅應對之道</h2>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>了解完以上嘅背景分析之後，具體嘅投資策略應該點樣去調整？分析員嘅核心立場係：<strong>今次跌市係短線波動性質，長線持倉策略唔需要根本性改變</strong>，但係喺短線風險管理方面，有幾個值得考慮嘅操作方向。</p>
+    </div>
+
+    <div class="strategy-grid">
+      <div class="strategy-card">
+        <span class="strat-tag tag-green">維持策略</span>
+        <div class="strat-title">繼續持有美股倉位</div>
+        <div class="strat-body">今次跌市唔足以扭轉美股長線嘅基本面。EPS增長、估值回調等基本面數據仍然支持繼續持有。AI概念股嘅投資邏輯亦冇根本性改變，唔需要大規模減倉。</div>
+      </div>
+      <div class="strategy-card">
+        <span class="strat-tag tag-red">風險對沖</span>
+        <div class="strat-title">用期權對沖短線下行風險</div>
+        <div class="strat-body">對於倉位較大嘅投資者，可以考慮透過購入美股<strong>認沽期權（Put Options）</strong>做對沖，效率最高——槓桿比例大，對沖效果精準，優於直接買入反向ETF。</div>
+      </div>
+      <div class="strategy-card">
+        <span class="strat-tag tag-blue">替代對沖</span>
+        <div class="strat-title">反向ETF（適合小倉位者）</div>
+        <div class="strat-body">對於持倉較小、唔想用期權嘅投資者，可以考慮購入標普500或納斯達克嘅<strong>反向ETF</strong>，雖然對沖效率低於期權，但操作門檻低，更適合普通投資者。</div>
+      </div>
+      <div class="strategy-card">
+        <span class="strat-tag tag-gold">進階策略</span>
+        <div class="strat-title">多空對衝：做空納指 + 持有標普</div>
+        <div class="strat-body">一個相對有趣嘅進階策略：做空納斯達克（因其AI股佔比高、估值更貴、跌幅往往大於大市），同時繼續持有標普500。若市場下跌，納指跌幅更大帶來對沖收益；若市場上升，標普升幅可望覆蓋納指嘅做空損失。<em>（注：此為教育分享，唔係投資建議）</em></div>
+      </div>
+    </div>
+
+    <div class="prose" style="margin-top:1.5rem;">
+      <p>分析員提醒，無論採用邊一個策略，<strong>做足充分嘅研究同準備係必要前提</strong>。每一個操作背後都需要對自己嘅倉位結構、風險承受能力同市場判斷有清晰嘅理解，盲目跟從任何策略都係危險嘅。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: 總結 -->
+<section class="section" id="verdict">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon icon-green">✅</div>
+      <div class="section-title-wrap">
+        <div class="section-eyebrow">第七章 · 分析總結</div>
+        <h2>整體判斷與核心結論</h2>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>綜合以上多個維度嘅分析，分析員對今次美股波動嘅整體定性係：<strong>短線情緒主導型調整，唔係基本面惡化所引發嘅趨勢性下跌。</strong></p>
+    </div>
+
+    <ul class="key-points">
+      <li><span class="kp-dot dot-gold"></span><div><strong>非農就業數據強勁係誘因，但成分不紮實。</strong>新增職位集中於酒店及政府部門，科技、金融等核心行業仍持續偏弱，就業市場結構性改善唔明顯，呢份強勁數據有機會係世界盃效應帶來嘅短暫現象。</div></li>
+      <li><span class="kp-dot dot-red"></span><div><strong>加息憂慮係情緒放大器，唔係直接催化劑。</strong>聯儲局雖然有鷹派言論，但政治生態、市場管理需要，以及尚未確定嘅加息時間點，令真正快速加息嘅機率有限。</div></li>
+      <li><span class="kp-dot dot-blue"></span><div><strong>美股基本面仍然有支撐。</strong>EPS增長高於10年平均、市盈率今年實際退縮咗近7%，說明估值雖高但有盈利支撐，唔係純粹泡沫。</div></li>
+      <li><span class="kp-dot dot-green"></span><div><strong>板塊輪動係理性反應，唔係AI崩潰嘅前奏。</strong>資金由高增長轉向防守係加息預期下嘅正常配置調整，AI概念股嘅長期投資邏輯仍然完整。</div></li>
+      <li><span class="kp-dot dot-gold"></span><div><strong>短期有SpaceX上市及回購季縮水兩個額外壓力。</strong>呢兩個短期資金面因素可能令波動延續，但屬一次性影響，唔會改變長線走向。</div></li>
+      <li><span class="kp-dot dot-blue"></span><div><strong>策略建議：持倉唔變，短線加對沖。</strong>以期權或反向ETF作短線對沖工具，同時維持長線美股及AI概念股嘅核心倉位，係分析員認為最符合當前市況嘅做法。</div></li>
+    </ul>
+
+    <div class="verdict-box">
+      <div class="verdict-title">⚖️ 最終裁決</div>
+      <div class="verdict-body">
+        今次美股嘅跌市，係一次由<strong>超預期非農就業數據觸發、加息憂慮放大、AI概念股作為情緒出口</strong>嘅短線調整。喺估值較高嘅市場環境下，任何利空消息都容易引發過度反應，呢個係今次跌幅較大嘅結構性原因。然而，<strong>基本面唔係一個禮拜可以扭轉</strong>，EPS增長、盈利質素等長線指標仍然支持美股持有價值。投資者最需要提防嘅，係被短線恐慌情緒牽著走，做出有違長線利益嘅操作決定。同時亦要保持警覺：如果通脹數據持續超預期，加息週期真正確立，屆時嘅調整性質就可能大為不同，投資者宜持續追蹤相關數據，審時度勢。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  ⚠️ 以上內容僅供教育及資訊參考用途，並不構成任何投資建議。投資涉及風險，在作出任何投資決定前，請做足獨立研究並考慮個人財務狀況及風險承受能力。過往表現並不代表未來表現。
+</div>
+
+</body>
+</html>
