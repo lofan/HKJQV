@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>脂肪肝全解析 — 代謝健康深度拆解</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Noto+Sans+TC:wght@300;400;500&display=swap');
+
+  :root {
+    --bg:        #0e0f11;
+    --surface:   #16181d;
+    --card:      #1e2028;
+    --border:    #2a2d36;
+    --accent:    #e8925a;
+    --accent2:   #6ec6a0;
+    --accent3:   #e8c45a;
+    --danger:    #e05252;
+    --text:      #dde1ea;
+    --muted:     #7b8194;
+    --heading:   #f5f6fa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14,15,17,.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    padding: .85rem 1.1rem;
+    white-space: nowrap;
+    transition: color .2s;
+    border-bottom: 2px solid transparent;
+  }
+  nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #111318 0%, #1a1e28 60%, #0e1820 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 4.5rem 2rem 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,146,90,.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(232,146,90,.35);
+    padding: .3rem .85rem;
+    border-radius: 2px;
+    margin-bottom: 1.4rem;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--heading);
+    line-height: 1.25;
+    margin-bottom: .9rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 2rem;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+  }
+  .hero-stat .lbl { font-size: 12px; color: var(--muted); margin-top: .3rem; }
+
+  /* ── LAYOUT ── */
+  main { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  section { margin-bottom: 3.5rem; }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .6rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 1.2rem;
+  }
+
+  p { margin-bottom: 1rem; color: var(--text); }
+
+  /* ── STAGE CARDS ── */
+  .stages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .stage-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 1.2rem 1rem;
+    position: relative;
+  }
+  .stage-card.danger-card { border-top-color: var(--danger); }
+  .stage-card.warn-card  { border-top-color: var(--accent3); }
+  .stage-card.safe-card  { border-top-color: var(--accent2); }
+  .stage-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--border);
+    position: absolute;
+    top: .6rem; right: .8rem;
+    line-height: 1;
+  }
+  .stage-card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--heading);
+    margin-bottom: .5rem;
+  }
+  .stage-card p { font-size: 13px; color: var(--muted); margin: 0; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: rgba(232,146,90,.07);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.2rem;
+    border-radius: 0 4px 4px 0;
+    margin: 1.2rem 0;
+    font-size: 14px;
+  }
+  .highlight.green {
+    background: rgba(110,198,160,.07);
+    border-left-color: var(--accent2);
+  }
+  .highlight.red {
+    background: rgba(224,82,82,.07);
+    border-left-color: var(--danger);
+  }
+
+  /* ── TWO-COL ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.2rem 0;
+  }
+  @media(max-width:600px){ .two-col { grid-template-columns: 1fr; } }
+
+  .col-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.1rem 1rem;
+  }
+  .col-card h4 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .col-card ul { padding-left: 1.1rem; }
+  .col-card li { font-size: 13.5px; color: var(--text); margin-bottom: .35rem; }
+
+  /* ── PILL LIST ── */
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin: 1rem 0;
+  }
+  .pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: .3rem .85rem;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .pill.green { border-color: var(--accent2); color: var(--accent2); }
+  .pill.orange { border-color: var(--accent); color: var(--accent); }
+  .pill.red { border-color: var(--danger); color: var(--danger); }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; margin: 1rem 0; }
+  .checklist li {
+    padding: .55rem 0 .55rem 1.8rem;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent2);
+    font-weight: 600;
+  }
+  .checklist li.no::before { content: '✕'; color: var(--danger); }
+  .checklist li.warn::before { content: '⚠'; color: var(--accent3); }
+
+  /* ── DIVIDER ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#overview">概覽</a>
+  <a href="#stages">四個階段</a>
+  <a href="#mechanism">發病機制</a>
+  <a href="#menopause">更年期風險</a>
+  <a href="#signs">外觀警號</a>
+  <a href="#gut">腸道關係</a>
+  <a href="#diet">飲食攻略</a>
+  <a href="#lifestyle">生活習慣</a>
+  <a href="#test">檢測方法</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">健康科普 · 代謝疾病</div>
+  <h1>脂肪肝<span>全解析</span></h1>
+  <p class="hero-sub">每三個成年人就有一個患有脂肪肝——但它係可以逆轉嘅。呢篇係對影片內容嘅深度廣東話拆解。</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">1/3</span><div class="lbl">成年人患病比例</div></div>
+    <div class="hero-stat"><span class="num">50%</span><div class="lbl">過去20年全球升幅</div></div>
+    <div class="hero-stat"><span class="num">3×</span><div class="lbl">更年期後患病風險倍增</div></div>
+    <div class="hero-stat"><span class="num">10年</span><div class="lbl">各階段平均進展速度</div></div>
+  </div>
+</div>
+
+<main>
+
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <div class="section-label">核心資訊</div>
+    <h2>脂肪肝唔係病，係代謝失調嘅症狀</h2>
+    <p>脂肪肝（Fatty Liver Disease）本身並非獨立疾病，而係身體代謝系統出現問題嘅一個訊號。當肝臟要處理過多嘅碳水化合物、果糖或能量時，就會將呢啲多餘能量轉化為脂肪，積聚喺肝臟之中。</p>
+    <p>過去十幾二十年，全球患病率上升咗50%，中年人嘅增幅最大。拉丁美洲達到44%嘅患病率，東南亞同北美同樣偏高。其中一小部分人帶有特定基因，令佢哋對代謝疾病有更高嘅傾向。</p>
+    <div class="highlight">
+      <strong>好消息：</strong>脂肪肝係可以逆轉嘅。只要喺早期階段透過飲食同生活方式干預，完全有機會令肝臟恢復正常。關鍵係要及早發現、及早行動。
+    </div>
+  </section>
+
+  <!-- STAGES -->
+  <section id="stages">
+    <div class="section-label">疾病進程</div>
+    <h2>脂肪肝嘅四個階段</h2>
+    <p>每個階段嘅平均進展速度係十年，即係話你有足夠時間去介入逆轉。但要注意，有40%嘅人可以直接從第一階段跳過去肝硬化，唔一定係循序漸進。</p>
+    <div class="stages">
+      <div class="stage-card safe-card">
+        <span class="stage-num">01</span>
+        <h3>單純性脂肪肝</h3>
+        <p>肝臟開始脂肪積聚，輕微腫大，但尚未發炎。大多數人會停留喺呢個階段，可透過飲食同生活方式逆轉。</p>
+      </div>
+      <div class="stage-card warn-card">
+        <span class="stage-num">02</span>
+        <h3>脂肪性肝炎（NASH）</h3>
+        <p>除脂肪積聚外，肝臟開始發炎、細胞受損。約5-7%嘅人已達呢個階段而不自知，發現時可能已太遲。10年死亡率達38%。</p>
+      </div>
+      <div class="stage-card danger-card">
+        <span class="stage-num">03</span>
+        <h3>纖維化</h3>
+        <p>肝臟組織出現永久性疤痕，屬於不可逆轉嘅損傷。部分人可以直接由第一階段跳至此期。</p>
+      </div>
+      <div class="stage-card danger-card">
+        <span class="stage-num">04</span>
+        <h3>肝硬化 / 肝癌</h3>
+        <p>肝臟功能嚴重受損。脂肪肝亦係引發肝癌嘅其中一個原因，屬於最嚴重嘅終末階段。</p>
+      </div>
+    </div>
+    <div class="highlight red">
+      <strong>警示：</strong>有40%患者可以直接由脂肪肝跳至肝硬化，唔一定係每十年一個階段咁慢慢進展。因此，發現第一、第二階段時必須積極逆轉。
+    </div>
+  </section>
+
+  <!-- MECHANISM -->
+  <section id="mechanism">
+    <div class="section-label">病理機制</div>
+    <h2>點解肝臟會積聚脂肪？</h2>
+    <p>很多人誤以為身體脂肪係因為食咗脂肪而來，但其實肝臟生產脂肪嘅主要來源係<strong>碳水化合物同果糖</strong>。當我哋攝取過多糖分或精製碳水，身體無法即時消耗，肝臟就要將呢啲多餘能量轉化為脂肪（即所謂DNL，De Novo Lipogenesis）。</p>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>脂肪積聚嘅三大來源</h4>
+        <ul>
+          <li>過多碳水化合物及果糖（主因）</li>
+          <li>脂肪細胞釋放出嘅游離脂肪酸</li>
+          <li>胰島素抵抗引致氧化壓力增加</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h4>排脂能力下降嘅原因</h4>
+        <ul>
+          <li>年齡增長令膽汁分泌減少</li>
+          <li>腸道菌群失調影響脂肪代謝</li>
+          <li>長期低度炎症削弱肝功能</li>
+        </ul>
+      </div>
+    </div>
+    <p>肝臟需要透過膽汁（Bile）排出壞膽固醇（LDL），但當年齡漸長或飲食不當，呢個排毒能力就會下降，令脂肪愈積愈多。</p>
+    <div class="highlight">
+      內臟脂肪（Visceral Fat）積聚喺腸道、肝臟等重要器官周圍，係摸唔到嘅，要靠腰圍衡量。過多內臟脂肪會釋放大量脂肪酸同發炎因子，損害肝臟、心臟同大腦。
+    </div>
+  </section>
+
+  <!-- MENOPAUSE -->
+  <section id="menopause">
+    <div class="section-label">女性健康</div>
+    <h2>更年期後：風險大增三倍</h2>
+    <p>50歲後，好多人突然發現代謝問題急劇惡化——以前食雪糕食甜嘢都冇事，點解而家咁容易出問題？答案係荷爾蒙改變。</p>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>更年期對代謝嘅影響</h4>
+        <ul>
+          <li>雌激素下降令脂肪代謝率降低</li>
+          <li>胰島素抵抗風險係更年期前三倍</li>
+          <li>合成膽汁嘅能力顯著減弱</li>
+          <li>肌肉量流失，內臟脂肪增加</li>
+          <li>腸道菌群組成發生改變</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h4>皮質醇問題（Cortisol）</h4>
+        <ul>
+          <li>正常：早上高、晚上低</li>
+          <li>失調時：早上升唔到，日間及夜晚偏高</li>
+          <li>後果：脂肪積聚頸部，睡眠變差，焦慮增加</li>
+          <li>提示：唔好完全戒碳水，反而要選擇複雜性碳水</li>
+        </ul>
+      </div>
+    </div>
+    <p>多囊卵巢綜合症（PCOS）同樣與代謝失調密切相關——以前以為係先天荷爾蒙問題，現已證實與代謝健康有直接關係。此外，代謝失調亦會影響睡眠質素。</p>
+  </section>
+
+  <!-- EXTERNAL SIGNS -->
+  <section id="signs">
+    <div class="section-label">外觀警號</div>
+    <h2>身體已經喺提醒你——你有冇留意？</h2>
+    <p>以下係代謝失調或脂肪肝可能在外觀上出現嘅訊號，唔少人以為係普通皮膚問題而忽略。</p>
+
+    <ul class="checklist">
+      <li><strong>蘋果型身形 / 腰圍偏大</strong> — 男性腰圍超過90cm（35.4吋），女性超過80cm（31.4吋），屬高風險警號</li>
+      <li><strong>頸部及腋下皮膚深色變</strong> — 呈天鵝絨質感，非反光感，代表胰島素抵抗（黑棘皮症）</li>
+      <li><strong>眼皮出現黃色脂肪粒（黃斑瘤）</strong> — 唔係污垢，係血脂偏高及血糖高嘅共同表現</li>
+      <li><strong>頸部或腋下出現肉粒（皮贅）</strong> — 原來係胰島素抵抗有關，並非病毒感染</li>
+      <li class="warn"><strong>腳部或腳趾皮膚變黑、變紅</strong> — 配合蘋果型身形，可能係糖尿病前期訊號</li>
+      <li class="warn"><strong>舌頭肥大、有齒痕</strong> — 中醫所謂「濕」，西醫角度反映代謝問題及腸道健康差</li>
+    </ul>
+
+    <div class="highlight">
+      如果家中長者有以上情況而未做過身體檢查，應盡快安排。呢啲外觀訊號往往喺血液指標惡化之前出現。
+    </div>
+  </section>
+
+  <!-- GUT HEALTH -->
+  <section id="gut">
+    <div class="section-label">腸肝軸</div>
+    <h2>腸道健康與肝臟唇齒相依</h2>
+    <p>肝臟健康唔可以同腸道健康分開睇。有脂肪肝嘅人，腸道菌群檢測往往顯示好菌（如Akkermansia菌）嚴重不足，壞菌比例大幅增加，令腸道毒素增多，進一步損害肝臟。</p>
+    <p>更值得注意嘅係，口腔細菌同腸道細菌高達90%係相同嘅。長期使用化學殺菌漱口水，會同時消滅口腔好菌，間接破壞腸道菌群平衡，甚至有研究指出與糖尿病風險有關聯。</p>
+    <div class="highlight green">
+      <strong>青香蕉粉（Green Banana Flour）</strong>富含抗性澱粉，可直接養活腸道中嘅Akkermansia益生菌，係影片中重點推介嘅食品。每日從半茶匙開始，配合大量清水，逐步增加至一茶匙。
+    </div>
+  </section>
+
+  <!-- DIET -->
+  <section id="diet">
+    <div class="section-label">飲食策略</div>
+    <h2>食咩 / 唔食咩？</h2>
+
+    <div class="two-col">
+      <div class="col-card">
+        <h4>🚫 需要戒除</h4>
+        <ul>
+          <li>高果糖漿（老婆餅、西多士糖漿等）</li>
+          <li>果汁（包括鮮榨，升糖指數高）</li>
+          <li>精製碳水：白麵包、白飯、糕點</li>
+          <li>加工醃製肉類：香腸、火腿、午餐肉</li>
+          <li>無糖可樂（代糖破壞腸道菌群）</li>
+          <li>超加工食品（Ultra-processed foods）</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h4>✅ 積極攝取</h4>
+        <ul>
+          <li>青香蕉粉（抗性澱粉）</li>
+          <li>黑豆、紅豆、英豆（蛋白質+益菌）</li>
+          <li>黑木耳（保護肝臟，降三酸甘油脂）</li>
+          <li>蔥、蒜（天然益生元）</li>
+          <li>車前子殼（纖維，調節血糖）</li>
+          <li>南瓜、番薯、紅蘿蔔（橙色食物）</li>
+          <li>綠茶、黑朱古力、藍莓</li>
+          <li>蘋果醋（Apple Cider Vinegar）</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>影片亦提到，若要打蔬果汁，應以蔬菜為主（佔七至八成），水果只用少量低升糖品種如藍莓、青蘋果；並須加入纖維及蛋白質，避免血糖急升。</p>
+    <div class="highlight">
+      <strong>地中海飲食</strong>係目前針對代謝疾病證據最強嘅飲食方案。生酮飲食短期有助血糖管理，但長期難維持，且可能增加腸道負擔，需配合益生元食物同好油。
+    </div>
+    <p>每週攝取<strong>30種以上不同植物</strong>係改善腸道多樣性嘅具體目標。間歇性斷食（16:8）亦係可考慮嘅輔助方法。每日飲兩至三杯咖啡（中午前完成）有研究顯示可改善肝臟酵素指標。</p>
+  </section>
+
+  <!-- LIFESTYLE -->
+  <section id="lifestyle">
+    <div class="section-label">生活方式</div>
+    <h2>運動比飲食更重要？</h2>
+    <p>影片直接指出，生活習慣嘅重要性甚至高過飲食。特別係運動對脂肪肝嘅逆轉有關鍵作用。</p>
+    <div class="stages">
+      <div class="stage-card safe-card">
+        <h3>減重效果</h3>
+        <p>體重減少5%已可明顯改善脂肪肝；減少7%可逆轉脂肪性肝炎；減少10%甚至可令纖維化停止進展。</p>
+      </div>
+      <div class="stage-card safe-card">
+        <h3>有氧運動</h3>
+        <p>每週150分鐘中強度有氧運動，可改善膽固醇，提升好膽固醇（HDL）水平。</p>
+      </div>
+      <div class="stage-card safe-card">
+        <h3>重量訓練</h3>
+        <p>重量訓練對減少肝臟脂肪有額外更強嘅效果。肌肉量增加可大幅改善血糖管理。</p>
+      </div>
+      <div class="stage-card safe-card">
+        <h3>漸進超負荷</h3>
+        <p>訓練要不斷增加負荷，唔好停留在同一個重量。請教練協助記錄進度，逐步提升。</p>
+      </div>
+    </div>
+    <div class="highlight red">
+      40歲起肌肉量開始加速流失，必須積極透過重量訓練去對抗。單靠食NMN等補充品而不運動，效果非常有限。
+    </div>
+  </section>
+
+  <!-- TESTING -->
+  <section id="test">
+    <div class="section-label">自我監測</div>
+    <h2>點樣知道自己有冇風險？</h2>
+    <p>唔一定要等到做全面身體檢查先可以了解自己嘅風險。以下係幾個實用嘅方法：</p>
+    <ul class="checklist">
+      <li><strong>量腰圍</strong> — 男性超過90cm、女性超過80cm屬高風險（以肚臍位置量）</li>
+      <li><strong>血液指標</strong> — ALT、GGT（肝臟指數）；三酸甘油脂偏高係重要警號；HbA1c超過5.7%屬糖尿病前期</li>
+      <li><strong>HOMA-IR計算</strong> — 利用空腹血糖同胰島素水平，網上可計算胰島素抵抗程度</li>
+      <li><strong>FIB-4 指數</strong> — 輸入年齡、AST、ALT等數值，計算肝纖維化風險分數；超過1.3需進一步檢查</li>
+      <li><strong>肝臟超聲波</strong> — 最直接嘅影像學檢查，可確認脂肪程度及有否纖維化</li>
+      <li><strong>持續血糖監測（CGM）</strong> — 可即時了解食咩嘢會令血糖急升，幫助調整飲食</li>
+    </ul>
+    <div class="highlight green">
+      <strong>重點記住：</strong>HbA1c（糖化血紅素）係反映三個月平均血糖嘅指標，最理想水平係4-5%。超過5.7%已屬糖尿病前期，超過6.5%則確診糖尿病。大家宜定期監測此數值。
+    </div>
+
+    <hr>
+
+    <div class="section-label">補充品建議</div>
+    <h2>有研究支持嘅補充品</h2>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>可考慮使用</h4>
+        <ul>
+          <li>Omega-3 EPA/DHA — 改善三酸甘油脂，提升HDL</li>
+          <li>薑黃素（Curcumin）— 有研究顯示改善脂肪性肝炎（建議每日不超過400mg）</li>
+          <li>益生菌 / 青香蕉粉 — 改善腸道菌群，輔助代謝</li>
+          <li>水飛薊（Milk Thistle）— 有傳統支持肝臟保護</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h4>注意事項</h4>
+        <ul>
+          <li>薑黃素男性不宜超過800mg（有前列腺癌研究數據）</li>
+          <li>Beta-carotene補充品（膠囊形式）須醫生監督</li>
+          <li>維他命E需謹慎，研究結果未夠一致</li>
+          <li>單靠補充品而不改變生活習慣，效果極為有限</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  本頁為 YouTube 直播內容嘅廣東話整理分析，僅供健康資訊參考，不構成醫療建議。如有任何健康疑問，請諮詢合資格醫護人員。
+</footer>
+
+</body>
+</html>
