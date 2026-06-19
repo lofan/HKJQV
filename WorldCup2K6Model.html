@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚽ World vs Model · 世界盃2026 深度解析</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+HK:wght@300;400;500;700&display=swap');
+
+  :root {
+    --pitch:    #0a1628;
+    --deep:     #060e1c;
+    --card:     #0f1f38;
+    --border:   #1a3050;
+    --accent:   #00e5a0;
+    --gold:     #f5c542;
+    --red:      #ff4e6a;
+    --blue:     #4da6ff;
+    --muted:    #4a6080;
+    --text:     #c8daf0;
+    --bright:   #eaf4ff;
+    --radius:   10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Noto Sans HK', 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, #091525 0%, #0d2040 50%, #050e1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,229,160,.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 700;
+    color: var(--bright);
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-desc {
+    max-width: 620px;
+    margin: 0 auto 32px;
+    color: #7a9cbe;
+    font-size: 15px;
+  }
+  .hero-links {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .2s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #020d1a;
+  }
+  .btn-primary:hover { background: #00ffb3; }
+  .btn-ghost {
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: transparent;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ── STAT BAR ── */
+  .stat-bar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+  .stat-bar-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 56px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 700;
+    color: var(--bright);
+    margin-bottom: 24px;
+    line-height: 1.25;
+  }
+  .section p {
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* ── CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--bright);
+    margin-bottom: 10px;
+  }
+  .card p {
+    font-size: 13.5px;
+    color: #7a9cbe;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .card-accent { border-top: 3px solid var(--accent); }
+  .card-gold   { border-top: 3px solid var(--gold); }
+  .card-red    { border-top: 3px solid var(--red); }
+  .card-blue   { border-top: 3px solid var(--blue); }
+
+  /* ── BLOCKQUOTE / HIGHLIGHT ── */
+  .highlight {
+    background: rgba(0,229,160,.06);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 18px 22px;
+    margin: 24px 0;
+    font-size: 14px;
+    color: #9abcd8;
+    font-style: italic;
+  }
+
+  /* ── UPSET TABLE ── */
+  .upset-list {
+    list-style: none;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .upset-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .upset-bits {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--red);
+    min-width: 52px;
+    text-align: center;
+  }
+  .upset-bits small {
+    display: block;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .upset-detail { flex: 1; min-width: 200px; }
+  .upset-match {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bright);
+  }
+  .upset-prior {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── ODDS TABLE ── */
+  .odds-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 13.5px;
+  }
+  .odds-table thead tr {
+    background: var(--border);
+  }
+  .odds-table th {
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .odds-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .odds-table tbody tr:hover { background: rgba(255,255,255,.02); }
+  .pct-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .pct-bar {
+    height: 5px;
+    border-radius: 3px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .pct-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--bright);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .rank { color: var(--muted); font-size: 12px; }
+
+  /* ── DISAGREE LIST ── */
+  .disagree-list {
+    list-style: none;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .disagree-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .disagree-match {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bright);
+    margin-bottom: 6px;
+  }
+  .disagree-bars {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .d-bar-group { flex: 1; min-width: 120px; }
+  .d-bar-label {
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .d-bar-track {
+    background: rgba(255,255,255,.06);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .d-bar-fill { height: 100%; border-radius: 4px; }
+  .d-bar-fill.market { background: var(--gold); }
+  .d-bar-fill.model  { background: var(--blue); }
+  .d-bar-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 3px;
+  }
+  .d-bar-val.market { color: var(--gold); }
+  .d-bar-val.model  { color: var(--blue); }
+  .gap-badge {
+    display: inline-block;
+    background: rgba(255,78,106,.15);
+    color: var(--red);
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── INSIGHTS ── */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .insight {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+  }
+  .insight-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: rgba(0,229,160,.2);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .insight h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bright);
+    margin-bottom: 8px;
+  }
+  .insight p {
+    font-size: 13px;
+    color: #6a8dae;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 32px 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+  .footer-links {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  /* ── TAG ── */
+  .tag {
+    display: inline-block;
+    background: rgba(0,229,160,.1);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-right: 6px;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+  }
+  .nav-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-link {
+    display: inline-block;
+    padding: 14px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all .15s;
+  }
+  .nav-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 48px 16px 40px; }
+    .stat-bar-inner { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="hero-eyebrow">⚽ 廣東話深度解析 · 2026年6月</p>
+  <h1>World vs Model<br><span>世界盃2026預測實驗</span></h1>
+  <p class="hero-desc">統計模型能打贏預測市場嗎？Marcus Liew 設計咗呢個完全透明、事前鎖定、可公開核實嘅研究實驗。</p>
+  <div class="hero-links">
+    <a class="btn btn-primary" href="https://mli3w.github.io/world-vs-model/" target="_blank">🌐 原版網站</a>
+    <a class="btn btn-ghost" href="https://mli3w.github.io/world-vs-model/methodology.html" target="_blank">方法論</a>
+    <a class="btn btn-ghost" href="https://mli3w.github.io/world-vs-model/faq.html" target="_blank">FAQ</a>
+    <a class="btn btn-ghost" href="https://mli3w.github.io/world-vs-model/glossary.html" target="_blank">術語表</a>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-link" href="#concept">核心概念</a>
+    <a class="nav-link" href="#models">兩個模型</a>
+    <a class="nav-link" href="#scoring">記分制度</a>
+    <a class="nav-link" href="#upsets">最大冷門</a>
+    <a class="nav-link" href="#predictions">冠軍預測</a>
+    <a class="nav-link" href="#disagreements">最大分歧</a>
+    <a class="nav-link" href="#insights">深層啟示</a>
+  </div>
+</nav>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat-bar-inner">
+    <div class="stat"><span class="stat-num">240</span><div class="stat-label">預測市場</div></div>
+    <div class="stat"><span class="stat-num">476</span><div class="stat-label">已登記聲明</div></div>
+    <div class="stat"><span class="stat-num">28</span><div class="stat-label">已完成賽事</div></div>
+    <div class="stat"><span class="stat-num">48</span><div class="stat-label">參賽球隊</div></div>
+    <div class="stat"><span class="stat-num">20K</span><div class="stat-label">模擬次數</div></div>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<section class="section" id="concept">
+  <div class="container">
+    <p class="section-label">一 · 核心概念</p>
+    <h2>「市場 vs 模型」係咩回事？</h2>
+    <p>呢個係由研究員 <a href="https://www.linkedin.com/in/marcusliewjy/" target="_blank" style="color:var(--accent)">Marcus Liew</a> 設計嘅一個公開研究實驗，主題係：<strong style="color:var(--bright)">統計模型能唔能夠打贏預測市場？</strong></p>
+    <p><a href="https://polymarket.com/" target="_blank" style="color:var(--accent)">Polymarket</a> 呢類去中心化預測市場，長期以來被吹捧為比任何個人或模型都準嘅預測工具，因為佢聚合咗全球最聰明嘅套利者嘅集體智慧。呢個實驗係一個正面挑戰：一個設計精良嘅量化模型，係咪可以系統性噉超越呢種「集體智慧」？</p>
+
+    <div class="highlight">
+      「兩個透明模型喺240個市場同群眾對決——一個係零知識模型（只知道價格結構），另一個係知情模型（用Elo評分）。所有成績都公開、帶時間戳、可追溯核實。」
+    </div>
+
+    <div class="card-grid">
+      <div class="card card-accent">
+        <div class="card-icon">📐</div>
+        <h3>完全透明</h3>
+        <p>所有預測都事前鎖定，帶時間戳。任何人都可以獨立核實，防止事後改數。</p>
+      </div>
+      <div class="card card-gold">
+        <div class="card-icon">💰</div>
+        <h3>真金白銀</h3>
+        <p>Polymarket 係用真錢下注嘅市場，代表每個價格背後都係有利益驅動嘅判斷，比輿論調查可信得多。</p>
+      </div>
+      <div class="card card-blue">
+        <div class="card-icon">🔬</div>
+        <h3>出樣測試</h3>
+        <p>模型同市場均在賽前「凍結」預測，賽後評分，防止後見之明式解讀。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="section" id="models">
+  <div class="container">
+    <p class="section-label">二 · 兩個模型</p>
+    <h2>零知識 vs 知情 Elo</h2>
+
+    <div class="card-grid">
+      <div class="card card-red" style="background:rgba(255,78,106,.06);">
+        <div class="card-icon">🤖</div>
+        <h3>零知識模型<br><small style="font-weight:400;color:var(--muted)">Zero-Knowledge Model</small></h3>
+        <p>完全唔知足球嘅任何野。唯一嘅資訊來源係<strong style="color:var(--bright)">價格結構</strong>——即係預測市場嘅賠率本身。</p>
+        <p style="margin-top:10px;">核心哲學：市場並非完全有效，佢有結構性偏差。即使唔知任何運動知識，都可以找到邏輯矛盾（例如「晉級半決賽概率高過晉級八強」呢種不可能情況）。</p>
+        <div style="margin-top:14px;padding:12px;background:rgba(255,78,106,.08);border-radius:6px;">
+          <p style="font-size:12px;color:var(--muted);margin:0;font-style:italic;">案例：約旦被定價為晉級半決賽（1.8%）嘅機率，竟高過晉級八強（1.1%）——邏輯上不可能，屬無風險錯誤定價。</p>
+        </div>
+      </div>
+      <div class="card card-blue" style="background:rgba(77,166,255,.06);">
+        <div class="card-icon">📊</div>
+        <h3>知情 Elo 模型<br><small style="font-weight:400;color:var(--muted)">Informed Elo Model</small></h3>
+        <p>以 <a href="https://www.eloratings.net/" target="_blank" style="color:var(--blue)">eloratings.net</a> 為基礎，加入以下設計：</p>
+        <ul style="margin-top:10px;padding-left:16px;font-size:13.5px;color:#6a8dae;line-height:1.8;">
+          <li>三個主辦國（美、加、墨）各加 <strong style="color:var(--blue)">+60 Elo</strong> 主場優勢</li>
+          <li>每次模擬評分在 <strong style="color:var(--blue)">±70分</strong> 範圍內隨機浮動</li>
+          <li>共執行 <strong style="color:var(--blue)">20,000次</strong> 蒙地卡羅模擬</li>
+        </ul>
+        <p style="margin-top:10px;">隨機浮動設計防止對主辦國過度確信，保持預測嘅合理不確定性，唔會出現假精確的 0%/100%。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="section" id="scoring">
+  <div class="container">
+    <p class="section-label">三 · 記分制度</p>
+    <h2>「驚喜位元」：用資訊熵衡量冷門</h2>
+    <p>整個項目用咗<strong style="color:var(--bright)">資訊熵（Surprise Bits）</strong>去衡量每個結果有幾驚喜——借鑒咗資訊理論中「Shannon Entropy」嘅概念。</p>
+
+    <div class="highlight">
+      「驚喜程度用位元量度——基本上係『需要擲幾多次硬幣』。猜啱一次係 1 bit，連中兩次係 2 bits（四分一機率），連中三次係 3 bits（八分一機率）。所以一個 3.5 bit 嘅結果，等如連中三次半硬幣——呢就係事前有幾震驚。」
+    </div>
+
+    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+      <div class="card" style="text-align:center;padding:18px 12px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:var(--accent);">1 bit</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;">猜啱一次硬幣<br>（50% 機率）</div>
+      </div>
+      <div class="card" style="text-align:center;padding:18px 12px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:var(--gold);">2 bits</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;">連中兩次<br>（25% 機率）</div>
+      </div>
+      <div class="card" style="text-align:center;padding:18px 12px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:var(--red);">3 bits</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;">連中三次<br>（12.5% 機率）</div>
+      </div>
+      <div class="card" style="text-align:center;padding:18px 12px;border:1px solid var(--red);">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:var(--red);">3.5 bits</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;">本屆最大冷門<br>（西班牙平佛得角）</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="section" id="upsets">
+  <div class="container">
+    <p class="section-label">四 · 最大冷門</p>
+    <h2>本屆賽事最震撼嘅結果</h2>
+    <p>以下係截至目前，按驚喜程度排列嘅最大爆冷賽事。每項顯示事前採用嘅基準（Polymarket 賠率或 Elo 預測）：</p>
+
+    <ul class="upset-list">
+      <li class="upset-item">
+        <div class="upset-bits">3.5<small>bits</small></div>
+        <div class="upset-detail">
+          <div class="upset-match">🇪🇸 西班牙 0–0 🇨🇻 佛得角（平局）</div>
+          <div class="upset-prior">Elo事前：西班牙贏 88% / 平局 9% / 佛得角贏 3%</div>
+        </div>
+        <span class="tag">本屆最大冷門</span>
+      </li>
+      <li class="upset-item">
+        <div class="upset-bits">3.0<small>bits</small></div>
+        <div class="upset-detail">
+          <div class="upset-match">🇶🇦 卡塔爾 1–1 🇨🇭 瑞士（平局）</div>
+          <div class="upset-prior">Polymarket事前：卡塔爾 6% / 平局 12% / 瑞士 82%</div>
+        </div>
+      </li>
+      <li class="upset-item">
+        <div class="upset-bits">2.5<small>bits</small></div>
+        <div class="upset-detail">
+          <div class="upset-match">🇦🇺 澳洲 2–0 🇹🇷 土耳其</div>
+          <div class="upset-prior">Polymarket事前：澳洲 18% / 平局 26% / 土耳其 57%</div>
+        </div>
+      </li>
+      <li class="upset-item">
+        <div class="upset-bits">2.5<small>bits</small></div>
+        <div class="upset-detail">
+          <div class="upset-match">🇵🇹 葡萄牙 1–1 🇨🇩 剛果（平局）</div>
+          <div class="upset-prior">Elo事前：葡萄牙 71% / 平局 18% / 剛果 11%</div>
+        </div>
+      </li>
+      <li class="upset-item">
+        <div class="upset-bits">2.5<small>bits</small></div>
+        <div class="upset-detail">
+          <div class="upset-match">🇸🇦 沙地 1–1 🇺🇾 烏拉圭（平局）</div>
+          <div class="upset-prior">Elo事前：沙地 11% / 平局 18% / 烏拉圭 71%</div>
+        </div>
+      </li>
+      <li class="upset-item">
+        <div class="upset-bits">2.1<small>bits</small></div>
+        <div class="upset-detail">
+          <div class="upset-match">🇧🇪 比利時 1–1 🇪🇬 埃及（平局）</div>
+          <div class="upset-prior">Polymarket事前：比利時 63% / 平局 23% / 埃及 14%</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="section" id="predictions">
+  <div class="container">
+    <p class="section-label">五 · 冠軍預測（Elo模型）</p>
+    <h2>奪冠機率排名（20,000次模擬）</h2>
+    <p>以下係 Elo 模型基於20,000次模擬嘅奪冠概率分佈。注意：<strong style="color:var(--bright)">最可能嘅決賽（阿根廷 vs 西班牙）只在4.6%嘅模擬中出現</strong>——預測係一片機率雲，唔係單一答案。</p>
+
+    <table class="odds-table">
+      <thead>
+        <tr>
+          <th>球隊</th>
+          <th>奪冠機率</th>
+          <th>變動（開幕後）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🇪🇸 西班牙</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:clamp(4px,90px,90px)"></div><span class="pct-val">15.8%</span></div></td>
+          <td style="color:var(--red);">▼ -0.6pp（從16.4%）</td>
+        </tr>
+        <tr>
+          <td>🇦🇷 阿根廷</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:73px"></div><span class="pct-val">12.8%</span></div></td>
+          <td style="color:var(--accent);">▲ +0.7pp（從12.1%）</td>
+        </tr>
+        <tr>
+          <td>🇫🇷 法國</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:58px"></div><span class="pct-val">10.2%</span></div></td>
+          <td style="color:var(--muted);">—</td>
+        </tr>
+        <tr>
+          <td>🏴󠁧󠁢󠁥󠁮󠁧󠁿 英格蘭</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:40px"></div><span class="pct-val">7.0%</span></div></td>
+          <td style="color:var(--accent);">▲ +0.9pp（從6.1%）</td>
+        </tr>
+        <tr>
+          <td>🇧🇷 巴西</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:27px"></div><span class="pct-val">4.8%</span></div></td>
+          <td style="color:var(--muted);">—</td>
+        </tr>
+        <tr>
+          <td>🇨🇴 哥倫比亞</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:27px"></div><span class="pct-val">4.8%</span></div></td>
+          <td style="color:var(--muted);">—</td>
+        </tr>
+        <tr>
+          <td>🇵🇹 葡萄牙</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:24px"></div><span class="pct-val">4.3%</span></div></td>
+          <td style="color:var(--muted);">—</td>
+        </tr>
+        <tr>
+          <td>🇳🇱 荷蘭</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:22px"></div><span class="pct-val">3.9%</span></div></td>
+          <td style="color:var(--muted);">—</td>
+        </tr>
+        <tr>
+          <td>🇲🇽 墨西哥</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:19px"></div><span class="pct-val">3.4%</span></div></td>
+          <td style="color:var(--muted);">—</td>
+        </tr>
+        <tr>
+          <td>🇩🇪 德國</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:18px"></div><span class="pct-val">3.1%</span></div></td>
+          <td style="color:var(--muted);">—</td>
+        </tr>
+        <tr>
+          <td>🇭🇷 克羅地亞</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:15px"></div><span class="pct-val">2.7%</span></div></td>
+          <td style="color:var(--muted);">—</td>
+        </tr>
+        <tr>
+          <td>🇳🇴 挪威</td>
+          <td><div class="pct-bar-wrap"><div class="pct-bar" style="width:15px"></div><span class="pct-val">2.7%</span></div></td>
+          <td style="color:var(--muted);">—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:16px;font-size:12px;color:var(--muted);">
+      變動最大：厄瓜多 -1.0pp（3.4%→2.4%），英格蘭 +0.9pp，阿根廷 +0.7pp，土耳其 -0.7pp（2.3%→1.6%），巴拉圭 -0.6pp，西班牙 -0.6pp。
+    </p>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="section" id="disagreements">
+  <div class="container">
+    <p class="section-label">六 · 最大分歧</p>
+    <h2>模型 vs 市場：最值得關注的場次</h2>
+    <p>以下係 Elo 模型同 Polymarket 市場分歧最大嘅即將賽事——呢啲係整個實驗嘅精華，分歧越大，賽後評分越有意義。</p>
+
+    <ul class="disagree-list">
+
+      <li class="disagree-item">
+        <div class="disagree-match">
+          🇺🇸 USA vs 🇦🇺 AUS &nbsp;·&nbsp; 週五 6月19日
+          <span class="gap-badge">22pp 差距</span>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">市場遠比模型看好美國勝出</p>
+        <div class="disagree-bars">
+          <div class="d-bar-group">
+            <div class="d-bar-label">💰 市場（Polymarket）</div>
+            <div class="d-bar-track"><div class="d-bar-fill market" style="width:60%"></div></div>
+            <div class="d-bar-val market">60%</div>
+          </div>
+          <div class="d-bar-group">
+            <div class="d-bar-label">📊 Elo 模型</div>
+            <div class="d-bar-track"><div class="d-bar-fill model" style="width:38%"></div></div>
+            <div class="d-bar-val model">38%</div>
+          </div>
+        </div>
+      </li>
+
+      <li class="disagree-item">
+        <div class="disagree-match">
+          🇧🇪 BEL vs 🇮🇷 IRN &nbsp;·&nbsp; 週日 6月21日
+          <span class="gap-badge">21pp 差距</span>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">市場遠比模型看好比利時勝出</p>
+        <div class="disagree-bars">
+          <div class="d-bar-group">
+            <div class="d-bar-label">💰 市場（Polymarket）</div>
+            <div class="d-bar-track"><div class="d-bar-fill market" style="width:68%"></div></div>
+            <div class="d-bar-val market">68%</div>
+          </div>
+          <div class="d-bar-group">
+            <div class="d-bar-label">📊 Elo 模型</div>
+            <div class="d-bar-track"><div class="d-bar-fill model" style="width:47%"></div></div>
+            <div class="d-bar-val model">47%</div>
+          </div>
+        </div>
+      </li>
+
+      <li class="disagree-item">
+        <div class="disagree-match">
+          🇯🇴 JOR vs 🇩🇿 ALG &nbsp;·&nbsp; 週一 6月22日
+          <span class="gap-badge">19pp 差距</span>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">市場遠比模型看好阿爾及利亞勝出</p>
+        <div class="disagree-bars">
+          <div class="d-bar-group">
+            <div class="d-bar-label">💰 市場（Polymarket）</div>
+            <div class="d-bar-track"><div class="d-bar-fill market" style="width:61%"></div></div>
+            <div class="d-bar-val market">61%</div>
+          </div>
+          <div class="d-bar-group">
+            <div class="d-bar-label">📊 Elo 模型</div>
+            <div class="d-bar-track"><div class="d-bar-fill model" style="width:42%"></div></div>
+            <div class="d-bar-val model">42%</div>
+          </div>
+        </div>
+      </li>
+
+      <li class="disagree-item">
+        <div class="disagree-match">
+          🏴󠁧󠁢󠁳󠁣󠁴󠁿 SCO vs 🇲🇦 MAR &nbsp;·&nbsp; 週五 6月19日
+          <span class="gap-badge">17pp 差距</span>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">市場遠比模型看好摩洛哥勝出</p>
+        <div class="disagree-bars">
+          <div class="d-bar-group">
+            <div class="d-bar-label">💰 市場（Polymarket）</div>
+            <div class="d-bar-track"><div class="d-bar-fill market" style="width:58%"></div></div>
+            <div class="d-bar-val market">58%</div>
+          </div>
+          <div class="d-bar-group">
+            <div class="d-bar-label">📊 Elo 模型</div>
+            <div class="d-bar-track"><div class="d-bar-fill model" style="width:42%"></div></div>
+            <div class="d-bar-val model">42%</div>
+          </div>
+        </div>
+      </li>
+
+      <li class="disagree-item">
+        <div class="disagree-match">
+          🇳🇱 NED vs 🇸🇪 SWE &nbsp;·&nbsp; 週六 6月20日
+          <span class="gap-badge">8pp 差距（方向相反）</span>
+        </div>
+        <p style="font-size:12px;color:var(--accent);margin-bottom:10px;">⚠️ 呢場模型反而更看好荷蘭，市場較保守</p>
+        <div class="disagree-bars">
+          <div class="d-bar-group">
+            <div class="d-bar-label">💰 市場（Polymarket）</div>
+            <div class="d-bar-track"><div class="d-bar-fill market" style="width:55%"></div></div>
+            <div class="d-bar-val market">55%</div>
+          </div>
+          <div class="d-bar-group">
+            <div class="d-bar-label">📊 Elo 模型</div>
+            <div class="d-bar-track"><div class="d-bar-fill model" style="width:63%"></div></div>
+            <div class="d-bar-val model">63%</div>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+<!-- SECTION 7 -->
+<section class="section" id="insights">
+  <div class="container">
+    <p class="section-label">七 · 深層啟示</p>
+    <h2>從投資同金融角度嘅啟發</h2>
+    <p>呢個足球實驗表面係體育預測，骨子裡係一個關於<strong style="color:var(--bright)">市場效率、量化模型同資訊套利</strong>嘅深刻研究。</p>
+
+    <div class="insight-grid">
+      <div class="insight">
+        <div class="insight-num">01</div>
+        <h4>「市場共識」≠「正確」</h4>
+        <p>就如金融市場上嘅主流分析師預測，Polymarket 嘅集體智慧同樣可以出現系統性偏差——尤其係喺情緒化事件、主辦國效應、或流動性不足時。</p>
+      </div>
+      <div class="insight">
+        <div class="insight-num">02</div>
+        <h4>模型優勢在於「紀律」</h4>
+        <p>Elo 模型唔會因為一場比賽輸咗就驚慌，唔會因為某球星受傷就過度反應。系統性紀律正係主觀判斷難以長期勝過量化模型嘅核心原因。</p>
+      </div>
+      <div class="insight">
+        <div class="insight-num">03</div>
+        <h4>分佈思維 vs 點預測</h4>
+        <p>「最可能決賽只係4.6%機率」——所有預測都應該以概率分佈而非單一點嚟呈現。無論係股市定宏觀週期，「最可能結果」嘅機率往往遠低於直覺所感受。</p>
+      </div>
+      <div class="insight">
+        <div class="insight-num">04</div>
+        <h4>套利者嘅信號</h4>
+        <p>「約旦晉級半決賽概率高過晉級八強」嘅矛盾定價，對應金融市場係期限結構異常、期權定價矛盾等。識得發現結構性漏洞，係量化策略嘅核心競爭力。</p>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:32px;">
+      <strong style="color:var(--accent)">核心命題：</strong>如果一個透明嘅、開源邏輯嘅模型能系統性噉識別出市場嘅偏差，就証明咗「有效市場假說」喺現實中嘅局限性——無論係體育市場定係金融市場。
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://mli3w.github.io/world-vs-model/" target="_blank">🌐 原版網站</a>
+    <a href="https://mli3w.github.io/world-vs-model/methodology.html" target="_blank">📐 方法論</a>
+    <a href="https://mli3w.github.io/world-vs-model/faq.html" target="_blank">❓ FAQ</a>
+    <a href="https://mli3w.github.io/world-vs-model/glossary.html" target="_blank">📚 術語表</a>
+    <a href="https://polymarket.com/" target="_blank">💰 Polymarket</a>
+    <a href="https://www.eloratings.net/" target="_blank">📊 Elo Ratings</a>
+    <a href="https://www.linkedin.com/in/marcusliewjy/" target="_blank">👤 Marcus Liew</a>
+  </div>
+  <p>廣東話解析由 Claude 整理 · 資料來源：<a href="https://mli3w.github.io/world-vs-model/" target="_blank">mli3w.github.io/world-vs-model</a> · 最後更新 2026-06-19</p>
+</footer>
+
+</body>
+</html>
