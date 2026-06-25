@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Think Clearly — A Framework from 11 Books</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e10;
+    --bg2: #16161a;
+    --bg3: #1e1e24;
+    --bg4: #26262e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e8ec;
+    --text2: #9898a8;
+    --text3: #5a5a6e;
+
+    --purple-bg: #1e1a3a;
+    --purple-border: #3c3489;
+    --purple-text: #afa9ec;
+    --purple-accent: #7f77dd;
+
+    --teal-bg: #0d2620;
+    --teal-border: #0f6e56;
+    --teal-text: #5dcaa5;
+    --teal-accent: #1d9e75;
+
+    --amber-bg: #281a06;
+    --amber-border: #854f0b;
+    --amber-text: #ef9f27;
+    --amber-accent: #ba7517;
+
+    --coral-bg: #2a1009;
+    --coral-border: #993c1d;
+    --coral-text: #f0997b;
+    --coral-accent: #d85a30;
+
+    --green-bg: #111f08;
+    --green-border: #3b6d11;
+    --green-text: #97c459;
+    --green-accent: #639922;
+
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans HK', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14,14,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    height: 52px;
+    gap: 0;
+  }
+  .nav-logo {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    margin-right: auto;
+  }
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px;
+    color: var(--text3);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    transition: color .15s, background .15s;
+    display: block;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--bg3); }
+
+  /* HERO */
+  .hero {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 5rem 2rem 3rem;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--purple-text);
+  }
+  .hero-desc {
+    font-size: 16px;
+    color: var(--text2);
+    max-width: 560px;
+    line-height: 1.75;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 0.5px solid var(--border);
+  }
+  .stat-val { font-size: 22px; font-weight: 500; color: var(--text); }
+  .stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  /* FRAMEWORK FLOW */
+  .section {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+  }
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 1rem;
+  }
+  .framework-flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 3rem;
+  }
+  .flow-step {
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    border: 0.5px solid;
+    position: relative;
+  }
+  .flow-step::after {
+    content: '→';
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    font-size: 12px;
+    z-index: 1;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-step-num { font-size: 10px; opacity: .6; margin-bottom: 4px; }
+  .flow-step-title { font-size: 12px; font-weight: 500; line-height: 1.35; }
+  .flow-step-sub { font-size: 11px; opacity: .7; margin-top: 3px; }
+
+  .fs-purple { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple-text); }
+  .fs-teal   { background: var(--teal-bg);   border-color: var(--teal-border);   color: var(--teal-text); }
+  .fs-amber  { background: var(--amber-bg);  border-color: var(--amber-border);  color: var(--amber-text); }
+  .fs-green  { background: var(--green-bg);  border-color: var(--green-border);  color: var(--green-text); }
+
+  /* LAYER */
+  .layer-block {
+    margin-bottom: 2.5rem;
+  }
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .layer-badge {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 0.5px solid;
+    white-space: nowrap;
+  }
+  .lb-purple { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple-text); }
+  .lb-teal   { background: var(--teal-bg);   border-color: var(--teal-border);   color: var(--teal-text); }
+  .lb-amber  { background: var(--amber-bg);  border-color: var(--amber-border);  color: var(--amber-text); }
+  .lb-coral  { background: var(--coral-bg);  border-color: var(--coral-border);  color: var(--coral-text); }
+  .lb-green  { background: var(--green-bg);  border-color: var(--green-border);  color: var(--green-text); }
+
+  .layer-title { font-size: 14px; font-weight: 500; color: var(--text); }
+  .layer-desc  { font-size: 13px; color: var(--text3); }
+
+  /* BOOK GRID */
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+  .book-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    position: relative;
+  }
+  .book-card:hover { border-color: var(--border2); background: var(--bg3); }
+  .book-card.active { border-color: var(--border2); background: var(--bg3); }
+  .book-card-num {
+    font-size: 10px;
+    color: var(--text3);
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+  .book-card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+  .book-card-author {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+  .book-card-hook {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 20px;
+    border: 0.5px solid;
+    display: inline-block;
+  }
+  .book-expand-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 14px;
+    color: var(--text3);
+    transition: transform .2s;
+    line-height: 1;
+  }
+  .book-card.active .book-expand-icon { transform: rotate(45deg); }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    display: none;
+    background: var(--bg3);
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-top: 8px;
+    grid-column: 1 / -1;
+    animation: slideDown .18s ease;
+  }
+  .detail-panel.open { display: block; }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .dp-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+  .dp-title { font-family: 'Noto Serif TC', serif; font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .dp-author { font-size: 12px; color: var(--text3); margin-top: 3px; }
+  .dp-close {
+    background: var(--bg4);
+    border: 0.5px solid var(--border);
+    color: var(--text3);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .15s;
+    flex-shrink: 0;
+  }
+  .dp-close:hover { color: var(--text); }
+  .dp-quote {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    color: var(--text2);
+    border-left: 2px solid var(--border2);
+    padding: 6px 12px;
+    margin-bottom: 16px;
+    line-height: 1.6;
+    border-radius: 0;
+  }
+  .dp-section {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-top: 14px;
+    margin-bottom: 5px;
+  }
+  .dp-body {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.75;
+  }
+  .dp-takeaway {
+    background: var(--bg4);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.65;
+    margin-top: 5px;
+    border-left: 2px solid var(--border2);
+    border-radius: 0;
+  }
+
+  /* READING ORDER */
+  .reading-order {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-top: 3rem;
+  }
+  .ro-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 12px; }
+  .ro-tracks { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .ro-track { border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+  .ro-track-label { font-size: 10px; letter-spacing: .06em; font-weight: 500; text-transform: uppercase; margin-bottom: 8px; }
+  .ro-track-books { font-size: 12px; color: var(--text2); line-height: 1.8; }
+
+  /* FOOTER */
+  footer {
+    border-top: 0.5px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .framework-flow { grid-template-columns: repeat(2, 1fr); }
+    .flow-step::after { display: none; }
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .hero, .section { padding-left: 1.2rem; padding-right: 1.2rem; }
+    .hero { padding-top: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Think Clearly</span>
+  <ul class="nav-links">
+    <li><a href="#framework">Framework</a></li>
+    <li><a href="#hardware">Hardware</a></li>
+    <li><a href="#systems">Systems</a></li>
+    <li><a href="#measure">Measure</a></li>
+    <li><a href="#action">Action</a></li>
+    <li><a href="#reading">Reading order</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <p class="hero-eyebrow">A mental operating system</p>
+  <h1>Think more clearly<br>than <em>99%</em> of people</h1>
+  <p class="hero-desc">Eleven books, distilled into one framework. Each layer builds on the last — from understanding your own mind to choosing, every day, to see clearly.</p>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-val">11</div>
+      <div class="stat-label">books</div>
+    </div>
+    <div>
+      <div class="stat-val">4</div>
+      <div class="stat-label">framework layers</div>
+    </div>
+    <div>
+      <div class="stat-val">1</div>
+      <div class="stat-label">goal: see clearly</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="framework">
+  <p class="section-label">The framework</p>
+  <div class="framework-flow">
+    <div class="flow-step fs-purple">
+      <div class="flow-step-num">Layer 1</div>
+      <div class="flow-step-title">Understand the hardware</div>
+      <div class="flow-step-sub">How the mind actually works</div>
+    </div>
+    <div class="flow-step fs-teal">
+      <div class="flow-step-num">Layer 2</div>
+      <div class="flow-step-title">See the system</div>
+      <div class="flow-step-sub">Feedback loops &amp; models</div>
+    </div>
+    <div class="flow-step fs-amber">
+      <div class="flow-step-num">Layer 3</div>
+      <div class="flow-step-title">Measure &amp; predict</div>
+      <div class="flow-step-sub">Numbers &amp; probability</div>
+    </div>
+    <div class="flow-step fs-green">
+      <div class="flow-step-num">Layer 4</div>
+      <div class="flow-step-title">Choose to see clearly</div>
+      <div class="flow-step-sub">Motivation &amp; daily action</div>
+    </div>
+  </div>
+
+  <!-- LAYER 1 -->
+  <div class="layer-block" id="hardware">
+    <div class="layer-header">
+      <span class="layer-badge lb-purple">Layer 1</span>
+      <span class="layer-title">Understand the hardware</span>
+      <span class="layer-desc">— how the mind actually works</span>
+    </div>
+    <div class="book-grid" id="grid-l1">
+
+      <div class="book-card" onclick="toggleBook('b1','grid-l1')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">06 of 11</div>
+        <div class="book-card-title">Thinking, Fast and Slow</div>
+        <div class="book-card-author">Daniel Kahneman</div>
+        <span class="book-card-hook" style="background:var(--purple-bg);border-color:var(--purple-border);color:var(--purple-text);">The foundation</span>
+      </div>
+
+      <div class="book-card" onclick="toggleBook('b2','grid-l1')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">01 of 11</div>
+        <div class="book-card-title">The Enigma of Reason</div>
+        <div class="book-card-author">Mercier &amp; Sperber</div>
+        <span class="book-card-hook" style="background:var(--purple-bg);border-color:var(--purple-border);color:var(--purple-text);">Why reason evolved</span>
+      </div>
+
+      <div class="book-card" onclick="toggleBook('b3','grid-l1')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">07 of 11</div>
+        <div class="book-card-title">Sources of Power</div>
+        <div class="book-card-author">Gary Klein</div>
+        <span class="book-card-hook" style="background:var(--purple-bg);border-color:var(--purple-border);color:var(--purple-text);">When intuition works</span>
+      </div>
+
+      <div class="book-card" onclick="toggleBook('b4','grid-l1')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">03 of 11</div>
+        <div class="book-card-title">How We Know What Isn't So</div>
+        <div class="book-card-author">Thomas Gilovich</div>
+        <span class="book-card-hook" style="background:var(--purple-bg);border-color:var(--purple-border);color:var(--purple-text);">Illusions catalogue</span>
+      </div>
+
+      <div class="detail-panel" id="dp-b1">
+        <div class="dp-top">
+          <div><div class="dp-title">Thinking, Fast and Slow</div><div class="dp-author">Daniel Kahneman · 2011</div></div>
+          <button class="dp-close" onclick="closeBook('b1')">close ×</button>
+        </div>
+        <div class="dp-quote">"Nothing in life is as important as you think it is, while you are thinking about it."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">The mind runs on two systems. System 1 is fast, automatic, and emotional — it's always on. System 2 is slow, deliberate, and effortful — it's lazy and rarely activated. Most errors occur when System 1 confidently handles problems that actually require System 2, without notifying you.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">Anchoring, availability heuristic, loss aversion (losses hurt ~2× more than equivalent gains feel good), WYSIATI — the mind builds coherent stories from available evidence while ignoring what's missing — regression to the mean, planning fallacy, and the experiencing vs. remembering self.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">Before any important decision, ask: am I using System 1 when this deserves System 2? Slow down, list counterevidence, and check for loss aversion or anchoring effects.</div>
+      </div>
+
+      <div class="detail-panel" id="dp-b2">
+        <div class="dp-top">
+          <div><div class="dp-title">The Enigma of Reason</div><div class="dp-author">Hugo Mercier &amp; Dan Sperber · 2017</div></div>
+          <button class="dp-close" onclick="closeBook('b2')">close ×</button>
+        </div>
+        <div class="dp-quote">"Reason is not a mechanism for discovering truth — it is a mechanism for justifying ourselves to others."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">Reason didn't evolve to help individuals think better — it evolved to help groups argue and cooperate. Its primary function is producing and evaluating justifications in social contexts. This explains why reasoning is so asymmetric: we're excellent at finding flaws in others' arguments and terrible at spotting flaws in our own.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">Myside bias (systematically favouring your own position), the argumentative theory of reasoning, lazy intuitions that generate conclusions first with reasons attached after, and why reason works best in genuine dialogue rather than solo thinking. Groups with diverse views and open debate outperform lone experts.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">Don't trust solo reasoning on important questions — seek genuine critics. Your best thinking happens when you have to defend a position to someone who genuinely disagrees.</div>
+      </div>
+
+      <div class="detail-panel" id="dp-b3">
+        <div class="dp-top">
+          <div><div class="dp-title">Sources of Power</div><div class="dp-author">Gary Klein · 1998</div></div>
+          <button class="dp-close" onclick="closeBook('b3')">close ×</button>
+        </div>
+        <div class="dp-quote">"Experts don't deliberate between options — they recognise situations and act."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">The necessary counter to Kahneman. Expert intuition in high-stakes domains — firefighting, emergency medicine, chess — is genuinely reliable because experts have built vast pattern libraries from experience. They simulate one option mentally and only consider alternatives if the first feels wrong.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">Recognition-Primed Decision (RPD) model, mental simulation as the real unit of expert judgment, the conditions under which intuition is trustworthy (high-validity environment + years of clear feedback), and why novices sometimes make worse decisions when forced to deliberate analytically.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">Intuition is trustworthy when the environment is regular (surgery, chess) and feedback is fast and clear. Distrust it in irregular, low-feedback environments (politics, markets). Know which domain you're in.</div>
+      </div>
+
+      <div class="detail-panel" id="dp-b4">
+        <div class="dp-top">
+          <div><div class="dp-title">How We Know What Isn't So</div><div class="dp-author">Thomas Gilovich · 1991</div></div>
+          <button class="dp-close" onclick="closeBook('b4')">close ×</button>
+        </div>
+        <div class="dp-quote">"The tenacious grip that favoured conclusions have on our credulous minds."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">A rigorous, evidence-based catalogue of how people come to believe things that aren't true — not through stupidity but through predictable cognitive machinery. The same mental processes that make us efficient also make us systematically wrong about patterns, coincidences, and social reality.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">The hot hand fallacy (basketball streaks are largely random but feel meaningful), seeing patterns in noise, biased evaluation of evidence (we scrutinise disconfirmatory evidence more harshly), the effects of second-hand information, and how social pressure amplifies individual biases into shared misconceptions.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">When you notice a pattern, ask: what is the base rate? Could this be random? Am I looking for evidence that confirms what I already believe? The pattern that feels most vivid is often the least reliable.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LAYER 2 -->
+  <div class="layer-block" id="systems">
+    <div class="layer-header">
+      <span class="layer-badge lb-teal">Layer 2</span>
+      <span class="layer-title">See the system</span>
+      <span class="layer-desc">— feedback loops, models, and complexity</span>
+    </div>
+    <div class="book-grid" id="grid-l2">
+
+      <div class="book-card" onclick="toggleBook('b5','grid-l2')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">02 of 11</div>
+        <div class="book-card-title">Thinking in Systems</div>
+        <div class="book-card-author">Donella Meadows</div>
+        <span class="book-card-hook" style="background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal-text);">Feedback loops</span>
+      </div>
+
+      <div class="book-card" onclick="toggleBook('b6','grid-l2')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">05 of 11</div>
+        <div class="book-card-title">The Model Thinker</div>
+        <div class="book-card-author">Scott Page</div>
+        <span class="book-card-hook" style="background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal-text);">Many-model thinking</span>
+      </div>
+
+      <div class="detail-panel" id="dp-b5">
+        <div class="dp-top">
+          <div><div class="dp-title">Thinking in Systems</div><div class="dp-author">Donella Meadows · 2008</div></div>
+          <button class="dp-close" onclick="closeBook('b5')">close ×</button>
+        </div>
+        <div class="dp-quote">"You can't navigate well in an interconnected, feedback-dominated world unless you take your eyes off short-term events."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">Most problems that persist — poverty, pollution, organisational dysfunction — aren't caused by isolated events but by the structure of systems: the stocks, flows, and feedback loops that drive behaviour. Intervening at the wrong place (a symptom rather than a structure) is why well-intentioned fixes so often make things worse.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">Stocks (accumulations) and flows (rates of change), reinforcing feedback loops (exponential growth or collapse), balancing feedback loops (goal-seeking behaviour), delays as the primary cause of oscillation and overshoot, system archetypes like "fixes that fail" and "tragedy of the commons", and leverage points — places where a small shift produces large change.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">Before acting on a problem, draw the system: what are the stocks? Where are the feedback loops? Where are the delays? The highest-leverage interventions are usually counterintuitive — not where the problem appears most visible.</div>
+      </div>
+
+      <div class="detail-panel" id="dp-b6">
+        <div class="dp-top">
+          <div><div class="dp-title">The Model Thinker</div><div class="dp-author">Scott Page · 2018</div></div>
+          <button class="dp-close" onclick="closeBook('b6')">close ×</button>
+        </div>
+        <div class="dp-quote">"The more complex the world, the more we need multiple models."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">No single model captures reality. Every model simplifies — and what it simplifies away is also what it gets wrong. The solution isn't to find the one true model; it's to hold many simultaneously, each capturing a different facet of the problem, and triangulate across them. Experts who rely on one model are consistently less accurate than those who combine many.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">Models as logical machines for clarity, not photographic representations of truth. Covers 30+ models including normal distributions, power laws, Markov chains, contagion models, network effects, and game theory — with guidance on when each applies. The wisdom of crowds is a many-model phenomenon: diverse independent estimates average out errors.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">When analysing any problem, explicitly name the model you're using — then name two alternative models and run the same problem through them. Where they disagree is where the real uncertainty lives.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ANCHOR: Sagan -->
+  <div class="layer-block" id="measure">
+    <div class="layer-header">
+      <span class="layer-badge lb-coral">Anchor</span>
+      <span class="layer-title">Healthy scepticism</span>
+      <span class="layer-desc">— defend against nonsense at every layer</span>
+    </div>
+    <div class="book-grid" id="grid-anchor">
+
+      <div class="book-card" onclick="toggleBook('b9','grid-anchor')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">09 of 11</div>
+        <div class="book-card-title">The Demon-Haunted World</div>
+        <div class="book-card-author">Carl Sagan</div>
+        <span class="book-card-hook" style="background:var(--coral-bg);border-color:var(--coral-border);color:var(--coral-text);">Baloney detector</span>
+      </div>
+
+      <div class="detail-panel" id="dp-b9">
+        <div class="dp-top">
+          <div><div class="dp-title">The Demon-Haunted World</div><div class="dp-author">Carl Sagan · 1995</div></div>
+          <button class="dp-close" onclick="closeBook('b9')">close ×</button>
+        </div>
+        <div class="dp-quote">"Extraordinary claims require extraordinary evidence."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">Science is not a body of knowledge — it is a method. A way of not deceiving yourself. Sagan's central argument is that scepticism and wonder are not opposites: rigorous doubt is precisely what makes genuine discovery possible. In a world saturated with pseudoscience and motivated reasoning, the scientific method is the most powerful tool humanity has for getting things right.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">The baloney detection kit: independent confirmation, debate, quantification, falsifiability (can the claim be disproved?), Occam's razor, control experiments, and the distinction between absence of evidence and evidence of absence. Also covers the sociology of pseudoscience — why it spreads and why intelligent people believe it.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">For any strong claim: Is it falsifiable? Has it been independently replicated? Does it require special pleading to protect it from counterevidence? What would it take to change your mind? If you can't answer that last question, you're rationalising, not reasoning.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LAYER 3: Measure -->
+  <div class="layer-block">
+    <div class="layer-header">
+      <span class="layer-badge lb-amber">Layer 3</span>
+      <span class="layer-title">Measure &amp; predict</span>
+      <span class="layer-desc">— numbers, probability, and forecasting</span>
+    </div>
+    <div class="book-grid" id="grid-l3">
+
+      <div class="book-card" onclick="toggleBook('b7','grid-l3')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">04 of 11</div>
+        <div class="book-card-title">Superforecasting</div>
+        <div class="book-card-author">Philip Tetlock</div>
+        <span class="book-card-hook" style="background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber-text);">Calibration</span>
+      </div>
+
+      <div class="book-card" onclick="toggleBook('b8','grid-l3')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">08 of 11</div>
+        <div class="book-card-title">How to Lie with Statistics</div>
+        <div class="book-card-author">Darrell Huff</div>
+        <span class="book-card-hook" style="background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber-text);">Spotting manipulation</span>
+      </div>
+
+      <div class="detail-panel" id="dp-b7">
+        <div class="dp-top">
+          <div><div class="dp-title">Superforecasting</div><div class="dp-author">Philip Tetlock · 2015</div></div>
+          <button class="dp-close" onclick="closeBook('b7')">close ×</button>
+        </div>
+        <div class="dp-quote">"Superforecasters treat their opinions as hypotheses to be tested, not treasures to be protected."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">Most expert predictions are no better than chance. But a small group of ordinary people — superforecasters — dramatically outperform both experts and prediction markets by following a specific set of cognitive habits. Forecasting skill is learnable, and accurate prediction requires treating beliefs as probabilities to be calibrated, not conclusions to be defended.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">Calibration (your 70% confidence calls should be right ~70% of the time), the outside view (start with base rates before specific details), decomposition (break hard problems into estimable parts), Bayesian updating (adjust incrementally as evidence arrives), and the fox vs. hedgehog distinction — generalists who aggregate many models beat specialists wedded to one.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">Before forming a view, find the base rate. State beliefs as explicit probabilities. Track your predictions and review your worst misses. Update when evidence arrives — but not too much. Over-reaction to noise is as costly as under-reaction.</div>
+      </div>
+
+      <div class="detail-panel" id="dp-b8">
+        <div class="dp-top">
+          <div><div class="dp-title">How to Lie with Statistics</div><div class="dp-author">Darrell Huff · 1954</div></div>
+          <button class="dp-close" onclick="closeBook('b8')">close ×</button>
+        </div>
+        <div class="dp-quote">"The secret language of statistics is employed to sensationalize, inflate, confuse, and oversimplify."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">A short, witty manual on every trick used to mislead with numbers — written from the deceiver's perspective so the reader learns to recognise manipulation instantly. Still the most efficient introduction to statistical literacy despite being 70 years old. Every chart, headline, and survey result should be read through its lens.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">The biased sample (who was actually asked?), the deceptive average (mean vs. median vs. mode tell different stories), the truncated y-axis (inflates apparent change), the semi-attached figure (a number that sounds relevant but measures something else), post hoc reasoning (correlation presented as causation), and the "significant" result that means nothing practically.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">For any statistic: Who measured it? Who chose the sample? What does the y-axis start at? Is this correlation or causation? What is the denominator? Asking five questions eliminates 90% of misleading claims.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LAYER 4: Action -->
+  <div class="layer-block" id="action">
+    <div class="layer-header">
+      <span class="layer-badge lb-green">Layer 4</span>
+      <span class="layer-title">Choose to see clearly</span>
+      <span class="layer-desc">— motivation and daily practice</span>
+    </div>
+    <div class="book-grid" id="grid-l4">
+
+      <div class="book-card" onclick="toggleBook('b10','grid-l4')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">10 of 11</div>
+        <div class="book-card-title">The Art of Thinking Clearly</div>
+        <div class="book-card-author">Rolf Dobelli</div>
+        <span class="book-card-hook" style="background:var(--green-bg);border-color:var(--green-border);color:var(--green-text);">The reference manual</span>
+      </div>
+
+      <div class="book-card" onclick="toggleBook('b11','grid-l4')">
+        <div class="book-expand-icon">+</div>
+        <div class="book-card-num">11 of 11</div>
+        <div class="book-card-title">The Scout Mindset</div>
+        <div class="book-card-author">Julia Galef</div>
+        <span class="book-card-hook" style="background:var(--green-bg);border-color:var(--green-border);color:var(--green-text);">The missing motivation</span>
+      </div>
+
+      <div class="detail-panel" id="dp-b10">
+        <div class="dp-top">
+          <div><div class="dp-title">The Art of Thinking Clearly</div><div class="dp-author">Rolf Dobelli · 2011</div></div>
+          <button class="dp-close" onclick="closeBook('b10')">close ×</button>
+        </div>
+        <div class="dp-quote">"The more options you have, the less satisfied you'll be with whichever you choose."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">99 cognitive errors in 99 short chapters — each under three pages. Not a theoretical work but a practical field guide. Where Kahneman explains why we err, Dobelli gives you a checklist you can run in real time. Best read after absorbing the theoretical grounding from the other books, as a reference to return to.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">Survivorship bias (we see only the successes, not the failures), the swimmer's body illusion (confusing selection for causation), social proof, the sunk cost fallacy (past costs are irreversible and should not influence present decisions), the paradox of choice, the halo effect, the contrast effect, and the narrative fallacy — plus 92 more.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">Build a personal checklist of your top 10 recurring biases from this book. Before major decisions, run through it. The goal isn't to eliminate bias — it's to catch the specific ones that have burned you before.</div>
+      </div>
+
+      <div class="detail-panel" id="dp-b11">
+        <div class="dp-top">
+          <div><div class="dp-title">The Scout Mindset</div><div class="dp-author">Julia Galef · 2021</div></div>
+          <button class="dp-close" onclick="closeBook('b11')">close ×</button>
+        </div>
+        <div class="dp-quote">"The goal of scout mindset isn't to be right — it's to see clearly."</div>
+        <div class="dp-section">Core idea</div>
+        <div class="dp-body">Knowing about biases is not enough. Most people who've read Kahneman still reason badly because they don't actually want to see clearly — they want to feel good, protect their identity, and signal loyalty to their tribe. Clear thinking is primarily a motivational problem, not an intellectual one. The "scout" wants accurate maps; the "soldier" defends territory.</div>
+        <div class="dp-section">Key concepts</div>
+        <div class="dp-body">Soldier mindset (motivated reasoning: using intelligence to defend a pre-chosen conclusion) vs. scout mindset (epistemic curiosity: using intelligence to find out what's true). Identity-protective cognition — beliefs tied to who you are become impervious to evidence. Practical exercises for noticing the moment you switch from scouting to soldiering.</div>
+        <div class="dp-section">Practical takeaway</div>
+        <div class="dp-takeaway">Ask yourself: am I asking "is this true?" or "can I believe this?" Notice when being wrong would feel like a personal attack. Decouple your identity from your beliefs — you are not your opinions, and changing them should feel like updating a map, not losing a battle.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- READING ORDER -->
+  <div class="reading-order" id="reading">
+    <div class="ro-title">Suggested reading order</div>
+    <div class="ro-tracks">
+      <div class="ro-track">
+        <div class="ro-track-label" style="color:var(--purple-text);">Start here</div>
+        <div class="ro-track-books">
+          1. Thinking, Fast and Slow<br>
+          2. The Scout Mindset<br>
+          3. The Enigma of Reason
+        </div>
+      </div>
+      <div class="ro-track">
+        <div class="ro-track-label" style="color:var(--teal-text);">Then systems</div>
+        <div class="ro-track-books">
+          4. Thinking in Systems<br>
+          5. The Model Thinker<br>
+          6. Sources of Power
+        </div>
+      </div>
+      <div class="ro-track">
+        <div class="ro-track-label" style="color:var(--amber-text);">Then numbers</div>
+        <div class="ro-track-books">
+          7. How to Lie with Statistics<br>
+          8. Superforecasting<br>
+          9. The Demon-Haunted World
+        </div>
+      </div>
+      <div class="ro-track">
+        <div class="ro-track-label" style="color:var(--green-text);">Reference layer</div>
+        <div class="ro-track-books">
+          10. How We Know What Isn't So<br>
+          11. The Art of Thinking Clearly
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  11 books · one framework · the goal is to see clearly
+</footer>
+
+<script>
+var openBook = null;
+
+function toggleBook(id, gridId) {
+  var panel = document.getElementById('dp-' + id);
+  var card = document.querySelector('[onclick="toggleBook(\'' + id + '\',\'' + gridId + '\')"]');
+  var grid = document.getElementById(gridId);
+
+  if (openBook === id) {
+    panel.classList.remove('open');
+    if (card) card.classList.remove('active');
+    openBook = null;
+    return;
+  }
+
+  var allPanels = grid.querySelectorAll('.detail-panel');
+  var allCards = grid.querySelectorAll('.book-card');
+  allPanels.forEach(function(p) { p.classList.remove('open'); });
+  allCards.forEach(function(c) { c.classList.remove('active'); });
+
+  panel.classList.add('open');
+  if (card) card.classList.add('active');
+  openBook = id;
+
+  setTimeout(function() {
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 60);
+}
+
+function closeBook(id) {
+  var panel = document.getElementById('dp-' + id);
+  panel.classList.remove('open');
+  var allCards = document.querySelectorAll('.book-card');
+  allCards.forEach(function(c) { c.classList.remove('active'); });
+  openBook = null;
+}
+</script>
+
+</body>
+</html>
