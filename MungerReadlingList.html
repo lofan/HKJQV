@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>芒格書單 — 智慧的原材料</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+TC:wght@400;700&display=swap');
+
+  :root {
+    --bg:        #0f0f0f;
+    --surface:   #181818;
+    --card:      #1c1c1c;
+    --border:    #2a2a2a;
+    --gold:      #c9a84c;
+    --gold-dim:  #7a6030;
+    --gold-glow: rgba(201,168,76,.12);
+    --text:      #e8e2d6;
+    --muted:     #6b6560;
+    --dim:       #888079;
+    --accent:    #3a3020;
+    --overlay:   rgba(0,0,0,.82);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Noto Serif TC', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(15,15,15,.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 52px;
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: .95rem; color: var(--gold); letter-spacing: .06em;
+  }
+  .nav-links { display: flex; gap: 1.8rem; }
+  .nav-links a {
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ─── HERO ─── */
+  header {
+    max-width: 880px; margin: 0 auto;
+    padding: 5.5rem 2.5rem 4.5rem;
+  }
+  .eyebrow {
+    font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold-dim); margin-bottom: 1.3rem;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    line-height: 1.1; font-weight: 700; color: var(--text);
+    margin-bottom: 1.6rem;
+  }
+  header h1 em { font-style: italic; color: var(--gold); }
+
+  .quote-block {
+    border-left: 2px solid var(--gold);
+    padding: .9rem 1.4rem;
+    background: var(--surface);
+    margin-bottom: 2.8rem;
+    max-width: 640px;
+  }
+  .quote-block p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 1rem; color: var(--dim);
+  }
+  .quote-block cite {
+    display: block; margin-top: .45rem;
+    font-size: .73rem; color: var(--muted); font-style: normal; letter-spacing: .05em;
+  }
+
+  .stats { display: flex; gap: 3.5rem; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: .1rem; }
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; font-weight: 700; color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ─── SECTION DIVIDER ─── */
+  .section-divider {
+    max-width: 880px; margin: 0 auto;
+    padding: 4rem 2.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .section-divider:first-of-type { border-top: none; }
+  .layer-eyebrow {
+    font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--gold-dim); margin-bottom: .6rem;
+  }
+  .layer-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700; color: var(--text);
+    margin-bottom: .4rem;
+  }
+  .layer-sub {
+    font-size: .82rem; color: var(--muted);
+  }
+
+  /* ─── BOOK GRID ─── */
+  .book-grid {
+    max-width: 880px; margin: 0 auto;
+    padding: 1.5rem 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .book-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color .2s, background .2s, transform .15s;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .book-card:hover {
+    border-color: var(--gold-dim);
+    background: var(--surface);
+    transform: translateY(-2px);
+  }
+
+  .book-cover {
+    width: 100%; aspect-ratio: 2/3;
+    object-fit: cover; display: block;
+    background: #222;
+    filter: brightness(.88) saturate(.9);
+    transition: filter .2s;
+  }
+  .book-card:hover .book-cover { filter: brightness(1) saturate(1); }
+
+  .book-card-body { padding: .9rem 1rem 1rem; flex: 1; display: flex; flex-direction: column; }
+  .book-num-tag {
+    font-size: .65rem; letter-spacing: .08em; color: var(--gold-dim);
+    margin-bottom: .3rem;
+  }
+  .book-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: .88rem; font-weight: 700; color: var(--text);
+    line-height: 1.25; margin-bottom: .25rem;
+  }
+  .book-card-author {
+    font-size: .72rem; color: var(--muted); margin-bottom: .4rem;
+  }
+  .book-card-role {
+    font-size: .7rem; color: var(--gold-dim);
+    font-family: 'Noto Serif TC', serif;
+    margin-top: auto;
+  }
+  .summary-cta {
+    font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--gold-dim); margin-top: .6rem;
+    display: flex; align-items: center; gap: .3rem;
+  }
+  .summary-cta::after { content: '↗'; font-size: .75rem; }
+
+  /* ─── ANCHOR ROW (cross-layer) ─── */
+  .anchor-row {
+    max-width: 880px; margin: 0 auto;
+    padding: .5rem 2.5rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* ─── READING ORDER ─── */
+  .reading-section {
+    max-width: 880px; margin: 0 auto;
+    padding: 4rem 2.5rem 6rem;
+    border-top: 1px solid var(--border);
+  }
+  .reading-eyebrow {
+    font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--gold-dim); margin-bottom: .7rem;
+  }
+  .reading-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; color: var(--text); margin-bottom: 2rem;
+  }
+  .reading-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; }
+  .reading-col h3 {
+    font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gold-dim); margin-bottom: .9rem; padding-bottom: .5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .reading-col ol { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+  .reading-col li { font-size: .82rem; color: var(--dim); display: flex; gap: .6rem; }
+  .reading-col li span.r-num {
+    color: var(--gold-dim); font-variant-numeric: tabular-nums;
+    flex-shrink: 0; width: 1.2rem;
+  }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: var(--overlay);
+    align-items: center; justify-content: center;
+    padding: 1.5rem;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    max-width: 600px; width: 100%;
+    max-height: 88vh; overflow-y: auto;
+    position: relative;
+  }
+  .modal-inner { display: grid; grid-template-columns: 130px 1fr; gap: 0; }
+  .modal-cover {
+    width: 100%; height: 100%; min-height: 200px;
+    object-fit: cover; display: block;
+    filter: brightness(.85) saturate(.85);
+  }
+  .modal-body { padding: 1.8rem 1.6rem; }
+  .modal-num {
+    font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gold-dim); margin-bottom: .4rem;
+  }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 700; color: var(--text);
+    line-height: 1.25; margin-bottom: .2rem;
+  }
+  .modal-author {
+    font-size: .78rem; color: var(--muted); margin-bottom: 1.1rem;
+  }
+  .modal-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: .88rem; color: var(--dim);
+    border-left: 2px solid var(--gold); padding-left: .9rem;
+    margin-bottom: 1.1rem; line-height: 1.5;
+  }
+  .modal-section-title {
+    font-size: .65rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: .4rem;
+  }
+  .modal-text {
+    font-size: .82rem; color: var(--dim); line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+  .modal-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .modal-tag {
+    font-size: .65rem; letter-spacing: .07em; text-transform: uppercase;
+    padding: .2rem .55rem; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 2px;
+  }
+  .modal-links-container {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+  .modal-link {
+    font-size: .75rem; color: var(--gold-dim); text-decoration: none;
+    letter-spacing: .06em; transition: color .2s;
+    display: inline-flex; align-items: center; gap: 0.25rem;
+  }
+  .modal-link:hover { color: var(--gold); }
+  .modal-close {
+    position: absolute; top: .8rem; right: 1rem;
+    background: none; border: none; color: var(--muted);
+    font-size: 1.1rem; cursor: pointer; transition: color .2s;
+    font-family: monospace; letter-spacing: -.05em;
+  }
+  .modal-close:hover { color: var(--text); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center; padding: 1.8rem;
+    font-size: .7rem; color: var(--muted); letter-spacing: .08em;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { gap: 1rem; }
+    header { padding: 3.5rem 1.2rem 3rem; }
+    .book-grid, .anchor-row { padding: 1rem 1.2rem; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .section-divider { padding: 2.5rem 1.2rem 1rem; }
+    .reading-section { padding: 2.5rem 1.2rem 4rem; }
+    .modal-inner { grid-template-columns: 1fr; }
+    .modal-cover { max-height: 200px; width: 100%; object-fit: cover; }
+    .stats { gap: 2rem; }
+    .modal-links-container { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">芒格書單</span>
+  <div class="nav-links">
+    <a href="#bio">傳記</a>
+    <a href="#science">科學</a>
+    <a href="#business">商業</a>
+    <a href="#history">歷史</a>
+    <a href="#psych">心理</a>
+    <a href="#reading">閱讀次序</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header>
+  <p class="eyebrow">Charlie Munger &amp; Peter Kaufman · 推薦書目</p>
+  <h1>智慧的<em>原材料</em></h1>
+  <div class="quote-block">
+    <p>"In my whole life, I have known no wise people (over a broad subject matter area) who didn't read all the time — none."</p>
+    <cite>— Charlie Munger</cite>
+  </div>
+  <div class="stats">
+    <div class="stat"><span class="stat-val">21</span><span class="stat-label">本書</span></div>
+    <div class="stat"><span class="stat-val">6</span><span class="stat-label">知識領域</span></div>
+    <div class="stat"><span class="stat-val">1</span><span class="stat-label">目標：多元思維模型</span></div>
+  </div>
+</header>
+
+<!-- ═══════════════════ SECTION 1: 傳記 ═══════════════════ -->
+<div class="section-divider" id="bio">
+  <p class="layer-eyebrow">領域一</p>
+  <p class="layer-title">傳記 &amp; 自傳</p>
+  <p class="layer-sub">從真實人物的生命中提煉決策智慧與性格典範</p>
+</div>
+<div class="book-grid">
+
+  <div class="book-card" onclick="openModal('titan')">
+    <img class="book-cover" src="https://m.media-amazon.com/images/I/41Q48ZA3SCL._SY445_SX342_QL70_FMwebp_.jpg" alt="Titan cover" onerror="this.src='https://covers.openlibrary.org/b/isbn/0679757554-L.jpg'">
+    <div class="book-card-body">
+      <div class="book-num-tag">01 of 21</div>
+      <div class="book-card-title">Titan</div>
+      <div class="book-card-author">Ron Chernow</div>
+      <div class="book-card-role">洛克菲勒傳</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('franklin')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0743223225-L.jpg" alt="Franklin cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">08 of 21</div>
+      <div class="book-card-title">The Autobiography of Benjamin Franklin</div>
+      <div class="book-card-author">Benjamin Franklin</div>
+      <div class="book-card-role">富蘭克林自傳</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('carnegie')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0195069714-L.jpg" alt="Andrew Carnegie cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">20 of 21</div>
+      <div class="book-card-title">Andrew Carnegie</div>
+      <div class="book-card-author">Joseph Frazier Wall</div>
+      <div class="book-card-role">鋼鐵大王傳記</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('lsschwab')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0961100206-L.jpg" alt="Les Schwab cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">18 of 21</div>
+      <div class="book-card-title">Les Schwab: Pride in Performance</div>
+      <div class="book-card-author">Les Schwab</div>
+      <div class="book-card-role">輪胎王國傳記</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('simon')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0262691914-L.jpg" alt="Models of My Life cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">19 of 21</div>
+      <div class="book-card-title">Models of My Life</div>
+      <div class="book-card-author">Herbert A. Simon</div>
+      <div class="book-card-role">諾獎得主回憶錄</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('firestone')">
+    <img class="book-cover" src="https://m.media-amazon.com/images/I/41lvb72TGqL._SY445_SX342_FMwebp_.jpg" alt="Men and Rubber cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">06 of 21</div>
+      <div class="book-card-title">Men and Rubber</div>
+      <div class="book-card-author">Harvey S. Firestone</div>
+      <div class="book-card-role">費爾斯通商業故事</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ SECTION 2: 科學 ═══════════════════ -->
+<div class="section-divider" id="science">
+  <p class="layer-eyebrow">領域二</p>
+  <p class="layer-title">科學 &amp; 自然</p>
+  <p class="layer-sub">從進化、基因、氣候到複雜系統——建立第一性原理思維</p>
+</div>
+<div class="book-grid">
+
+  <div class="book-card" onclick="openModal('selfish')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0198788606-L.jpg" alt="Selfish Gene cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">03 of 21</div>
+      <div class="book-card-title">The Selfish Gene</div>
+      <div class="book-card-author">Richard Dawkins</div>
+      <div class="book-card-role">自私的基因</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('thirdchimp')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0060984031-L.jpg" alt="Third Chimpanzee cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">05 of 21</div>
+      <div class="book-card-title">The Third Chimpanzee</div>
+      <div class="book-card-author">Jared M. Diamond</div>
+      <div class="book-card-role">第三種黑猩猩</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('deepsimplicity')">
+    <img class="book-cover" src="https://m.media-amazon.com/images/I/91G-oxOil+L._SL1500_.jpg" alt="Deep Simplicity cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">09 of 21</div>
+      <div class="book-card-title">Deep Simplicity</div>
+      <div class="book-card-author">John Gribbin</div>
+      <div class="book-card-role">深層簡單性</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('iceage')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0713995858-L.jpg" alt="Ice Age cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">10 of 21</div>
+      <div class="book-card-title">Ice Age</div>
+      <div class="book-card-author">John &amp; Mary Gribbin</div>
+      <div class="book-card-role">冰河時代</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('genome')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0060894083-L.jpg" alt="Genome cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">17 of 21</div>
+      <div class="book-card-title">Genome</div>
+      <div class="book-card-author">Matt Ridley</div>
+      <div class="book-card-role">基因組</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('degrees')">
+    <img class="book-cover" src="https://m.media-amazon.com/images/I/41n0abqSRIL._SY445_SX342_QL70_FMwebp_.jpg" alt="Matter of Degrees cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">19 of 21</div>
+      <div class="book-card-title">A Matter of Degrees</div>
+      <div class="book-card-author">Gino Segre</div>
+      <div class="book-card-role">溫度的故事</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ SECTION 3: 商業 ═══════════════════ -->
+<div class="section-divider" id="business">
+  <p class="layer-eyebrow">領域三</p>
+  <p class="layer-title">商業 &amp; 投資</p>
+  <p class="layer-sub">芒格最直接的實戰參考書目</p>
+</div>
+<div class="book-grid">
+
+  <div class="book-card" onclick="openModal('paranoid')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0385483821-L.jpg" alt="Only Paranoid cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">11 of 21</div>
+      <div class="book-card-title">Only the Paranoid Survive</div>
+      <div class="book-card-author">Andrew S. Grove</div>
+      <div class="book-card-role">只有偏執狂才能生存</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('buffettportfolio')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0471392642-L.jpg" alt="Buffett Portfolio cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">12 of 21</div>
+      <div class="book-card-title">The Warren Buffett Portfolio</div>
+      <div class="book-card-author">Robert G. Hagstrom</div>
+      <div class="book-card-role">巴菲特投資組合</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('fiasco')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0140278737-L.jpg" alt="Fiasco cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">16 of 21</div>
+      <div class="book-card-title">Fiasco</div>
+      <div class="book-card-author">Frank Partnoy</div>
+      <div class="book-card-role">華爾街內幕</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ SECTION 4: 歷史 ═══════════════════ -->
+<div class="section-divider" id="history">
+  <p class="layer-eyebrow">領域四</p>
+  <p class="layer-title">歷史 &amp; 文明</p>
+  <p class="layer-sub">用長線歷史視角理解財富、制度與文明差距的根源</p>
+</div>
+<div class="book-grid">
+
+  <div class="book-card" onclick="openModal('guns')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0393354326-L.jpg" alt="Guns Germs Steel cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">04 of 21</div>
+      <div class="book-card-title">Guns, Germs, and Steel</div>
+      <div class="book-card-author">Jared M. Diamond</div>
+      <div class="book-card-role">槍炮、病菌與鋼鐵</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('scots')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0609809997-L.jpg" alt="Scots cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">14 of 21</div>
+      <div class="book-card-title">How the Scots Invented the Modern World</div>
+      <div class="book-card-author">Arthur Herman</div>
+      <div class="book-card-role">蘇格蘭人如何發明現代世界</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('mountains')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0452011051-L.jpg" alt="Men to Match cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">21 of 21</div>
+      <div class="book-card-title">Men to Match My Mountains</div>
+      <div class="book-card-author">Irving Stone</div>
+      <div class="book-card-role">美國西部開拓史</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ SECTION 5: 心理 ═══════════════════ -->
+<div class="section-divider" id="psych">
+  <p class="layer-eyebrow">領域五</p>
+  <p class="layer-title">心理 &amp; 談判</p>
+  <p class="layer-sub">理解人類行為模式，避免被操控，也避免自我欺騙</p>
+</div>
+<div class="book-grid">
+
+  <div class="book-card" onclick="openModal('influence')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/006124189X-L.jpg" alt="Influence cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">02 of 21</div>
+      <div class="book-card-title">Influence</div>
+      <div class="book-card-author">Robert B. Cialdini</div>
+      <div class="book-card-role">影響力</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('gettingyes')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0143118757-L.jpg" alt="Getting to Yes cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">07 of 21</div>
+      <div class="book-card-title">Getting to Yes</div>
+      <div class="book-card-author">Fisher, Ury &amp; Patton</div>
+      <div class="book-card-role">談判力</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ SECTION 6: 經濟 ═══════════════════ -->
+<div class="section-divider">
+  <p class="layer-eyebrow">領域六</p>
+  <p class="layer-title">經濟 &amp; 社會</p>
+  <p class="layer-sub">從生態約束到文化資本，理解財富差距的深層結構</p>
+</div>
+<div class="book-grid">
+
+  <div class="book-card" onclick="openModal('limits')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0195093852-L.jpg" alt="Living within Limits cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">13 of 21</div>
+      <div class="book-card-title">Living within Limits</div>
+      <div class="book-card-author">Garrett Hardin</div>
+      <div class="book-card-role">在限制中生存</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+  <div class="book-card" onclick="openModal('wealthpoverty')">
+    <img class="book-cover" src="https://covers.openlibrary.org/b/isbn/0393318885-L.jpg" alt="Wealth and Poverty cover">
+    <div class="book-card-body">
+      <div class="book-num-tag">15 of 21</div>
+      <div class="book-card-title">The Wealth and Poverty of Nations</div>
+      <div class="book-card-author">David S. Landes</div>
+      <div class="book-card-role">國富國窮</div>
+      <div class="summary-cta">摘要</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ READING ORDER ═══════════════════ -->
+<div class="reading-section" id="reading">
+  <p class="reading-eyebrow">建議閱讀次序</p>
+  <p class="reading-title">點樣開始讀</p>
+  <div class="reading-cols">
+
+    <div class="reading-col">
+      <h3>先讀人的故事</h3>
+      <ol>
+        <li><span class="r-num">1.</span> The Autobiography of Benjamin Franklin</li>
+        <li><span class="r-num">2.</span> Titan（洛克菲勒）</li>
+        <li><span class="r-num">3.</span> Andrew Carnegie</li>
+      </ol>
+    </div>
+
+    <div class="reading-col">
+      <h3>再讀行為與心理</h3>
+      <ol>
+        <li><span class="r-num">4.</span> Influence</li>
+        <li><span class="r-num">5.</span> Getting to Yes</li>
+        <li><span class="r-num">6.</span> Models of My Life</li>
+      </ol>
+    </div>
+
+    <div class="reading-col">
+      <h3>然後讀科學底層</h3>
+      <ol>
+        <li><span class="r-num">7.</span> The Selfish Gene</li>
+        <li><span class="r-num">8.</span> Genome</li>
+        <li><span class="r-num">9.</span> Deep Simplicity</li>
+        <li><span class="r-num">10.</span> The Third Chimpanzee</li>
+      </ol>
+    </div>
+
+    <div class="reading-col">
+      <h3>最後讀文明與投資</h3>
+      <ol>
+        <li><span class="r-num">11.</span> Guns, Germs &amp; Steel</li>
+        <li><span class="r-num">12.</span> The Wealth and Poverty of Nations</li>
+        <li><span class="r-num">13.</span> Only the Paranoid Survive</li>
+        <li><span class="r-num">14.</span> The Warren Buffett Portfolio</li>
+        <li><span class="r-num">15.</span> Fiasco</li>
+      </ol>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ MODAL ═══════════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">close ×</button>
+    <div class="modal-inner">
+      <img class="modal-cover" id="modalCover" src="" alt="">
+      <div class="modal-body">
+        <div class="modal-num" id="modalNum"></div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-author" id="modalAuthor"></div>
+        <div class="modal-quote" id="modalQuote"></div>
+        <div class="modal-section-title">核心洞見</div>
+        <div class="modal-text" id="modalIdea"></div>
+        <div class="modal-section-title">投資啟示</div>
+        <div class="modal-text" id="modalTakeaway"></div>
+        <div class="modal-tags" id="modalTags"></div>
+        <div class="modal-links-container">
+          <a class="modal-link" id="modalLink" href="#" target="_blank">Google Books ↗</a>
+          <a class="modal-link" id="modalAmazonLink" href="#" target="_blank" style="color: #f0c14b;">Amazon ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>21 本書 · 6 個領域 · 目標：建立多元思維模型 &nbsp;·&nbsp; 整理自 Charlie Munger &amp; Peter Kaufman 推薦書目</footer>
+
+<script>
+const books = {
+  titan: {
+    num: '01 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0679757554-L.jpg',
+    title: 'Titan: The Life of John D. Rockefeller, Sr.',
+    author: 'Ron Chernow · Random House, 1998',
+    quote: '「他不是靠運氣，而是靠對系統的極致理解。」',
+    idea: '洛克菲勒建立標準石油帝國的過程，是垂直整合與規模優勢的教科書。芒格極度欣賞洛克菲勒以「效率思維」壓縮成本、以「網絡效應」鎖定競爭對手的商業方式。這本書同時揭示了宗教信仰、個人節制與商業野心之間的複雜張力。',
+    takeaway: '研究偉大企業家的傳記，核心係學習佢哋點樣思考，而唔係模仿佢哋的具體行動。洛克菲勒的教訓：找到結構性優勢，然後不遺餘力地鞏固它。',
+    tags: ['傳記', '商業史', '壟斷與競爭'],
+    link: 'https://www.google.com/books/edition/Titan/oGpmAAAAMAAJ',
+    amazon: 'https://www.amazon.com/s?k=Titan+Ron+Chernow+John+D+Rockefeller'
+  },
+  franklin: {
+    num: '08 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0743223225-L.jpg',
+    title: 'The Autobiography of Benjamin Franklin',
+    author: 'Benjamin Franklin · 1897',
+    quote: '「早起的人，有健康、財富和智慧。」',
+    idea: '芒格最常引用的書目之一。富蘭克林以系統性方法改進自己——用美德清單自我追蹤，用實驗精神解決問題，用外交才能構建聯盟。他是歷史上最具代表性的「終身學習者」典範，完全體現了芒格所倡導的跨學科思維。',
+    takeaway: '自我教育不需要學院。富蘭克林的方法：識別你最想擁有的美德，寫下來，每天追蹤，持續修正。這係芒格「自我改進清單」的靈感來源。',
+    tags: ['傳記', '自我教育', '終身學習'],
+    link: 'https://www.google.com/books/edition/The_Autobiography_of_Benjamin_Franklin/d9lNAQAAMAAJ',
+    amazon: 'https://www.amazon.com/s?k=The+Autobiography+of+Benjamin+Franklin'
+  },
+  carnegie: {
+    num: '20 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0195069714-L.jpg',
+    title: 'Andrew Carnegie',
+    author: 'Joseph Frazier Wall · Oxford University Press, 1970',
+    quote: '「賺錢是一種天賦，花錢則是一種藝術。」',
+    idea: '移民之子如何建立美國鋼鐵工業的霸主地位，再以慈善捐出全部財富。華爾街傳記中篇幅最長、研究最深入之一。芒格視此書為理解「如何在工業化時代構建競爭優勢」的重要案例。',
+    takeaway: '卡內基的成功核心在於對技術轉折點的敏銳把握——當貝塞麥鋼鐵法出現，他立刻全押鋼鐵，放棄其他所有業務。專注比分散更能創造財富。',
+    tags: ['傳記', '工業史', '慈善'],
+    link: 'https://www.google.com/books/edition/Andrew_Carnegie/VbpDDwAAQBAJ',
+    amazon: 'https://www.amazon.com/s?k=Andrew+Carnegie+Joseph+Frazier+Wall'
+  },
+  lsschwab: {
+    num: '18 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0961100206-L.jpg',
+    title: 'Les Schwab: Pride in Performance',
+    author: 'Les Schwab · L. Schwab, 1986',
+    quote: '「員工擁有公司，公司才能真正屬於客戶。」',
+    idea: '芒格把萊斯·施瓦布視為「文化競爭優勢」的最佳現實案例。施瓦布建立了一個利潤分享文化，令員工真正以主人翁態度工作，從而在服務 and 效率上徹底碾壓連鎖競爭對手。',
+    takeaway: '真正的護城河有時不是品牌或專利，而是文化。一旦建立了正確的激勵結構，員工的行為會自我強化，外部競爭者極難複製。',
+    tags: ['傳記', '企業文化', '競爭優勢'],
+    link: 'https://www.google.com/books/edition/Les_Schwab/ihSvPQAACAAJ',
+    amazon: 'https://www.amazon.com/s?k=Les+Schwab+Pride+in+Performance'
+  },
+  simon: {
+    num: '19 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0262691914-L.jpg',
+    title: 'Models of My Life',
+    author: 'Herbert A. Simon · MIT Press, 1996',
+    quote: '「理性是有限的；滿意就夠了，完美往往是陷阱。」',
+    idea: '諾貝爾經濟學獎得主、「有限理性」概念創始人的自傳。Simon橫跨認知科學、人工智能、組織行為與經濟學，他的學術歷程本身就是多學科思維的示範。芒格的「格柵理論」與Simon的有限理性框架高度共鳴。',
+    takeaway: '人類不是最優化機器，而是「足夠好」機器。在投資中，追求「足夠好的決策流程」往往比追求「最優答案」更實用且可持續。',
+    tags: ['傳記', '認知科學', '決策理論'],
+    link: 'https://www.google.com/books/edition/Models_of_My_Life/dFgwBQAAQBAJ',
+    amazon: 'https://www.amazon.com/s?k=Models+of+My+Life+Herbert+A+Simon'
+  },
+  firestone: {
+    num: '06 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0405040466-L.jpg',
+    title: 'Men and Rubber: The Story of Business',
+    author: 'Harvey S. Firestone & Samuel Crowther · Doubleday, 1926',
+    quote: '「勝利屬於那些敢於承擔責任的人。」',
+    idea: '費爾斯通輪胎創辦人在汽車工業萌芽期的商業回憶錄。芒格把此書視為展示第一代美國企業家實踐智慧的珍貴一手史料，當中的供應鏈思維和客戶關係哲學即使放在百年後依然適用。',
+    takeaway: '行業早期的創業故事往往最能反映商業的本質——在資源有限、規則未定的環境下，誰的判斷力和執行力更強，誰就能成為標準。',
+    tags: ['傳記', '創業史', '工業化時代'],
+    link: 'https://www.google.com/books/edition/Men_and_Rubber/ZZQ1AQAAIAAJ',
+    amazon: 'https://www.amazon.com/s?k=Men+and+Rubber+Harvey+S+Firestone'
+  },
+  selfish: {
+    num: '03 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0198788606-L.jpg',
+    title: 'The Selfish Gene',
+    author: 'Richard Dawkins · Oxford University Press, 1989',
+    quote: '「我們都是基因的生存機器。」',
+    idea: '以基因為單位重新詮釋進化論，挑戰「物種利益」的傳統觀點。Dawkins同時引入「迷因（meme）」概念，用來解釋文化如何像基因一樣自我複製和傳播，對芒格理解人類社會行為的演化邏輯至關重要。',
+    takeaway: '進化邏輯是一個極強的思維工具：問任何人類行為「這行為增加了什麼的複製優勢？」——可以解釋極多看似非理性的現象，包括市場中的羊群行為。',
+    tags: ['科學', '進化論', '行為科學'],
+    link: 'https://www.google.com/books/edition/The_Selfish_Gene/WkHO9HI7koEC',
+    amazon: 'https://www.amazon.com/s?k=The+Selfish+Gene+Richard+Dawkins'
+  },
+  thirdchimp: {
+    num: '05 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0060984031-L.jpg',
+    title: 'The Third Chimpanzee',
+    author: 'Jared M. Diamond · HarperCollins, 2006',
+    quote: '「人類與黑猩猩的基因差距不到2%，但結果卻天壤之別。」',
+    idea: '從生物學視角審視人類的語言、藝術、農業與自我毀滅傾向，探索為何如此微小的基因差距造就如此巨大的文明差距。是《槍炮、病菌與鋼鐵》的思想前傳。',
+    takeaway: '理解人類「物種特性」有助於投資——人類對新奇事物的偏好、對故事的需求、對地位的追逐，這些都是消費行為的底層驅動力。',
+    tags: ['科學', '人類學', '進化'],
+    link: 'https://www.google.com/books/edition/The_Third_Chimpanzee/9TVNmDojtzUC',
+    amazon: 'https://www.amazon.com/s?k=The+Third+Chimpanzee+Jared+Diamond'
+  },
+  deepsimplicity: {
+    num: '09 of 21', cover: 'https://covers.openlibrary.org/b/isbn/1400062560-L.jpg',
+    title: 'Deep Simplicity',
+    author: 'John Gribbin · Penguin Books, 2009',
+    quote: '「複雜並不需要複雜的原因。」',
+    idea: '以混沌理論和複雜系統解釋自然界的湧現現象：為何簡單規則能產生無限複雜的結果？此書與芒格追求「多元思維模型」的核心理念高度契合，展示如何以少數原則理解複雜世界。',
+    takeaway: '市場是複雜系統，而非線性機器。小的初始條件差異可以導致截然不同的結果（蝴蝶效應）。過度自信的預測往往源於對系統複雜性的低估。',
+    tags: ['科學', '混沌理論', '複雜系統'],
+    link: 'https://www.google.com/books/edition/Deep_Simplicity/MlpJOXbkZ5oC',
+    amazon: 'https://www.amazon.com/s?k=Deep+Simplicity+John+Gribbin'
+  },
+  iceage: {
+    num: '10 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0713995858-L.jpg',
+    title: 'Ice Age',
+    author: 'John & Mary Gribbin · Allen Lane/Penguin Press, 2001',
+    quote: '「地球的歷史告訴我們，氣候變化是常態，穩定才是例外。」',
+    idea: '探索地球氣候週期如何塑造人類演化的路徑，從米蘭科維奇週期到冰河時代的到來與消退。是少數能讓讀者真正感受「地質時間尺度」的科普著作。',
+    takeaway: '長線思維的訓練：當你能以萬年為單位思考，就不會被市場的季度波動所迷惑。芒格相信，拉長時間框架是投資者的終極武器之一。',
+    tags: ['科學', '氣候', '地質學'],
+    link: 'https://www.google.com/books/edition/Ice_Age/0EVRAAAAMAAJ',
+    amazon: 'https://www.amazon.com/s?k=Ice+Age+John+Mary+Gribbin'
+  },
+  genome: {
+    num: '17 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0060894083-L.jpg',
+    title: 'Genome: The Autobiography of a Species in 23 Chapters',
+    author: 'Matt Ridley · HarperCollins, 2017',
+    quote: '「基因不是命運，而是可能性的地圖。」',
+    idea: '每章對應一條人類染色體，以敘事方式串連基因科學的重大發現，從遺傳病到行為基因，從記憶到語言。Matt Ridley是芒格最欣賞的科學作家之一，擅長以清晰文字拆解複雜科學。',
+    takeaway: '生物科技是芒格關注的長線賽道。理解基因學不只是科學素養，更是理解未來醫療、保險、個人化產品等行業的投資框架。',
+    tags: ['科學', '基因學', '生物技術'],
+    link: 'https://www.google.com/books/edition/Genome_The_Autobiography_of_a_Species_in/LgukDgAAQBAJ',
+    amazon: 'https://www.amazon.com/s?k=Genome+Matt+Ridley'
+  },
+  degrees: {
+    num: '19 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0670031070-L.jpg',
+    title: 'A Matter of Degrees',
+    author: 'Gino Segre · Penguin, 2003',
+    quote: '「溫度是宇宙最誠實的語言。」',
+    idea: '以「溫度」這一概念為主軸，串聯物理學、生物學、氣候科學與宇宙學。示範如何從單一核心概念出發，建構跨越多個學科的知識網絡——正是芒格「格柵理論」的具體實踐。',
+    takeaway: '一個好的思維工具是可以「移植」到陌生領域的。學習以「溫度」理解物理，再學以「摩擦力」理解商業，再學以「半衰期」理解競爭優勢——這就是芒格式閱讀。',
+    tags: ['科學', '物理學', '跨學科'],
+    link: 'https://www.google.com/books/edition/A_Matter_of_Degrees/ghtZAAAAYAAJ',
+    amazon: 'https://www.amazon.com/s?k=A+Matter+of+Degrees+Gino+Segre'
+  },
+  paranoid: {
+    num: '11 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0385483821-L.jpg',
+    title: 'Only the Paranoid Survive',
+    author: 'Andrew S. Grove · HarperCollins, 1998',
+    quote: '「成功孕育自滿，自滿孕育失敗。」',
+    idea: '英特爾CEO格魯夫提出「戰略轉折點」概念：當一個「十倍力」競爭因素出現（新技術、新競爭者、新法規），企業必須快速識別並決定是轉型還是堅守。格魯夫以英特爾從記憶體轉向微處理器的親身決策為核心案例。',
+    takeaway: '投資者的版本：當你持有的企業所在行業出現「十倍力」變化，要主動追問管理層是否已看見、是否已在行動。格魯夫的框架讓你更早識別行業的結構性轉折。',
+    tags: ['商業', '科技策略', '競爭分析'],
+    link: 'https://www.google.com/books/edition/Only_the_Paranoid_Survive/_ewsQAAACAAJ',
+    amazon: 'https://www.amazon.com/s?k=Only+the+Paranoid+Survive+Andrew+Grove'
+  },
+  buffettportfolio: {
+    num: '12 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0471392642-L.jpg',
+    title: 'The Warren Buffett Portfolio',
+    author: 'Robert G. Hagstrom · Wiley, 2000',
+    quote: '「廣泛分散是無知的保護，而非智慧的體現。」— Warren Buffett',
+    idea: '系統性闡述集中投資策略：少量持倉、深度研究、長期持有。Hagstrom以概率論和凱利公式為框架，解釋為何集中持倉在期望值上優於被動分散，並提供了大量歷史案例與統計支撐。',
+    takeaway: '當你對一家企業有高置信度的理解，增加倉位是合理的。芒格說：「機會是稀缺的。當你看到一個好機會，就應該重倉。」這本書給了數學上的論據。',
+    tags: ['投資', '集中持倉', '價值投資'],
+    link: 'https://www.google.com/books/edition/The_Warren_Buffett_Portfolio/ieLS_WwUmmwC',
+    amazon: 'https://www.amazon.com/s?k=The+Warren+Buffett+Portfolio+Robert+Hagstrom'
+  },
+  fiasco: {
+    num: '16 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0140278737-L.jpg',
+    title: 'Fiasco: The Inside Story of a Wall Street Trader',
+    author: 'Frank Partnoy · Penguin, 1999',
+    quote: '「複雜性是金融產品最好的偽裝。」',
+    idea: '前摩根士丹利衍生品交易員的親歷告白，揭露90年代衍生品市場如何以複雜結構掩蓋利益衝突，系統性地向客戶轉移風險。是理解金融業道德風險最直白的一本書。',
+    takeaway: '永遠要問：「這個金融產品的複雜性是為了解決實際問題，還是為了掩蓋費用 and 風險？」芒格反覆強調，你不理解的東西不應該碰。',
+    tags: ['商業', '金融風險', '道德風險'],
+    link: 'https://www.google.com/books/edition/Fiasco/UH2MEAAAQBAJ',
+    amazon: 'https://www.amazon.com/s?k=Fiasco+Frank+Partnoy'
+  },
+  guns: {
+    num: '04 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0393354326-L.jpg',
+    title: 'Guns, Germs, and Steel',
+    author: 'Jared M. Diamond · W. W. Norton, 2017',
+    quote: '「歷史的走向不是由種族決定，而是由地理決定。」',
+    idea: '以地理環境和生態資源的差異解釋文明發展的不平等，挑戰種族決定論。Diamond提供了一個宏觀歷史的多學科解讀框架——糧食生產、動物馴化、疾病傳播如何共同決定了哪個文明能征服哪個文明。',
+    takeaway: '思考任何長線趨勢，先問「結構性因素是什麼？」——而不是「誰的能力更強？」投資中同樣適用：理解行業結構，比猜測哪個管理層更聰明更有價值。',
+    tags: ['歷史', '地理決定論', '文明比較'],
+    link: 'https://www.google.com/books/edition/Guns_Germs_and_Steel_The_Fates_of_Human/XLo9DgAAQBAJ',
+    amazon: 'https://www.amazon.com/s?k=Guns+Germs+and+Steel+Jared+Diamond'
+  },
+  scots: {
+    num: '14 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0609809997-L.jpg',
+    title: 'How the Scots Invented the Modern World',
+    author: 'Arthur Herman · Crown, 2007',
+    quote: '「啟盟並非來自法國沙龍，而是來自蘇格蘭的實用主義精神。」',
+    idea: '追溯蘇格蘭啟蒙運動如何催生現代資本主義、工程學、民主制度與科學方法，亞當·史密斯、詹姆斯·瓦特、大衛·休謨均出自這片土地。以小民族影響全球文明的視角重新書寫西方歷史。',
+    takeaway: '制度、文化與教育體系如何孕育創新？這是芒格評估一個社會長線競爭力的框架——同樣適用於比較不同國家或不同企業文化的長線潛力。',
+    tags: ['歷史', '啟蒙運動', '制度分析'],
+    link: 'https://www.google.com/books/edition/How_the_Scots_Invented_the_Modern_World/3e9DAT257LkC',
+    amazon: 'https://www.amazon.com/s?k=How+the+Scots+Invented+the+Modern+World'
+  },
+  mountains: {
+    num: '21 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0452011051-L.jpg',
+    title: 'Men to Match My Mountains',
+    author: 'Irving Stone · Penguin, 1986',
+    quote: '「山脈不會移動，但人可以。」',
+    idea: '以史詩筆法記錄1840至1900年間美國西部拓荒者的故事，呈現在惡劣自然環境下，人類韌性、開拓精神與制度建設的力量。芒格欣賞此書中對「在不確定性下作出決策」的生動描寫。',
+    takeaway: '在資源匱乏、規則空白的邊疆環境中，誰能快速建立可信的合作網絡，誰就能生存並繁榮——商業競爭的早期階段與此高度相似。',
+    tags: ['歷史', '美國史', '創業精神'],
+    link: 'https://www.google.com/books/edition/Men_to_Match_My_Mountains/88iK7Wp9tGgC',
+    amazon: 'https://www.amazon.com/s?k=Men+to+Match+My+Mountains+Irving+Stone'
+  },
+  influence: {
+    num: '02 of 21', cover: 'https://covers.openlibrary.org/b/isbn/006124189X-L.jpg',
+    title: 'Influence: The Psychology of Persuasion',
+    author: 'Robert B. Cialdini · HarperCollins, 2009',
+    quote: '「人類的點擊式行為是被自動觸發的，不是被思考出來的。」',
+    idea: '六大影響原則——互惠、承諾與一致、社會認同、喜好、權威、稀缺——構成人類決策的核心捷徑。芒格在多個演講中直接引用Cialdini的框架，視之為理解人類非理性行為最重要的科普著作。',
+    takeaway: '雙重用途：理解影響力既能讓你識別自己在哪些時刻被操控（消費決策、投資情緒），也能幫你設計更有效的溝通和談判策略。',
+    tags: ['心理學', '行為科學', '說服力'],
+    link: 'https://www.google.com/books/edition/Influence/5dfv0HJ1TEoC',
+    amazon: 'https://www.amazon.com/s?k=Influence+Robert+Cialdini'
+  },
+  gettingyes: {
+    num: '07 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0143118757-L.jpg',
+    title: 'Getting to Yes',
+    author: 'Roger Fisher, William Ury & Bruce Patton · Random House, 2003',
+    quote: '「聚焦利益，而非立場。」',
+    idea: '哈佛談判項目的核心成果，奠定「原則性談判」方法論：將人與問題分開、聚焦根本利益而非表面立場、創造多贏選項、以客觀標準代替意志博弈。被商界、外交界與法律界廣泛採用。',
+    takeaway: '芒格認為，理解對手的真正利益（而非表面要求）是談判和投資分析的共同核心。分析一家公司的競爭對手時，問「它真正想要什麼？」而不是「它說了什麼？」',
+    tags: ['談判', '心理學', '衝突解決'],
+    link: 'https://www.google.com/books/edition/Getting_to_Yes/tMce5n2SxmwC',
+    amazon: 'https://www.amazon.com/s?k=Getting+to+Yes+Roger+Fisher'
+  },
+  limits: {
+    num: '13 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0195093852-L.jpg',
+    title: 'Living within Limits',
+    author: 'Garrett Hardin · Oxford University Press, 1995',
+    quote: '「自由不是無限的，它以人口和資源的關係為邊界。」',
+    idea: '哈丁從生態學視角分析人口增長與資源有限性的根本矛盾，延伸至「公地悲劇」框架——個體理性如何導致集體非理性。是思考系統性約束和外部性問題的基礎讀物。',
+    takeaway: '「公地悲劇」是芒格最常使用的模型之一：任何沒有適當產權或管治的公共資源，都傾向被過度消耗。用於分析監管套利、環境成本外部化等投資議題極為有效。',
+    tags: ['經濟學', '生態學', '系統思維'],
+    link: 'https://www.google.com/books/edition/Living_within_Limits/oA9-TUK3TrkC',
+    amazon: 'https://www.amazon.com/s?k=Living+within+Limits+Garrett+Hardin'
+  },
+  wealthpoverty: {
+    num: '15 of 21', cover: 'https://covers.openlibrary.org/b/isbn/0393318885-L.jpg',
+    title: 'The Wealth and Poverty of Nations',
+    author: 'David S. Landes · W. W. Norton, 1999',
+    quote: '「文化是最深層的競爭優勢。」',
+    idea: '從文化、制度與地理三個維度解釋各國貧富差距的歷史根源。Landes以比較經濟史的視角，追溯為何歐洲、尤其是英國能率先工業化，以及為何某些地區至今仍未能追上。',
+    takeaway: '評估新興市場投資機會時，這本書提供了「制度質量」框架：一個社會的財產權保護、法治成熟度、知識開放性，是比短期GDP增速更可靠的長線指標。',
+    tags: ['經濟史', '比較研究', '制度分析'],
+    link: 'https://www.google.com/books/edition/Wealth_And_Poverty_Of_Nations/dwC-xsY48TsC',
+    amazon: 'https://www.amazon.com/s?k=The+Wealth+and+Poverty+of+Nations+David+Landes'
+  }
+};
+
+function openModal(id) {
+  const b = books[id];
+  if (!b) return;
+  document.getElementById('modalCover').src = b.cover;
+  document.getElementById('modalCover').alt = b.title;
+  document.getElementById('modalNum').textContent = b.num;
+  document.getElementById('modalTitle').textContent = b.title;
+  document.getElementById('modalAuthor').textContent = b.author;
+  document.getElementById('modalQuote').textContent = b.quote;
+  document.getElementById('modalIdea').textContent = b.idea;
+  document.getElementById('modalTakeaway').textContent = b.takeaway;
+  const tagsEl = document.getElementById('modalTags');
+  tagsEl.innerHTML = b.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+  
+  // Set both links
+  document.getElementById('modalLink').href = b.link;
+  document.getElementById('modalAmazonLink').href = b.amazon;
+  
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
