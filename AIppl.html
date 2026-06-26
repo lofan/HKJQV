@@ -1,0 +1,335 @@
+html_content = """<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 核心人物活名單 (2026 最新版)</title>
+    <style>
+        :root {
+            --bg-color: #faf8f5;
+            --text-color: #2c2a29;
+            --accent-color: #4a6b82;
+            --secondary-color: #8c7b6e;
+            --border-color: #e6e1da;
+            --card-bg: #ffffff;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 28px;
+        }
+        h2 {
+            color: var(--accent-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 12px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        h3 {
+            color: var(--secondary-color);
+            margin-top: 24px;
+            font-size: 18px;
+        }
+        blockquote {
+            background-color: #f0f4f8;
+            border-left: 4px solid var(--accent-color);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        strong {
+            font-size: 16px;
+            color: #1a1a1a;
+        }
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .intro-section p {
+            margin-bottom: 12px;
+        }
+        .footer-note {
+            background-color: #fdfbf7;
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AI 核心人物活名單（2026 最新版）</h1>
+    
+    <blockquote>
+        <strong>範圍：</strong>這份名單以美國和西方 AI 圈為主。中國那邊的生態暫時按下不表。<br>
+        <strong>⚠️ 提醒：</strong>2025–2026 年是 AI 人才流動最瘋狂的兩年，跳槽、創業、被反向收購幾乎每週都在發生。下面的"現狀"盡量取最新，但很可能很快過期，這是一份"活名單"，建議你自己隨時往裡加、往裡改。
+    </blockquote>
+
+    <h2>為什麼 AI 大 V 大多是學業出身？</h2>
+    <div class="intro-section">
+        <p>原因大致有五條：</p>
+        <ol>
+            <li><strong>學科太年輕，地基是論文砌的</strong>：現代 AI 的整套方法（深度學習、Transformer、擴散模型、RLHF）都是最近 10 多年從學術論文長出來的。誰寫了奠基論文，誰就天然站在台子中央。這個圈子裡的"信譽貨幣"是引用量和代表作，不是 MBA。</li>
+            <li><strong>稀缺能力前置在博士訓練裡</strong>：能從零設計、訓練、調試一個前沿模型的人極少，而這種能力幾乎只在頂級實驗室的博士/博士後階段才練得出來。所以人才管道本身就是學術的。</li>
+            <li><strong>創業潮其實是"學者下海"潮</strong>：絕大多數明星 AI 公司的創辦人，原本都是 OpenAI、Google Brain、DeepMind、FAIR、Stanford、Berkeley 的研究員，多數是研究員被資本和時代推去創業，而不是商人轉行做 AI。</li>
+            <li><strong>"科普/教育型"大 V 也需要學術底子才有說服力</strong>：Karpathy、Andrew Ng、3Blue1Brown 這種內容型大 V 能火，是因為他們真的懂底層、能把硬東西講清楚，這同樣建立在學術功底上。</li>
+            <li><strong>媒體和資本主動追捧"科學家敘事"</strong>：投資人投"寫出 Transformer 的人"，媒體寫"諾獎得主出來創業"，這套敘事比"連續創業家"更性感，於是學術明星被進一步放大。</li>
+        </ol>
+        <p><strong>一句話：</strong>在一個還被基礎研究定義的行業裡，論文就是最硬的護城河。有些人一出手就有人給錢，靠的是別人複製不了的學術背書。</p>
+    </div>
+
+    <h2>一、深度學習「教父級」/ 奠基學者</h2>
+    <ul>
+        <li><strong>Geoffrey Hinton</strong> (<a href="https://x.com/geoffreyhinton" target="_blank">x.com/geoffreyhinton</a>)<br>反向傳播、深度學習"教父"。 2018 圖靈獎、2024 諾貝爾物理獎。已離開 Google（2023），專注呼籲 AI 風險。</li>
+        <li><strong>Yann LeCun</strong> (<a href="https://x.com/ylecun" target="_blank">x.com/ylecun</a>)<br>卷積網之父，2018 年圖靈獎。 2025 年 11 月離開 Meta，創辦 AMI Labs（世界模型，2026 年 3 月融資超 10 億美元）。</li>
+        <li><strong>Yoshua Bengio</strong> (<a href="https://x.com/Yoshua_Bengio" target="_blank">x.com/Yoshua_Bengio</a>)<br>深度學習先驅，2018 年圖靈獎。 Mila 創辦人，2025 年創辦 LawZero，擔任《國際 AI 安全報告》主席。</li>
+        <li><strong>Richard Sutton</strong> (<a href="https://x.com/RichardSSutton" target="_blank">x.com/RichardSSutton</a>)<br>強化學習奠基、經典教材作者，2024 圖靈獎。 University of Alberta / Keen Technologies。</li>
+        <li><strong>Andrew Barto</strong><br>強化學習奠基，2024 圖靈獎。 UMass Amherst（榮休）。</li>
+        <li><strong>Jürgen Schmidhuber</strong> (<a href="https://x.com/SchmidhuberAI" target="_blank">x.com/SchmidhuberAI</a>)<br>LSTM，常公開爭論"原創權"。 KAUST / IDSIA。</li>
+        <li><strong>Jeff Dean</strong> (<a href="https://x.com/JeffDean" target="_blank">x.com/JeffDean</a>)<br>Google Brain、MapReduce、TensorFlow。現為 Google DeepMind 首席科學家。</li>
+        <li><strong>Ian Goodfellow</strong> (<a href="https://x.com/goodfellow_ian" target="_blank">x.com/goodfellow_ian</a>)<br>GAN 發明者。 2025 年離開 Google，創業（stealth）。</li>
+        <li><strong>Andrew Ng</strong> (<a href="https://x.com/AndrewYNg" target="_blank">x.com/AndrewYNg</a>)<br>Google Brain 聯創、Coursera，最知名 AI 教育者。現做 DeepLearning.AI、AI Fund。</li>
+        <li><strong>Fei-Fei Li</strong> (<a href="https://x.com/drfeifei" target="_blank">x.com/drfeifei</a>)<br>ImageNet、"AI 教母"。 Stanford，World Labs（空間智能，2026 年 2 月融資約 10 億美元）。</li>
+        <li><strong>Daphne Koller</strong> (<a href="https://x.com/DaphneKoller" target="_blank">x.com/DaphneKoller</a>)<br>機率圖模型、Coursera 聯創。現 insitro（AI 製藥）創始 CEO。</li>
+        <li><strong>Michael I. Jordan</strong><br>機器學習理論泰斗。 Berkeley / Inria Paris。</li>
+    </ul>
+
+    <h2>二、前沿大模型實驗室創始人 / 領袖</h2>
+    <ul>
+        <li><strong>Sam Altman</strong> (<a href="https://x.com/sama" target="_blank">x.com/sama</a>)<br>OpenAI CEO，創業/投資出身（非學術），業界最具影響力 CEO。在任。</li>
+        <li><strong>Greg Brockman</strong> (<a href="https://x.com/gdb" target="_blank">x.com/gdb</a>)<br>OpenAI 總裁、共同創辦人。在任。</li>
+        <li><strong>Ilya Sutskever</strong> (<a href="https://x.com/ilyasut" target="_blank">x.com/ilyasut</a>)<br>OpenAI 前首席科學家。創辦 Safe Superintelligence（SSI），估值約 320 億美元。</li>
+        <li><strong>Mira Murati</strong> (<a href="https://x.com/miramurati" target="_blank">x.com/miramurati</a>)<br>OpenAI 前 CTO。創辦 Thinking Machines Lab（2026 初經歷高階主管出走動盪）。</li>
+        <li><strong>Dario Amodei</strong> (<a href="https://x.com/DarioAmodei" target="_blank">x.com/DarioAmodei</a>)<br>Anthropic CEO、共同創辦人。在任。</li>
+        <li><strong>Daniela Amodei</strong> (<a href="https://x.com/DanielaAmodei" target="_blank">x.com/DanielaAmodei</a>)<br>Anthropic 總裁、共同創辦人。在任。</li>
+        <li><strong>Demis Hassabis</strong> (<a href="https://x.com/demishassabis" target="_blank">x.com/demishassabis</a>)<br>Google DeepMind CEO，2024 諾貝爾化學獎（AlphaFold）。在任。</li>
+        <li><strong>Shane Legg</strong> (<a href="https://x.com/ShaneLegg" target="_blank">x.com/ShaneLegg</a>)<br>DeepMind 共同創辦人、首席 AGI 科學家。在任。</li>
+        <li><strong>John Jumper</strong> (<a href="https://x.com/JohnJumperSci" target="_blank">x.com/JohnJumperSci</a>)<br>AlphaFold，2024 諾貝爾化學獎。 2026 年 6 月宣布離開 DeepMind 加入 Anthropic。</li>
+        <li><strong>Elon Musk</strong> (<a href="https://x.com/elonmusk" target="_blank">x.com/elonmusk</a>)<br>xAI 創辦人、OpenAI 早期出資人（非學術）。在任（2026 年 xAI 併入 SpaceX）。</li>
+        <li><strong>Igor Babuschkin</strong> (<a href="https://x.com/ibab" target="_blank">x.com/ibab</a>)<br>xAI 聯合創始人。 2025 年離開 xAI，創辦 Babuschkin Ventures、River AI。</li>
+        <li><strong>Arthur Mensch</strong> (<a href="https://x.com/arthurmensch" target="_blank">x.com/arthurmensch</a>)<br>Mistral AI 創始 CEO（前 DeepMind）。在任，歐洲開源旗手。</li>
+        <li><strong>Emad Mostaque</strong> (<a href="https://x.com/EMostaque" target="_blank">x.com/EMostaque</a>)<br>Stability AI 創始人（Stable Diffusion）。已離開 Stability，創辦 Intelligent Internet。</li>
+        <li><strong>Aravind Srinivas</strong> (<a href="https://x.com/AravSrinivas" target="_blank">x.com/AravSrinivas</a>)<br>Perplexity AI 創始 CEO。在任。</li>
+        <li><strong>Mustafa Suleyman</strong> (<a href="https://x.com/mustafasuleyman" target="_blank">x.com/mustafasuleyman</a>)<br>DeepMind 聯創、Inflection 創始。現任 Microsoft AI CEO。</li>
+        <li><strong>Alexandr Wang</strong> (<a href="https://x.com/alexandr_wang" target="_blank">x.com/alexandr_wang</a>)<br>Scale AI 創辦人（MIT 輟學，非學術）。 2025.6 任 Meta 首位首席 AI 官，領導 Meta Superintelligence Labs。</li>
+        <li><strong>Shengjia Zhao</strong> (<a href="https://x.com/shengjia_zhao" target="_blank">x.com/shengjia_zhao</a>)<br>ChatGPT / GPT-4 共同創造者。 Meta Superintelligence Lab 首席科學家。</li>
+        <li><strong>Daniel Gross</strong> (<a href="https://x.com/danielgross" target="_blank">x.com/danielgross</a>) / <strong>Nat Friedman</strong> (<a href="https://x.com/natfriedman" target="_blank">x.com/natfriedman</a>)<br>AI 投資人組合，曾被各大廠爭搶。現皆加入 Meta Superintelligence Labs。</li>
+        <li><strong>Liang Wenfeng（梁文鋒）</strong><br>DeepSeek 創辦人，量化金融/工程出身。在任。</li>
+        <li><strong>Yang Zhilin（楊植麟）</strong><br>Moonshot AI（Kimi）創辦人。在任（2026 年估值約 200 億美元）。</li>
+        <li><strong>Jakub Pachocki</strong> (<a href="https://x.com/merettm" target="_blank">x.com/merettm</a>)<br>OpenAI 首席科學家。 2024 年 5 月接替 Ilya 至今。</li>
+        <li><strong>Mark Chen</strong> (<a href="https://x.com/markchen90" target="_blank">x.com/markchen90</a>)<br>OpenAI 首席研究長（CRO）。 2025 年 3 月升任。</li>
+        <li><strong>Oriol Vinyals</strong> (<a href="https://x.com/OriolVinyalsML" target="_blank">x.com/OriolVinyalsML</a>)<br>Google DeepMind 研究副總裁，Gemini 技術共同負責人。在任。</li>
+        <li><strong>David Silver</strong> (<a href="https://x.com/dsilver829" target="_blank">x.com/dsilver829</a>)<br>AlphaGo/AlphaZero 核心，DeepMind 強化學習負責人。 2026 年初創辦 Ineffable Intelligence（11 億美元種子輪）。</li>
+    </ul>
+
+    <h2>三、Transformer 論文《Attention Is All You Need》八位作者</h2>
+    <ul>
+        <li><strong>Ashish Vaswani</strong> (<a href="https://x.com/ashVaswani" target="_blank">x.com/ashVaswani</a>)<br>論文第一作者。創辦 Adept（失敗），現創辦執掌 Essential AI。</li>
+        <li><strong>Noam Shazeer</strong> (<a href="https://x.com/NoamShazeer" target="_blank">x.com/NoamShazeer</a>)<br>MoE、Character.AI。 2026.6 離開 Google 加入 OpenAI。</li>
+        <li><strong>Niki Parmar</strong> (<a href="https://x.com/nikiparmar09" target="_blank">x.com/nikiparmar09</a>)<br>論文核心作者。創辦 Adept、Essential AI 後，轉任 Anthropic 技術員工。</li>
+        <li><strong>Jakob Uszkoreit</strong> (<a href="https://x.com/kyosu" target="_blank">x.com/kyosu</a>)<br>論文作者。創辦 Inceptive（用 AI 設計 RNA / 生醫）。</li>
+        <li><strong>Llion Jones</strong> (<a href="https://x.com/YesThisIsLion" target="_blank">x.com/YesThisIsLion</a>)<br>論文作者。共同創辦 Sakana AI（日本，獨角獸）。</li>
+        <li><strong>Aidan Gomez</strong> (<a href="https://x.com/aidangomez" target="_blank">x.com/aidangomez</a>)<br>最年輕作者（當時本科生）。共同創辦並執掌 Cohere（估值約 70 億美元）。</li>
+        <li><strong>Łukasz Kaiser</strong> (<a href="https://x.com/lukaszkaiser" target="_blank">x.com/lukaszkaiser</a>)<br>論文作者、Tensor2Tensor。 OpenAI 研究員（八人中唯一沒創業的）。</li>
+        <li><strong>Illia Polosukhin</strong> (<a href="https://x.com/ilblackdragon" target="_blank">x.com/ilblackdragon</a>)<br>論文作者。共同創辦 NEAR Protocol（區塊鏈）。</li>
+    </ul>
+
+    <h2>四、學術界頂尖研究者（高產量、高引用、常被引用為"大 V"）</h2>
+    <ul>
+        <li><strong>Christopher Manning</strong> (<a href="https://x.com/chrmanning" target="_blank">x.com/chrmanning</a>)<br>Stanford。 NLP 泰斗、GloVe。</li>
+        <li><strong>Percy Liang</strong> (<a href="https://x.com/percyliang" target="_blank">x.com/percyliang</a>)<br>Stanford。基礎模式評測、CRFM。</li>
+        <li><strong>Chris Ré</strong><br>Stanford。數據/系統，Together AI 聯創。</li>
+        <li><strong>Pieter Abbeel</strong> (<a href="https://x.com/pabbeel" target="_blank">x.com/pabbeel</a>)<br>Berkeley / Amazon AGI。機器人 / RL，Covariant 創始。</li>
+        <li><strong>Sergey Levine</strong> (<a href="https://x.com/svlevine" target="_blank">x.com/svlevine</a>)<br>Berkeley。深度強化學習、機器人。</li>
+        <li><strong>Dawn Song</strong> (<a href="https://x.com/dawnsongtweets" target="_blank">x.com/dawnsongtweets</a>)<br>Berkeley。 AI 安全與隱私。</li>
+        <li><strong>Jitendra Malik</strong> (<a href="https://x.com/JitendraMalikCV" target="_blank">x.com/JitendraMalikCV</a>)<br>Berkeley。電腦視覺奠基。</li>
+        <li><strong>Kaiming He（何愷明）</strong><br>MIT（前 FAIR）。 ResNet、MAE，CV 被引王。</li>
+        <li><strong>Ross Girshick</strong> (<a href="https://x.com/inkynumbers" target="_blank">x.com/inkynumbers</a>)<br>R-CNN 系列。</li>
+        <li><strong>Alexei Efros</strong> (<a href="https://x.com/AlexeiEfros" target="_blank">x.com/AlexeiEfros</a>)<br>Berkeley。視覺、生成。</li>
+        <li><strong>Regina Barzilay</strong> (<a href="https://x.com/BarzilayRegina" target="_blank">x.com/BarzilayRegina</a>)<br>MIT。 AI + 醫療/藥物。</li>
+        <li><strong>Tommi Jaakkola</strong><br>MIT。機器學習理論、擴散模型。</li>
+        <li><strong>Max Tegmark</strong> (<a href="https://x.com/tegmark" target="_blank">x.com/tegmark</a>)<br>MIT。物理 + AI、Future of Life Institute。</li>
+        <li><strong>Zoubin Ghahramani</strong> (<a href="https://x.com/ZoubinGhahrama1" target="_blank">x.com/ZoubinGhahrama1</a>)<br>Cambridge / Google。貝葉斯機器學習。</li>
+        <li><strong>Noah Smith</strong> (<a href="https://x.com/nlpnoah" target="_blank">x.com/nlpnoah</a>)<br>UW / AI2。 NLP。</li>
+        <li><strong>Yejin Choi</strong> (<a href="https://x.com/YejinChoinka" target="_blank">x.com/YejinChoinka</a>)<br>Stanford（前 UW/AI2）。常識推理 NLP。</li>
+        <li><strong>Sebastian Thrun</strong> (<a href="https://x.com/SebastianThrun" target="_blank">x.com/SebastianThrun</a>)<br>Stanford。自動駕駛、Udacity 創始。</li>
+        <li><strong>Jeff Clune</strong> (<a href="https://x.com/jeffclune" target="_blank">x.com/jeffclune</a>)<br>UBC / DeepMind。開放式學習。</li>
+        <li><strong>Chelsea Finn</strong> (<a href="https://x.com/chelseabfinn" target="_blank">x.com/chelseabfinn</a>)<br>Stanford。元學習、機器人。</li>
+        <li><strong>Tatsunori Hashimoto</strong> (<a href="https://x.com/tatsu_hashimoto" target="_blank">x.com/tatsu_hashimoto</a>)<br>Stanford。語言模式評測/對齊。</li>
+        <li><strong>Alec Radford</strong> (<a href="https://x.com/AlecRad" target="_blank">x.com/AlecRad</a>)<br>獨立研究 / Thinking Machines 顧問。 GPT / GPT-2 / CLIP / Whisper 主作者，業界公認最被低估的關鍵人物。</li>
+        <li><strong>John Schulman</strong> (<a href="https://x.com/johnschulman2" target="_blank">x.com/johnschulman2</a>)<br>Thinking Machines（前 OpenAI/Anthropic）。 PPO、ChatGPT 共同創造者。</li>
+        <li><strong>Noam Brown</strong> (<a href="https://x.com/polynoamial" target="_blank">x.com/polynoamial</a>)<br>OpenAI。博弈/推理，o 系列推理模型關鍵人。</li>
+        <li><strong>Jared Kaplan</strong><br>Anthropic 共同創辦人。 Scaling Laws（物理學家出身）。</li>
+        <li><strong>Tom Brown</strong> (<a href="https://x.com/nottombrown" target="_blank">x.com/nottombrown</a>)<br>Anthropic 共同創辦人。 GPT-3 負責人。</li>
+        <li><strong>Chris Olah</strong> (<a href="https://x.com/ch402" target="_blank">x.com/ch402</a>)<br>Anthropic 共同創辦人。可解釋性研究奠基。</li>
+        <li><strong>Robin Rombach</strong> (<a href="https://x.com/robrombach" target="_blank">x.com/robrombach</a>)<br>Black Forest Labs 創始。 Stable Diffusion 主作者，現做 FLUX。</li>
+        <li><strong>Aditya Ramesh</strong> (<a href="https://x.com/model_mechanic" target="_blank">x.com/model_mechanic</a>)<br>OpenAI（VP Research，Sora/Worldsim）。 DALL·E 主作者。</li>
+        <li><strong>Jonathan Ho</strong><br>擴散模型 DDPM 奠基。</li>
+        <li><strong>Jason Wei</strong> (<a href="https://x.com/_jasonwei" target="_blank">x.com/_jasonwei</a>)<br>Meta（前 OpenAI/Google）。 Chain-of-Thought、湧現能力。</li>
+        <li><strong>Denny Zhou</strong> (<a href="https://x.com/denny_zhou" target="_blank">x.com/denny_zhou</a>)<br>Google DeepMind。 LLM 推理（CoT、自洽性）。</li>
+        <li><strong>Quoc Le</strong> (<a href="https://x.com/quocleix" target="_blank">x.com/quocleix</a>)<br>Google DeepMind。 seq2seq、AutoML、AlphaGeometry。</li>
+    </ul>
+
+    <h2>五、教育 / 科普 / 內容型大 V（"會講"比"會做"更出圈）</h2>
+    <ul>
+        <li><strong>Andrej Karpathy</strong> (<a href="https://x.com/karpathy" target="_blank">x.com/karpathy</a>)<br>前 Tesla AI 總監、OpenAI 創始成員。 YouTube/X 頂流講師，"AI 科普第一人"。創辦 Eureka Labs，2026.5 暫停後加入 Anthropic。</li>
+        <li><strong>Jeremy Howard</strong> (<a href="https://x.com/jeremyphoward" target="_blank">x.com/jeremyphoward</a>)<br>fast.ai 創始，最受歡迎的實戰課。</li>
+        <li><strong>Lex Fridman</strong> (<a href="https://x.com/lexfridman" target="_blank">x.com/lexfridman</a>)<br>MIT 背景。頭部 AI / 科技長訪談播客。</li>
+        <li><strong>Grant Sanderson（3Blue1Brown）</strong> (<a href="https://x.com/3blue1brown" target="_blank">x.com/3blue1brown</a>)<br>神經網路可視化講解殿堂級。</li>
+        <li><strong>Yannic Kilcher</strong> (<a href="https://x.com/ykilcher" target="_blank">x.com/ykilcher</a>)<br>論文精讀 YouTube 大 V。</li>
+        <li><strong>Károly Zsolnai-Fehér（Two Minute Papers）</strong> (<a href="https://x.com/karoly_zsolnai" target="_blank">x.com/karoly_zsolnai</a>)<br>"論文兩分鐘"科普。</li>
+        <li><strong>François Fleuret</strong> (<a href="https://x.com/francoisfleuret" target="_blank">x.com/francoisfleuret</a>)<br>《小型語言模型》等教學。</li>
+        <li><strong>Sebastian Raschka</strong> (<a href="https://x.com/rasbt" target="_blank">x.com/rasbt</a>)<br>LLM 教學與著作。</li>
+        <li><strong>Jay Alammar</strong> (<a href="https://x.com/JayAlammar" target="_blank">x.com/JayAlammar</a>)<br>"圖解 Transformer"作者。</li>
+        <li><strong>Chip Huyen</strong> (<a href="https://x.com/chipro" target="_blank">x.com/chipro</a>)<br>MLOps / 實戰書作者。</li>
+        <li><strong>Andriy Burkov</strong> (<a href="https://x.com/burkov" target="_blank">x.com/burkov</a>)<br>《百頁機器學習》作者。</li>
+        <li><strong>Shawn Wang（swyx）</strong> (<a href="https://x.com/swyx" target="_blank">x.com/swyx</a>)<br>"AI 工程師"概念推手、Latent Space 播客。</li>
+        <li><strong>Ethan Mollick</strong> (<a href="https://x.com/emollick" target="_blank">x.com/emollick</a>)<br>華頓商學院教授，《Co-Intelligence》作者，AI 改變工作/教育的頭解讀者。</li>
+        <li><strong>Simon Willison</strong> (<a href="https://x.com/simonw" target="_blank">x.com/simonw</a>)<br>Django 共同創作者，"prompt injection"提出者，LLM 實戰與安全。</li>
+        <li><strong>Riley Goodside</strong> (<a href="https://x.com/goodside" target="_blank">x.com/goodside</a>)<br>prompt injection / jailbreak 早期代表，實踐型。</li>
+    </ul>
+
+    <h2>六、開源 / 工程 / 框架基礎設施</h2>
+    <ul>
+        <li><strong>Clément Delangue</strong> (<a href="https://x.com/ClementDelangue" target="_blank">x.com/ClementDelangue</a>)<br>Hugging Face 聯合創始 CEO。在任，開源社群中樞。</li>
+        <li><strong>Thomas Wolf</strong> (<a href="https://x.com/Thom_Wolf" target="_blank">x.com/Thom_Wolf</a>)<br>Hugging Face 聯合創始、首席科學家。在任。</li>
+        <li><strong>Soumith Chintala</strong> (<a href="https://x.com/soumithchintala" target="_blank">x.com/soumithchintala</a>)<br>PyTorch 共同創造者。 2025 年離開 Meta，任 Thinking Machines Lab CTO。</li>
+        <li><strong>François Chollet</strong> (<a href="https://x.com/fchollet" target="_blank">x.com/fchollet</a>)<br>Keras 作者、ARC 挑戰賽。離開 Google 創業（Ndea）。</li>
+        <li><strong>Georgi Gerganov</strong> (<a href="https://x.com/ggerganov" target="_blank">x.com/ggerganov</a>)<br>llama.cpp / ggml 作者。 ggml.ai（2026 併入 Hugging Face）。</li>
+        <li><strong>Tianqi Chen</strong> (<a href="https://x.com/tqchenml" target="_blank">x.com/tqchenml</a>)<br>XGBoost、TVM、MLC。 CMU / Nvidia（OctoAI 2024 被 Nvidia 收購）。</li>
+        <li><strong>Jim Fan</strong> (<a href="https://x.com/DrJimFan" target="_blank">x.com/DrJimFan</a>)<br>具身智能/機器人科普大 V。 NVIDIA GEAR 實驗室。</li>
+        <li><strong>Tri Dao</strong> (<a href="https://x.com/tri_dao" target="_blank">x.com/tri_dao</a>)<br>FlashAttention 作者。 Princeton / Together AI。</li>
+        <li><strong>Wes McKinney</strong> (<a href="https://x.com/wesmckinn" target="_blank">x.com/wesmckinn</a>)<br>pandas 創造者。</li>
+        <li><strong>Travis Oliphant</strong> (<a href="https://x.com/teoliphant" target="_blank">x.com/teoliphant</a>)<br>NumPy/SciPy。 Quansight。</li>
+        <li><strong>Lin Qiao</strong> (<a href="https://x.com/lqiao" target="_blank">x.com/lqiao</a>)<br>PyTorch 團隊、Fireworks AI 創始。在任。</li>
+        <li><strong>vLLM 團隊</strong><br>高性能推理。開源/學界。</li>
+        <li><strong>Harrison Chase</strong> (<a href="https://x.com/hwchase17" target="_blank">x.com/hwchase17</a>)<br>LangChain 創辦人、CEO。 2025 年估值 12.5 億美元。</li>
+        <li><strong>Jerry Liu</strong> (<a href="https://x.com/jerryjliu0" target="_blank">x.com/jerryjliu0</a>)<br>LlamaIndex 創辦人、CEO。 RAG / 文件 agent 生態。</li>
+    </ul>
+
+    <h2>七、AI 安全 / 治理 / 思想類大 V</h2>
+    <ul>
+        <li><strong>Stuart Russell</strong><br>經典教材《AIMA》作者、AI 安全旗手。</li>
+        <li><strong>Eliezer Yudkowsky</strong> (<a href="https://x.com/ESYudkowsky" target="_blank">x.com/ESYudkowsky</a>)<br>AI 風險最激進的警示者。</li>
+        <li><strong>Nick Bostrom</strong><br>《超級智能》作者。</li>
+        <li><strong>Paul Christiano</strong> (<a href="https://x.com/paulfchristiano" target="_blank">x.com/paulfchristiano</a>)<br>RLHF、對齊研究、美國 AI 安全研究所。</li>
+        <li><strong>Jan Leike</strong> (<a href="https://x.com/janleike" target="_blank">x.com/janleike</a>)<br>前 OpenAI 超級對齊負責人，現為 Anthropic。</li>
+        <li><strong>Helen Toner</strong> (<a href="https://x.com/hlntnr" target="_blank">x.com/hlntnr</a>)<br>AI 治理、前 OpenAI 董事。</li>
+        <li><strong>Timnit Gebru</strong> (<a href="https://x.com/timnitGebru" target="_blank">x.com/timnitGebru</a>)<br>AI 倫理、演算法偏見。</li>
+        <li><strong>Margaret Mitchell</strong> (<a href="https://x.com/mmitchell_ai" target="_blank">x.com/mmitchell_ai</a>)<br>AI 倫理、Hugging Face。</li>
+        <li><strong>Gary Marcus</strong> (<a href="https://x.com/GaryMarcus" target="_blank">x.com/GaryMarcus</a>)<br>深度學習最知名批評者。</li>
+        <li><strong>Yoshua Bengio</strong> (<a href="https://x.com/Yoshua_Bengio" target="_blank">x.com/Yoshua_Bengio</a>)<br>（見上，近年來轉向安全）。</li>
+        <li><strong>Leopold Aschenbrenner</strong> (<a href="https://x.com/leopoldasch" target="_blank">leopoldasch</a>)<br>《Situational Awareness》作者，前 OpenAI 超級對齊，創辦 AI 主題對沖基金。</li>
+        <li><strong>Amanda Askell</strong> (<a href="https://x.com/AmandaAskell" target="_blank">x.com/AmandaAskell</a>)<br>Anthropic，Claude 人格與偏好，HHH 框架共同作者。</li>
+        <li><strong>Sam Bowman</strong> (<a href="https://x.com/sleepinyourhat" target="_blank">x.com/sleepinyourhat</a>)<br>NLP/評測/AI safety，NYU + Anthropic。</li>
+        <li><strong>Jack Clark</strong> (<a href="https://x.com/jackclarkSF" target="_blank">x.com/jackclarkSF</a>)<br>Anthropic 聯創，Import AI，政策影響。</li>
+        <li><strong>Dan Hendrycks</strong> (<a href="https://x.com/DanHendrycks" target="_blank">x.com/DanHendrycks</a>)<br>CAIS 主任，AI 風險與評測（MMLU/MATH）。</li>
+        <li><strong>Dean Ball</strong> (<a href="https://x.com/deanwball" target="_blank">x.com/deanwball</a>)<br>AI 政策。 2026 加入 OpenAI Strategic Futures。</li>
+    </ul>
+
+    <h2>八、商業 / 資本 / 操盤手（非學術出身為主，與上方形成對照）</h2>
+    
+    <h3>巨頭掌舵 / 高階主管</h3>
+    <ul>
+        <li><strong>Jensen Huang（黃仁勳）</strong><br>NVIDIA 創始 CEO，AI 算力命脈。</li>
+        <li><strong>Lisa Su</strong> (<a href="https://x.com/LisaSu" target="_blank">x.com/LisaSu</a>)<br>AMD CEO（學術博士背景）。</li>
+        <li><strong>Satya Nadella</strong> (<a href="https://x.com/satyanadella" target="_blank">x.com/satyanadella</a>)<br>Microsoft CEO。</li>
+        <li><strong>Sundar Pichai</strong> (<a href="https://x.com/sundarpichai" target="_blank">x.com/sundarpichai</a>)<br>Google CEO。</li>
+        <li><strong>Mark Zuckerberg</strong><br>Meta，重金押注超級智慧實驗室。</li>
+        <li><strong>Andy Jassy</strong> (<a href="https://x.com/ajassy" target="_blank">x.com/ajassy</a>)<br>Amazon CEO。</li>
+        <li><strong>Kevin Scott</strong> (<a href="https://x.com/kevin_scott" target="_blank">x.com/kevin_scott</a>)<br>Microsoft CTO，微軟 AI 策略操盤手。</li>
+        <li><strong>Brad Lightcap</strong> (<a href="https://x.com/bradlightcap" target="_blank">x.com/bradlightcap</a>)<br>OpenAI COO。</li>
+        <li><strong>Mike Krieger</strong> (<a href="https://x.com/mikeyk" target="_blank">x.com/mikeyk</a>)<br>Instagram 聯創，現為 Anthropic 首席產品長。</li>
+    </ul>
+
+    <h3>投資人 / 孵化器</h3>
+    <ul>
+        <li><strong>Marc Andreessen</strong> (<a href="https://x.com/pmarca" target="_blank">x.com/pmarca</a>) / <strong>Vinod Khosla</strong> (<a href="https://x.com/vkhosla" target="_blank">x.com/vkhosla</a>)<br>頂級 AI 風投。</li>
+        <li><strong>Masayoshi Son</strong> (<a href="https://x.com/masason" target="_blank">x.com/masason</a>)<br>SoftBank，AI 超級投資人。</li>
+        <li><strong>Eric Schmidt</strong> (<a href="https://x.com/ericschmidt" target="_blank">x.com/ericschmidt</a>)<br>前 Google CEO，現頂級 AI 投資與政策玩家。</li>
+        <li><strong>Reid Hoffman</strong> (<a href="https://x.com/reidhoffman" target="_blank">x.com/reidhoffman</a>)<br>LinkedIn 創始、Inflection 聯創、超級投資人。</li>
+        <li><strong>Garry Tan</strong> (<a href="https://x.com/garrytan" target="_blank">x.com/garrytan</a>)<br>Y Combinator 總裁（孵化器之王）。</li>
+        <li><strong>Sarah Guo</strong> (<a href="https://x.com/saranormous" target="_blank">x.com/saranormous</a>)<br>Conviction 創辦人、AI 創投與播客。</li>
+    </ul>
+
+    <h3>應用 / 工具 / 晶片 / 機器人創辦人（連續創業者，非學術）</h3>
+    <ul>
+        <li><strong>Michael Truell</strong> (<a href="https://x.com/mntruell" target="_blank">x.com/mntruell</a>)<br>Anysphere / Cursor 創始 CEO（當下最火編程工具）。</li>
+        <li><strong>Scott Wu</strong> (<a href="https://x.com/ScottWu46" target="_blank">x.com/ScottWu46</a>)<br>Cognition 創始 CEO（Devin）。</li>
+        <li><strong>Amjad Masad</strong> (<a href="https://x.com/amasad" target="_blank">x.com/amasad</a>)<br>Replit 創始 CEO。</li>
+        <li><strong>Cristóbal Valenzuela</strong> (<a href="https://x.com/c_valenzuelab" target="_blank">x.com/c_valenzuelab</a>)<br>Runway 創始 CEO（影片產生）。</li>
+        <li><strong>Jonathan Ross</strong> (<a href="https://x.com/JonathanRoss321" target="_blank">x.com/JonathanRoss321</a>)<br>Groq 創始 CEO（AI 晶片）。</li>
+        <li><strong>Andrew Feldman</strong> (<a href="https://x.com/andrewdfeldman" target="_blank">x.com/andrewdfeldman</a>)<br>Cerebras 創始 CEO（AI 晶片）。</li>
+        <li><strong>Brett Adcock</strong> (<a href="https://x.com/adcock_brett" target="_blank">x.com/adcock_brett</a>)<br>Figure AI 創辦人（人形機器人）。</li>
+        <li><strong>Marc Raibert</strong><br>Boston Dynamics 創辦人（機器人奠基）。</li>
+        <li><strong>David Holz</strong> (<a href="https://x.com/DavidSHolz" target="_blank">x.com/DavidSHolz</a>)<br>Midjourney 創辦人（圖像生成）。</li>
+        <li><strong>Demi Guo</strong> (<a href="https://x.com/demiguo" target="_blank">x.com/demiguo</a>)<br>Pika 共同創辦人（影片產生）。</li>
+        <li><strong>Amit Jain</strong> (<a href="https://x.com/gravicle" target="_blank">x.com/gravicle</a>)<br>Luma AI 創辦人（影片/世界模型）。</li>
+    </ul>
+
+    <div class="footer-note">
+        <h2>用法建議</h2>
+        <ul>
+            <li>這份名單依"圈層"分類，方便你按需要追蹤某一類人（學術 / 實驗室 / 教育 / 開源 / 安全）。</li>
+            <li>想真正吃透一個圈子，比起背名單，更有效的是挑 5–10 個人長期跟（看他們 X/博客/論文），名單只是入口。</li>
+            <li>如果你做教育方向，第五類（教育/科普型大 V）最值得你研究，他們證明了"把硬知識講清楚"本身就能 bootstrap 出巨大影響力，而且這條路不需要風投。</li>
+        </ul>
+
+        <h2>小結：盤完這份名單，大 V 到底什麼出身？</h2>
+        <p>把上面八類一百三十多人盤下來，規律很清楚。定義 AI 的人，絕大多數是學術和研究出身，真正"做生意起家"的是少數。</p>
+        <p>最硬的證據在前四類。深度學習教父、前沿實驗室的首席科學家、Transformer 的八位作者、學術界頂尖研究者，這四組加起來七十多人，幾乎清一色 PhD 或研究員出身，很多還出自同一批實驗室（OpenAI、Google Brain、DeepMind、FAIR）和同幾所學校（斯坦福、伯克利、MIT、多倫多）。這個圈子裡的硬通貨是論文和代表作，不是文憑上的 MBA。</p>
+        <p>把"創始人"和"科學家"分開看更清楚。今天這些明星公司的創辦人，大部分本來就是研究員，被資本和時代推著下了海。Hassabis、李飛飛、Bengio、Ilya、David Silver、Arthur Mensch、Tri Dao，都是先有學術身份，再有公司。"學者下海"才是這一波創業潮的主線。</p>
+        <p>純商業、資本、營運出身，沒碰過研究的人，主要擠在第八類那一檔，滿打滿算也就二三十個。而且就算在這一檔，很多人也帶著技術底子。黃仁勳是工程師，Lisa Su 是 MIT 博士，Pichai、Nadella 是工程師轉管理，Andreessen、Khosla 當年也是寫程式碼、做晶片出身。真正純粹做生意、純玩錢的，是更小的一撮：做投資的 Masayoshi Son、Sarah Guo，管運營和財務的 Brad Lightcap、Andy Jassy，記者出身的 Jack Clark，政策出身的 Helen Toner、Dean Ball。</p>
+        <p>Sam Altman 是這一小撮最典型的代表。他在史丹佛念了兩年就退學，先創業（Loopt），再做投資（YC 總裁），從來沒做過研究，也不寫模型。他的本事是把一群科學家的想法變成公司、變成錢，寫論文、搭架構不是他那一攤。在一個還被基礎研究定義的行業裡，這種純操盤手反而稀缺，所以格外札眼。</p>
+        <p><strong>一句話結束：</strong>AI 的"內容"由學者定義，AI 的"生意"由少數操盤手主導，兩撥人很少重合。Altman、馬斯克、黃仁勳之所以家喻戶曉，恰恰因為他們站在那條稀缺的、非學術的一側。</p>
+    </div>
+</div>
+
+</body>
+</html>
+"""
+
+with open("ai_influencers_list_2026.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+print("HTML generated successfully.")
