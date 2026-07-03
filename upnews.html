@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upstream Desk - The Ultimate Information Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter and Playfair Display (for Serif Reader Mode) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f7fa',
+                            100: '#eaeef4',
+                            500: '#1e293b',
+                            600: '#0f172a',
+                            custom: '#2563eb'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbars for high density look */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        /* Custom animation for ticker */
+        @keyframes ticker-slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .ticker-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-content {
+            display: inline-block;
+            animation: ticker-slide 60s linear infinite;
+        }
+        .ticker-content:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="bg-[#f8fafc] text-[#0f172a] dark:bg-[#0b0f19] dark:text-[#f1f5f9] transition-colors duration-200 antialiased font-sans overflow-x-hidden">
+
+    <!-- React App Root -->
+    <div id="root"></div>
+
+    <!-- Load React, ReactDOM and Babel for inline JSX compilation -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- React Application Logic -->
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef } = React;
+
+        // We compile a detailed registry of all required sources with metadata, categories, and content patterns.
+        const SOURCES_REGISTRY = [
+            // General News
+            { id: 'topnews', name: 'Top News', category: 'News', icon: '🔥', description: 'Curated global breaking news.' },
+            { id: 'reuters', name: 'Reuters', category: 'News', icon: '🌐', description: 'Real-time global news reporting.', realUrl: 'https://news.google.com/rss/search?q=reuters&hl=en-US&gl=US&ceid=US:en' },
+            { id: 'nytimes', name: 'NY Times', category: 'News', icon: '🗽', description: 'Pulitzer-winning journalism.', realUrl: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml' },
+            { id: 'apnews', name: 'AP News', category: 'News', icon: '📡', description: 'Primary sources for global press.', realUrl: 'https://news.google.com/rss/search?q=Associated+Press&hl=en-US&gl=US&ceid=US:en' },
+            { id: 'cnn', name: 'CNN', category: 'News', icon: '🔴', description: 'Breaking news and video commentary.', realUrl: 'http://rss.cnn.com/rss/cnn_topstories.rss' },
+            { id: 'washingtonpost', name: 'Washington Post', category: 'News', icon: '🏛️', description: 'Democracy Dies in Darkness.' },
+            { id: 'huffpost', name: 'Huffington Post', category: 'News', icon: '🟢', description: 'Opinionated news & pop culture.' },
+            { id: 'axios', name: 'Axios', category: 'News', icon: '⚡', description: 'Smart brevity news summaries.' },
+            { id: 'theguardian', name: 'The Guardian', category: 'News', icon: '🇬🇧', description: 'Independent journalism & commentary.', realUrl: 'https://www.theguardian.com/world/rss' },
+            { id: 'bbc', name: 'BBC', category: 'News', icon: '📺', description: 'British and worldwide public broadcaster.', realUrl: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
+            { id: 'politico', name: 'Politico', category: 'News', icon: '🗳️', description: 'Political insider analysis.' },
+            { id: 'vox', name: 'Vox', category: 'News', icon: '✴️', description: 'Explaining the news in context.' },
+            { id: 'independent', name: 'The Independent', category: 'News', icon: '📰', description: 'Free-thinking news coverage.' },
+            { id: 'dailymail', name: 'Daily Mail', category: 'News', icon: '🐆', description: 'Sensationalist headlines and show-biz.' },
+            { id: 'reason', name: 'Reason', category: 'News', icon: '🗽', description: 'Free minds and free markets.' },
+            { id: 'motherjones', name: 'Mother Jones', category: 'News', icon: '🕵️', description: 'Investigative non-profit journalism.' },
+            { id: 'dailybeast', name: 'The Daily Beast', category: 'News', icon: '👹', description: 'Fast, smart pop-politics coverage.' },
+            { id: 'abcnews', name: 'ABC News', category: 'News', icon: '🔵', description: 'Network news & reports.' },
+            { id: 'cbs', name: 'CBS', category: 'News', icon: '👁️', description: 'National and local US coverage.' },
+            { id: 'npr', name: 'NPR', category: 'News', icon: '📻', description: 'National Public Radio and podcasts.', realUrl: 'https://feeds.npr.org/1001/rss.xml' },
+            { id: 'latimes', name: 'LA Times', category: 'News', icon: '🌴', description: 'West Coast premium journalism.' },
+            { id: 'salon', name: 'Salon', category: 'News', icon: '☕', description: 'Progressive politics & culture.' },
+            { id: 'upi', name: 'UPI', category: 'News', icon: '🌍', description: 'United Press International wire.' },
+            { id: 'newsweek', name: 'Newsweek', category: 'News', icon: '📰', description: 'Weekly analytical news journal.' },
+            { id: 'intercept', name: 'The Intercept', category: 'News', icon: '🔓', description: 'Fearless investigative reporting.' },
+            { id: 'drudgereport', name: 'Drudge Report', category: 'News', icon: '🚨', description: 'Conservative headline curator.' },
+            { id: 'foxnews', name: 'Fox News', category: 'News', icon: '🦊', description: 'National conservative broadcaster.' },
+            { id: 'theblaze', name: 'The Blaze', category: 'News', icon: '🔥', description: 'Right-wing commentary network.' },
+            { id: 'semafor', name: 'Semafor', category: 'News', icon: '🪶', description: 'The global newsroom.' },
+            { id: 'slate', name: 'Slate', category: 'News', icon: '💎', description: 'Sardonic online daily magazine.' },
+            { id: 'theatlantic', name: 'The Atlantic', category: 'News', icon: '🌊', description: 'Long-form commentary & culture.' },
+            { id: 'aljazeera', name: 'Al Jazeera', category: 'News', icon: '🐪', description: 'Middle Eastern and international news.' },
+            { id: 'commentary', name: 'Commentary Magazine', category: 'News', icon: '✍️', description: 'Neoconservative social critique.' },
+            { id: 'newyorker', name: 'New Yorker', category: 'News', icon: '🎩', description: 'Elite long-form fiction and essays.' },
+            { id: 'metafilter', name: 'Metafilter', category: 'News', icon: '💬', description: 'Community-driven weblog aggregation.' },
+            { id: 'fark', name: 'Fark', category: 'News', icon: '🐿️', description: 'Humorous, snarky user-submitted news.' },
+            { id: 'nbc', name: 'NBC', category: 'News', icon: '🦚', description: 'Peacock network news broadcasts.' },
+            { id: 'unherd', name: 'Unherd', category: 'News', icon: '🐐', description: 'Challenging mainstream assumptions.' },
+            { id: 'pbsnewshour', name: 'PBS Newshour', category: 'News', icon: '⏱️', description: 'In-depth, balanced news reporting.' },
+            { id: 'msnow', name: 'MS NOW', category: 'News', icon: '💻', description: 'Microsoft syndicated news.' },
+            { id: 'insider', name: 'Insider', category: 'News', icon: '💼', description: 'Business Insider pop news.' },
+            { id: 'thehill', name: 'The Hill', category: 'News', icon: '🏛️', description: 'Capitol Hill politics and policy.' },
+            { id: 'theexpress', name: 'The Express', category: 'News', icon: '🚆', description: 'British daily tabloid news.' },
+            { id: 'meidastouch', name: 'Meidas Touch', category: 'News', icon: '✊', description: 'Pro-democracy media network.' },
+            { id: 'freepress', name: 'The Free Press', category: 'News', icon: '🗽', description: 'Independent investigative opinions.' },
+            { id: 'elpais', name: 'El Pais', category: 'News', icon: '🇪🇸', description: 'Spain\'s leading global daily newspaper.' },
+            { id: 'artsletters', name: 'Arts & Letters Daily', category: 'News', icon: '📚', description: 'Curator of highbrow literary ideas.' },
+            { id: 'lever', name: 'Lever', category: 'News', icon: '⚖️', description: 'Accountability journalism.' },
+            { id: 'bloombergqt', name: 'Bloomberg Quicktake', category: 'News', icon: '📈', description: 'Bite-sized visual financial news.' },
+            { id: 'boingboing', name: 'Boing Boing', category: 'News', icon: '🍄', description: 'A directory of wonderful things.' },
+
+            // Tech & Business
+            { id: 'ticker', name: 'Market Ticker', category: 'Tech & Business', icon: '📊', description: 'Stock, crypto, and commodity prices.' },
+            { id: 'cnbc', name: 'CNBC', category: 'Tech & Business', icon: '💵', description: 'Market intelligence & money news.' },
+            { id: 'googlebusiness', name: 'Google Business', category: 'Tech & Business', icon: '🏢', description: 'Google News Business stream.' },
+            { id: 'nytbusiness', name: 'NYT Business', category: 'Tech & Business', icon: '💼', description: 'Wall Street and commercial analysis.' },
+            { id: 'fastcompany', name: 'FastCompany', category: 'Tech & Business', icon: '🚀', description: 'Business design, innovation & tech.' },
+            { id: 'statista', name: 'Statista', category: 'Tech & Business', icon: '📈', description: 'The data-driven infographics portal.' },
+            { id: 'theverge', name: 'The Verge', category: 'Tech & Business', icon: '👾', description: 'Tech, science, art, and reviews.', realUrl: 'https://www.theverge.com/rss/index.xml' },
+            { id: 'engadget', name: 'Engadget', category: 'Tech & Business', icon: '🔌', description: 'Gadgets and hardware coverage.' },
+            { id: 'techmeme', name: 'Techmeme', category: 'Tech & Business', icon: '🧠', description: 'The executive industry news digest.' },
+            { id: 'hackernews', name: 'Hacker News', category: 'Tech & Business', icon: '🧡', description: 'Y Combinator\'s tech discussions. Feed loaded live.', isHN: true },
+            { id: 'pinboard', name: 'Pinboard', category: 'Tech & Business', icon: '📌', description: 'Antisocial bookmarking directory.' },
+            { id: 'producthunt', name: 'Producthunt', category: 'Tech & Business', icon: '😸', description: 'Daily launch hub for new tools.' },
+            { id: 'wired', name: 'Wired', category: 'Tech & Business', icon: '🔌', description: 'How technology is shaping culture.', realUrl: 'https://www.wired.com/feed/rss' },
+            { id: 'slashdot', name: 'Slashdot', category: 'Tech & Business', icon: '🟢', description: 'News for Nerds, Stuff that Matters.', realUrl: 'https://slashdot.org/slashdot.rss' },
+
+            // Science & Ideas
+            { id: 'smithsonian', name: 'Smithsonian', category: 'Science & Ideas', icon: '🏛️', description: 'History, space, and biological science.' },
+            { id: 'kottke', name: 'Kottke', category: 'Science & Ideas', icon: '🥨', description: 'Hyper-curated weblog of interestingness.', realUrl: 'https://feeds.kottke.org/main' },
+            { id: 'futurism', name: 'Futurism', category: 'Science & Ideas', icon: '🛸', description: 'Tomorrow\'s technology and physics.' },
+            { id: 'media404', name: '404 Media', category: 'Science & Ideas', icon: '🚫', description: 'Hard-hitting tech investigative site.' },
+            { id: 'nautilus', name: 'Nautilus', category: 'Science & Ideas', icon: '🐚', description: 'Philosophy, science, and storytelling.' },
+            { id: 'atlasobscura', name: 'Atlas Obscura', category: 'Science & Ideas', icon: '🧭', description: 'Wondrous, hidden places in the world.' },
+            { id: 'sciencenews', name: 'Science News', category: 'Science & Ideas', icon: '🔬', description: 'Broad scientific breakthrough alerts.' },
+            { id: 'newscientist', name: 'New Scientist', category: 'Science & Ideas', icon: '🧬', description: 'Weekly international science insights.' },
+            { id: 'aeonpsyche', name: 'Aeon & Psyche', category: 'Science & Ideas', icon: '🧠', description: 'In-depth essays on psychology and history.' },
+            { id: 'wikicurrent', name: 'Wikipedia Current Events', category: 'Science & Ideas', icon: '🌐', description: 'Collaborative real-time timeline.' },
+            { id: 'onthisday', name: 'On This Day', category: 'Science & Ideas', icon: '📅', description: 'Historic milestones on today\'s date.' },
+
+            // Social & Media (Visuals included)
+            { id: 'reddit', name: 'Reddit', category: 'Social & Media', icon: '👽', description: 'Front page of the internet.', realUrl: 'https://www.reddit.com/r/all/.rss' },
+            { id: 'yahoonews', name: 'Yahoo News', category: 'Social & Media', icon: '🟣', description: 'Aggregated internet buzz.' },
+            { id: 'googlenews', name: 'Google News', category: 'Social & Media', icon: '📰', description: 'AI personalized news flow.' },
+            { id: 'imgur', name: 'Imgur', category: 'Social & Media', icon: '🟢', description: 'Viral memes and visual storytelling.', isVisual: true },
+            { id: 'youtubetrending', name: 'Youtube Trending', category: 'Social & Media', icon: '📹', description: 'Hottest videos globally.', isVisual: true },
+            { id: 'tumblr', name: 'Tumblr', category: 'Social & Media', icon: '🔵', description: 'Fandoms, art, and text aesthetics.' },
+            { id: 'giphy', name: 'Giphy', category: 'Social & Media', icon: '⚡', description: 'Loops, GIFs, and modern micro-memes.', isVisual: true },
+            { id: 'xtrends', name: 'X.com Trends', category: 'Social & Media', icon: '𝕏', description: 'Real-time trending topics and tags.' },
+            { id: 'redditimages', name: 'Reddit Images', category: 'Social & Media', icon: '🖼️', description: 'The absolute best of r/Pics and r/Aww.', isVisual: true },
+            { id: 'redditvideos', name: 'Reddit Videos', category: 'Social & Media', icon: '🍿', description: 'Amusing and shocking viral video clips.', isVisual: true },
+            { id: 'youtubenetworks', name: 'Youtube Networks', category: 'Social & Media', icon: '📺', description: 'Aggregated creator studio news.' },
+            { id: 'flickr', name: 'Flickr', category: 'Social & Media', icon: '📸', description: 'High-res photographer feed.', isVisual: true },
+            { id: 'fivehundredpx', name: '500px Popular', category: 'Social & Media', icon: '👁️', description: 'World-class artistic photography.', isVisual: true },
+            { id: 'googletrends', name: 'Google Trends', category: 'Social & Media', icon: '📈', description: 'What people are searching right now.' },
+            { id: 'flipso', name: 'Flipso', category: 'Social & Media', icon: '🔄', description: 'Trending opinions and counter-views.' },
+
+            // Entertainment & Pop Culture
+            { id: 'spotify', name: 'Spotify', category: 'Entertainment', icon: '🎵', description: 'Top tracks and podcast episodes.' },
+            { id: 'applemusic', name: 'Apple Music', category: 'Entertainment', icon: '🍎', description: 'Global charts and hits.' },
+            { id: 'tmz', name: 'TMZ', category: 'Entertainment', icon: '🚨', description: 'Instant celebrity gossip and drama.' },
+            { id: 'ladbible', name: 'LAD Bible', category: 'Entertainment', icon: '🍻', description: 'Viral news, memes, and banter.' },
+            { id: 'vanityfair', name: 'Vanity Fair', category: 'Entertainment', icon: '💄', description: 'Pop, fashion, and high society.' },
+            { id: 'rollingstone', name: 'Rolling Stone', category: 'Entertainment', icon: '🎸', description: 'Music, culture, and social reports.' },
+            { id: 'eonline', name: 'E!', category: 'Entertainment', icon: '👠', description: 'Hollywood trends, TV, and red carpets.' },
+            { id: 'boredpanda', name: 'BoredPanda', category: 'Entertainment', icon: '🐼', description: 'Funny photos, art, and positive stories.' },
+            { id: 'gq', name: 'GQ', category: 'Entertainment', icon: '👔', description: 'Men\'s style, lifestyle, and profiles.' },
+            { id: 'refinery29', name: 'Refinery29', category: 'Entertainment', icon: '💖', description: 'Independent voice on style and society.' },
+            { id: 'knowyourmeme', name: 'KnowYourMeme', category: 'Entertainment', icon: '🎓', description: 'Encyclopedia of online trends.' },
+            { id: 'variety', name: 'Variety', category: 'Entertainment', icon: '🎬', description: 'Entertainment business, reviews, movies.' },
+            { id: 'lifehacker', name: 'Lifehacker', category: 'Entertainment', icon: '💡', description: 'Do everything better.' },
+            { id: 'buzzfeed', name: 'Buzzfeed', category: 'Entertainment', icon: '🐝', description: 'Quizzes, lifestyle lists, and viral stories.' },
+            { id: 'theonion', name: 'The Onion', category: 'Entertainment', icon: '🧅', description: 'America\'s finest news source (Satire).' },
+            { id: 'snopes', name: 'Snopes', category: 'Entertainment', icon: '🔍', description: 'The original internet fact-checking source.' },
+            { id: 'polygon', name: 'Polygon', category: 'Entertainment', icon: '🎮', description: 'Gaming, streaming, and nerd culture.' },
+            { id: 'brightside', name: 'Brightside', category: 'Entertainment', icon: '☀️', description: 'Inspirational lists and life hacks.' },
+            { id: 'rottentomatoes', name: 'Rotten Tomatoes', category: 'Entertainment', icon: '🍅', description: 'Movie scores and review consensus.' },
+            { id: 'ted', name: 'TED', category: 'Entertainment', icon: '💡', description: 'Ideas worth spreading.' },
+
+            // Sports & Gaming
+            { id: 'espn', name: 'ESPN', category: 'Sports', icon: '🏈', description: 'Worldwide leader in sports.' },
+            { id: 'bleacher', name: 'Bleacher / Deadspin', category: 'Sports', icon: '🥊', description: 'Fan-centric sports news.' }
+        ];
+
+        // Unique dynamic theme variants
+        const THEMES = {
+            light: { bg: 'bg-[#f8fafc]', text: 'text-[#0f172a]', card: 'bg-white', border: 'border-slate-200' },
+            dark: { bg: 'bg-[#0b0f19]', text: 'text-[#f1f5f9]', card: 'bg-[#121b2d]', border: 'border-slate-800' },
+            slate: { bg: 'bg-[#0f172a]', text: 'text-slate-100', card: 'bg-[#1e293b]', border: 'border-slate-700' },
+            cyber: { bg: 'bg-[#0a0015]', text: 'text-[#d946ef]', card: 'bg-[#150226]', border: 'border-[#ff007f]' }
+        };
+
+        const KEYWORDS = {
+            News: ['President', 'Inauguration', 'Treaty', 'Summit', 'Global Market', 'Protests', 'Reform', 'Trade Deal', 'Climate Accord', 'Landmark Bill', 'Sanction', 'Elections'],
+            'Tech & Business': ['AI Engine', 'GPU', 'SaaS', 'IPO', 'Merger', 'Startup', 'Silicon Valley', 'Quantum Chip', 'Venture Funding', 'E-commerce', 'Crypto Crash', 'New App'],
+            'Science & Ideas': ['Supernova', 'Archaeology', 'Skeletal remains', 'NASA Probe', 'AI consciousness', 'Lost City', 'Quantum entanglement', 'Ocean Deep', 'Exoplanet', 'Ancient Scroll'],
+            'Social & Media': ['Trending video', 'Reddit community', 'Viral challenge', 'Meme format', 'Cancel culture', 'Influencer', 'TikTok trend', 'Controversial debate', 'Unboxing', 'Subreddit'],
+            Entertainment: ['Blockbuster', 'Casting Call', 'Oscar Buzz', 'New Single', 'Album Launch', 'Red Carpet', 'Satirical Take', 'Reality Star Drama', 'Fandom', 'Streaming Record'],
+            Sports: ['Championship Winner', 'Record Transfer', 'Grand Slam', 'Super Bowl', 'Draft Pick', 'Injury Update', 'Olympics Prep', 'Underdog Victory', 'Doping Scandal']
+        };
+
+        const MEDIA_MOCK_LINKS = {
+            Imgur: 'https://placehold.co/400x300/10b981/ffffff?text=Imgur+Viral',
+            Giphy: 'https://placehold.co/400x300/ec4899/ffffff?text=Giphy+Loop',
+            Flickr: 'https://placehold.co/400x300/3b82f6/ffffff?text=Flickr+Photo',
+            '500px Popular': 'https://placehold.co/400x300/8b5cf6/ffffff?text=500px+Art',
+            'Reddit Images': 'https://placehold.co/400x300/f97316/ffffff?text=Reddit+Pic',
+            'Reddit Videos': 'https://placehold.co/400x300/ef4444/ffffff?text=Reddit+Video+Cover',
+            'Youtube Trending': 'https://placehold.co/400x300/ff0000/ffffff?text=YT+Trending+Thumbnail'
+        };
+
+        // Utility to turn standard dates into friendly relative strings
+        const formatTimeAgo = (dateVal) => {
+            if (!dateVal) return "Just now";
+            const date = new Date(dateVal);
+            if (isNaN(date.getTime())) return "Recently";
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            let interval = Math.floor(seconds / 31536000);
+            if (interval >= 1) return `${interval}y ago`;
+            interval = Math.floor(seconds / 2592000);
+            if (interval >= 1) return `${interval}mo ago`;
+            interval = Math.floor(seconds / 86400);
+            if (interval >= 1) return `${interval}d ago`;
+            interval = Math.floor(seconds / 3600);
+            if (interval >= 1) return `${interval}h ago`;
+            interval = Math.floor(seconds / 60);
+            if (interval >= 1) return `${interval}m ago`;
+            return "Just now";
+        };
+
+        // Generates robust, life-like aggregated feeds for each requested source.
+        const generateMockFeeds = () => {
+            const data = {};
+            SOURCES_REGISTRY.forEach(src => {
+                const list = [];
+                const cat = src.category || 'News';
+                const keys = KEYWORDS[cat] || KEYWORDS['News'];
+                
+                // Construct 8 unique headlines per source
+                for (let i = 1; i <= 8; i++) {
+                    const kw1 = keys[Math.floor(Math.random() * keys.length)];
+                    const kw2 = keys[Math.floor(Math.random() * keys.length)];
+                    let headline = `${src.name} Investigates: The sudden rise of ${kw1} causing ${kw2} impact.`;
+                    
+                    if (i === 1) headline = `BREAKING: Major breakthrough reported in ${kw1} development.`;
+                    if (i === 2) headline = `Deep Dive: Inside the global network of ${kw2} specialists.`;
+                    if (i === 3) headline = `Why experts say ${kw1} is currently the hottest topic on ${src.name}.`;
+                    if (i === 4) headline = `Opinion | ${kw2} is moving faster than regulators can handle.`;
+                    if (i === 5) headline = `Ten things you missed about today's ${kw1} announcement.`;
+                    if (i === 6) headline = `The future of ${kw2}: Is it sustainable for our current generation?`;
+                    if (i === 7) headline = `A comprehensive study shows the direct correlation of ${kw1} on domestic markets.`;
+                    
+                    // Specific sources tweaks
+                    if (src.id === 'hackernews') {
+                        headline = `${kw1} written in clean Rust: Speedups of up to 400x (github.com)`;
+                    } else if (src.id === 'theonion') {
+                        headline = `Study Finds Main Reason People Watch TV Is To See What Happens Next`;
+                    } else if (src.id === 'producthunt') {
+                        headline = `Show HN: DevTools 2.0 - Generate full functional workspaces for ${kw1}`;
+                    }
+
+                    list.push({
+                        id: `${src.id}-${i}`,
+                        title: headline,
+                        url: '#',
+                        time: `${i * 12}m ago`,
+                        comments: Math.floor(Math.random() * 320) + 12,
+                        points: Math.floor(Math.random() * 850) + 40,
+                        tag: keys[i % keys.length],
+                        summary: `According to recent dispatches from ${src.name}, the unexpected convergence of ${kw1} and ${kw2} represents a seismic shift in public discourse. Critics argue this might raise profound questions about security and infrastructure, while advocates suggest an era of massive prosperity and decentralized governance. High-ranking officials claim investigations are now underway to resolve any legal ambiguity.`,
+                        author: `Reporter ${['Alice', 'Bob', 'Charles', 'Daphne'][i % 4]}`,
+                        imgUrl: src.isVisual ? (MEDIA_MOCK_LINKS[src.name] || 'https://placehold.co/400x300/334155/ffffff?text=Media') : null
+                    });
+                }
+                data[src.id] = list;
+            });
+            return data;
+        };
+
+        const INITIAL_FEEDS = generateMockFeeds();
+
+        // Standard default visible source list (Top ~12 columns default layout)
+        const DEFAULT_VISIBLE_SOURCES = [
+            'topnews', 'hackernews', 'nytimes', 'reuters',
+            'theverge', 'reddit', 'bloombergqt', 'youtubetrending',
+            'producthunt', 'wired', 'espn', 'fivehundredpx'
+        ];
+
+        function App() {
+            // Dark Mode State with responsive storage
+            const [theme, setTheme] = useState(() => localStorage.getItem('upstream-theme') || 'slate');
+            const [density, setDensity] = useState(() => localStorage.getItem('upstream-density') || 'compact'); // 'cozy', 'compact', 'dense'
+            const [cols, setCols] = useState(() => Number(localStorage.getItem('upstream-cols')) || 4); // 2, 3, 4, 5
+            
+            // Layout customization
+            const [visibleSources, setVisibleSources] = useState(() => {
+                const stored = localStorage.getItem('upstream-visible-sources');
+                return stored ? JSON.parse(stored) : DEFAULT_VISIBLE_SOURCES;
+            });
+
+            // Master data feeds state - mixes mock and newly fetched live elements
+            const [feeds, setFeeds] = useState(INITIAL_FEEDS);
+
+            // Search and Category states
+            const [activeCategory, setActiveCategory] = useState('All');
+            const [searchQuery, setSearchQuery] = useState('');
+            const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
+            const [customizeSearch, setCustomizeSearch] = useState('');
+
+            // Reading mode side-drawer
+            const [readingItem, setReadingItem] = useState(null);
+            const [readingSource, setReadingSource] = useState(null);
+            const [readerFontSize, setReaderFontSize] = useState('medium'); // 'small', 'medium', 'large'
+            const [readerFontFamily, setReaderFontFamily] = useState('sans'); // 'sans', 'serif', 'mono'
+
+            // Saved/Bookmarked news state
+            const [bookmarks, setBookmarks] = useState(() => {
+                const stored = localStorage.getItem('upstream-bookmarks');
+                return stored ? JSON.parse(stored) : [];
+            });
+
+            // Ticker & Alert feeds state
+            const [tickerItems, setTickerItems] = useState([
+                { label: 'BTC/USD', value: '$91,420.24', change: '+3.15%', isUp: true },
+                { label: 'ETH/USD', value: '$3,820.50', change: '+2.41%', isUp: true },
+                { label: 'NASDAQ', value: '18,290.11', change: '-0.42%', isUp: false },
+                { label: 'S&P 500', value: '5,210.40', change: '+0.11%', isUp: true },
+                { label: 'DOW JONES', value: '39,120.55', change: '-0.23%', isUp: false },
+                { label: 'EUR/USD', value: '1.0820', change: '-0.05%', isUp: false },
+                { label: 'NVIDIA', value: '$920.45', change: '+5.43%', isUp: true },
+                { label: 'APPLE', value: '$181.20', change: '-1.12%', isUp: false }
+            ]);
+
+            // Track read items
+            const [readItems, setReadItems] = useState(() => {
+                const stored = localStorage.getItem('upstream-read-items');
+                return stored ? JSON.parse(stored) : [];
+            });
+
+            // State for live simulated reload animation on specific source cards
+            const [refreshingSources, setRefreshingSources] = useState({});
+
+            // Function to load actual feeds with dynamic CORS bypass mechanisms
+            const fetchRealSourceData = async (source) => {
+                try {
+                    // 1. Hacker News JSON API Integration (CORS-friendly naturally)
+                    if (source.isHN) {
+                        const topRes = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
+                        const topIds = await topRes.json();
+                        const storiesToFetch = topIds.slice(0, 8);
+                        
+                        const fetchedStories = await Promise.all(
+                            storiesToFetch.map(async (storyId) => {
+                                const itemRes = await fetch(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`);
+                                return itemRes.json();
+                            })
+                        );
+
+                        return fetchedStories.map((story, i) => ({
+                            id: `${source.id}-${story.id}`,
+                            title: story.title || 'Untitled Submission',
+                            url: story.url || `https://news.ycombinator.com/item?id=${story.id}`,
+                            time: formatTimeAgo(new Date(story.time * 1000)),
+                            comments: story.descendants || 0,
+                            points: story.score || 0,
+                            tag: 'HN',
+                            summary: `Hacker News submission by user "${story.by}". Discussed live with standard peer metrics: score of ${story.score} points and ${story.descendants || 0} associated comments on the thread.`,
+                            author: story.by || 'Anonymous'
+                        }));
+                    }
+
+                    // 2. RSS XML Feeds parsed directly via AllOrigins CORS proxy
+                    if (source.realUrl) {
+                        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(source.realUrl)}`;
+                        const response = await fetch(proxyUrl);
+                        if (!response.ok) throw new Error("CORS Proxy retrieval issue");
+                        
+                        const wrapper = await response.json();
+                        const parser = new DOMParser();
+                        const xmlDoc = parser.parseFromString(wrapper.contents, "text/xml");
+                        const items = xmlDoc.querySelectorAll("item");
+                        const parsedList = [];
+
+                        const numToTake = Math.min(items.length, 8);
+                        for (let i = 0; i < numToTake; i++) {
+                            const node = items[i];
+                            const title = node.querySelector("title")?.textContent || "No Title Available";
+                            const link = node.querySelector("link")?.textContent || "#";
+                            const pubDate = node.querySelector("pubDate")?.textContent || "";
+                            
+                            // Parse description/summary and strip HTML tags
+                            const dirtyDesc = node.querySelector("description")?.textContent || "";
+                            const tempDiv = document.createElement("div");
+                            tempDiv.innerHTML = dirtyDesc;
+                            const cleanSummary = tempDiv.textContent || tempDiv.innerText || "Read full coverage on publisher's web portal.";
+
+                            // Try to look for inline media attachments inside feed
+                            let imgUrl = null;
+                            const mediaContent = node.querySelector("media\\:content, content");
+                            const enclosure = node.querySelector("enclosure[type^='image']");
+                            if (mediaContent) {
+                                imgUrl = mediaContent.getAttribute("url");
+                            } else if (enclosure) {
+                                imgUrl = enclosure.getAttribute("url");
+                            }
+
+                            parsedList.push({
+                                id: `${source.id}-live-${i}`,
+                                title: title.trim(),
+                                url: link,
+                                time: formatTimeAgo(pubDate) || `${i * 15}m ago`,
+                                comments: Math.floor(Math.random() * 80),
+                                points: Math.floor(Math.random() * 120),
+                                tag: source.name.split(' ')[0],
+                                summary: cleanSummary.slice(0, 350).trim() + (cleanSummary.length > 350 ? '...' : ''),
+                                author: node.querySelector("dc\\:creator, creator")?.textContent || source.name,
+                                imgUrl: imgUrl
+                            });
+                        }
+
+                        if (parsedList.length > 0) return parsedList;
+                    }
+                } catch (e) {
+                    console.warn(`Could not load real feed for ${source.name}. Using dynamic fallback values.`, e);
+                }
+                return null;
+            };
+
+            // Trigger fetch sequences for visible sources on layout configuration changes
+            useEffect(() => {
+                const loadAllVisibleRealFeeds = async () => {
+                    const updatedFeeds = { ...feeds };
+                    let changed = false;
+
+                    for (const sourceId of visibleSources) {
+                        const targetSource = SOURCES_REGISTRY.find(s => s.id === sourceId);
+                        if (targetSource && (targetSource.realUrl || targetSource.isHN)) {
+                            const liveData = await fetchRealSourceData(targetSource);
+                            if (liveData) {
+                                updatedFeeds[sourceId] = liveData;
+                                changed = true;
+                            }
+                        }
+                    }
+
+                    if (changed) {
+                        setFeeds(updatedFeeds);
+                    }
+                };
+
+                loadAllVisibleRealFeeds();
+            }, [visibleSources]);
+
+            // Initialize localStorage effects
+            useEffect(() => {
+                localStorage.setItem('upstream-theme', theme);
+                const rootEl = document.documentElement;
+                rootEl.className = ''; // Reset
+                if (theme === 'dark' || theme === 'slate' || theme === 'cyber') {
+                    rootEl.classList.add('dark');
+                }
+            }, [theme]);
+
+            useEffect(() => {
+                localStorage.setItem('upstream-density', density);
+            }, [density]);
+
+            useEffect(() => {
+                localStorage.setItem('upstream-cols', cols);
+            }, [cols]);
+
+            useEffect(() => {
+                localStorage.setItem('upstream-visible-sources', JSON.stringify(visibleSources));
+            }, [visibleSources]);
+
+            useEffect(() => {
+                localStorage.setItem('upstream-bookmarks', JSON.stringify(bookmarks));
+            }, [bookmarks]);
+
+            useEffect(() => {
+                localStorage.setItem('upstream-read-items', JSON.stringify(readItems));
+            }, [readItems]);
+
+            // Handle refreshing individual sources directly with fresh live calls
+            const handleRefreshSource = async (sourceId) => {
+                setRefreshingSources(prev => ({ ...prev, [sourceId]: true }));
+                
+                const targetSource = SOURCES_REGISTRY.find(s => s.id === sourceId);
+                let refreshedData = null;
+                
+                if (targetSource && (targetSource.realUrl || targetSource.isHN)) {
+                    refreshedData = await fetchRealSourceData(targetSource);
+                }
+
+                setTimeout(() => {
+                    if (refreshedData) {
+                        setFeeds(prev => ({ ...prev, [sourceId]: refreshedData }));
+                    } else {
+                        // Dynamically randomize slightly if fell back to simulated
+                        setFeeds(prev => {
+                            const clone = [...prev[sourceId]];
+                            if (clone.length > 0) {
+                                clone[0] = { ...clone[0], points: clone[0].points + 10 };
+                            }
+                            return { ...prev, [sourceId]: clone };
+                        });
+                    }
+                    setRefreshingSources(prev => ({ ...prev, [sourceId]: false }));
+                }, 850);
+            };
+
+            // Reorder sources positions on the grid
+            const moveSource = (index, direction) => {
+                const newSources = [...visibleSources];
+                const targetIndex = index + direction;
+                if (targetIndex >= 0 && targetIndex < newSources.length) {
+                    const temp = newSources[index];
+                    newSources[index] = newSources[targetIndex];
+                    newSources[targetIndex] = temp;
+                    setVisibleSources(newSources);
+                }
+            };
+
+            // Toggle Source addition
+            const toggleSourceVisibility = (id) => {
+                if (visibleSources.includes(id)) {
+                    setVisibleSources(visibleSources.filter(srcId => srcId !== id));
+                } else {
+                    setVisibleSources([...visibleSources, id]);
+                }
+            };
+
+            // Set all active or reset customization
+            const enableAllSources = () => {
+                setVisibleSources(SOURCES_REGISTRY.map(s => s.id));
+            };
+
+            const resetToDefaultSources = () => {
+                setVisibleSources(DEFAULT_VISIBLE_SOURCES);
+            };
+
+            // Toggle single bookmark
+            const toggleBookmark = (item, sourceName) => {
+                const exists = bookmarks.some(b => b.id === item.id);
+                if (exists) {
+                    setBookmarks(bookmarks.filter(b => b.id !== item.id));
+                } else {
+                    setBookmarks([...bookmarks, { ...item, sourceName }]);
+                }
+            };
+
+            // Record story click
+            const handleItemClick = (item, source) => {
+                if (!readItems.includes(item.id)) {
+                    setReadItems([...readItems, item.id]);
+                }
+                setReadingItem(item);
+                setReadingSource(source);
+            };
+
+            // Filter columns to display depending on tab selection and quick search query
+            const filteredSources = useMemo(() => {
+                let list = SOURCES_REGISTRY.filter(src => visibleSources.includes(src.id));
+                
+                if (activeCategory !== 'All') {
+                    list = list.filter(src => src.category === activeCategory);
+                }
+                
+                if (searchQuery.trim() !== '') {
+                    const q = searchQuery.toLowerCase();
+                    list = list.filter(src => 
+                        src.name.toLowerCase().includes(q) || 
+                        src.category.toLowerCase().includes(q) ||
+                        (feeds[src.id] && feeds[src.id].some(item => item.title.toLowerCase().includes(q)))
+                    );
+                }
+                return list;
+            }, [visibleSources, activeCategory, searchQuery, feeds]);
+
+            // Custom source catalogs filter inside the Customizer Modal
+            const filteredCatalog = useMemo(() => {
+                const q = customizeSearch.toLowerCase().trim();
+                if (!q) return SOURCES_REGISTRY;
+                return SOURCES_REGISTRY.filter(src => 
+                    src.name.toLowerCase().includes(q) || 
+                    src.category.toLowerCase().includes(q) ||
+                    src.description.toLowerCase().includes(q)
+                );
+            }, [customizeSearch]);
+
+            // Group filtered Catalog sources by Categories for better navigation
+            const catalogByCategories = useMemo(() => {
+                const groups = {};
+                filteredCatalog.forEach(src => {
+                    if (!groups[src.category]) {
+                        groups[src.category] = [];
+                    }
+                    groups[src.category].push(src);
+                });
+                return groups;
+            }, [filteredCatalog]);
+
+            // Theme Specific CSS Classes helper
+            const currentTheme = THEMES[theme] || THEMES.slate;
+
+            return (
+                <div className={`min-h-screen ${currentTheme.bg} ${currentTheme.text} transition-all duration-300`}>
+                    
+                    {/* TOP DYNAMIC TICKER HEADER */}
+                    <div className="border-b border-slate-200 dark:border-slate-800 bg-[#f1f5f9] dark:bg-[#0c1220] py-1.5 text-xs select-none">
+                        <div className="max-w-[1800px] mx-auto px-4 flex items-center justify-between">
+                            <div className="flex items-center space-x-2 shrink-0 border-r border-slate-300 dark:border-slate-700 pr-3 mr-3 hidden sm:flex">
+                                <span className="flex h-2 w-2 relative">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                </span>
+                                <span className="font-extrabold tracking-wider text-[10px] text-red-500 uppercase">Live Tick</span>
+                            </div>
+                            
+                            <div className="ticker-wrap w-full">
+                                <div className="ticker-content flex space-x-8">
+                                    {tickerItems.concat(tickerItems).map((tick, index) => (
+                                        <div key={index} className="inline-flex items-center space-x-1.5 cursor-pointer">
+                                            <span className="font-semibold text-slate-500 dark:text-slate-400 text-[11px]">{tick.label}</span>
+                                            <span className="font-mono text-slate-800 dark:text-slate-200">{tick.value}</span>
+                                            <span className={`text-[10px] font-bold ${tick.isUp ? 'text-green-500' : 'text-red-500'}`}>
+                                                {tick.isUp ? '▲' : '▼'} {tick.change}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="shrink-0 pl-4 border-l border-slate-300 dark:border-slate-700 ml-3 hidden md:flex items-center space-x-2">
+                                <span className="text-slate-500 dark:text-slate-400 text-[11px]">Aggregating</span>
+                                <span className="bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{SOURCES_REGISTRY.length} Sources</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* MAIN HEADER WITH NAVIGATION */}
+                    <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#0b0f19]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-200">
+                        <div className="max-w-[1800px] mx-auto px-4 py-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                            
+                            {/* Title Logo and Controls */}
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-3">
+                                    <div className="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-500/20">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div className="flex items-center space-x-1.5">
+                                            <h1 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">UPSTREAM</h1>
+                                            <span className="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded">v2.5</span>
+                                        </div>
+                                        <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium tracking-wide">CUSTOM MULTI-COLUMN INTERNET FEEDS</p>
+                                    </div>
+                                </div>
+
+                                {/* Quick Settings Toggles */}
+                                <div className="flex items-center space-x-2 lg:hidden">
+                                    <button 
+                                        onClick={() => setIsCustomizeOpen(true)}
+                                        className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-700 dark:text-slate-200"
+                                        title="Customize Desk"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Search and Quick Filters */}
+                            <div className="flex flex-col sm:flex-row gap-2 grow max-w-2xl lg:mx-6">
+                                <div className="relative flex-1">
+                                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
+                                    </span>
+                                    <input 
+                                        type="text"
+                                        placeholder="Search across all sources & headlines..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        className="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-blue-600 rounded-lg outline-none placeholder-slate-400 dark:placeholder-slate-500 transition-all duration-200"
+                                    />
+                                    {searchQuery && (
+                                        <button 
+                                            onClick={() => setSearchQuery('')}
+                                            className="absolute right-2.5 top-2.5 text-slate-400 dark:text-slate-500 hover:text-slate-700"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Desktop Preferences Controls */}
+                            <div className="flex flex-wrap items-center gap-2 select-none">
+                                {/* Columns Configuration Toggle */}
+                                <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-1 flex items-center">
+                                    <button 
+                                        onClick={() => setCols(2)} 
+                                        className={`px-2 py-1 text-xs font-bold rounded ${cols === 2 ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600' : 'text-slate-400 dark:text-slate-500'}`}
+                                        title="2 Columns Layout"
+                                    >2 Col</button>
+                                    <button 
+                                        onClick={() => setCols(3)} 
+                                        className={`px-2 py-1 text-xs font-bold rounded ${cols === 3 ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600' : 'text-slate-400 dark:text-slate-500'}`}
+                                        title="3 Columns Layout"
+                                    >3 Col</button>
+                                    <button 
+                                        onClick={() => setCols(4)} 
+                                        className={`px-2 py-1 text-xs font-bold rounded ${cols === 4 ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600' : 'text-slate-400 dark:text-slate-500'}`}
+                                        title="4 Columns Layout"
+                                    >4 Col</button>
+                                    <button 
+                                        onClick={() => setCols(5)} 
+                                        className={`px-2 py-1 text-xs font-bold rounded ${cols === 5 ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600' : 'text-slate-400 dark:text-slate-500'}`}
+                                        title="5 Columns Layout"
+                                    >5 Col</button>
+                                </div>
+
+                                {/* Density Selection */}
+                                <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-1 flex items-center">
+                                    <button 
+                                        onClick={() => setDensity('cozy')} 
+                                        className={`px-2 py-1 text-[11px] font-bold rounded ${density === 'cozy' ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600' : 'text-slate-400 dark:text-slate-500'}`}
+                                        title="Cozy Spacing"
+                                    >Cozy</button>
+                                    <button 
+                                        onClick={() => setDensity('compact')} 
+                                        className={`px-2 py-1 text-[11px] font-bold rounded ${density === 'compact' ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600' : 'text-slate-400 dark:text-slate-500'}`}
+                                        title="Compact Spacing"
+                                    >Comp</button>
+                                    <button 
+                                        onClick={() => setDensity('dense')} 
+                                        className={`px-2 py-1 text-[11px] font-bold rounded ${density === 'dense' ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600' : 'text-slate-400 dark:text-slate-500'}`}
+                                        title="Dense Spacing"
+                                    >Dense</button>
+                                </div>
+
+                                {/* Custom Theme Picker */}
+                                <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-1 flex items-center">
+                                    <button 
+                                        onClick={() => setTheme('light')} 
+                                        className={`w-5 h-5 rounded-full bg-slate-300 border-2 ${theme === 'light' ? 'border-blue-600 scale-110 shadow' : 'border-transparent'}`}
+                                        title="Light Theme"
+                                    />
+                                    <button 
+                                        onClick={() => setTheme('dark')} 
+                                        className={`w-5 h-5 ml-1 rounded-full bg-slate-900 border-2 ${theme === 'dark' ? 'border-blue-600 scale-110 shadow' : 'border-transparent'}`}
+                                        title="Dark Classic Theme"
+                                    />
+                                    <button 
+                                        onClick={() => setTheme('slate')} 
+                                        className={`w-5 h-5 ml-1 rounded-full bg-slate-700 border-2 ${theme === 'slate' ? 'border-blue-600 scale-110 shadow' : 'border-transparent'}`}
+                                        title="Slate Midnight Theme"
+                                    />
+                                    <button 
+                                        onClick={() => setTheme('cyber')} 
+                                        className={`w-5 h-5 ml-1 rounded-full bg-[#150226] border-2 ${theme === 'cyber' ? 'border-[#d946ef] scale-110 shadow' : 'border-transparent'}`}
+                                        title="Cyber Neon Theme"
+                                    />
+                                </div>
+
+                                {/* Customizer Trigger */}
+                                <button 
+                                    onClick={() => setIsCustomizeOpen(true)}
+                                    className="px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center space-x-1.5 shadow-md shadow-blue-500/10 hover:shadow-lg transition-all"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                    </svg>
+                                    <span>Customize Desk ({visibleSources.length})</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* CATEGORY NAV TABS */}
+                        <div className="border-t border-slate-100 dark:border-slate-800 bg-[#fafcfd] dark:bg-[#0c1322] select-none">
+                            <div className="max-w-[1800px] mx-auto px-4 flex items-center justify-between overflow-x-auto whitespace-nowrap scrollbar-none">
+                                <div className="flex space-x-1 py-1.5">
+                                    {['All', 'News', 'Tech & Business', 'Science & Ideas', 'Social & Media', 'Entertainment', 'Sports'].map(category => (
+                                        <button
+                                            key={category}
+                                            onClick={() => setActiveCategory(category)}
+                                            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-150 ${
+                                                activeCategory === category 
+                                                    ? 'bg-blue-600 text-white' 
+                                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                                            }`}
+                                        >
+                                            {category}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Bookmarked Count badge */}
+                                {bookmarks.length > 0 && (
+                                    <div className="flex items-center space-x-1 px-3 py-1 bg-yellow-100 dark:bg-yellow-950/40 rounded-full border border-yellow-200 dark:border-yellow-900/50">
+                                        <span className="text-[11px] font-bold text-yellow-700 dark:text-yellow-400">★ {bookmarks.length} Bookmarked</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </header>
+
+                    {}
+                    {/* CORE DESK FEEDS WORKSPACE */}
+                    <main className="max-w-[1800px] mx-auto px-4 py-6">
+                        {filteredSources.length === 0 ? (
+                            <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 max-w-lg mx-auto">
+                                <span className="text-4xl">🏜️</span>
+                                <h3 className="mt-4 text-lg font-bold">No active sources match your filter</h3>
+                                <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Try resetting category views, changing the customizer or searching again.</p>
+                                <button 
+                                    onClick={() => {
+                                        setActiveCategory('All');
+                                        setSearchQuery('');
+                                        resetToDefaultSources();
+                                    }}
+                                    className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-semibold shadow-md"
+                                >
+                                    Reset to Default Setup
+                                </button>
+                            </div>
+                        ) : (
+                            <div className={`grid gap-4 transition-all duration-300 ${
+                                cols === 2 ? 'grid-cols-1 md:grid-cols-2' : 
+                                cols === 3 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 
+                                cols === 4 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 
+                                'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+                            }`}>
+                                {filteredSources.map((source, sourceIndex) => {
+                                    const feedList = feeds[source.id] || [];
+                                    const isRefreshing = refreshingSources[source.id];
+
+                                    return (
+                                        <section 
+                                            key={source.id}
+                                            className={`${currentTheme.card} border ${currentTheme.border} rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col`}
+                                        >
+                                            {/* Column Header */}
+                                            <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/55 dark:bg-[#0c1322]/40 select-none">
+                                                <div className="flex items-center space-x-2 truncate">
+                                                    <span className="text-lg shrink-0">{source.icon}</span>
+                                                    <div>
+                                                        <div className="flex items-center space-x-1">
+                                                            <h2 className="text-sm font-extrabold tracking-tight truncate max-w-[130px]" title={source.name}>
+                                                                {source.name}
+                                                            </h2>
+                                                            {(source.realUrl || source.isHN) && (
+                                                                <span className="text-[8px] font-black bg-emerald-500 text-white rounded-sm px-1 py-0.5" title="Live external feed connected">LIVE</span>
+                                                            )}
+                                                        </div>
+                                                        <span className="text-[9px] text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-wider block leading-tight">{source.category}</span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Source Controls */}
+                                                <div className="flex items-center space-x-1.5 text-slate-400 dark:text-slate-500">
+                                                    {/* Move controls for accessibility/reordering */}
+                                                    <button 
+                                                        onClick={() => moveSource(sourceIndex, -1)} 
+                                                        className="p-1 hover:text-slate-700 dark:hover:text-slate-200 transition"
+                                                        title="Move left"
+                                                    >
+                                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+                                                        </svg>
+                                                    </button>
+                                                    <button 
+                                                        onClick={() => moveSource(sourceIndex, 1)} 
+                                                        className="p-1 hover:text-slate-700 dark:hover:text-slate-200 transition"
+                                                        title="Move right"
+                                                    >
+                                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                                                        </svg>
+                                                    </button>
+                                                    {/* Refresh specific feed */}
+                                                    <button 
+                                                        onClick={() => handleRefreshSource(source.id)} 
+                                                        className={`p-1 hover:text-slate-700 dark:hover:text-slate-200 transition ${isRefreshing ? 'animate-spin text-blue-600' : ''}`}
+                                                        title="Reload source items"
+                                                    >
+                                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18" />
+                                                        </svg>
+                                                    </button>
+                                                    {/* Remove source */}
+                                                    <button 
+                                                        onClick={() => toggleSourceVisibility(source.id)} 
+                                                        className="p-1 hover:text-red-500 transition"
+                                                        title="Hide this column"
+                                                    >
+                                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            {/* Column Headlines Feed List */}
+                                            <div className={`p-2 divide-y divide-slate-100 dark:divide-slate-800/60 grow ${isRefreshing ? 'opacity-35 transition-opacity' : ''}`}>
+                                                
+                                                {/* Visual Feed Style for Image Platforms (Flickr, Imgur, 500px, YouTube, Giphy, Reddit Pic/Video) */}
+                                                {source.isVisual ? (
+                                                    <div className="grid grid-cols-2 gap-2 py-1">
+                                                        {feedList.slice(0, 4).map((item) => (
+                                                            <div 
+                                                                key={item.id}
+                                                                onClick={() => handleItemClick(item, source)}
+                                                                className="relative rounded-lg overflow-hidden group cursor-pointer aspect-video bg-slate-100 dark:bg-slate-800"
+                                                            >
+                                                                <img 
+                                                                    src={item.imgUrl} 
+                                                                    alt={item.title}
+                                                                    className="w-full h-full object-cover group-hover:scale-105 transition duration-200"
+                                                                    onError={(e) => { e.target.src = "https://placehold.co/150x100/10b981/ffffff?text=Image"; }}
+                                                                />
+                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-1.5 flex flex-col justify-end">
+                                                                    <span className="text-[9px] font-bold text-slate-100 line-clamp-2 leading-tight">
+                                                                        {item.title}
+                                                                    </span>
+                                                                    <span className="text-[8px] text-slate-300 font-medium tracking-tight mt-0.5">{item.time}</span>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    /* Standard News Feed Style */
+                                                    feedList.map((item, index) => {
+                                                        const isRead = readItems.includes(item.id);
+                                                        const isBookmarked = bookmarks.some(b => b.id === item.id);
+
+                                                        return (
+                                                            <article 
+                                                                key={item.id}
+                                                                onClick={() => handleItemClick(item, source)}
+                                                                className={`group relative flex flex-col hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-lg cursor-pointer transition duration-150 ${
+                                                                    density === 'cozy' ? 'p-2.5 my-1.5' :
+                                                                    density === 'dense' ? 'py-1 px-1.5 my-0.5' :
+                                                                    'py-1.5 px-2 my-1'
+                                                                }`}
+                                                            >
+                                                                {/* Headline Title */}
+                                                                <div className="flex items-start justify-between gap-1">
+                                                                    <span className={`text-slate-800 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug line-clamp-3 ${
+                                                                        isRead ? 'opacity-55 dark:opacity-40 font-normal' : 'font-semibold'
+                                                                    } ${
+                                                                        density === 'dense' ? 'text-[11px]' : 'text-[12.5px]'
+                                                                    }`}>
+                                                                        {item.title}
+                                                                    </span>
+                                                                    
+                                                                    {/* Simple indicator indicators for visual/video inside list */}
+                                                                    {isBookmarked && (
+                                                                        <span className="text-[10px] text-yellow-500 pr-1 shrink-0">★</span>
+                                                                    )}
+                                                                </div>
+
+                                                                {/* Item Sub-metadata Bar */}
+                                                                <div className="flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500 mt-1 leading-none font-medium select-none">
+                                                                    <div className="flex items-center space-x-1.5">
+                                                                        <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-sm text-[8px] px-1 font-semibold uppercase">{item.tag}</span>
+                                                                        <span>{item.time}</span>
+                                                                    </div>
+                                                                    
+                                                                    {/* Secondary stats indicators on hover */}
+                                                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center space-x-2">
+                                                                        <span className="hover:text-blue-600" title="Reader quick view">
+                                                                            👁️ View
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </article>
+                                                        );
+                                                    })
+                                                )}
+                                            </div>
+
+                                            {/* Column Footer */}
+                                            <div 
+                                                onClick={() => { if (feedList[0]?.url) window.open(feedList[0].url, '_blank'); }}
+                                                className="px-3 py-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50/20 dark:bg-[#0c1322]/10 text-center select-none text-[10px] font-bold text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer"
+                                            >
+                                                More from {source.name} →
+                                            </div>
+                                        </section>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </main>
+
+                    {}
+                    {/* LIVE INTERACTIVE READING VIEW (SPLIT DRAWER) */}
+                    {readingItem && (
+                        <div className="fixed inset-0 z-50 flex justify-end select-none">
+                            {/* Overlay background with closing toggle */}
+                            <div 
+                                className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+                                onClick={() => setReadingItem(null)}
+                            />
+
+                            {/* Main Reader Side Panel */}
+                            <div className="relative w-full max-w-2xl h-full bg-white dark:bg-[#0c1322] shadow-2xl flex flex-col z-10 transition-transform duration-300">
+                                
+                                {/* Reader Control Header bar */}
+                                <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+                                    <div className="flex items-center space-x-2">
+                                        <span className="text-xl">{readingSource?.icon}</span>
+                                        <div>
+                                            <span className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider">{readingSource?.name} Article</span>
+                                            <p className="text-[10px] text-green-500 font-extrabold tracking-wide uppercase">⚡ Dynamic Clean Reader</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Format Customization controls */}
+                                    <div className="flex items-center space-x-3">
+                                        {/* Font style switcher */}
+                                        <button 
+                                            onClick={() => setReaderFontFamily(prev => prev === 'sans' ? 'serif' : prev === 'serif' ? 'mono' : 'sans')}
+                                            className="text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-2.5 py-1 rounded hover:bg-slate-200 transition"
+                                            title="Toggle font family"
+                                        >
+                                            {readerFontFamily === 'sans' ? 'Abc (Sans)' : readerFontFamily === 'serif' ? 'Abc (Serif)' : 'Abc (Mono)'}
+                                        </button>
+
+                                        {/* Font size toggler */}
+                                        <button 
+                                            onClick={() => setReaderFontSize(prev => prev === 'small' ? 'medium' : prev === 'medium' ? 'large' : 'small')}
+                                            className="text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-2.5 py-1 rounded hover:bg-slate-200 transition"
+                                            title="Toggle font size"
+                                        >
+                                            {readerFontSize === 'small' ? 'A-' : readerFontSize === 'medium' ? 'A' : 'A+'}
+                                        </button>
+
+                                        {/* Bookmarking trigger */}
+                                        <button 
+                                            onClick={() => toggleBookmark(readingItem, readingSource?.name)}
+                                            className="text-sm p-1 text-yellow-500 hover:scale-110 transition"
+                                            title="Bookmark this post"
+                                        >
+                                            {bookmarks.some(b => b.id === readingItem.id) ? '★ Bookmarked' : '☆ Save'}
+                                        </button>
+
+                                        {/* Close view drawer */}
+                                        <button 
+                                            onClick={() => setReadingItem(null)}
+                                            className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-red-500 hover:text-white text-slate-700 dark:text-slate-200 transition"
+                                        >
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Main Readable Clean text core area */}
+                                <div className="flex-1 overflow-y-auto p-6 md:p-8 select-text">
+                                    <div className={`max-w-xl mx-auto ${
+                                        readerFontFamily === 'sans' ? 'font-sans' : 
+                                        readerFontFamily === 'serif' ? 'font-serif' : 'font-mono'
+                                    } ${
+                                        readerFontSize === 'small' ? 'text-sm' : 
+                                        readerFontSize === 'medium' ? 'text-base' : 'text-lg'
+                                    }`}>
+                                        
+                                        {/* Metadata Tag details */}
+                                        <div className="flex flex-wrap items-center gap-2 mb-4">
+                                            <span className="bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 font-extrabold text-[10px] tracking-widest uppercase px-2 py-0.5 rounded">
+                                                {readingSource?.category}
+                                            </span>
+                                            <span className="text-xs text-slate-400 dark:text-slate-500">
+                                                Published {readingItem.time} by {readingItem.author}
+                                            </span>
+                                        </div>
+
+                                        {/* Dynamic Headline Title */}
+                                        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-6 leading-tight dark:text-white">
+                                            {readingItem.title}
+                                        </h2>
+
+                                        {/* Simulated Thumbnail or Artwork Cover */}
+                                        {readingItem.imgUrl ? (
+                                            <div className="mb-6 rounded-xl overflow-hidden shadow border border-slate-200 dark:border-slate-800">
+                                                <img 
+                                                    src={readingItem.imgUrl} 
+                                                    alt="Visual Cover" 
+                                                    className="w-full h-auto max-h-[250px] object-cover"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="mb-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border-l-4 border-blue-600 text-xs italic text-slate-500">
+                                                "This article has been formatted to the clean-text view configuration default by Upstream Reader Mode."
+                                            </div>
+                                        )}
+
+                                        {/* Dynamic Simulated AI Executive Summary */}
+                                        <div className="mb-8 p-5 bg-gradient-to-br from-indigo-50/60 to-blue-50/60 dark:from-slate-900/50 dark:to-blue-950/20 rounded-xl border border-blue-100 dark:border-blue-950/50">
+                                            <div className="flex items-center space-x-1.5 mb-2.5">
+                                                <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center">
+                                                    ✨ Live Core Context Takeaways
+                                                </span>
+                                            </div>
+                                            <ul className="list-disc pl-5 space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                                                <li><strong>Topic Reference:</strong> Recent details regarding <em>{readingItem.tag || 'Dispatches'}</em> represent standard reports loaded directly from {readingSource?.name}.</li>
+                                                <li><strong>Key Stakeholders:</strong> Media outlets and primary correspondents verified these updates via secure endpoints.</li>
+                                                <li><strong>Real-time Access:</strong> Click the bottom actions to read the unfiltered article directly at the original publisher domain.</li>
+                                            </ul>
+                                        </div>
+
+                                        {/* Article Core Body Text Simulation */}
+                                        <div className="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed text-[15px]">
+                                            <p className="first-letter:text-4xl first-letter:font-extrabold first-letter:text-blue-600 first-letter:float-left first-letter:mr-2">
+                                                {readingItem.summary}
+                                            </p>
+                                            <p>
+                                                This event details a continuous sequence of updates reported via {readingSource?.name}. Readers can keep tracking the full story context directly from the original source link. Upstream acts strictly as an optimization index, formatting feed information to deliver standard readability on all screen breakpoints.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Footer of Reader view */}
+                                <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-[#0a0f19] flex flex-col sm:flex-row gap-3 items-center justify-between">
+                                    <button 
+                                        onClick={() => {
+                                            // Copy link directly using classic command fallback for safety
+                                            const el = document.createElement('textarea');
+                                            el.value = readingItem.url;
+                                            document.body.appendChild(el);
+                                            el.select();
+                                            document.execCommand('copy');
+                                            document.body.removeChild(el);
+                                            alert("Real feed URL copied to clipboard!");
+                                        }}
+                                        className="text-xs font-semibold px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition"
+                                    >
+                                        🔗 Copy Story Link
+                                    </button>
+
+                                    <a 
+                                        href={readingItem.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-lg shadow-md transition"
+                                    >
+                                        Visit Original Publisher Website ↗
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {}
+                    {/* CUSTOMIZE DESK CATALOGUE MODAL */}
+                    {isCustomizeOpen && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                            {/* Overlay background */}
+                            <div 
+                                className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+                                onClick={() => setIsCustomizeOpen(false)}
+                            />
+
+                            {/* Modal panel card */}
+                            <div className="relative bg-white dark:bg-[#0c1322] w-full max-w-4xl h-[85vh] rounded-2xl shadow-2xl flex flex-col z-10 overflow-hidden border border-slate-200 dark:border-slate-800 select-none">
+                                
+                                {/* Modal Header */}
+                                <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-[#0a0f19]">
+                                    <div>
+                                        <h3 className="text-lg font-extrabold tracking-tight">Configure Your Dashboard</h3>
+                                        <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">Add, remove, or rearrange columns from our exhaustive registry of {SOURCES_REGISTRY.length} channels.</p>
+                                    </div>
+                                    
+                                    <button 
+                                        onClick={() => setIsCustomizeOpen(false)}
+                                        className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-red-500 hover:text-white text-slate-700 dark:text-slate-200 transition"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                {/* Global Multi-Action Controls Bar */}
+                                <div className="px-5 py-3 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0c1322] flex flex-wrap items-center justify-between gap-3">
+                                    <div className="relative flex-1 max-w-sm">
+                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                            </svg>
+                                        </span>
+                                        <input 
+                                            type="text"
+                                            placeholder="Find sources by name or tag..."
+                                            value={customizeSearch}
+                                            onChange={(e) => setCustomizeSearch(e.target.value)}
+                                            className="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-100 dark:bg-slate-800 border-0 focus:ring-1 focus:ring-blue-600 rounded-lg outline-none placeholder-slate-400 dark:placeholder-slate-500"
+                                        />
+                                    </div>
+
+                                    <div className="flex items-center space-x-2">
+                                        <button 
+                                            onClick={enableAllSources}
+                                            className="px-3 py-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-blue-600 hover:text-white transition"
+                                        >
+                                            Enable All
+                                        </button>
+                                        <button 
+                                            onClick={() => setVisibleSources([])}
+                                            className="px-3 py-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-red-500 hover:text-white transition"
+                                        >
+                                            Clear Workspace
+                                        </button>
+                                        <button 
+                                            onClick={resetToDefaultSources}
+                                            className="px-3 py-1.5 text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 rounded-lg hover:bg-blue-200 transition"
+                                        >
+                                            Restore Defaults
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Catalogue Categories list Grid */}
+                                <div className="flex-1 overflow-y-auto p-5 space-y-8">
+                                    {Object.entries(catalogByCategories).map(([categoryName, sources]) => (
+                                        <div key={categoryName} className="space-y-3">
+                                            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-1">
+                                                {categoryName} ({sources.length})
+                                            </h4>
+                                            
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                                                {sources.map(src => {
+                                                    const isEnabled = visibleSources.includes(src.id);
+                                                    return (
+                                                        <div 
+                                                            key={src.id}
+                                                            onClick={() => toggleSourceVisibility(src.id)}
+                                                            className={`p-3 rounded-xl border cursor-pointer select-none transition flex items-start justify-between ${
+                                                                isEnabled 
+                                                                    ? 'bg-blue-50/55 dark:bg-blue-950/20 border-blue-500 dark:border-blue-600' 
+                                                                    : 'bg-slate-50/50 hover:bg-slate-100 dark:bg-slate-900/40 dark:hover:bg-slate-900 border-slate-200 dark:border-slate-800'
+                                                            }`}
+                                                        >
+                                                            <div className="flex items-start space-x-2.5 truncate">
+                                                                <span className="text-xl shrink-0">{src.icon}</span>
+                                                                <div className="truncate">
+                                                                    <div className="flex items-center space-x-1.5">
+                                                                        <p className="text-xs font-bold truncate leading-tight">{src.name}</p>
+                                                                        {(src.realUrl || src.isHN) && (
+                                                                            <span className="text-[7px] font-bold bg-emerald-500 text-white rounded px-1">LIVE</span>
+                                                                        )}
+                                                                    </div>
+                                                                    <p className="text-[10px] text-slate-400 dark:text-slate-500 truncate leading-snug mt-0.5">{src.description}</p>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Custom Checkbox */}
+                                                            <div className={`w-5 h-5 rounded-md flex items-center justify-center border shrink-0 ml-2 transition ${
+                                                                isEnabled 
+                                                                    ? 'bg-blue-600 border-blue-600 text-white' 
+                                                                    : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800'
+                                                            }`}>
+                                                                {isEnabled && (
+                                                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                                                    </svg>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Modal Footer */}
+                                <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-[#0a0f19] flex items-center justify-between">
+                                    <div className="text-xs text-slate-400 dark:text-slate-500">
+                                        Enabled <strong className="text-slate-700 dark:text-slate-300">{visibleSources.length}</strong> sources.
+                                    </div>
+                                    
+                                    <button 
+                                        onClick={() => setIsCustomizeOpen(false)}
+                                        className="px-6 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold shadow hover:bg-blue-700 transition"
+                                    >
+                                        Apply Config & Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* APP FOOTER DETAILS */}
+                    <footer className="border-t border-slate-200 dark:border-slate-800 mt-16 py-8 select-none">
+                        <div className="max-w-[1800px] mx-auto px-4 text-center space-y-2">
+                            <p className="text-xs text-slate-400 dark:text-slate-500 font-bold tracking-wider">UPSTREAM DESK © 2026. ALL RIGHTS RESERVED.</p>
+                            <p className="text-[10.5px] text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+                                Inspired by PopURLs and Upstract, our platform aggregates modern web channels in smart, clean, zero-clutter dashboard environments.
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Mount the React Application on window load
+        window.onload = function() {
+            const container = document.getElementById('root');
+            const root = ReactDOM.createRoot(container);
+            root.render(<App />);
+        };
+    </script>
+</body>
+</html>
