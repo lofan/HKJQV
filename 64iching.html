@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>易經六十四卦記憶抽認卡</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#fbf8eb',
+                            100: '#f4eca6',
+                            200: '#ebd95c',
+                            300: '#e1bd21',
+                            400: '#cdaa15',
+                            500: '#ab8810',
+                            600: '#8e6b0a',
+                            700: '#72510a',
+                            800: '#5c410c',
+                            900: '#4e350f',
+                            950: '#2d1c05',
+                        },
+                        parchment: {
+                            50: '#fdfbf7',
+                            100: '#f5efe0',
+                            200: '#e8dcbf',
+                            300: '#d7c193',
+                            400: '#c5a36b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts for Calligraphy & Serif -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Serif TC', serif;
+        }
+        /* Custom 3D Card Flip styles */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen transition-colors duration-300 flex flex-col justify-between">
+
+    <!-- Top Nav Header -->
+    <header class="border-b border-zinc-800 dark:border-zinc-800 bg-zinc-950/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-gold-500 to-amber-700 flex items-center justify-center shadow-lg shadow-gold-950/50">
+                    <span class="text-zinc-950 font-black text-xl">易</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wider text-gold-400">易經六十四卦</h1>
+                    <p class="text-xs text-zinc-400 font-sans tracking-widest uppercase">I-Ching Memory Flashcards</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="p-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-gold-400 transition-colors duration-200 border border-zinc-800" title="切換主題">
+                    <svg id="themeDarkIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.364l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <svg id="themeLightIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                
+                <!-- Audio Toggle -->
+                <button id="soundToggle" class="p-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-gold-400 transition-colors duration-200 border border-zinc-800" title="開啟/關閉音效">
+                    <svg id="soundOnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                    <svg id="soundOffIcon" class="w-5 h-5 hidden text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zm11.707-7.293a1 1 0 011.414 0L20 9.086l1.293-1.293a1 1 0 111.414 1.414L21.414 10.5l1.293 1.293a1 1 0 01-1.414 1.414L20 11.914l-1.293 1.293a1 1 0 01-1.414-1.414l1.293-1.293-1.293-1.293a1 1 0 010-1.414z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-6xl w-full mx-auto px-4 py-6 flex-grow flex flex-col">
+        
+        <!-- Navigation Tabs -->
+        <div class="flex border-b border-zinc-800 dark:border-zinc-800 mb-6 space-x-2">
+            <button id="tabStudy" class="px-5 py-3 text-sm font-semibold tracking-wide border-b-2 border-gold-500 text-gold-400 flex items-center space-x-2">
+                <span>🗂️ 抽認卡溫習</span>
+            </button>
+            <button id="tabBuilder" class="px-5 py-3 text-sm font-semibold tracking-wide border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center space-x-2">
+                <span>☯️ 互動排卦器</span>
+            </button>
+            <button id="tabDeckList" class="px-5 py-3 text-sm font-semibold tracking-wide border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center space-x-2">
+                <span>📖 卦象全覽表</span>
+            </button>
+        </div>
+
+        <!-- ================= STUDY MODE PANEL ================= -->
+        <section id="panelStudy" class="flex-grow flex flex-col space-y-6">
+            <!-- Deck Controllers / Configuration -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-zinc-900/60 dark:bg-zinc-900/40 p-4 rounded-xl border border-zinc-800">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">選擇學習組別</label>
+                    <select id="deckFilter" class="w-full bg-zinc-950 text-zinc-100 rounded-lg border border-zinc-800 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500">
+                        <option value="1-25">第一組：第1 - 25卦 (初探基礎)</option>
+                        <option value="26-45">第二組：第26 - 45卦 (漸入佳境)</option>
+                        <option value="46-64">第三組：第46 - 64卦 (融會貫通)</option>
+                        <option value="all">全套六十四卦 (大圓滿)</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col justify-end">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">卡片排序</label>
+                    <div class="flex items-center space-x-2">
+                        <button id="btnOrderSeq" class="flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-gold-600 text-zinc-950 tracking-wider">
+                            按卦序排列
+                        </button>
+                        <button id="btnOrderShuffle" class="flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 tracking-wider transition-colors">
+                            隨機亂序 (推薦)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-end">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">學習進度</label>
+                    <div class="flex items-center justify-between text-xs text-zinc-400 mb-1">
+                        <span>本輪進度: <span id="currentCardIndexText">1</span> / <span id="totalCardsText">25</span></span>
+                        <span id="accuracyText">熟練度: 0%</span>
+                    </div>
+                    <div class="w-full bg-zinc-950 h-2 rounded-full overflow-hidden border border-zinc-800">
+                        <div id="progressBar" class="bg-gradient-to-r from-amber-500 to-gold-400 h-full w-[4%]" style="transition: width 0.3s ease-out;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Flashcard Area -->
+            <div class="flex-grow flex flex-col lg:flex-row items-center gap-6 justify-center max-w-4xl mx-auto w-full my-4">
+                <!-- Flashcard -->
+                <div id="cardContainer" class="perspective-1000 w-full max-w-lg h-[460px] cursor-pointer group">
+                    <div id="cardInner" class="transform-style-3d transition-transform duration-700 relative w-full h-full">
+                        
+                        <!-- CARD FRONT -->
+                        <div class="absolute inset-0 backface-hidden bg-gradient-to-b from-zinc-900 to-zinc-950 border-2 border-zinc-800 rounded-2xl shadow-2xl p-6 flex flex-col justify-between hover:border-gold-500/50 transition-all duration-300">
+                            <!-- Header Stamp & Tag -->
+                            <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
+                                <span class="px-2.5 py-1 text-xs rounded bg-gold-950/80 border border-gold-800/60 text-gold-400 tracking-widest font-sans font-bold" id="cardFrontGroup">第1-25卦</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
+                                    <span class="text-xs text-zinc-500 font-sans tracking-wider" id="cardFrontSequence">卦序 01</span>
+                                </div>
+                            </div>
+
+                            <!-- Central Content: Hexagram Title & Dynamic 六爻 -->
+                            <div class="flex flex-col items-center justify-center space-y-6 py-4 flex-grow">
+                                <!-- Dynamic 六爻 (Front Side View) -->
+                                <div id="frontYaoVisualizer" class="flex flex-col-reverse justify-center space-y-reverse space-y-1.5 w-44 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/80 shadow-inner">
+                                    <!-- Dynamic lines injected by JS -->
+                                </div>
+                                
+                                <div class="text-center space-y-2">
+                                    <h2 id="cardFrontTitle" class="text-3xl font-extrabold tracking-wider text-zinc-100">乾為天</h2>
+                                    <p id="cardFrontTrigrams" class="text-sm text-gold-400 font-medium tracking-widest bg-gold-950/30 px-3 py-1 rounded-full border border-gold-900/20 inline-block">乾上乾下</p>
+                                </div>
+                            </div>
+
+                            <!-- Click to Flip Banner -->
+                            <div class="border-t border-zinc-800 pt-3 text-center">
+                                <p class="text-xs text-zinc-500 tracking-wider flex items-center justify-center space-x-2">
+                                    <span>🔍 點擊卡片，自行解碼並揭曉答案</span>
+                                    <svg class="w-4 h-4 text-amber-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15H15"></path></svg>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- CARD BACK -->
+                        <div class="absolute inset-0 rotate-y-180 backface-hidden bg-gradient-to-b from-zinc-900 to-zinc-950 border-2 border-zinc-800 rounded-2xl shadow-2xl p-6 flex flex-col justify-between hover:border-gold-500/50 transition-all duration-300">
+                            <!-- Header Stamp & Tag -->
+                            <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
+                                <span class="px-2.5 py-1 text-xs rounded bg-zinc-950 border border-zinc-800 text-zinc-400 tracking-widest font-bold" id="cardBackTitleSmall">乾為天</span>
+                                <span class="text-xs text-gold-400 font-bold" id="cardBackSymbol">☰ ☰ 乾卦</span>
+                            </div>
+
+                            <!-- Back side text detailing -->
+                            <div class="flex-grow flex flex-col md:flex-row items-center md:items-stretch gap-4 py-4 overflow-y-auto">
+                                <!-- Miniature 六爻 Reference on Back -->
+                                <div class="flex flex-col justify-center items-center p-3 bg-zinc-950 rounded-xl border border-zinc-800/50 w-28 shrink-0">
+                                    <div id="backYaoVisualizer" class="flex flex-col-reverse justify-center space-y-reverse space-y-1 w-20 mb-2">
+                                        <!-- Mini lines -->
+                                    </div>
+                                    <span class="text-[10px] text-zinc-500 tracking-wider">自下而上觀察</span>
+                                </div>
+
+                                <!-- Core Explanation Text -->
+                                <div class="flex-grow space-y-3 text-left">
+                                    <div>
+                                        <h4 class="text-xs uppercase tracking-wider text-gold-500 font-bold">核心卦意與密碼：</h4>
+                                        <p id="cardBackMeaning" class="text-sm text-zinc-200 leading-relaxed font-normal">
+                                            剛健、主動、自強不息。代表純陽、天道、君子與領袖。核心思想是「天行健，君子以自強不息」。
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="bg-zinc-950/40 p-2.5 rounded-lg border border-zinc-800">
+                                        <h4 class="text-xs uppercase tracking-wider text-amber-500 font-bold mb-1">記憶聯想聯想（提示）：</h4>
+                                        <p id="cardBackHint" class="text-xs text-zinc-400 leading-relaxed font-light">
+                                            六個陽爻，純陽之卦，代表無限的動力與剛強。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Back Bottom Controller Prompt -->
+                            <div class="border-t border-zinc-800 pt-3 text-center">
+                                <p class="text-xs text-zinc-500 tracking-wider">🔄 再次點擊翻轉回正面</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Feedback Controls -->
+            <div class="flex flex-col items-center space-y-4 max-w-md mx-auto w-full">
+                <!-- Answer feedback buttons -->
+                <div id="feedbackButtons" class="flex items-center space-x-3 w-full">
+                    <button id="btnAgain" class="flex-1 py-3 px-4 rounded-xl bg-red-950/40 hover:bg-red-900/50 text-red-200 border border-red-800/80 transition-all duration-200 flex flex-col items-center">
+                        <span class="text-lg">❌</span>
+                        <span class="text-xs font-bold mt-1 tracking-wider">記不牢，重新溫習</span>
+                    </button>
+                    <button id="btnGood" class="flex-1 py-3 px-4 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-200 border border-emerald-800/80 transition-all duration-200 flex flex-col items-center">
+                        <span class="text-lg">🎯</span>
+                        <span class="text-xs font-bold mt-1 tracking-wider">熟記，標記為識得</span>
+                    </button>
+                </div>
+
+                <!-- Navigation buttons -->
+                <div class="flex items-center space-x-4 w-full">
+                    <button id="btnPrev" class="flex-1 py-2.5 px-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 hover:text-zinc-100 transition-colors flex items-center justify-center space-x-1.5">
+                        <span>◀</span> <span class="text-xs font-bold tracking-wider">上一個</span>
+                    </button>
+                    <button id="btnSkip" class="flex-1 py-2.5 px-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 hover:text-zinc-100 transition-colors flex items-center justify-center space-x-1.5">
+                        <span class="text-xs font-bold tracking-wider">跳過 / 下一個</span> <span>▶</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= HEXAGRAM BUILDER (互動排卦) PANEL ================= -->
+        <section id="panelBuilder" class="hidden flex-grow flex flex-col space-y-6">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <h2 class="text-2xl font-bold tracking-wider text-gold-400">☯️ 六爻自主排卦器</h2>
+                <p class="text-xs text-zinc-400">點擊下方的六條爻（自下而上起卦），可以自由切換陽爻（⚊）或陰爻（⚋），即時探尋六十四卦中對應的卦象奥秘與智慧！</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto w-full items-center my-4">
+                <!-- Interactive Line Stack -->
+                <div class="bg-gradient-to-b from-zinc-900 to-zinc-950 border border-zinc-800 p-8 rounded-2xl flex flex-col items-center justify-center shadow-xl space-y-5">
+                    
+                    <span class="text-xs text-gold-500 font-bold uppercase tracking-wider mb-2">💡 點擊切換陰陽 (由上至下顯示，底端為初爻)</span>
+
+                    <!-- The 6 Lines container (drawn bottom up) -->
+                    <div class="flex flex-col-reverse space-y-reverse space-y-3.5 w-64 p-4 bg-zinc-950 rounded-xl border border-zinc-900 shadow-inner">
+                        <!-- Line 6 (上爻) -->
+                        <button onclick="toggleBuilderLine(5)" class="group w-full py-2 flex items-center justify-between hover:bg-zinc-900 rounded px-3 transition-colors">
+                            <span class="text-xs font-mono text-zinc-500">上爻</span>
+                            <div id="builderLine5" class="w-40 flex items-center transition-all duration-300"></div>
+                        </button>
+                        <!-- Line 5 (五爻) -->
+                        <button onclick="toggleBuilderLine(4)" class="group w-full py-2 flex items-center justify-between hover:bg-zinc-900 rounded px-3 transition-colors">
+                            <span class="text-xs font-mono text-zinc-500">五爻</span>
+                            <div id="builderLine4" class="w-40 flex items-center transition-all duration-300"></div>
+                        </button>
+                        <!-- Line 4 (四爻) -->
+                        <button onclick="toggleBuilderLine(3)" class="group w-full py-2 flex items-center justify-between hover:bg-zinc-900 rounded px-3 transition-colors">
+                            <span class="text-xs font-mono text-zinc-500">四爻</span>
+                            <div id="builderLine3" class="w-40 flex items-center transition-all duration-300"></div>
+                        </button>
+                        <!-- Line 3 (三爻) -->
+                        <button onclick="toggleBuilderLine(2)" class="group w-full py-2 flex items-center justify-between hover:bg-zinc-900 rounded px-3 transition-colors">
+                            <span class="text-xs font-mono text-zinc-500">三爻</span>
+                            <div id="builderLine2" class="w-40 flex items-center transition-all duration-300"></div>
+                        </button>
+                        <!-- Line 2 (二爻) -->
+                        <button onclick="toggleBuilderLine(1)" class="group w-full py-2 flex items-center justify-between hover:bg-zinc-900 rounded px-3 transition-colors">
+                            <span class="text-xs font-mono text-zinc-500">二爻</span>
+                            <div id="builderLine1" class="w-40 flex items-center transition-all duration-300"></div>
+                        </button>
+                        <!-- Line 1 (初爻) -->
+                        <button onclick="toggleBuilderLine(0)" class="group w-full py-2 flex items-center justify-between hover:bg-zinc-900 rounded px-3 transition-colors">
+                            <span class="text-xs font-mono text-zinc-500">初爻</span>
+                            <div id="builderLine0" class="w-40 flex items-center transition-all duration-300"></div>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center space-x-3 w-full max-w-xs">
+                        <button onclick="resetBuilder(1)" class="flex-1 py-1.5 px-3 rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-bold hover:bg-zinc-800 transition-colors">
+                            全設為純陽 (天)
+                        </button>
+                        <button onclick="resetBuilder(0)" class="flex-1 py-1.5 px-3 rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-bold hover:bg-zinc-800 transition-colors">
+                            全設為純陰 (地)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Result Decoding Board -->
+                <div class="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 p-6 rounded-2xl h-full flex flex-col justify-between shadow-xl">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                            <span class="text-xs text-gold-500 font-bold uppercase tracking-wider">即時解碼分析</span>
+                            <span id="builderResultNum" class="text-xs text-zinc-500 font-bold">第 1 卦</span>
+                        </div>
+                        
+                        <div class="space-y-1">
+                            <h3 id="builderResultTitle" class="text-3xl font-extrabold text-zinc-100 tracking-wide">乾為天</h3>
+                            <div class="flex space-x-2">
+                                <span id="builderResultTrigrams" class="text-xs font-bold px-2 py-1 bg-gold-950/80 border border-gold-900/60 rounded text-gold-400">乾上乾下</span>
+                                <span id="builderResultSymbols" class="text-xs font-bold px-2 py-1 bg-zinc-950 border border-zinc-800 rounded text-zinc-400">☰ ☰ 天天</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-zinc-400 uppercase tracking-widest">卦意解析：</h4>
+                            <p id="builderResultMeaning" class="text-sm text-zinc-300 leading-relaxed font-normal">
+                                剛健、主動、自強不息。代表純陽、天道、君子與領袖。核心思想是「天行健，君子以自強不息」。
+                            </p>
+                        </div>
+
+                        <div class="bg-zinc-950/60 p-3 rounded-lg border border-zinc-900 space-y-1">
+                            <h4 class="text-xs font-bold text-amber-500 uppercase tracking-widest">卦爻構成分析：</h4>
+                            <div id="builderResultLinesBreakdown" class="text-xs font-mono text-zinc-400 space-y-1">
+                                <!-- Computed lines names details will be output here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="btnGoToCardFromBuilder" class="w-full mt-6 py-3 px-4 rounded-xl bg-gold-600 hover:bg-gold-500 text-zinc-950 font-extrabold tracking-wider transition-colors duration-200 shadow-lg shadow-gold-950/20 text-center text-sm">
+                        📖 打開這張抽認卡開始溫習
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ALL DECKS REFERENCE PANEL ================= -->
+        <section id="panelDeckList" class="hidden flex-grow flex flex-col space-y-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-zinc-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-wider text-gold-400">📖 易經六十四卦全覽表</h2>
+                    <p class="text-xs text-zinc-400">此表詳盡羅列全卦之六爻圖騰、卦名及核心含義，是您極佳的查閱字典。</p>
+                </div>
+                
+                <div class="relative w-full md:w-80">
+                    <input type="text" id="refSearchInput" placeholder="輸入關鍵字或卦名搜尋..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg py-2 pl-3 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-gold-500 text-zinc-100">
+                    <span class="absolute right-3 top-2.5 text-zinc-500 text-sm">🔍</span>
+                </div>
+            </div>
+
+            <!-- List Grid -->
+            <div id="refGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto max-h-[600px] pr-2">
+                <!-- Programmatically generated card cards -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900 dark:border-zinc-800 bg-zinc-950/90 dark:bg-zinc-950/90 py-5 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-xs text-zinc-500 tracking-wider text-center md:text-left">
+                &copy; 2026 易經記憶學堂 &middot; 基於 Spaced Repetition 間隔重複與「六爻」動態解碼技術
+            </p>
+            <p class="text-[10px] text-zinc-600 tracking-widest font-mono uppercase text-center md:text-right">
+                Created to empower the study of Chinese Classics
+            </p>
+        </div>
+    </footer>
+
+    <!-- STREEMING_CHUNK: Injecting complete Javascript datasets and operations logic... -->
+    <script>
+        // TRIGRAM DATA (from bottom to top)
+        const TRIGRAMS = {
+            '乾': { name: '天', lines: [1, 1, 1], symbol: '☰' },
+            '兌': { name: '澤', lines: [1, 1, 0], symbol: '☱' },
+            '離': { name: '火', lines: [1, 0, 1], symbol: '☲' },
+            '震': { name: '雷', lines: [1, 0, 0], symbol: '☳' },
+            '巽': { name: '風', lines: [0, 1, 1], symbol: '☴' },
+            '坎': { name: '水', lines: [0, 1, 0], symbol: '☵' },
+            '艮': { name: '山', lines: [0, 0, 1], symbol: '☶' },
+            '坤': { name: '地', lines: [0, 0, 0], symbol: '☷' }
+        };
+
+        // Complete database of 64 Hexagrams based on King Wen Sequence
+        const HEXAGRAMS = [
+            { id: 1, title: "乾為天", upper: "乾", lower: "乾", meaning: "剛健、主動、自強不息。代表純陽、天道、君子與領袖。核心思想是「天行健，君子以自強不息」。", hint: "六個陽爻，純陽之卦，代表無限的動力與剛強。" },
+            { id: 2, title: "坤為地", upper: "坤", lower: "坤", meaning: "柔順、包容、厚德載物。代表純陰、大地、臣道與配合。核心思想是「地勢坤，君子以厚德載物」。", hint: "六個陰爻，純陰之卦，代表無限的包容力與順從。" },
+            { id: 3, title: "水雷屯", upper: "坎", lower: "震", meaning: "草創、萬物始生、充滿艱難。雖然處境困難，但只要打好根基，生命力依然蓬勃（宜建侯而不寧）。", hint: "雲雷屯，剛柔始交而難生，像種子在大地深處掙扎萌芽。" },
+            { id: 4, title: "山水蒙", upper: "艮", lower: "坎", meaning: "啟蒙、幼稚、蒙昧待發。代表需要接受教育和指引，強調主動求學的心態（匪我求童蒙，童蒙求我）。", hint: "山下出泉，泉水剛流出山，代表迷茫但有無限潛力的童蒙期。" },
+            { id: 5, title: "水天需", upper: "坎", lower: "乾", meaning: "等待、蓄勢待發、需要。前方有險阻（水），應當保持誠信與冷靜，在飲食宴樂中靜待時機到來。", hint: "雲上於天，雨還沒落下來。需要等待時機。" },
+            { id: 6, title: "天水訟", upper: "乾", lower: "坎", meaning: "爭執、訴訟、衝突。兩者背道而馳，做事應在剛開始時防微杜漸（作事謀始），避免爭訟到底。", hint: "天與水違行，天向西轉，水向東流，方向相反，容易起衝突。" },
+            { id: 7, title: "地水師", upper: "坤", lower: "坎", meaning: "戰爭、軍隊、組織紀律。代表眾人的力量，需要紀律嚴明（大君有命，以正治國）和德高望重的統帥。", hint: "地中有水，藏兵於民，象徵容民畜眾的軍隊力量。" },
+            { id: 8, title: "水地比", upper: "坎", lower: "坤", meaning: "親密、輔助、團結合作。人與人之間要誠信相待、互相依附，但合作需要及時，遲到者會有凶險。", hint: "地上有水，水能滋潤大地，兩者緊密相連、互相親比。" },
+            { id: 9, title: "風天小畜", upper: "巽", lower: "乾", meaning: "小有蓄積、密雲不雨。力量微弱，只能克制自我、累積實力，尚不足以成就大事（自我懿德）。", hint: "風行天上，風吹雲動卻尚未下雨，代表力量正在局限性地累積。" },
+            { id: 10, title: "天澤履", upper: "乾", lower: "兌", meaning: "履行、實踐、禮儀規矩。如同踩在老虎尾巴上（履虎尾），需要極大的小心、禮貌和防微杜漸才能化險為夷。", hint: "上天下澤，天在上，澤在下，尊卑有序，代表禮儀與規矩。" },
+            { id: 11, title: "地天泰", upper: "坤", lower: "乾", meaning: "通暢、和諧、吉利亨通。天地交感，萬物蓬勃發展。小往大來，事情極其順利。", hint: "地在上，天在下。乾天之氣上升，坤地之氣下降，兩者交融，萬物生長。" },
+            { id: 12, title: "天地否", upper: "乾", lower: "坤", meaning: "閉塞、不通、倒楣。天地不交，小人得勢，君子應當韜光養晦，不可圖謀榮華祿位。", hint: "天在上，地在下。乾天之氣繼續上升，坤地之氣繼續下降，兩者越離越遠，互不交通。" },
+            { id: 13, title: "天火同人", upper: "乾", lower: "離", meaning: "志同道合、大同、合作。在廣闊的原野上凝聚人心，打破自私的小圈子（同人于野，亨）。", hint: "天與火，火光熊熊向上，與天同高，光芒照耀，志同道合。" },
+            { id: 14, title: "火天大有", upper: "離", lower: "乾", meaning: "大豐收、富有、順天依時。擁有極大的物質或精神財富，應當遏惡揚善，順應天命來造福大眾。", hint: "火在天上，太陽高掛，普照大地，萬物無所隱藏，是大豐收之象。" },
+            { id: 15, title: "地山謙", upper: "坤", lower: "艮", meaning: "謙虛、低調、裒多益寡。這是六十四卦中唯一一個「六爻皆吉」的卦，代表有實力卻保持低調，終能成功。", hint: "地中有山，高山本在地面上，卻隱沒於地平面之下，極致的謙遜。" },
+            { id: 16, title: "雷地豫", upper: "震", lower: "坤", meaning: "喜悅、預備、安樂。人心順從，力量得以施展，適合建功立業、祭祀與娛樂，但要防範樂極生悲。", hint: "雷出地奮，春雷震地，萬物甦醒，充滿生機與喜悅之情。" },
+            { id: 17, title: "澤雷隨", upper: "兌", lower: "震", meaning: "隨從、順應、隨遇而安。順應時勢與他人的需求，適時休息（向晦入宴息），不強求才能獲得吉利。", hint: "澤中有雷，雷沉入澤中，象徵隨順、歸息與順從自然規律。" },
+            { id: 18, title: "山風蠱", upper: "艮", lower: "巽", meaning: "整治、敗壞、革新。事物內部已經腐爛（生蟲），必須痛下決心大力整頓（先甲三日，後甲三日）。", hint: "山下有風，風在山谷裡出不去，空氣不流通，東西就會發霉敗壞。" },
+            { id: 19, title: "地澤臨", upper: "坤", lower: "兌", meaning: "面臨、監臨、居高臨下。好運即將來臨，應以教化和保護人民為重，但要提防「八月有凶」（盛極必衰）。", hint: "澤上有地，水聚於澤，岸居其上，居高臨下地觀察、關懷。" },
+            { id: 20, title: "風地觀", upper: "巽", lower: "坤", meaning: "觀察、展示、神道設教。既是「觀察」世界以得智慧，也是「展示」自己的德行讓大家瞻仰。", hint: "風行地上，風吹拂大地，無所不至，象徵省察四方與展現感化力。" },
+            { id: 21, title: "火雷噬嗑", upper: "離", lower: "震", meaning: "咬合、懲罰、消除障礙。口中有物必須咬碎，象徵執法嚴明、消除隔閡，才能達到真正的和諧。", hint: "雷電噬嗑，雷鳴電閃，震撼人心，象徵使用刑法排除干擾與障礙。" },
+            { id: 22, title: "山火賁", upper: "艮", lower: "離", meaning: "裝飾、文飾、人文修養。代表禮樂與外在的美化，但裝飾只能起輔助作用，不能代替內在實質（無敢折獄）。", hint: "山下有火，火光照亮山腳，將大山裝飾得五彩繽紛。" },
+            { id: 23, title: "山地剝", upper: "艮", lower: "坤", meaning: "剝落、侵蝕、陰盛陽衰。小人勢力擴張，君子力量被剝蝕，此時不宜採取任何行動，應當順時而止。", hint: "山附地上，高山隨時間風化剝落回大地，力量流失。" },
+            { id: 24, title: "地雷復", upper: "坤", lower: "震", meaning: "復歸、新生、一陽來復。代表轉機、生機重現，此時應當安靜休養、積蓄能量，不要急於奔波。", hint: "雷在地中，春天陽氣在地下隱隱萌動，是萬物甦醒與重生的信號。" },
+            { id: 25, title: "天雷無妄", upper: "乾", lower: "震", meaning: "真實、不虛妄、順其自然。做人做事應當真誠、遵循天理，不要有非分之想。若起貪念則容易招致無妄之災。", hint: "天下雷行，雷聲在大地下轟鳴，萬物各循天命生長，沒有虛妄虛假。" },
+            
+            // Batch 2: 26 - 45
+            { id: 26, title: "山天大畜", upper: "艮", lower: "乾", meaning: "大有積蓄、韜光養晦。道德、學識、財富豐厚，適合在家潛心修養（不家食吉），以待日後大展身手。", hint: "天在山中，大山把天包容容納，積蓄巨大能量之象。" },
+            { id: 27, title: "山雷頤", upper: "艮", lower: "震", meaning: "頤養、飲食、養生之道。注重言行舉止與飲食健康（觀頤，自求口實），既要養活自己也要滋養他人。", hint: "山下有雷，雷聲震動，頤養生長，像上下顎咬合飲食。" },
+            { id: 28, title: "澤風大過", upper: "兌", lower: "巽", meaning: "過度、棟樑橈折、面臨大難。負擔太重，處境極端危險，但君子應當獨立不懼、遯世無悶。", hint: "澤淹沒樹木，水勢大過，象徵極大壓力的非常時期。" },
+            { id: 29, title: "坎為水", upper: "坎", lower: "坎", meaning: "險阻重重、艱難重重。四處充滿陷阱危險，此時必須保持誠信，內心通達，才能安全度過重關險阻。", hint: "水常流不滯，雙重坎險，考驗人在艱難中的適應與自立。" },
+            { id: 30, title: "離為火", upper: "離", lower: "離", meaning: "附著、光明、柔順。火必須附著在柴薪上才能發光。做事應當順應中道，保持溫和與理智。", hint: "明兩作離，大人以繼明照於四方，相互附麗綻放光明。" },
+            { id: 31, title: "澤山咸", upper: "兌", lower: "艮", meaning: "感應、吸引、婚姻和諧。男女青年互相愛慕，心心相印，代表無私、真誠與和諧的感應。", hint: "山上有澤，澤水向下滲透，山承托澤水，兩者互相交感。" },
+            { id: 32, title: "雷風恆", upper: "震", lower: "巽", meaning: "恆久、堅持、守常。持之以恆，做事不可頻繁變更。家庭穩固，各守職分，才能長治久安。", hint: "雷風相與，雷聲隆隆，風勢相隨，常行而不息，代表恆心。" },
+            { id: 33, title: "天山遯", upper: "乾", lower: "艮", meaning: "退避、隱退、韜光養晦。小人勢力漸長，君子此時應當選擇明智退讓，避開鋒芒以保存實力。", hint: "天下有山，大山再高也夠不著天空，天退得越來越遠，代表隱遯。" },
+            { id: 34, title: "雷天大壯", upper: "震", lower: "乾", meaning: "強大、壯盛、不可濫用武力。力量非常強大，但切忌得意忘形、盲目衝動（不能用暴力，應守禮）。", hint: "雷在天上，雷聲轟鳴於九天之上，聲勢極其浩大壯盛。" },
+            { id: 35, title: "火地晉", upper: "離", lower: "坤", meaning: "前進、晉升、光明日新。事業順利上升，德行高尚，受到眾人擁戴（君子自昭明德）。", hint: "明出地上，太陽從地平線升起，光芒萬丈，照耀前程。" },
+            { id: 36, title: "地火明夷", upper: "坤", lower: "離", meaning: "光明受阻、受難、艱辛。黑暗籠罩，身處逆境。此時應當內明外柔，隱瞞自己的聪明才智以求自保。", hint: "明入地中，太陽西沉入地之下，代表前途陷入黑暗與動盪。" },
+            { id: 37, title: "風火家人", upper: "巽", lower: "離", meaning: "家庭、治家之道、內在和諧。強調女主內，男主外，長幼有序，各守本分，是治國平天下的起點。", hint: "風自火出，火燃燒產生熱風，象徵家庭內部的規矩與感化。" },
+            { id: 38, title: "火澤睽", upper: "離", lower: "兌", meaning: "乖異、矛盾、異中求同。兩者方向相反，意見不合，但要明白大同小異的哲理，尋找共同基礎。", hint: "火動而上，澤動而下，火與水背道而馳，象徵矛盾與睽違。" },
+            { id: 39, title: "水山蹇", upper: "坎", lower: "艮", meaning: "艱難、險阻、宜反求諸己。前方是深淵危阻（水），後方是大山擋路，適合退守，不宜盲目前進。", hint: "山上有水，山路結冰濕滑，舉步維艱，代表陷入蹇難困境。" },
+            { id: 40, title: "雷水解", upper: "震", lower: "坎", meaning: "解除、寬恕、釋放。困難已經過去，此時宜快刀斬亂麻，不宜拖延。寬待他人，與民休息。", hint: "雷雨作而百果草木皆甲坼，春雷大作降雨，化解了冬日旱冬之結。" },
+            { id: 41, title: "山澤損", upper: "艮", lower: "兌", meaning: "減少、損失、奉獻。適度減少自己的私慾，捐獻多餘物資給大眾，控制憤怒與慾望（懲忿窒慾）。", hint: "山下有澤，澤水蒸發滋潤山體，損下益上，犧牲局部利益。" },
+            { id: 42, title: "風雷益", upper: "巽", lower: "震", meaning: "增益、進步、利益大眾。運勢亨通，正是大有作為的時機，應多做善事，有過則改（見善則遷）。", hint: "風雷激盪，風助雷勢，雷增風烈，相得益彰，代表生機無限增益。" },
+            { id: 43, title: "澤天夬", upper: "兌", lower: "乾", meaning: "決斷、決裂、排除邪惡。正義力量正在清除最後的黑暗，必須公開果斷、不使用暴力，防範小人反撲。", hint: "澤上於天，洪水蓄積至天際，面臨潰堤抉擇，需要決心與果斷。" },
+            { id: 44, title: "天風姤", upper: "乾", lower: "巽", meaning: "相遇、邂逅、提防隱患。柔弱的負面力量在底部萌芽，看似微不足道，實則具有極大破壞力（勿娶此女）。", hint: "天下有風，狂風吹拂大地，萬物無所不相遇，亦代表危機悄然來臨。" },
+            { id: 45, title: "澤地萃", upper: "兌", lower: "坤", meaning: "聚集、精華、團結。人才與財富的匯聚，此時應整頓武器、防範意外，用誠信與敬天來凝聚人心。", hint: "澤在地上，水聚於大地，成江河湖泊，代表事物極致匯聚與萃取。" },
+
+            // Batch 3: 46 - 64
+            { id: 46, title: "地風升", upper: "坤", lower: "巽", meaning: "上升、前途光明、逐步積累。順應時勢而升，像樹木由土中生長，需要主動求見高明之人。", hint: "地中生木，樹木深深扎根並向天空挺拔生長，代表升遷前進。" },
+            { id: 47, title: "澤水困", upper: "兌", lower: "坎", meaning: "窮困、困頓、言無人信。身處絕境、精疲力竭，但君子應當堅守貞正、不失其樂，此時少說多做。", hint: "澤無水，水漏到了澤底之下，澤水乾涸，魚蝦受困，象徵困窘。" },
+            { id: 48, title: "水風井", upper: "坎", lower: "巽", meaning: "源源不斷、修己惠人。水井養活了無數人，卻不求回報。事物本質不變，但要提防「井乾」或功虧一簣。", hint: "木桶入水，風吹木動而汲水出井，代表資源共享與永續之源。" },
+            { id: 49, title: "澤火革", upper: "兌", lower: "離", meaning: "變革、改革、改弦易轍。舊事物已無法維持，必須順應天時民意進行重大變革（已日乃孚，革而信之）。", hint: "澤中有火，水火相容相剋，相互變革，代表重大而成功的轉變。" },
+            { id: 50, title: "火風鼎", upper: "離", lower: "巽", meaning: "穩重、鼎新、大器晚成。代表權力與法度，吐故納新。建立新體制、確立新秩序。", hint: "木上有火，木薪燃燒，鼎烹食物，象徵政權穩固與制度更新。" },
+            { id: 51, title: "震為雷", upper: "震", lower: "震", meaning: "震撼、震動、警惕自省。巨雷轟鳴使人震驚害怕，但只要心存敬畏、自我反省，終能獲得平安與歡笑。", hint: "重雷震天，警示天下，震驚百里，代表人在變局中要泰然處之。" },
+            { id: 52, title: "艮為山", upper: "艮", lower: "艮", meaning: "靜止、止步、適可而止。行止應合乎時宜（時止則止，時行則行），內心平靜如山，不為外物動搖。", hint: "兼山艮，大山重疊，高聳入雲，阻擋去路，教人安分止步。" },
+            { id: 53, title: "風山漸", upper: "巽", lower: "艮", meaning: "循序漸進、穩步發展。像鴻雁遷徙一樣有條不紊，不可急功近利。婚姻與事業皆宜慢工出細活。", hint: "山上有木，樹木在山上慢慢生長茁壯，代表穩步上升。" },
+            { id: 54, title: "雷澤歸妹", upper: "震", lower: "兌", meaning: "不正當關係、急躁、違背原則。盲目追求感官享受或急於求成，違背了自然規律與禮儀規範，結果多凶。", hint: "澤上有雷，雷動而澤悅，少女出嫁，代表本末倒置或急於求成。" },
+            { id: 55, title: "雷火豐", upper: "震", lower: "離", meaning: "豐收、盛大、提防中落。正值日中當空、極其繁榮的黃金時期，但要明白盛極必衰，需公正嚴明。", hint: "雷電皆至，雷聲大作，電光閃耀，普照天下，代表輝煌繁榮。" },
+            { id: 56, title: "火山旅", upper: "離", lower: "艮", meaning: "羈旅、動盪、作客他鄉。旅人孤立無援，處境不易。做事應當守正、謙虛謹慎，不可貪戀權位。", hint: "山上有火，山火蔓延，居無定所，像遊客在前進，代表客居他鄉。" },
+            { id: 57, title: "巽為風", upper: "巽", lower: "巽", meaning: "柔順、滲透、隨風潛入。像風一樣無孔不入，代表溫和與反覆申明命令（申命行事），順從德行。", hint: "隨風巽，雙重風勢，無形相隨，代表柔順的力量與思想滲透。" },
+            { id: 58, title: "兌為澤", upper: "兌", lower: "兌", meaning: "喜悅、交流、和諧。人與人之間真誠溝通、互訴心聲，但要防範諂媚討好或樂極生悲（麗澤兌）。", hint: "兩澤相依，水汽互潤，相得益彰，代表彼此溝通所帶來的喜悅。" },
+            { id: 59, title: "風水渙", upper: "巽", lower: "坎", meaning: "渙散、消除隔閡、凝聚人心。人心渙散時，需要大公無私的信仰與領袖來凝聚力量，拯救危機（濟渡大川）。", hint: "風行水上，風吹起波浪，冰雪消融渙散，代表危機化解與重新凝聚。" },
+            { id: 60, title: "水澤節", upper: "坎", lower: "兌", meaning: "節制、限度、節儉。萬事皆有度，過度節制會讓人痛苦（苦節不可貞），適當的制度才能長久運作。", hint: "澤上有水，澤中蓄水超過限度則溢，需要堤防節制，代表規章制度。" },
+            { id: 61, title: "風澤中孚", upper: "巽", lower: "兌", meaning: "誠信、心心相印、感化他人。內心無比真誠，甚至能感化愚頑的小豬與小魚（豚魚吉），獲得極大信任。", hint: "風行澤上，風吹動水面泛起漣漪，水體順從，代表內在誠信交融。" },
+            { id: 62, title: "雷山小過", upper: "震", lower: "艮", meaning: "小有過越、宜下不宜上。非常時期，做事可以稍微過度節儉或謙虛，但不宜好高騖遠（宜下，不宜上）。", hint: "山上有雷，雷聲在山頭掠過，像飛鳥遺留之音，代表行事宜低調。" },
+            { id: 63, title: "水火既濟", upper: "坎", lower: "離", meaning: "功成名就、圓滿、防微杜漸。所有事情都已妥當，但要明白盛極必衰、物極必反，防範混亂悄然來臨。", hint: "水在火上，水火交融相克，煮飯成熟，代表功德圓滿，但需防初吉終亂。" },
+            { id: 64, title: "火水未濟", upper: "離", lower: "坎", meaning: "尚未成功、充滿希望。雖然處於混亂的終點，但孕育著新一輪的生機。只要審慎行事，終能獲得成功。", hint: "火在水上，火炎上而水潤下，兩者不相交，代表黎明前最後的探索。" }
+        ];
+
+        // MEDITATIVE AUDIO SYSTEM
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                if (!audioCtx) {
+                    audioCtx = new AudioContext();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'flip') {
+                    // Soft woodblock/bamboo tap sound
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.16);
+                } else if (type === 'success') {
+                    // Meditative chime sound
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.6);
+                } else if (type === 'again') {
+                    // Low tone warning
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                }
+            } catch (e) {
+                console.warn("Audio system failed to initialize:", e);
+            }
+        }
+
+        // APPLICATION STATE
+        let activeDeck = [];
+        let currentIndex = 0;
+        let isFlipped = false;
+        let masteredCount = 0;
+        let studyHistory = []; // Array tracking indices already answered
+        let builderYao = [1, 1, 1, 1, 1, 1]; // Hexagram builder lines state (bottom to top: 0 to 5)
+
+        // Selectors
+        const cardContainer = document.getElementById('cardContainer');
+        const cardInner = document.getElementById('cardInner');
+        const deckFilter = document.getElementById('deckFilter');
+        const currentCardIndexText = document.getElementById('currentCardIndexText');
+        const totalCardsText = document.getElementById('totalCardsText');
+        const accuracyText = document.getElementById('accuracyText');
+        const progressBar = document.getElementById('progressBar');
+
+        // RENDER GUA / HEXAGRAM LINES (六爻)
+        function generateYaoHTML(linesArray, sizeClass = 'h-3') {
+            // linesArray has 6 elements from bottom (index 0) to top (index 5)
+            let html = '';
+            const positions = ['初', '二', '三', '四', '五', '上'];
+            
+            for (let i = 0; i < 6; i++) {
+                const isYang = linesArray[i] === 1;
+                const nature = isYang ? '九' : '六';
+                const label = i === 0 ? `初${nature}` : (i === 5 ? `上${nature}` : `${nature}${positions[i]}`);
+                const colorClass = 'bg-gradient-to-r from-amber-500 to-amber-600 dark:from-gold-500 dark:to-gold-600';
+                
+                html += `
+                    <div class="flex items-center justify-between space-x-2 group/yao">
+                        <span class="text-[9px] font-mono opacity-50 dark:text-zinc-400 select-none">${label}</span>
+                        <div class="flex-grow flex items-center justify-center">
+                `;
+                
+                if (isYang) {
+                    html += `<div class="${sizeClass} w-full rounded-md ${colorClass} shadow-md transition-all duration-300"></div>`;
+                } else {
+                    html += `
+                        <div class="flex justify-between w-full">
+                            <div class="${sizeClass} w-[44%] rounded-md ${colorClass} shadow-md transition-all duration-300"></div>
+                            <div class="w-[12%]"></div>
+                            <div class="${sizeClass} w-[44%] rounded-md ${colorClass} shadow-md transition-all duration-300"></div>
+                        </div>
+                    `;
+                }
+                
+                html += `
+                        </div>
+                        <span class="text-[9px] font-sans opacity-40 select-none">${isYang ? '陽' : '陰'}</span>
+                    </div>
+                `;
+            }
+            return html;
+        }
+
+        // Get lines array directly from upper & lower trigram names
+        function getHexagramLines(upperName, lowerName) {
+            const lowerLines = TRIGRAMS[lowerName].lines; // [x, y, z] bottom to top
+            const upperLines = TRIGRAMS[upperName].lines; // [a, b, c] bottom to top
+            return [...lowerLines, ...upperLines];
+        }
+
+        // UPDATE ACTIVE CARD DATA
+        function updateCardDisplay() {
+            if (activeDeck.length === 0) return;
+            const currentGua = activeDeck[currentIndex];
+            const lines = getHexagramLines(currentGua.upper, currentGua.lower);
+            
+            // Front Elements
+            document.getElementById('cardFrontGroup').innerText = `第 ${currentGua.id} 卦`;
+            document.getElementById('cardFrontSequence').innerText = `${currentGua.upper}上${currentGua.lower}下`;
+            document.getElementById('cardFrontTitle').innerText = currentGua.title;
+            document.getElementById('cardFrontTrigrams').innerText = `${currentGua.upper}上${currentGua.lower}下 (${TRIGRAMS[currentGua.upper].symbol}${TRIGRAMS[currentGua.lower].symbol})`;
+            document.getElementById('frontYaoVisualizer').innerHTML = generateYaoHTML(lines, 'h-3.5');
+
+            // Back Elements
+            document.getElementById('cardBackTitleSmall').innerText = currentGua.title;
+            document.getElementById('cardBackSymbol').innerText = `${TRIGRAMS[currentGua.upper].symbol}${TRIGRAMS[currentGua.lower].symbol} ${currentGua.upper}${currentGua.lower}卦`;
+            document.getElementById('cardBackMeaning').innerText = currentGua.meaning;
+            document.getElementById('cardBackHint').innerText = currentGua.hint;
+            document.getElementById('backYaoVisualizer').innerHTML = generateYaoHTML(lines, 'h-1.5');
+
+            // Progress stats
+            currentCardIndexText.innerText = currentIndex + 1;
+            totalCardsText.innerText = activeDeck.length;
+            const percentage = Math.round(((currentIndex + 1) / activeDeck.length) * 100);
+            progressBar.style.width = `${percentage}%`;
+            
+            const acc = masteredCount > 0 ? Math.round((masteredCount / (studyHistory.length || 1)) * 100) : 0;
+            accuracyText.innerText = `熟練度: ${acc}% (已答 ${studyHistory.length} 張)`;
+
+            // Reset Flipping state
+            isFlipped = false;
+            cardInner.classList.remove('rotate-y-180');
+        }
+
+        // CARD FLIP TRIGGERS
+        cardContainer.addEventListener('click', () => {
+            isFlipped = !isFlipped;
+            playSound('flip');
+            if (isFlipped) {
+                cardInner.classList.add('rotate-y-180');
+            } else {
+                cardInner.classList.remove('rotate-y-180');
+            }
+        });
+
+        // DECK FILTER CONTROLLERS
+        function buildDeck() {
+            const filterVal = deckFilter.value;
+            if (filterVal === '1-25') {
+                activeDeck = HEXAGRAMS.filter(g => g.id >= 1 && g.id <= 25);
+            } else if (filterVal === '26-45') {
+                activeDeck = HEXAGRAMS.filter(g => g.id >= 26 && g.id <= 45);
+            } else if (filterVal === '46-64') {
+                activeDeck = HEXAGRAMS.filter(g => g.id >= 46 && g.id <= 64);
+            } else {
+                activeDeck = [...HEXAGRAMS];
+            }
+            currentIndex = 0;
+            masteredCount = 0;
+            studyHistory = [];
+            updateCardDisplay();
+        }
+
+        deckFilter.addEventListener('change', buildDeck);
+
+        document.getElementById('btnOrderSeq').addEventListener('click', () => {
+            document.getElementById('btnOrderSeq').classList.add('bg-gold-600', 'text-zinc-950');
+            document.getElementById('btnOrderSeq').classList.remove('bg-zinc-800', 'text-zinc-300');
+            document.getElementById('btnOrderShuffle').classList.add('bg-zinc-800', 'text-zinc-300');
+            document.getElementById('btnOrderShuffle').classList.remove('bg-gold-600', 'text-zinc-950');
+            
+            activeDeck.sort((a, b) => a.id - b.id);
+            currentIndex = 0;
+            updateCardDisplay();
+        });
+
+        document.getElementById('btnOrderShuffle').addEventListener('click', () => {
+            document.getElementById('btnOrderShuffle').classList.add('bg-gold-600', 'text-zinc-950');
+            document.getElementById('btnOrderShuffle').classList.remove('bg-zinc-800', 'text-zinc-300');
+            document.getElementById('btnOrderSeq').classList.add('bg-zinc-800', 'text-zinc-300');
+            document.getElementById('btnOrderSeq').classList.remove('bg-gold-600', 'text-zinc-950');
+
+            // Fisher-Yates shuffle
+            for (let i = activeDeck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [activeDeck[i], activeDeck[j]] = [activeDeck[j], activeDeck[i]];
+            }
+            currentIndex = 0;
+            updateCardDisplay();
+        });
+
+        // ACTION BUTTONS
+        document.getElementById('btnPrev').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCardDisplay();
+                playSound('flip');
+            }
+        });
+
+        document.getElementById('btnSkip').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIndex < activeDeck.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Wrap around
+            }
+            updateCardDisplay();
+            playSound('flip');
+        });
+
+        document.getElementById('btnGood').addEventListener('click', (e) => {
+            e.stopPropagation();
+            playSound('success');
+            if (!studyHistory.includes(currentIndex)) {
+                studyHistory.push(currentIndex);
+                masteredCount++;
+            }
+            
+            // Show short glowing effect on button
+            const btn = document.getElementById('btnGood');
+            btn.classList.add('scale-105', 'bg-emerald-800/80');
+            setTimeout(() => {
+                btn.classList.remove('scale-105', 'bg-emerald-800/80');
+                // Move to next card
+                if (currentIndex < activeDeck.length - 1) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0;
+                }
+                updateCardDisplay();
+            }, 300);
+        });
+
+        document.getElementById('btnAgain').addEventListener('click', (e) => {
+            e.stopPropagation();
+            playSound('again');
+            if (!studyHistory.includes(currentIndex)) {
+                studyHistory.push(currentIndex);
+            }
+            
+            const btn = document.getElementById('btnAgain');
+            btn.classList.add('scale-105', 'bg-red-800/80');
+            setTimeout(() => {
+                btn.classList.remove('scale-105', 'bg-red-800/80');
+                if (currentIndex < activeDeck.length - 1) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0;
+                }
+                updateCardDisplay();
+            }, 300);
+        });
+
+        // ================= BUILDER MODE LOGIC =================
+        function toggleBuilderLine(index) {
+            builderYao[index] = builderYao[index] === 1 ? 0 : 1;
+            playSound('flip');
+            renderBuilderLines();
+            decodeBuilderHexagram();
+        }
+
+        function resetBuilder(value) {
+            builderYao = [value, value, value, value, value, value];
+            playSound('success');
+            renderBuilderLines();
+            decodeBuilderHexagram();
+        }
+
+        function renderBuilderLines() {
+            for (let i = 0; i < 6; i++) {
+                const el = document.getElementById(`builderLine${i}`);
+                const isYang = builderYao[i] === 1;
+                const color = 'bg-amber-500 hover:bg-amber-400 shadow';
+                
+                if (isYang) {
+                    el.innerHTML = `<div class="h-4 w-full rounded ${color} transition-all duration-300"></div>`;
+                } else {
+                    el.innerHTML = `
+                        <div class="flex justify-between w-full">
+                            <div class="h-4 w-[43%] rounded ${color} transition-all duration-300"></div>
+                            <div class="w-[14%]"></div>
+                            <div class="h-4 w-[43%] rounded ${color} transition-all duration-300"></div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Search trigrams map to locate match names
+        function getTrigramNameByLines(lines) {
+            for (const [name, data] of Object.entries(TRIGRAMS)) {
+                if (data.lines[0] === lines[0] && data.lines[1] === lines[1] && data.lines[2] === lines[2]) {
+                    return name;
+                }
+            }
+            return '乾'; // Fallback
+        }
+
+        function decodeBuilderHexagram() {
+            // builderYao contains [0..5] bottom to top
+            const lowerLines = [builderYao[0], builderYao[1], builderYao[2]];
+            const upperLines = [builderYao[3], builderYao[4], builderYao[5]];
+            
+            const lowerName = getTrigramNameByLines(lowerLines);
+            const upperName = getTrigramNameByLines(upperLines);
+            
+            // Search hexagram database for matched trigrams
+            const matched = HEXAGRAMS.find(g => g.upper === upperName && g.lower === lowerName);
+            
+            if (matched) {
+                document.getElementById('builderResultNum').innerText = `第 ${matched.id} 卦`;
+                document.getElementById('builderResultTitle').innerText = matched.title;
+                document.getElementById('builderResultTrigrams').innerText = `${matched.upper}上${matched.lower}下`;
+                document.getElementById('builderResultSymbols').innerText = `${TRIGRAMS[matched.upper].symbol}${TRIGRAMS[matched.lower].symbol} ${TRIGRAMS[matched.upper].name}${TRIGRAMS[matched.lower].name}`;
+                document.getElementById('builderResultMeaning').innerText = matched.meaning;
+
+                // Create Yao breakdown report
+                const positions = ['初', '二', '三', '四', '五', '上'];
+                let breakdownHTML = '';
+                for (let i = 5; i >= 0; i--) {
+                    const isYang = builderYao[i] === 1;
+                    const numChar = isYang ? '九' : '六';
+                    const name = i === 0 ? `初${numChar}` : (i === 5 ? `上${numChar}` : `${numChar}${positions[i]}`);
+                    breakdownHTML += `<div class="flex justify-between"><span>${positions[i]}爻 (${name}):</span> <span class="${isYang ? 'text-amber-500' : 'text-zinc-500'}">${isYang ? '⚊ 陽爻' : '⚋ 陰爻'}</span></div>`;
+                }
+                document.getElementById('builderResultLinesBreakdown').innerHTML = breakdownHTML;
+
+                // Link to card
+                document.getElementById('btnGoToCardFromBuilder').onclick = () => {
+                    // Activate Study Tab
+                    switchTab('study');
+                    // Find card index in activeDeck or switch deck filter to all
+                    deckFilter.value = 'all';
+                    buildDeck();
+                    const targetIndex = activeDeck.findIndex(g => g.id === matched.id);
+                    if (targetIndex !== -1) {
+                        currentIndex = targetIndex;
+                        updateCardDisplay();
+                    }
+                };
+            }
+        }
+
+        // ================= ALL DECKS REFERENCE LIST GENERATOR =================
+        function generateReferenceGrid() {
+            const grid = document.getElementById('refGrid');
+            let html = '';
+            
+            HEXAGRAMS.forEach(gua => {
+                const lines = getHexagramLines(gua.upper, gua.lower);
+                const yaoPreview = generateYaoHTML(lines, 'h-1.5');
+                
+                html += `
+                    <div class="bg-zinc-900/60 dark:bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800 hover:border-gold-500/50 p-4 rounded-xl transition-all duration-200 cursor-pointer space-y-3" onclick="openGuaCard(${gua.id})">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-[10px] text-gold-500 font-bold tracking-widest font-sans"># ${gua.id}</span>
+                                <h4 class="text-base font-bold text-zinc-100">${gua.title}</h4>
+                            </div>
+                            <span class="text-xs text-zinc-500 font-mono">${gua.upper}上${gua.lower}下</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-3 items-center bg-zinc-950/80 p-2.5 rounded-lg border border-zinc-900/80">
+                            <!-- Miniature Yao stack -->
+                            <div class="col-span-1 flex flex-col-reverse space-y-reverse space-y-0.5 w-14">
+                                ${yaoPreview}
+                            </div>
+                            <div class="col-span-2 text-[11px] text-zinc-400 line-clamp-3">
+                                ${gua.meaning}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        function openGuaCard(guaId) {
+            switchTab('study');
+            deckFilter.value = 'all';
+            buildDeck();
+            const idx = activeDeck.findIndex(g => g.id === guaId);
+            if (idx !== -1) {
+                currentIndex = idx;
+                updateCardDisplay();
+            }
+        }
+
+        // Live search bar filter in Reference Grid
+        document.getElementById('refSearchInput').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('#refGrid > div');
+            
+            cards.forEach((card, index) => {
+                const gua = HEXAGRAMS[index];
+                const matches = gua.title.toLowerCase().includes(val) || 
+                                gua.meaning.toLowerCase().includes(val) || 
+                                gua.hint.toLowerCase().includes(val) || 
+                                gua.upper.toLowerCase().includes(val) || 
+                                gua.lower.toLowerCase().includes(val) ||
+                                String(gua.id).includes(val);
+                
+                if (matches) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+
+        // ================= NAVIGATION SYSTEM =================
+        const tabStudy = document.getElementById('tabStudy');
+        const tabBuilder = document.getElementById('tabBuilder');
+        const tabDeckList = document.getElementById('tabDeckList');
+
+        const panelStudy = document.getElementById('panelStudy');
+        const panelBuilder = document.getElementById('panelBuilder');
+        const panelDeckList = document.getElementById('panelDeckList');
+
+        function switchTab(tab) {
+            playSound('flip');
+            // Reset state
+            tabStudy.className = "px-5 py-3 text-sm font-semibold tracking-wide border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center space-x-2";
+            tabBuilder.className = "px-5 py-3 text-sm font-semibold tracking-wide border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center space-x-2";
+            tabDeckList.className = "px-5 py-3 text-sm font-semibold tracking-wide border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center space-x-2";
+            
+            panelStudy.classList.add('hidden');
+            panelBuilder.classList.add('hidden');
+            panelDeckList.classList.add('hidden');
+
+            if (tab === 'study') {
+                tabStudy.className = "px-5 py-3 text-sm font-semibold tracking-wide border-b-2 border-gold-500 text-gold-400 flex items-center space-x-2";
+                panelStudy.classList.remove('hidden');
+            } else if (tab === 'builder') {
+                tabBuilder.className = "px-5 py-3 text-sm font-semibold tracking-wide border-b-2 border-gold-500 text-gold-400 flex items-center space-x-2";
+                panelBuilder.classList.remove('hidden');
+                renderBuilderLines();
+                decodeBuilderHexagram();
+            } else if (tab === 'reference') {
+                tabDeckList.className = "px-5 py-3 text-sm font-semibold tracking-wide border-b-2 border-gold-500 text-gold-400 flex items-center space-x-2";
+                panelDeckList.classList.remove('hidden');
+                generateReferenceGrid();
+            }
+        }
+
+        tabStudy.addEventListener('click', () => switchTab('study'));
+        tabBuilder.addEventListener('click', () => switchTab('builder'));
+        tabDeckList.addEventListener('click', () => switchTab('reference'));
+
+        // ================= CONFIGS & THEMES =================
+        const themeToggle = document.getElementById('themeToggle');
+        const themeDarkIcon = document.getElementById('themeDarkIcon');
+        const themeLightIcon = document.getElementById('themeLightIcon');
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            playSound('flip');
+            
+            if (isDark) {
+                themeDarkIcon.classList.add('hidden');
+                themeLightIcon.classList.remove('hidden');
+                document.body.className = "bg-zinc-950 text-zinc-100 min-h-screen transition-colors duration-300 flex flex-col justify-between";
+            } else {
+                themeDarkIcon.classList.remove('hidden');
+                themeLightIcon.classList.add('hidden');
+                document.body.className = "bg-orange-50/70 text-zinc-900 min-h-screen transition-colors duration-300 flex flex-col justify-between";
+            }
+        });
+
+        // Sound controller
+        const soundToggle = document.getElementById('soundToggle');
+        const soundOnIcon = document.getElementById('soundOnIcon');
+        const soundOffIcon = document.getElementById('soundOffIcon');
+
+        soundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) {
+                soundOnIcon.classList.remove('hidden');
+                soundOffIcon.classList.add('hidden');
+                playSound('success');
+            } else {
+                soundOnIcon.classList.add('hidden');
+                soundOffIcon.classList.remove('hidden');
+            }
+        });
+
+        // Initialize application on window load
+        window.onload = function() {
+            buildDeck();
+        }
+    </script>
+</body>
+</html>
