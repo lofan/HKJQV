@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkForge - Clean HTML Link Builder</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar styling for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 dark:text-slate-100 overflow-hidden">
+
+    <!-- Header/Navbar -->
+    <header class="bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-6 py-4 flex-shrink-0 z-10 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
+                    <i class="fa-solid fa-link-slash text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+                        LinkForge <span class="text-xs bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300 font-semibold px-2 py-0.5 rounded-full">v2.0</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Clean, sanitize, format, and export lists of web links effortlessly</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <!-- Theme toggle -->
+                <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Toggle Dark/Light Mode">
+                    <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+                </button>
+                
+                <!-- Quick Reset -->
+                <button onclick="resetApp()" class="px-3 py-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-lg transition-all">
+                    <i class="fa-solid fa-trash-can mr-1.5"></i> Reset Workspace
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 flex overflow-hidden min-h-0 bg-slate-50 dark:bg-slate-900">
+        <div class="w-full max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 h-full overflow-y-auto lg:overflow-hidden">
+            
+            <!-- Left Panel: Input & Sanitize Controls (Span 5) -->
+            <div class="lg:col-span-5 flex flex-col gap-4 lg:h-full lg:overflow-hidden">
+                <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex flex-col lg:h-full shadow-sm">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-md font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">1</span>
+                            Paste Messy Text / Links
+                        </h2>
+                        
+                        <!-- Sample button -->
+                        <button onclick="loadSampleText()" class="text-xs text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Try Sample
+                        </button>
+                    </div>
+
+                    <!-- Clean Checklist Indicators -->
+                    <div class="grid grid-cols-3 gap-2 mb-3 bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80">
+                        <div class="flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                            <i class="fa-solid fa-circle-check text-[10px]"></i> Strips <code class="font-mono bg-emerald-50 dark:bg-emerald-950/50 px-1 rounded">&lt;div&gt;</code>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                            <i class="fa-solid fa-circle-check text-[10px]"></i> Strips <code class="font-mono bg-emerald-50 dark:bg-emerald-950/50 px-1 rounded">&lt;/div&gt;</code>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                            <i class="fa-solid fa-circle-check text-[10px]"></i> Sanitizes <code class="font-mono bg-emerald-50 dark:bg-emerald-950/50 px-1 rounded">&amp;nbsp;</code>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="relative flex-1 min-h-[180px] lg:min-h-0 flex flex-col">
+                        <textarea id="raw-input" 
+                            class="w-full flex-1 p-3.5 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-mono text-sm border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none transition-all placeholder-slate-400 dark:placeholder-slate-500"
+                            placeholder="Paste links, HTML snippets, or text here...&#10;Example:&#10;<div>&nbsp;<a href='https://google.com'>Google Search</a>&nbsp;</div>&#10;<div>https://github.com/&nbsp;</div>"
+                            oninput="debouncedParse()"></textarea>
+                        
+                        <div class="absolute bottom-3 right-3 flex items-center gap-2">
+                            <button onclick="clearInput()" class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs px-2.5 py-1.5 rounded-lg font-medium transition-all" title="Clear input textarea">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Parsing Controls -->
+                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/80 space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Parsing Settings</label>
+                            <span id="found-count-badge" class="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-xs font-bold px-2 py-0.5 rounded-full">
+                                0 found
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <!-- Fallback title logic selection -->
+                            <div>
+                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium">No Link Text Fallback:</label>
+                                <select id="title-fallback-mode" onchange="parseInputAndRender()" class="w-full text-xs p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 focus:ring-indigo-500">
+                                    <option value="domain">Domain Name (Google)</option>
+                                    <option value="url">Raw Link URL</option>
+                                    <option value="numbered">Numbered List (Link #1)</option>
+                                </select>
+                            </div>
+
+                            <!-- Case Formatting for Fallbacks -->
+                            <div>
+                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium">Text Case Styling:</label>
+                                <select id="title-case-mode" onchange="parseInputAndRender()" class="w-full text-xs p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 focus:ring-indigo-500">
+                                    <option value="original">Original / Capitalized</option>
+                                    <option value="upper">UPPERCASE</option>
+                                    <option value="lower">lowercase</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Manual Add Link Form -->
+                        <div class="bg-indigo-50/50 dark:bg-indigo-950/20 p-3 rounded-xl border border-indigo-100/60 dark:border-indigo-900/30">
+                            <span class="block text-xs font-semibold text-indigo-900 dark:text-indigo-300 mb-2">
+                                <i class="fa-solid fa-plus mr-1"></i> Add Link Manually
+                            </span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+                                <input id="manual-url" type="text" placeholder="https://example.com" class="text-xs p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+                                <input id="manual-text" type="text" placeholder="Custom Title" class="text-xs p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+                            </div>
+                            <button onclick="addManualLink()" class="w-full py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-sm hover:shadow transition-all">
+                                Insert Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Output, Global Configuration & Output (Span 7) -->
+            <div class="lg:col-span-7 flex flex-col gap-4 lg:h-full lg:overflow-hidden">
+                
+                <!-- Middle section: Interactive Link List Manager -->
+                <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex flex-col h-[300px] lg:h-2/5 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-md font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">2</span>
+                            Manage parsed links
+                        </h2>
+                        <span class="text-xs text-slate-400 dark:text-slate-500">Edit titles/URLs directly below</span>
+                    </div>
+
+                    <!-- List Container -->
+                    <div class="flex-1 overflow-y-auto border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50/50 dark:bg-slate-900/30 p-2">
+                        <div id="no-links-msg" class="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
+                            <i class="fa-solid fa-link-slash text-2xl mb-2 text-slate-300"></i>
+                            <p class="text-sm">No valid links parsed or added yet</p>
+                            <p class="text-xs mt-1">Paste content or use the "Try Sample" button on the left.</p>
+                        </div>
+                        <ul id="link-manager-list" class="space-y-2 hidden">
+                            <!-- Dynamic items injected here -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bottom section: Formatting Settings, HTML Code, and Live Preview (Tabbed) -->
+                <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex flex-col flex-1 min-h-[350px] lg:h-3/5 shadow-sm overflow-hidden">
+                    
+                    <!-- Global HTML Export Settings -->
+                    <div class="mb-4 pb-3 border-b border-slate-100 dark:border-slate-800/80">
+                        <div class="flex items-center gap-2 mb-2.5">
+                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">3</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Configure Global Styles & Formats</span>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <!-- Layout Wrappers -->
+                            <div>
+                                <label class="block text-[11px] text-slate-500 dark:text-slate-400 mb-1 font-medium">Output Layout:</label>
+                                <select id="global-wrapper" onchange="buildOutputCode()" class="w-full text-xs p-1.5 rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
+                                    <option value="ul">List &lt;ul&gt; &bull; &lt;li&gt;</option>
+                                    <option value="ol">Numbered &lt;ol&gt; &bull; &lt;li&gt;</option>
+                                    <option value="div">Stack &lt;div&gt;</option>
+                                    <option value="inline">Inline Links (spaced)</option>
+                                    <option value="raw">Raw Links (Newline)</option>
+                                </select>
+                            </div>
+
+                            <!-- Target Attribute -->
+                            <div>
+                                <label class="block text-[11px] text-slate-500 dark:text-slate-400 mb-1 font-medium">Target Attribute:</label>
+                                <select id="global-target" onchange="buildOutputCode()" class="w-full text-xs p-1.5 rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
+                                    <option value="_blank">New Tab (_blank)</option>
+                                    <option value="_self">Same Frame (_self)</option>
+                                    <option value="none">None (OMIT)</option>
+                                </select>
+                            </div>
+
+                            <!-- Rel Attribute -->
+                            <div>
+                                <label class="block text-[11px] text-slate-500 dark:text-slate-400 mb-1 font-medium">Rel Protection:</label>
+                                <select id="global-rel" onchange="buildOutputCode()" class="w-full text-xs p-1.5 rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
+                                    <option value="noopener noreferrer">noopener noreferrer</option>
+                                    <option value="nofollow">nofollow</option>
+                                    <option value="none">None (OMIT)</option>
+                                </select>
+                            </div>
+
+                            <!-- CSS Classes input -->
+                            <div>
+                                <label class="block text-[11px] text-slate-500 dark:text-slate-400 mb-1 font-medium">Inline Link Style Class:</label>
+                                <input id="global-classes" type="text" oninput="buildOutputCode()" placeholder="e.g. text-blue-600 hover:underline" class="w-full text-xs p-1.5 rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Format Tabs (HTML Code / Live Preview / Markdown / JSON) -->
+                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 mb-3 bg-slate-50 dark:bg-slate-900/40 p-1 rounded-xl">
+                        <div class="flex space-x-1">
+                            <button id="tab-html-btn" onclick="switchOutputTab('html')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center gap-1.5">
+                                <i class="fa-solid fa-code text-indigo-500"></i> Generated HTML
+                            </button>
+                            <button id="tab-preview-btn" onclick="switchOutputTab('preview')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-eye text-emerald-500"></i> Visual Preview
+                            </button>
+                            <button id="tab-markdown-btn" onclick="switchOutputTab('markdown')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-brands fa-markdown text-sky-500"></i> Markdown List
+                            </button>
+                            <button id="tab-json-btn" onclick="switchOutputTab('json')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-square-brackets text-amber-500"></i> Raw JSON
+                            </button>
+                        </div>
+
+                        <!-- Utility actions -->
+                        <div class="flex items-center gap-2 pr-1">
+                            <button id="btn-copy-output" onclick="copyCurrentOutput()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-sm transition-all">
+                                <i id="copy-icon" class="fa-regular fa-copy"></i> <span id="copy-text">Copy</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Output Container Elements -->
+                    <div class="flex-1 overflow-hidden relative rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-900 dark:bg-slate-950 p-2.5 min-h-[140px]">
+                        
+                        <!-- Tab 1: HTML Output -->
+                        <div id="tab-html-content" class="h-full overflow-auto">
+                            <pre><code id="output-html-code" class="text-emerald-400 dark:text-emerald-300 font-mono text-xs whitespace-pre-wrap select-all block"></code></pre>
+                        </div>
+
+                        <!-- Tab 2: Live HTML Preview -->
+                        <div id="tab-preview-content" class="h-full overflow-auto bg-white text-slate-800 p-4 rounded-lg hidden">
+                            <div id="output-preview" class="prose max-w-none">
+                                <!-- Actual elements rendered directly inside -->
+                            </div>
+                        </div>
+
+                        <!-- Tab 3: Markdown Output -->
+                        <div id="tab-markdown-content" class="h-full overflow-auto hidden">
+                            <pre><code id="output-markdown-code" class="text-sky-400 dark:text-sky-300 font-mono text-xs whitespace-pre-wrap select-all block"></code></pre>
+                        </div>
+
+                        <!-- Tab 4: JSON Output -->
+                        <div id="tab-json-content" class="h-full overflow-auto hidden">
+                            <pre><code id="output-json-code" class="text-amber-400 dark:text-amber-300 font-mono text-xs whitespace-pre-wrap select-all block"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Toast System -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 pointer-events-none flex flex-col gap-2"></div>
+
+    <!-- Script Logic -->
+    <script>
+        // Internal State Storage
+        let linksList = [];
+        let parseTimer = null;
+        let activeTab = 'html';
+
+        // Load page
+        window.onload = function() {
+            // Check System theme
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                updateThemeToggleIcon(true);
+            } else {
+                document.documentElement.classList.remove('dark');
+                updateThemeToggleIcon(false);
+            }
+
+            // Auto-load raw text parsing from query or placeholder
+            loadSampleText();
+        }
+
+        // Handle text changes with small typing buffer
+        function debouncedParse() {
+            clearTimeout(parseTimer);
+            parseTimer = setTimeout(parseInputAndRender, 300);
+        }
+
+        /**
+         * Cleans &nbsp; and wrapping div tags from raw text, then extracts anchor tags and individual URLs.
+         */
+        function parseInputAndRender() {
+            const rawText = document.getElementById('raw-input').value;
+            
+            // 1. INPUT PREPROCESSING & SANITIZATION (Direct response to user requirement)
+            // Replace non-breaking space variants with clean spaces
+            let sanitizedText = rawText.replace(/&nbsp;/g, ' '); 
+            sanitizedText = sanitizedText.replace(/\xa0/g, ' '); // unicode non-breaking space character
+            
+            // Remove <div> and </div> tags cleanly while preserving core links or nested tags
+            sanitizedText = sanitizedText.replace(/<\/?div[^>]*>/gi, '');
+            
+            // Clean up multiple trailing/leading spacing inside cleaned text blocks
+            sanitizedText = sanitizedText.trim();
+
+            const detectedLinks = [];
+            const tempSet = new Set(); // Prevent duplicate URLs in raw parse output
+            
+            // 2. EXTRACTION LOGIC
+            // A. Attempt to find existing <a> anchor structures in sanitized text
+            const anchorRegex = /<a\s+(?:[^>]*?\s+)?href=["']([^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi;
+            let match;
+            while ((match = anchorRegex.exec(sanitizedText)) !== null) {
+                const url = match[1].trim();
+                const text = match[2].replace(/<\/?[^>]+(>|$)/g, "").trim(); // Remove embedded html entities inside link name
+                if (url && !tempSet.has(url)) {
+                    tempSet.add(url);
+                    detectedLinks.push({
+                        id: generateId(),
+                        url: url,
+                        title: text || getFallbackTitle(url)
+                    });
+                }
+            }
+
+            // B. Also search for raw links (http/https/www) anywhere not captured in existing <a> tags
+            const rawUrlRegex = /(https?:\/\/[^\s"'<>]+)/gi;
+            let rawMatch;
+            while ((rawMatch = rawUrlRegex.exec(sanitizedText)) !== null) {
+                const url = rawMatch[1].trim().replace(/[.,;:!?)"]$/, ''); // Strip punctuation at the end
+                if (url && !tempSet.has(url)) {
+                    tempSet.add(url);
+                    detectedLinks.push({
+                        id: generateId(),
+                        url: url,
+                        title: getFallbackTitle(url)
+                    });
+                }
+            }
+
+            // Update App State
+            linksList = detectedLinks;
+            updateCountBadge(linksList.length);
+            renderLinkManager();
+            buildOutputCode();
+        }
+
+        /**
+         * Generates Fallback Title values depending on UI config (domain/url/number)
+         */
+        function getFallbackTitle(urlString) {
+            const fallbackMode = document.getElementById('title-fallback-mode').value;
+            const caseMode = document.getElementById('title-case-mode').value;
+            let finalTitle = "";
+
+            if (fallbackMode === 'domain') {
+                try {
+                    const parsedUrl = new URL(urlString);
+                    let hostname = parsedUrl.hostname.replace('www.', '');
+                    // Split and take first parts
+                    const parts = hostname.split('.');
+                    if (parts.length > 1) {
+                        // Return capitalized domain name: google.com -> Google
+                        finalTitle = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+                    } else {
+                        finalTitle = hostname;
+                    }
+                } catch (e) {
+                    finalTitle = "Visit Site";
+                }
+            } else if (fallbackMode === 'url') {
+                finalTitle = urlString;
+            } else {
+                finalTitle = "Link #" + (linksList.length + 1);
+            }
+
+            // Handle casing
+            if (caseMode === 'upper') {
+                return finalTitle.toUpperCase();
+            } else if (caseMode === 'lower') {
+                return finalTitle.toLowerCase();
+            }
+
+            return finalTitle;
+        }
+
+        /**
+         * Renders list of dynamic edit boxes so users can reorder, change labels, or delete URLs
+         */
+        function renderLinkManager() {
+            const listContainer = document.getElementById('link-manager-list');
+            const noLinksMsg = document.getElementById('no-links-msg');
+
+            if (linksList.length === 0) {
+                listContainer.classList.add('hidden');
+                noLinksMsg.classList.remove('hidden');
+                return;
+            }
+
+            noLinksMsg.classList.add('hidden');
+            listContainer.classList.remove('hidden');
+            listContainer.innerHTML = '';
+
+            linksList.forEach((link, index) => {
+                const li = document.createElement('li');
+                li.className = "flex flex-col md:flex-row items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl shadow-sm transition-all hover:border-indigo-400";
+                li.innerHTML = `
+                    <!-- Row indicators & grab buttons -->
+                    <div class="flex items-center w-full md:w-auto justify-between md:justify-start gap-2 border-b md:border-b-0 pb-1.5 md:pb-0 mb-1.5 md:mb-0 border-slate-100 dark:border-slate-800/80">
+                        <span class="text-xs font-mono font-bold text-slate-400 w-5 text-center">${index + 1}</span>
+                        <div class="flex gap-1">
+                            <button onclick="moveLinkUp(${index})" class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 rounded text-[11px]" title="Move link up">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </button>
+                            <button onclick="moveLinkDown(${index})" class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 rounded text-[11px]" title="Move link down">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Label edit field -->
+                    <div class="w-full md:w-1/3">
+                        <label class="block md:hidden text-[9px] uppercase tracking-wide text-slate-400 font-bold mb-0.5">Label</label>
+                        <input type="text" value="${escapeHtml(link.title)}" 
+                            oninput="updateLinkTitle('${link.id}', this.value)" 
+                            placeholder="Link Anchor Text"
+                            class="w-full text-xs font-semibold bg-slate-50 dark:bg-slate-950 p-1.5 rounded-md border border-slate-200 dark:border-slate-800 text-slate-850 dark:text-slate-100 focus:ring-1 focus:ring-indigo-500" />
+                    </div>
+
+                    <!-- URL edit field -->
+                    <div class="w-full md:flex-1">
+                        <label class="block md:hidden text-[9px] uppercase tracking-wide text-slate-400 font-bold mb-0.5">Destination URL</label>
+                        <input type="text" value="${escapeHtml(link.url)}" 
+                            oninput="updateLinkUrl('${link.id}', this.value)" 
+                            placeholder="Destination URL"
+                            class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-950 p-1.5 rounded-md border border-slate-200 dark:border-slate-800 text-indigo-600 dark:text-indigo-400 focus:ring-1 focus:ring-indigo-500" />
+                    </div>
+
+                    <!-- Delete button -->
+                    <div class="w-full md:w-auto flex justify-end">
+                        <button onclick="deleteLink('${link.id}')" class="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-500 rounded-lg text-xs" title="Remove Link">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(li);
+            });
+        }
+
+        /**
+         * Aggregates configuration values and prints structured templates
+         */
+        function buildOutputCode() {
+            const wrapper = document.getElementById('global-wrapper').value;
+            const target = document.getElementById('global-target').value;
+            const rel = document.getElementById('global-rel').value;
+            const customClass = document.getElementById('global-classes').value.trim();
+
+            let targetAttr = target !== 'none' ? ` target="${target}"` : '';
+            let relAttr = rel !== 'none' ? ` rel="${rel}"` : '';
+            let classAttr = customClass !== '' ? ` class="${customClass}"` : '';
+
+            // Generate HTML output
+            let htmlOutput = "";
+            let markdownOutput = "";
+            const jsonOutputArray = [];
+
+            if (linksList.length > 0) {
+                if (wrapper === 'ul' || wrapper === 'ol') {
+                    htmlOutput += `<${wrapper}>\n`;
+                    linksList.forEach(link => {
+                        htmlOutput += `  <li><a href="${escapeHtml(link.url)}"${targetAttr}${relAttr}${classAttr}>${escapeHtml(link.title)}</a></li>\n`;
+                    });
+                    htmlOutput += `</${wrapper}>`;
+                } else if (wrapper === 'div') {
+                    linksList.forEach(link => {
+                        htmlOutput += `<div class="link-item">\n  <a href="${escapeHtml(link.url)}"${targetAttr}${relAttr}${classAttr}>${escapeHtml(link.title)}</a>\n</div>\n`;
+                    });
+                    htmlOutput = htmlOutput.trim();
+                } else if (wrapper === 'inline') {
+                    const links = linksList.map(link => `<a href="${escapeHtml(link.url)}"${targetAttr}${relAttr}${classAttr}>${escapeHtml(link.title)}</a>`);
+                    htmlOutput = links.join(" &bull; ");
+                } else if (wrapper === 'raw') {
+                    const links = linksList.map(link => `<a href="${escapeHtml(link.url)}"${targetAttr}${relAttr}${classAttr}>${escapeHtml(link.title)}</a>`);
+                    htmlOutput = links.join("\n");
+                }
+
+                // Generate Markdown & JSON outputs
+                linksList.forEach(link => {
+                    markdownOutput += `- [${link.title}](${link.url})\n`;
+                    jsonOutputArray.push({
+                        title: link.title,
+                        url: link.url
+                    });
+                });
+            } else {
+                htmlOutput = "<!-- No clean links parsed yet -->";
+                markdownOutput = "[No clean links parsed yet]";
+                jsonOutputArray.push({ message: "No clean links parsed yet" });
+            }
+
+            // Write output strings
+            document.getElementById('output-html-code').textContent = htmlOutput;
+            document.getElementById('output-markdown-code').textContent = markdownOutput.trim();
+            document.getElementById('output-json-code').textContent = JSON.stringify(jsonOutputArray, null, 2);
+
+            // Inject Visual Live Preview
+            const previewContainer = document.getElementById('output-preview');
+            previewContainer.innerHTML = htmlOutput;
+        }
+
+        // State update handlers
+        function updateLinkTitle(id, newTitle) {
+            const index = linksList.findIndex(x => x.id === id);
+            if (index !== -1) {
+                linksList[index].title = newTitle;
+                buildOutputCode();
+            }
+        }
+
+        function updateLinkUrl(id, newUrl) {
+            const index = linksList.findIndex(x => x.id === id);
+            if (index !== -1) {
+                linksList[index].url = newUrl;
+                buildOutputCode();
+            }
+        }
+
+        function deleteLink(id) {
+            linksList = linksList.filter(x => x.id !== id);
+            updateCountBadge(linksList.length);
+            renderLinkManager();
+            buildOutputCode();
+            showToast("Link removed successfully", "info");
+        }
+
+        function moveLinkUp(index) {
+            if (index > 0) {
+                const temp = linksList[index];
+                linksList[index] = linksList[index - 1];
+                linksList[index - 1] = temp;
+                renderLinkManager();
+                buildOutputCode();
+            }
+        }
+
+        function moveLinkDown(index) {
+            if (index < linksList.length - 1) {
+                const temp = linksList[index];
+                linksList[index] = linksList[index + 1];
+                linksList[index + 1] = temp;
+                renderLinkManager();
+                buildOutputCode();
+            }
+        }
+
+        function addManualLink() {
+            const urlInput = document.getElementById('manual-url');
+            const textInput = document.getElementById('manual-text');
+
+            const rawUrl = urlInput.value.trim();
+            let text = textInput.value.trim();
+
+            if (!rawUrl) {
+                showToast("Please provide a destination URL", "error");
+                return;
+            }
+
+            if (!text) {
+                text = getFallbackTitle(rawUrl);
+            }
+
+            linksList.push({
+                id: generateId(),
+                url: rawUrl,
+                title: text
+            });
+
+            urlInput.value = '';
+            textInput.value = '';
+
+            updateCountBadge(linksList.length);
+            renderLinkManager();
+            buildOutputCode();
+            showToast("New link added manually", "success");
+        }
+
+        // UI Helpers
+        function switchOutputTab(tabName) {
+            activeTab = tabName;
+            
+            // Toggle Content
+            document.getElementById('tab-html-content').classList.add('hidden');
+            document.getElementById('tab-preview-content').classList.add('hidden');
+            document.getElementById('tab-markdown-content').classList.add('hidden');
+            document.getElementById('tab-json-content').classList.add('hidden');
+            
+            document.getElementById(`tab-${tabName}-content`).classList.remove('hidden');
+
+            // Reset Tab styling
+            const tabs = ['html', 'preview', 'markdown', 'json'];
+            tabs.forEach(tab => {
+                const btn = document.getElementById(`tab-${tab}-btn`);
+                btn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-1.5";
+            });
+
+            // Set Active Tab style
+            const activeBtn = document.getElementById(`tab-${tabName}-btn`);
+            activeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center gap-1.5";
+        }
+
+        function copyCurrentOutput() {
+            let stringToCopy = "";
+            if (activeTab === 'html') {
+                stringToCopy = document.getElementById('output-html-code').textContent;
+            } else if (activeTab === 'preview') {
+                stringToCopy = document.getElementById('output-preview').innerHTML;
+            } else if (activeTab === 'markdown') {
+                stringToCopy = document.getElementById('output-markdown-code').textContent;
+            } else if (activeTab === 'json') {
+                stringToCopy = document.getElementById('output-json-code').textContent;
+            }
+
+            // Clipboard write support using dynamic input method for compatibility
+            const textarea = document.createElement('textarea');
+            textarea.value = stringToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            // Trigger success animations
+            const copyIcon = document.getElementById('copy-icon');
+            const copyText = document.getElementById('copy-text');
+            copyIcon.className = "fa-solid fa-check text-emerald-500";
+            copyText.textContent = "Copied!";
+
+            setTimeout(() => {
+                copyIcon.className = "fa-regular fa-copy";
+                copyText.textContent = "Copy";
+            }, 1800);
+
+            showToast("Copied clipboard content successfully", "success");
+        }
+
+        function loadSampleText() {
+            const sample = `<div>&nbsp;<a href="https://github.com/trending">GitHub Trending Repositories</a>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;<a href="https://news.ycombinator.com">Hacker News</a></div>
+<div>&nbsp;</div>
+<div>https://www.youtube.com&nbsp;</div>
+<div class="test-class">Check out https://wikipedia.org&nbsp;</div>`;
+            
+            document.getElementById('raw-input').value = sample;
+            parseInputAndRender();
+            showToast("Loaded sample with messy div/nbsp tags", "info");
+        }
+
+        function clearInput() {
+            document.getElementById('raw-input').value = "";
+            parseInputAndRender();
+            showToast("Input workspace cleared", "info");
+        }
+
+        function resetApp() {
+            document.getElementById('raw-input').value = "";
+            document.getElementById('global-classes').value = "";
+            document.getElementById('global-wrapper').value = "ul";
+            document.getElementById('global-target').value = "_blank";
+            document.getElementById('global-rel').value = "noopener noreferrer";
+            document.getElementById('title-fallback-mode').value = "domain";
+            document.getElementById('title-case-mode').value = "original";
+            linksList = [];
+            
+            updateCountBadge(0);
+            renderLinkManager();
+            buildOutputCode();
+            showToast("Application has been completely reset", "info");
+        }
+
+        function updateCountBadge(count) {
+            document.getElementById('found-count-badge').textContent = `${count} found`;
+        }
+
+        // Dynamic notification toasts
+        function showToast(message, type = "success") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let icon = '<i class="fa-solid fa-circle-check text-emerald-500"></i>';
+            if (type === 'error') {
+                icon = '<i class="fa-solid fa-triangle-exclamation text-rose-500"></i>';
+            } else if (type === 'info') {
+                icon = '<i class="fa-solid fa-circle-info text-sky-500"></i>';
+            }
+
+            toast.className = "flex items-center gap-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-xs px-4 py-3 rounded-xl shadow-lg border border-slate-800 dark:border-slate-100/10 pointer-events-auto transform transition-all duration-300 opacity-0 translate-y-2";
+            toast.innerHTML = `${icon} <span class="font-medium">${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => {
+                toast.classList.remove('opacity-0', 'translate-y-2');
+                toast.classList.add('opacity-100', 'translate-y-0');
+            }, 10);
+
+            // Remove after 3s
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Dark theme switch helper
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                updateThemeToggleIcon(false);
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                updateThemeToggleIcon(true);
+            }
+        }
+
+        function updateThemeToggleIcon(isDark) {
+            const icon = document.getElementById('theme-icon');
+            if (isDark) {
+                icon.className = "fa-solid fa-sun text-lg text-amber-400";
+            } else {
+                icon.className = "fa-solid fa-moon text-lg text-indigo-600";
+            }
+        }
+
+        // Unique ID generator
+        function generateId() {
+            return Math.random().toString(36).substr(2, 9);
+        }
+
+        // HTML escaping utility
+        function escapeHtml(string) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(string).replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+</body>
+</html>
