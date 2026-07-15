@@ -1,89 +1,316 @@
-<h2>A Claude COmapny</h2>
-I turned Claude into an entire company
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Claude Company</title>
+    <style>
+        :root {
+            --bg-color: #fbfaf7;
+            --text-color: #191919;
+            --text-muted: #666666;
+            --accent-color: #cc5a37;
+            --card-bg: #ffffff;
+            --border-color: #e8e6e1;
+            --font-serif: "Georgia", serif;
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-42 skills, organized like a real org chart
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #121212;
+                --text-color: #f4f4f0;
+                --text-muted: #a0a09a;
+                --accent-color: #e27d60;
+                --card-bg: #1e1e1e;
+                --border-color: #2d2d2d;
+            }
+        }
 
-Every department is real and installable from the links below
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
 
-Developers
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-Superpowers
-→ https://github.com/obra/superpowers
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
 
-Context7
-→ https://github.com/upstash/context7
+        h1, h2 {
+            font-family: var(--font-serif);
+            font-weight: normal;
+            margin: 0 0 10px 0;
+        }
 
-Skill Creator
-→ https://github.com/anthropics/skills
+        h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+        }
 
-MCP Builder
-→ https://github.com/anthropics/skills
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
 
-Webapp Testing
-→ https://github.com/anthropics/skills
+        .meta-info {
+            display: inline-block;
+            background-color: var(--border-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
 
-Claude-Mem
-→ https://github.com/thedotmack/claude-mem
+        .org-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
 
-Designers
+        .dept-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-UI UX Pro Max
-→ https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+        .dept-title {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
 
-Taste
-→ https://github.com/Leonxlnx/taste-skill
+        .skill-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-Frontend Design
-→ https://github.com/Leonxlnx/taste-skill
+        .skill-item {
+            margin-bottom: 12px;
+        }
 
-Transitions
-→ https://github.com/Jakubantalik/transitions.dev
+        .skill-name {
+            font-weight: 600;
+            display: block;
+            font-size: 0.95rem;
+        }
 
-Web Artifacts
-→ https://github.com/anthropics/skills
+        .skill-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 0.2s;
+        }
 
-Brand Guidelines
-→ https://github.com/anthropics/skills
+        .skill-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
 
-Marketing
+        .full-dept-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
 
-45 skills to run copywriting, SEO, lead magnets, and campaigns
+        .full-dept-link {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            transition: filter 0.2s;
+        }
 
-Access them here
-→ https://github.com/coreyhaines31/marketingskills
+        .full-dept-link:hover {
+            filter: brightness(1.1);
+        }
 
-Social Media
+        footer {
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 40px;
+            margin-top: 50px;
+        }
 
-17 skills for posts, Reels, thumbnails, and content ops
+        .stack-pitch {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
 
-Access them here
-→ https://github.com/charlie947/social-media-skills
+        .stack-pitch span {
+            display: inline-block;
+            margin: 0 10px;
+            color: var(--text-muted);
+        }
 
-Finance
+        .cta {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
 
-8 skills for statements, reconciliation, and audits
+<div class="container">
+    <header>
+        <h2>A Claude Company</h2>
+        <p class="subtitle">I turned Claude into an entire company</p>
+        <span class="meta-info">42 skills, organized like a real org chart</span>
+    </header>
 
-Access them here
-→ https://claude.com/plugins/finance
+    <main class="org-chart">
+        <!-- Developers -->
+        <section class="dept-card">
+            <div>
+                <h3 class="dept-title">Developers</h3>
+                <ul class="skill-list">
+                    <li class="skill-item">
+                        <span class="skill-name">Superpowers</span>
+                        <a class="skill-link" href="https://github.com/obra/superpowers" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">Context7</span>
+                        <a class="skill-link" href="https://github.com/upstash/context7" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">Skill Creator</span>
+                        <a class="skill-link" href="https://github.com/anthropics/skills" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">MCP Builder</span>
+                        <a class="skill-link" href="https://github.com/anthropics/skills" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">Webapp Testing</span>
+                        <a class="skill-link" href="https://github.com/anthropics/skills" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">Claude-Mem</span>
+                        <a class="skill-link" href="https://github.com/thedotmack/claude-mem" target="_blank">→ GitHub Repository</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
 
-Small Business
+        <!-- Designers -->
+        <section class="dept-card">
+            <div>
+                <h3 class="dept-title">Designers</h3>
+                <ul class="skill-list">
+                    <li class="skill-item">
+                        <span class="skill-name">UI UX Pro Max</span>
+                        <a class="skill-link" href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">Taste</span>
+                        <a class="skill-link" href="https://github.com/Leonxlnx/taste-skill" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">Frontend Design</span>
+                        <a class="skill-link" href="https://github.com/Leonxlnx/taste-skill" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">Transitions</span>
+                        <a class="skill-link" href="https://github.com/Jakubantalik/transitions.dev" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">Web Artifacts</span>
+                        <a class="skill-link" href="https://github.com/anthropics/skills" target="_blank">→ GitHub Repository</a>
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-name">Brand Guidelines</span>
+                        <a class="skill-link" href="https://github.com/anthropics/skills" target="_blank">→ GitHub Repository</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
 
-31 skills for cash flow, payroll, invoicing, and operations
+        <!-- Marketing -->
+        <section class="dept-card">
+            <div>
+                <h3 class="dept-title">Marketing</h3>
+                <p class="full-dept-desc">45 skills to run copywriting, SEO, lead magnets, and campaigns.</p>
+            </div>
+            <a class="full-dept-link" href="https://github.com/coreyhaines31/marketingskills" target="_blank">Access Skills →</a>
+        </section>
 
-Access them here
-→ https://claude.com/plugins/small-business
+        <!-- Social Media -->
+        <section class="dept-card">
+            <div>
+                <h3 class="dept-title">Social Media</h3>
+                <p class="full-dept-desc">17 skills for posts, Reels, thumbnails, and content ops.</p>
+            </div>
+            <a class="full-dept-link" href="https://github.com/charlie947/social-media-skills" target="_blank">Access Skills →</a>
+        </section>
 
-Legal
+        <!-- Finance -->
+        <section class="dept-card">
+            <div>
+                <h3 class="dept-title">Finance</h3>
+                <p class="full-dept-desc">8 skills for statements, reconciliation, and audits.</p>
+            </div>
+            <a class="full-dept-link" href="https://claude.com/plugins/finance" target="_blank">Access Plugins →</a>
+        </section>
 
-9 skills for contract review, NDAs, and compliance
+        <!-- Small Business -->
+        <section class="dept-card">
+            <div>
+                <h3 class="dept-title">Small Business</h3>
+                <p class="full-dept-desc">31 skills for cash flow, payroll, invoicing, and operations.</p>
+            </div>
+            <a class="full-dept-link" href="https://claude.com/plugins/small-business" target="_blank">Access Plugins →</a>
+        </section>
 
-Access them here
-→ https://claude.com/plugins/legal
+        <!-- Legal -->
+        <section class="dept-card">
+            <div>
+                <h3 class="dept-title">Legal</h3>
+                <p class="full-dept-desc">9 skills for contract review, NDAs, and compliance.</p>
+            </div>
+            <a class="full-dept-link" href="https://claude.com/plugins/legal" target="_blank">Access Plugins →</a>
+        </section>
+    </main>
 
-Not prompts
+    <footer>
+        <div class="stack-pitch">
+            Not prompts <span>•</span> Not wrappers
+        </div>
+        <p>A real operating stack for Claude.</p>
+        <p class="cta">Bookmark this and build your own AI company.</p>
+    </footer>
+</div>
 
-Not wrappers
-
-A real operating stack for Claude
-
-Bookmark this and build your own AI company
+</body>
+</html>
