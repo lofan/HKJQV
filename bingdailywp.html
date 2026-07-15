@@ -140,7 +140,8 @@
 
     <script>
         const CONFIG = {
-            bingApiUrl: "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=en-CA",
+            // We make the API url dynamic based on idx (offset) and market (mkt)
+            getBingUrl: (idx = 0, mkt = 'en-CA') => `https://www.bing.com/HPImageArchive.aspx?format=js&idx=${idx}&n=8&mkt=${mkt}`,
             corsProxies: [
                 "https://api.allorigins.win/raw?url=",
                 "https://corsproxy.io/?"
@@ -156,6 +157,7 @@
             uiHidden: false,
             soundActive: false,
             soundPreset: 'forest', // 'forest', 'rain', 'waves'
+            market: 'en-CA', // Active regional market code
             filters: {
                 brightness: 100,
                 blur: 0,
@@ -184,15 +186,37 @@
     <div id="main-ui" class="absolute inset-0 flex flex-col justify-between p-6 md:p-8 z-10 transition-opacity duration-500 overflow-hidden">
         
         <!-- HEADER BAR -->
-        <header class="flex justify-between items-center w-full">
-            <div class="flex items-center space-x-3 bg-black/30 backdrop-blur-md border border-white/10 px-4 py-2.5 rounded-full shadow-lg">
-                <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse-slow"></div>
-                <h1 class="text-xs md:text-sm font-bold uppercase tracking-widest text-slate-200">Daily Horizon</h1>
-                <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-white/80" id="data-source-badge">Archive</span>
+        <header class="flex flex-col md:flex-row justify-between items-center w-full gap-4 md:gap-0">
+            <div class="flex items-center space-x-3 bg-black/30 backdrop-blur-md border border-white/10 px-4 py-2.5 rounded-full shadow-lg w-full md:w-auto justify-between md:justify-start">
+                <div class="flex items-center space-x-3">
+                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse-slow"></div>
+                    <h1 class="text-xs md:text-sm font-bold uppercase tracking-widest text-slate-200">Daily Horizon</h1>
+                </div>
+                <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-white/80 ml-2" id="data-source-badge">Archive</span>
             </div>
 
-            <!-- Header Quick Action Buttons -->
-            <div class="flex items-center space-x-2">
+            <!-- Header Quick Action Buttons & Controls -->
+            <div class="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-center md:justify-end">
+                <!-- Region Selector -->
+                <div class="relative flex items-center bg-black/40 border border-white/10 rounded-xl px-2.5 py-1.5 text-slate-200 hover:bg-white/5 transition-all">
+                    <i class="fa-solid fa-earth-americas text-xs text-emerald-400 mr-2"></i>
+                    <select id="region-selector" onchange="handleRegionChange(this.value)" class="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer pr-1">
+                        <option value="en-CA" class="bg-slate-900 text-white">Canada (EN)</option>
+                        <option value="ja-JP" class="bg-slate-900 text-white">Japan (JA)</option>
+                        <option value="en-US" class="bg-slate-900 text-white">United States (EN)</option>
+                        <option value="zh-CN" class="bg-slate-900 text-white">China (ZH)</option>
+                        <option value="de-DE" class="bg-slate-900 text-white">Germany (DE)</option>
+                        <option value="fr-FR" class="bg-slate-900 text-white">France (FR)</option>
+                        <option value="en-GB" class="bg-slate-900 text-white">United Kingdom (EN)</option>
+                    </select>
+                </div>
+
+                <!-- Date Input Picker -->
+                <div class="relative flex items-center bg-black/40 border border-white/10 rounded-xl px-2.5 py-1 text-slate-200 hover:bg-white/5 transition-all">
+                    <i class="fa-regular fa-calendar text-xs text-emerald-400 mr-2"></i>
+                    <input type="date" id="date-selector" onchange="handleDateSelection(this.value)" class="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer text-slate-200 uppercase" style="color-scheme: dark;">
+                </div>
+
                 <!-- Sync Bing Button -->
                 <button onclick="tryFetchBingWallpaper()" title="Fetch Fresh Bing Images" 
                         class="p-2.5 rounded-full bg-black/40 hover:bg-white/10 border border-white/10 text-white transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center">
@@ -257,10 +281,17 @@
                     
                     <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 pt-3 border-t border-white/10 gap-2">
                         <span id="wp-copyright" class="italic"></span>
-                        <!-- Bing Search Query Link -->
-                        <a id="wp-search-link" href="#" target="_blank" class="text-emerald-400 hover:underline inline-flex items-center gap-1 hover:text-emerald-300 font-medium">
-                            Explore this location <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                        </a>
+                        <div class="flex items-center gap-3">
+                            <!-- Bing Search Query Link -->
+                            <a id="wp-search-link" href="#" target="_blank" class="text-emerald-400 hover:underline inline-flex items-center gap-1 hover:text-emerald-300 font-semibold">
+                                <i class="fa-solid fa-b text-[10px] mr-0.5"></i> Bing Explore
+                            </a>
+                            <span class="text-slate-600">|</span>
+                            <!-- Google Search Query Link -->
+                            <a id="wp-google-search-link" href="#" target="_blank" class="text-sky-400 hover:underline inline-flex items-center gap-1 hover:text-sky-300 font-semibold">
+                                <i class="fa-brands fa-google text-[10px] mr-0.5"></i> Google Search
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -447,15 +478,17 @@
             }, duration);
         }
 
-        // Try Loading Wallpaper from Bing API via proxies
-        async function tryFetchBingWallpaper() {
-            triggerToast("Reaching out to Bing image archives...", "fa-solid fa-cloud-arrow-down animate-bounce");
+        // Try Loading Wallpaper from Bing API via proxies with optional index offset
+        async function tryFetchBingWallpaper(idx = 0) {
+            triggerToast(`Reaching out to Bing image archives (offset: ${idx})...`, "fa-solid fa-cloud-arrow-down animate-bounce");
             
             let success = false;
+            const apiUrl = CONFIG.getBingUrl(idx, state.market);
+
             // Iterate over fallback cors proxies
             for (let proxy of CONFIG.corsProxies) {
                 try {
-                    const response = await fetch(`${proxy}${encodeURIComponent(CONFIG.bingApiUrl)}`);
+                    const response = await fetch(`${proxy}${encodeURIComponent(apiUrl)}`);
                     if (!response.ok) continue;
                     
                     const data = await response.json();
@@ -496,10 +529,10 @@
                         state.sourceMode = 'bing';
                         success = true;
                         
-                        document.getElementById('data-source-badge').textContent = "Live Bing Feed";
+                        document.getElementById('data-source-badge').textContent = `Live Bing Feed (${state.market.toUpperCase()})`;
                         document.getElementById('data-source-badge').className = "text-[10px] bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 px-2 py-0.5 rounded";
                         
-                        triggerToast("Successfully synchronized today's Bing images!", "fa-solid fa-circle-check text-emerald-400");
+                        triggerToast(`Synchronized today's Bing images for market: ${state.market.toUpperCase()}!`, "fa-solid fa-circle-check text-emerald-400");
                         break;
                     }
                 } catch (e) {
@@ -508,7 +541,7 @@
             }
 
             if (!success) {
-                triggerToast("CORS blocked. Loaded offline-resilient high-res nature archive.", "fa-solid fa-triangle-exclamation text-amber-400");
+                triggerToast("CORS blocked or error. Loaded offline-resilient high-res nature archive.", "fa-solid fa-triangle-exclamation text-amber-400");
                 state.wallpapers = [...CURATED_ARCHIVE];
                 state.sourceMode = 'curated';
                 document.getElementById('data-source-badge').textContent = "Offline Curated";
@@ -518,6 +551,56 @@
             state.currentIdx = 0;
             updateInterface();
             renderCarousel();
+        }
+
+        function handleRegionChange(newMarket) {
+            state.market = newMarket;
+            // Instantly pull images matching newly configured market region
+            tryFetchBingWallpaper(0);
+        }
+
+        function handleDateSelection(dateString) {
+            if (!dateString) return;
+
+            const selectedDate = new Date(dateString);
+            const currentDate = new Date("2026-07-15T12:00:00"); // Standard clock anchor in immersive environment
+
+            selectedDate.setHours(0,0,0,0);
+            currentDate.setHours(0,0,0,0);
+
+            const diffTime = currentDate - selectedDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays < 0) {
+                triggerToast("Cannot explore future dates. Displaying today's feature.", "fa-solid fa-calendar-times text-amber-400");
+                document.getElementById('date-selector').value = "2026-07-15";
+                tryFetchBingWallpaper(0);
+                return;
+            }
+
+            // Bing API index parameter limits backtracks to 7-15 days. 
+            if (diffDays <= 7) {
+                tryFetchBingWallpaper(diffDays);
+            } else {
+                // Check if we have standard backup entries stored in Curated Archives with the chosen calendar date
+                const matchedOfflineIdx = state.wallpapers.findIndex(item => item.date === dateString);
+                if (matchedOfflineIdx > -1) {
+                    state.currentIdx = matchedOfflineIdx;
+                    updateInterface();
+                    triggerToast("Historical entry loaded from high-resolution offline archive!", "fa-solid fa-circle-check text-emerald-400");
+                } else {
+                    const fallbackOffline = CURATED_ARCHIVE.find(item => item.date === dateString);
+                    if (fallbackOffline) {
+                        state.wallpapers.unshift(fallbackOffline);
+                        state.currentIdx = 0;
+                        renderCarousel();
+                        triggerToast("Historical entry loaded from high-resolution offline archive!", "fa-solid fa-circle-check text-emerald-400");
+                    } else {
+                        triggerToast("Bing API limit is 7 days. Fetching deepest live offset instead...", "fa-solid fa-circle-info text-amber-300");
+                        tryFetchBingWallpaper(7);
+                    }
+                }
+            }
         }
 
         // Apply visual updates to UI
@@ -540,10 +623,15 @@
             document.getElementById('wp-description').textContent = current.description;
             document.getElementById('wp-copyright').textContent = current.copyright;
 
-            // Update Bing query link
+            // Update Search Query Links
             const searchQuery = current.searchQuery || current.title;
             const searchLink = document.getElementById('wp-search-link');
             searchLink.href = `https://www.bing.com/search?q=${encodeURIComponent(searchQuery)}`;
+
+            const googleSearchLink = document.getElementById('wp-google-search-link');
+            if (googleSearchLink) {
+                googleSearchLink.href = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+            }
 
             // Check if favorited already
             const isFav = state.favorites.some(fav => fav.url === current.url);
@@ -1028,6 +1116,13 @@
     <script>
         window.onload = function() {
             // Apply fallback data first
+            const dateSelector = document.getElementById('date-selector');
+            if (dateSelector) {
+                // Initialize maximum date lookup constraints matching the current app timeline anchor
+                dateSelector.value = "2026-07-15";
+                dateSelector.max = "2026-07-15";
+            }
+
             renderCarousel();
             
             // Try fetching actual daily Bing assets via proxy
@@ -1039,3 +1134,10 @@
     </script>
 </body>
 </html>
+```
+eof
+
+### Summary of Changes made:
+*   Added an interactive **Google Search Link** button with a custom Google icon to complement the existing Bing Explore link.
+*   Added a beautiful `<select>` element for changing the active search **Region market** (`en-CA`, `ja-JP`, `en-US`, `zh-CN`, `de-DE`, etc.).
+*   Created a customized `<input type="date">` selector inside the header that calculates daily offsets dynamically, automatically requesting Bing servers for historical archives (up to 7 days) and parsing curated offline archive files as fallbacks if the range is exceeded.
