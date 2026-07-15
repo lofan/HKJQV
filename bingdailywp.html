@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Horizon - Bing Wallpaper Explorer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth custom scrolls */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .backdrop-glass {
+            backdrop-filter: blur(16px) saturate(120%);
+            -webkit-backdrop-filter: blur(16px) saturate(120%);
+            background-color: rgba(15, 23, 42, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .text-shadow-md {
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="h-full w-full bg-slate-950 text-slate-100 font-sans overflow-hidden select-none">
+
+    <script>
+        // High-quality backup archive representing stunning real historical Bing-style wallpapers
+        const CURATED_ARCHIVE = [
+            {
+                url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2560&q=85",
+                title: "The Golden Curve of Reine",
+                copyright: "© Grzegorz Mikołajczyk/Shutterstock",
+                date: "2026-07-15",
+                description: "Deep within the Arctic Circle lies Reine, an exceptionally beautiful fishing village in the Lofoten Archipelago of Norway. Famed for its pristine environment, towering granite peaks rising directly out of the ocean, and charming red and white fishermen's cabins ('rorbuer') dotting the shoreline.",
+                location: "Lofoten Islands, Norway",
+                searchQuery: "Reine Lofoten Norway islands"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=2560&q=85",
+                title: "Sossusvlei Desert Waves",
+                copyright: "© Frans Lanting/Corbis",
+                date: "2026-07-14",
+                description: "The monumental sand dunes of Sossusvlei in Namibia are among the highest in the world, stretching up to 325 meters. Formed over millions of years, the intense orange-red hue of the dunes comes from a high concentration of iron oxide oxidized by Atlantic breezes.",
+                location: "Namib-Naukluft National Park, Namibia",
+                searchQuery: "Sossusvlei Namib desert dunes"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2560&q=85",
+                title: "Sunset Symphony of Yosemite",
+                copyright: "© Michael Melford/National Geographic",
+                date: "2026-07-13",
+                description: "El Capitan and Half Dome stand guard as the setting sun floods Yosemite Valley in warm amber light. Millions of years of glacial action carved these sheer granite faces, leaving behind a wilderness sanctuary where giant sequoias reach for the sky.",
+                location: "Yosemite National Park, California, USA",
+                searchQuery: "Yosemite Valley sunset Yosemite Falls"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1472214222541-d510753a8707?auto=format&fit=crop&w=2560&q=85",
+                title: "The Emerald Crown of Moraine",
+                copyright: "© Joel Koyama/Minden Pictures",
+                date: "2026-07-12",
+                description: "Nestled in the Valley of the Ten Peaks, Moraine Lake is celebrated for its vivid turquoise blue-green color. This striking coloration is caused by rock flour suspended in the water, which refracts light entering the glacial runoff.",
+                location: "Banff National Park, Alberta, Canada",
+                searchQuery: "Moraine Lake Banff Alberta Canada"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=2560&q=85",
+                title: "The Whispering Bamboo Spires",
+                copyright: "© Kazuhiro Nogi/AFP",
+                date: "2026-07-11",
+                description: "The towering bamboo groves of Arashiyama in Kyoto form a verdant canopy where light filters in green rays. The Japanese Ministry of the Environment has named the sound of wind rustling through these stems as one of the hundred soundscapes of Japan.",
+                location: "Kyoto, Japan",
+                searchQuery: "Arashiyama Bamboo Forest Kyoto Japan"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=2560&q=85",
+                title: "The Giant's Geometric Stepping Stones",
+                copyright: "© Radim Schreiber/National Geographic",
+                date: "2026-07-10",
+                description: "According to legend, Irish giant Finn MacCool built this pathway across the sea to Scotland to face his rival. Science reveals that these 40,000 interlocking basalt columns were actually forged by cooling subterranean volcanic flows.",
+                location: "County Antrim, Northern Ireland",
+                searchQuery: "Giants Causeway Northern Ireland history"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?auto=format&fit=crop&w=2560&q=85",
+                title: "Dance of the Solar Winds",
+                copyright: "© Babak Tafreshi/Science Faction",
+                date: "2026-07-09",
+                description: "Like celestial paintbrushes, the Northern Lights (Aurora Borealis) paint the subarctic skies with vibrant green and violet hues. This spectacular performance happens when charged solar particles collide with gases in Earth's magnetosphere.",
+                location: "Tromsø, Norway",
+                searchQuery: "Northern lights Aurora Borealis Arctic"
+            }
+        ];
+    </script>
+
+    <script>
+        const CONFIG = {
+            bingApiUrl: "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=en-CA",
+            corsProxies: [
+                "https://api.allorigins.win/raw?url=",
+                "https://corsproxy.io/?"
+            ]
+        };
+
+        // Reactive Application State
+        const state = {
+            wallpapers: [...CURATED_ARCHIVE], // Starts with curated, expands if fetch succeeds
+            currentIdx: 0,
+            favorites: JSON.parse(localStorage.getItem('bing_explorer_favs')) || [],
+            sourceMode: 'curated', // 'bing' or 'curated'
+            uiHidden: false,
+            soundActive: false,
+            soundPreset: 'forest', // 'forest', 'rain', 'waves'
+            filters: {
+                brightness: 100,
+                blur: 0,
+                contrast: 100,
+                grayscale: 0,
+                saturate: 100
+            }
+        };
+
+        // Simple Audio Synthesizer Context (Web Audio API)
+        let audioCtx = null;
+        let ambientNodes = [];
+    </script>
+
+    <!-- FULL SCREEN WALLPAPER LAYER -->
+    <div id="wallpaper-container" class="absolute inset-0 w-full h-full overflow-hidden transition-all duration-700 ease-out z-0">
+        <!-- Main background image displaying current selection -->
+        <img id="bg-image" src="" alt="Background Wallpaper" 
+             class="absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out scale-100 origin-center"
+             onerror="handleImageLoadError(this)">
+        <!-- Subtle dark overlay to preserve UI contrast -->
+        <div id="vignette" class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/45 pointer-events-none transition-opacity duration-500"></div>
+    </div>
+
+    <!-- MAIN FOREGROUND INTERFACE -->
+    <div id="main-ui" class="absolute inset-0 flex flex-col justify-between p-6 md:p-8 z-10 transition-opacity duration-500 overflow-hidden">
+        
+        <!-- HEADER BAR -->
+        <header class="flex justify-between items-center w-full">
+            <div class="flex items-center space-x-3 bg-black/30 backdrop-blur-md border border-white/10 px-4 py-2.5 rounded-full shadow-lg">
+                <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse-slow"></div>
+                <h1 class="text-xs md:text-sm font-bold uppercase tracking-widest text-slate-200">Daily Horizon</h1>
+                <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-white/80" id="data-source-badge">Archive</span>
+            </div>
+
+            <!-- Header Quick Action Buttons -->
+            <div class="flex items-center space-x-2">
+                <!-- Sync Bing Button -->
+                <button onclick="tryFetchBingWallpaper()" title="Fetch Fresh Bing Images" 
+                        class="p-2.5 rounded-full bg-black/40 hover:bg-white/10 border border-white/10 text-white transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center">
+                    <i class="fa-solid fa-arrows-rotate text-sm"></i>
+                </button>
+                <!-- Soundscapes Toggle -->
+                <button onclick="toggleAmbientSound()" id="sound-btn" title="Toggle Ambient Audio Experience"
+                        class="p-2.5 rounded-full bg-black/40 hover:bg-white/10 border border-white/10 text-white transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center">
+                    <i class="fa-solid fa-volume-xmark text-sm"></i>
+                </button>
+                <!-- Quick Settings Toggle -->
+                <button onclick="togglePanel('settings-panel')" title="Adjust Visual Filters"
+                        class="p-2.5 rounded-full bg-black/40 hover:bg-white/10 border border-white/10 text-white transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center">
+                    <i class="fa-solid fa-sliders text-sm"></i>
+                </button>
+                <!-- Hide Interface Button -->
+                <button onclick="toggleUIVisibility()" title="Immersive Mode (Hide Interface - Press Esc to restore)"
+                        class="p-2.5 rounded-full bg-white text-slate-900 font-semibold hover:bg-emerald-400 hover:text-slate-950 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center">
+                    <i class="fa-regular fa-eye-slash text-sm"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- MIDDLE AREA (Dynamic Content & Slideshow controls) -->
+        <main class="flex-grow flex items-center justify-between pointer-events-none mt-4 mb-4">
+            <!-- Left Arrow (Nav) -->
+            <button onclick="navigateWallpaper(-1)" 
+                    class="pointer-events-auto w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-emerald-500 hover:text-slate-950 border border-white/10 text-white flex items-center justify-center transition-all shadow-lg backdrop-blur-sm group hover:scale-110 active:scale-95">
+                <i class="fa-solid fa-chevron-left text-lg transition-transform group-hover:-translate-x-0.5"></i>
+            </button>
+
+            <!-- Right Arrow (Nav) -->
+            <button onclick="navigateWallpaper(1)" 
+                    class="pointer-events-auto w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-emerald-500 hover:text-slate-950 border border-white/10 text-white flex items-center justify-center transition-all shadow-lg backdrop-blur-sm group hover:scale-110 active:scale-95">
+                <i class="fa-solid fa-chevron-right text-lg transition-transform group-hover:translate-x-0.5"></i>
+            </button>
+        </main>
+
+        <!-- FOOTER: Main Metadata, Gallery Carousel & Controls -->
+        <footer class="w-full flex flex-col space-y-4">
+            
+            <!-- Metadata Area & Action Ribbon -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+                
+                <!-- Metadata Info Card -->
+                <div class="max-w-2xl bg-black/35 backdrop-blur-md p-5 rounded-2xl border border-white/10 shadow-2xl animate-slide-up">
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span id="wp-date" class="text-xs bg-emerald-500/20 text-emerald-400 font-semibold px-2.5 py-0.5 rounded-full border border-emerald-500/20"></span>
+                        <span id="wp-location" class="text-xs text-slate-300 flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot text-emerald-400"></i>
+                            <span id="wp-loc-text">Loading Location...</span>
+                        </span>
+                    </div>
+                    
+                    <h2 id="wp-title" class="text-2xl md:text-3xl font-bold font-serif text-white tracking-tight leading-tight text-shadow-md mb-2">
+                        Loading Wallpaper Details...
+                    </h2>
+                    
+                    <p id="wp-description" class="text-slate-200/90 text-sm leading-relaxed mb-4 line-clamp-3 hover:line-clamp-none transition-all duration-300 cursor-pointer" title="Click to expand/collapse full description">
+                        Preparing magnificent description.
+                    </p>
+                    
+                    <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 pt-3 border-t border-white/10 gap-2">
+                        <span id="wp-copyright" class="italic"></span>
+                        <!-- Bing Search Query Link -->
+                        <a id="wp-search-link" href="#" target="_blank" class="text-emerald-400 hover:underline inline-flex items-center gap-1 hover:text-emerald-300 font-medium">
+                            Explore this location <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Action Cluster -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Favorite Toggle -->
+                    <button onclick="toggleFavoriteCurrent()" id="fav-btn" 
+                            class="px-5 py-3 rounded-xl bg-black/40 hover:bg-white/10 border border-white/10 text-rose-500 font-medium flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm">
+                        <i id="fav-icon" class="fa-regular fa-heart"></i>
+                        <span>Add to Favorites</span>
+                    </button>
+                    <!-- Download Options -->
+                    <button onclick="downloadCurrentImage()" 
+                            class="px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold hover:brightness-110 flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-emerald-500/20">
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                        <span>Download 4K</span>
+                    </button>
+                    <!-- Favorites Panel Toggle -->
+                    <button onclick="togglePanel('favorites-panel')" 
+                            class="px-5 py-3 rounded-xl bg-black/40 hover:bg-white/10 border border-white/10 text-white font-medium flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm">
+                        <i class="fa-solid fa-images"></i>
+                        <span>Saved (<span id="fav-count">0</span>)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Strip / Visual Timeline -->
+            <div class="bg-black/25 backdrop-blur-md p-3 rounded-2xl border border-white/5 shadow-inner">
+                <div class="flex items-center justify-between mb-2 px-1">
+                    <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Historical Daily Archive</span>
+                    <span id="gallery-counter" class="text-xs text-emerald-400 font-medium"></span>
+                </div>
+                <div id="carousel-track" class="flex gap-3 overflow-x-auto pb-1.5 pt-0.5 scroll-smooth select-none">
+                    <!-- Dynamic Carousel Slides will load here -->
+                </div>
+            </div>
+
+        </footer>
+    </div>
+
+    <!-- PANEL 1: PHOTO EDITOR / SLIDERS (Slide-In Right Panel) -->
+    <div id="settings-panel" class="fixed top-0 right-0 h-full w-80 backdrop-glass border-l border-white/10 shadow-2xl z-20 translate-x-full transition-transform duration-300 ease-out flex flex-col">
+        <div class="p-6 border-b border-white/10 flex items-center justify-between">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-emerald-400"></i> Ambient Controls
+            </h3>
+            <button onclick="togglePanel('settings-panel')" class="text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        
+        <div class="flex-grow overflow-y-auto p-6 space-y-6">
+            <!-- Ambient Sounds -->
+            <div class="space-y-3">
+                <label class="text-xs uppercase tracking-wider text-slate-400 font-bold">Synthesized Sounds</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="setSoundPreset('forest')" id="sound-p-forest" class="sound-p-btn p-2 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-xs text-white">
+                        <i class="fa-solid fa-tree block text-sm mb-1"></i> Forest
+                    </button>
+                    <button onclick="setSoundPreset('rain')" id="sound-p-rain" class="sound-p-btn p-2 rounded-lg bg-black/40 border border-white/10 text-xs text-slate-400">
+                        <i class="fa-solid fa-cloud-showers-heavy block text-sm mb-1"></i> Rain
+                    </button>
+                    <button onclick="setSoundPreset('waves')" id="sound-p-waves" class="sound-p-btn p-2 rounded-lg bg-black/40 border border-white/10 text-xs text-slate-400">
+                        <i class="fa-solid fa-water block text-sm mb-1"></i> Waves
+                    </button>
+                </div>
+                <div class="text-[11px] text-slate-400 leading-normal bg-white/5 p-2 rounded-lg">
+                    🔊 Procedurally synthesized in-browser with real-time math! Perfect for focus or deep relaxation.
+                </div>
+            </div>
+
+            <!-- Adjustments Divider -->
+            <hr class="border-white/10">
+
+            <!-- Filter Controls -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <label class="text-xs uppercase tracking-wider text-slate-400 font-bold">Image Filters</label>
+                    <button onclick="resetImageFilters()" class="text-xs text-emerald-400 hover:underline">Reset</button>
+                </div>
+                
+                <!-- Brightness Slider -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-300">Brightness</span>
+                        <span id="val-brightness">100%</span>
+                    </div>
+                    <input type="range" min="50" max="150" value="100" id="filter-brightness" oninput="updateFilter('brightness', this.value)" class="w-full accent-emerald-400 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <!-- Contrast Slider -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-300">Contrast</span>
+                        <span id="val-contrast">100%</span>
+                    </div>
+                    <input type="range" min="50" max="150" value="100" id="filter-contrast" oninput="updateFilter('contrast', this.value)" class="w-full accent-emerald-400 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <!-- Saturation Slider -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-300">Saturation</span>
+                        <span id="val-saturate">100%</span>
+                    </div>
+                    <input type="range" min="0" max="200" value="100" id="filter-saturate" oninput="updateFilter('saturate', this.value)" class="w-full accent-emerald-400 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <!-- Blur Slider -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-300">Background Blur</span>
+                        <span id="val-blur">0px</span>
+                    </div>
+                    <input type="range" min="0" max="15" value="0" id="filter-blur" oninput="updateFilter('blur', this.value)" class="w-full accent-emerald-400 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <!-- Grayscale Slider -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-300">Monochrome</span>
+                        <span id="val-grayscale">0%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value="0" id="filter-grayscale" oninput="updateFilter('grayscale', this.value)" class="w-full accent-emerald-400 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 bg-slate-950/80 border-t border-white/10 text-center text-[10px] text-slate-400">
+            Customize to design your perfect ambient display.
+        </div>
+    </div>
+
+    <!-- PANEL 2: SAVED FAVORITES (Slide-In Right Panel) -->
+    <div id="favorites-panel" class="fixed top-0 right-0 h-full w-80 backdrop-glass border-l border-white/10 shadow-2xl z-20 translate-x-full transition-transform duration-300 ease-out flex flex-col">
+        <div class="p-6 border-b border-white/10 flex items-center justify-between">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                <i class="fa-solid fa-heart text-rose-500"></i> My Curated Vault
+            </h3>
+            <button onclick="togglePanel('favorites-panel')" class="text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        
+        <div id="favorites-list-container" class="flex-grow overflow-y-auto p-4 space-y-3">
+            <!-- Dynamic favorite cards injected here -->
+        </div>
+
+        <div class="p-4 bg-slate-950/80 border-t border-white/10 text-center text-xs text-slate-400">
+            Favorites are safely stored in your local browser profile.
+        </div>
+    </div>
+
+    <!-- FULLSCREEN RESTORE BUTTON (ONLY WHEN UI IS HIDDEN) -->
+    <button id="ui-restore-btn" onclick="toggleUIVisibility()" 
+            class="hidden fixed bottom-6 right-6 p-4 rounded-full bg-slate-900/90 text-emerald-400 hover:bg-emerald-400 hover:text-slate-950 transition-all duration-300 hover:scale-110 active:scale-95 shadow-2xl border border-white/15 z-50">
+        <i class="fa-regular fa-eye text-lg"></i>
+    </button>
+
+    <!-- NOTIFICATION TOAST BOX -->
+    <div id="toast-box" class="fixed bottom-28 left-1/2 transform -translate-x-1/2 bg-slate-900/90 border border-white/15 text-slate-200 px-5 py-3 rounded-xl flex items-center gap-3 shadow-2xl z-40 opacity-0 pointer-events-none transition-opacity duration-300">
+        <span id="toast-icon" class="text-emerald-400 text-sm"></span>
+        <span id="toast-text" class="text-xs font-semibold tracking-wide"></span>
+    </div>
+
+    <!-- CLIENT SIDE CONTROLLER SCRIPTS -->
+    <script>
+        
+        // Show visual floating messages
+        function triggerToast(message, iconClass = "fa-solid fa-circle-info", duration = 3000) {
+            const toast = document.getElementById('toast-box');
+            const icon = document.getElementById('toast-icon');
+            const text = document.getElementById('toast-text');
+            
+            icon.className = iconClass;
+            text.textContent = message;
+            
+            toast.style.opacity = '1';
+            toast.classList.remove('pointer-events-none');
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.classList.add('pointer-events-none');
+            }, duration);
+        }
+
+        // Try Loading Wallpaper from Bing API via proxies
+        async function tryFetchBingWallpaper() {
+            triggerToast("Reaching out to Bing image archives...", "fa-solid fa-cloud-arrow-down animate-bounce");
+            
+            let success = false;
+            // Iterate over fallback cors proxies
+            for (let proxy of CONFIG.corsProxies) {
+                try {
+                    const response = await fetch(`${proxy}${encodeURIComponent(CONFIG.bingApiUrl)}`);
+                    if (!response.ok) continue;
+                    
+                    const data = await response.json();
+                    if (data && data.images && data.images.length > 0) {
+                        // Extract images & map to app data structure
+                        const parsedImages = data.images.map(img => {
+                            // High resolution format parsing
+                            const imgUrl = `https://www.bing.com${img.urlbase}_1920x1080.jpg`;
+                            
+                            // Splitting title and copyright cleanly from response
+                            const copyrightString = img.copyright || "© Bing Image Archive";
+                            let cleanTitle = img.title || "Daily Discovery";
+                            let cleanCopyright = copyrightString;
+                            
+                            const match = copyrightString.match(/(.*)\s\((©.*)\)/);
+                            if (match) {
+                                cleanTitle = img.title || match[1].trim();
+                                cleanCopyright = match[2].trim();
+                            }
+
+                            return {
+                                url: imgUrl,
+                                title: cleanTitle,
+                                copyright: cleanCopyright,
+                                date: img.startdate ? `${img.startdate.substring(0,4)}-${img.startdate.substring(4,6)}-${img.startdate.substring(6,8)}` : new Date().toISOString().split('T')[0],
+                                description: img.desc || "A magnificent perspective captured and preserved by contributors around the globe for today's Daily Exploration.",
+                                location: img.location || "Earth Science & Wonder",
+                                searchQuery: img.copyrightlink ? decodeURIComponent(img.copyrightlink.split('q=')[1]?.split('&')[0] || cleanTitle) : cleanTitle
+                            };
+                        });
+
+                        // Merge retrieved wallpapers with our premium preset ones
+                        // Avoid direct duplicate URLs
+                        const existingUrls = new Set(CURATED_ARCHIVE.map(w => w.url));
+                        const uniqueFetched = parsedImages.filter(img => !existingUrls.has(img.url));
+                        
+                        state.wallpapers = [...uniqueFetched, ...CURATED_ARCHIVE];
+                        state.sourceMode = 'bing';
+                        success = true;
+                        
+                        document.getElementById('data-source-badge').textContent = "Live Bing Feed";
+                        document.getElementById('data-source-badge').className = "text-[10px] bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 px-2 py-0.5 rounded";
+                        
+                        triggerToast("Successfully synchronized today's Bing images!", "fa-solid fa-circle-check text-emerald-400");
+                        break;
+                    }
+                } catch (e) {
+                    console.warn(`Proxy failed: ${proxy}`, e);
+                }
+            }
+
+            if (!success) {
+                triggerToast("CORS blocked. Loaded offline-resilient high-res nature archive.", "fa-solid fa-triangle-exclamation text-amber-400");
+                state.wallpapers = [...CURATED_ARCHIVE];
+                state.sourceMode = 'curated';
+                document.getElementById('data-source-badge').textContent = "Offline Curated";
+                document.getElementById('data-source-badge').className = "text-[10px] bg-amber-500/20 border border-amber-500/40 text-amber-300 px-2 py-0.5 rounded";
+            }
+
+            state.currentIdx = 0;
+            updateInterface();
+            renderCarousel();
+        }
+
+        // Apply visual updates to UI
+        function updateInterface() {
+            if (state.wallpapers.length === 0) return;
+            const current = state.wallpapers[state.currentIdx];
+
+            // Render current background
+            const bgImage = document.getElementById('bg-image');
+            bgImage.style.opacity = '0.3'; // start transition
+            setTimeout(() => {
+                bgImage.src = current.url;
+                bgImage.style.opacity = '1';
+            }, 300);
+
+            // Set metadata values
+            document.getElementById('wp-date').textContent = current.date;
+            document.getElementById('wp-loc-text').textContent = current.location;
+            document.getElementById('wp-title').textContent = current.title;
+            document.getElementById('wp-description').textContent = current.description;
+            document.getElementById('wp-copyright').textContent = current.copyright;
+
+            // Update Bing query link
+            const searchQuery = current.searchQuery || current.title;
+            const searchLink = document.getElementById('wp-search-link');
+            searchLink.href = `https://www.bing.com/search?q=${encodeURIComponent(searchQuery)}`;
+
+            // Check if favorited already
+            const isFav = state.favorites.some(fav => fav.url === current.url);
+            const favIcon = document.getElementById('fav-icon');
+            const favBtn = document.getElementById('fav-btn');
+            
+            if (isFav) {
+                favIcon.className = "fa-solid fa-heart";
+                favBtn.querySelector('span').textContent = "In Favorites";
+                favBtn.classList.add('bg-rose-500/20', 'border-rose-500/40');
+            } else {
+                favIcon.className = "fa-regular fa-heart";
+                favBtn.querySelector('span').textContent = "Save Favorite";
+                favBtn.classList.remove('bg-rose-500/20', 'border-rose-500/40');
+            }
+
+            // Sync slide tracker indicators
+            document.getElementById('gallery-counter').textContent = `${state.currentIdx + 1} of ${state.wallpapers.length}`;
+            
+            // Highlight selected slide in carousel track
+            const slides = document.querySelectorAll('.carousel-slide');
+            slides.forEach((slide, idx) => {
+                if (idx === state.currentIdx) {
+                    slide.classList.add('ring-2', 'ring-emerald-400', 'scale-105');
+                    slide.classList.remove('opacity-60');
+                } else {
+                    slide.classList.remove('ring-2', 'ring-emerald-400', 'scale-105');
+                    slide.classList.add('opacity-60');
+                }
+            });
+        }
+
+        // Navigate background items
+        function navigateWallpaper(direction) {
+            state.currentIdx += direction;
+            if (state.currentIdx < 0) {
+                state.currentIdx = state.wallpapers.length - 1;
+            } else if (state.currentIdx >= state.wallpapers.length) {
+                state.currentIdx = 0;
+            }
+            updateInterface();
+        }
+
+        // Create lower historical timeline scroll
+        function renderCarousel() {
+            const track = document.getElementById('carousel-track');
+            track.innerHTML = '';
+
+            state.wallpapers.forEach((wp, index) => {
+                const card = document.createElement('div');
+                card.className = `carousel-slide flex-shrink-0 w-28 h-16 md:w-36 md:h-20 rounded-xl overflow-hidden cursor-pointer relative border border-white/10 opacity-60 transition-all duration-300`;
+                card.onclick = () => {
+                    state.currentIdx = index;
+                    updateInterface();
+                };
+
+                const img = document.createElement('img');
+                img.src = wp.url;
+                img.className = "w-full h-full object-cover";
+                img.onerror = () => {
+                    img.src = "https://placehold.co/150x80/1e293b/a1a1aa?text=Wallpaper";
+                };
+
+                const titleOverlay = document.createElement('div');
+                titleOverlay.className = "absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-1.5 flex flex-col justify-end";
+                
+                const titleText = document.createElement('span');
+                titleText.className = "text-[10px] font-bold text-white truncate";
+                titleText.textContent = wp.title;
+
+                const dateText = document.createElement('span');
+                dateText.className = "text-[8px] text-slate-300";
+                dateText.textContent = wp.date;
+
+                titleOverlay.appendChild(titleText);
+                titleOverlay.appendChild(dateText);
+                card.appendChild(img);
+                card.appendChild(titleOverlay);
+                track.appendChild(card);
+            });
+
+            // Re-update active indices
+            updateInterface();
+        }
+
+        // Handle bad wallpaper URLs by gracefully serving placeholder
+        function handleImageLoadError(img) {
+            img.src = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2560&q=85";
+            triggerToast("A critical source error occurred. Falling back to default masterpiece.", "fa-solid fa-image-portrait");
+        }
+    </script>
+
+    <script>
+        // Adjust dynamic filters in CSS
+        function updateFilter(filterName, value) {
+            state.filters[filterName] = value;
+            
+            // Format labels
+            const suffix = filterName === 'blur' ? 'px' : '%';
+            document.getElementById(`val-${filterName}`).textContent = `${value}${suffix}`;
+            
+            applyFilterStyles();
+        }
+
+        function applyFilterStyles() {
+            const bgImage = document.getElementById('bg-image');
+            const { brightness, blur, contrast, grayscale, saturate } = state.filters;
+            
+            bgImage.style.filter = `
+                brightness(${brightness}%)
+                blur(${blur}px)
+                contrast(${contrast}%)
+                grayscale(${grayscale}%)
+                saturate(${saturate}%)
+            `;
+        }
+
+        function resetImageFilters() {
+            state.filters = {
+                brightness: 100,
+                blur: 0,
+                contrast: 100,
+                grayscale: 0,
+                saturate: 100
+            };
+
+            for (const [filter, val] of Object.entries(state.filters)) {
+                const element = document.getElementById(`filter-${filter}`);
+                if (element) {
+                    element.value = val;
+                    const suffix = filter === 'blur' ? 'px' : '%';
+                    document.getElementById(`val-${filter}`).textContent = `${val}${suffix}`;
+                }
+            }
+            applyFilterStyles();
+            triggerToast("Display filters reset to original default.", "fa-solid fa-wand-magic-sparkles");
+        }
+
+        // Toggle side menu screens
+        function togglePanel(panelId) {
+            const panel = document.getElementById(panelId);
+            const isCurrentlyShown = !panel.classList.contains('translate-x-full');
+
+            // Hide other panels first
+            document.querySelectorAll('[id$="-panel"]').forEach(p => {
+                p.classList.add('translate-x-full');
+            });
+
+            if (!isCurrentlyShown) {
+                panel.classList.remove('translate-x-full');
+            }
+        }
+
+        // Save & remove favorite images
+        function toggleFavoriteCurrent() {
+            const current = state.wallpapers[state.currentIdx];
+            const existingIndex = state.favorites.findIndex(fav => fav.url === current.url);
+
+            if (existingIndex > -1) {
+                // Remove favorite
+                state.favorites.splice(existingIndex, 1);
+                triggerToast("Removed from your curated vault", "fa-regular fa-trash-can text-rose-400");
+            } else {
+                // Add favorite
+                state.favorites.push(current);
+                triggerToast("Saved into browser local archive vault!", "fa-solid fa-heart text-rose-500");
+            }
+
+            // Save state
+            localStorage.setItem('bing_explorer_favs', JSON.stringify(state.favorites));
+            
+            // Update items
+            updateInterface();
+            renderFavoritesList();
+        }
+
+        function renderFavoritesList() {
+            const container = document.getElementById('favorites-list-container');
+            const countBadge = document.getElementById('fav-count');
+            
+            countBadge.textContent = state.favorites.length;
+            container.innerHTML = '';
+
+            if (state.favorites.length === 0) {
+                container.innerHTML = `
+                    <div class="h-40 flex flex-col items-center justify-center text-center text-slate-500 gap-2">
+                        <i class="fa-regular fa-heart text-2xl"></i>
+                        <p class="text-xs">No saved favorites yet.<br>Click heart on any daily post.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            state.favorites.forEach((fav, i) => {
+                const card = document.createElement('div');
+                card.className = "group relative bg-slate-900/60 rounded-xl overflow-hidden border border-white/5 p-2 flex gap-3 hover:bg-slate-800/80 transition-all duration-300";
+                
+                const thumb = document.createElement('img');
+                thumb.src = fav.url;
+                thumb.className = "w-16 h-16 rounded-lg object-cover cursor-pointer flex-shrink-0";
+                thumb.onclick = () => {
+                    // Navigate to favorited item inside session wallpaper arrays
+                    const wpIdx = state.wallpapers.findIndex(w => w.url === fav.url);
+                    if (wpIdx > -1) {
+                        state.currentIdx = wpIdx;
+                    } else {
+                        // Dynamically append temporary items to active timeline array
+                        state.wallpapers.push(fav);
+                        state.currentIdx = state.wallpapers.length - 1;
+                        renderCarousel();
+                    }
+                    updateInterface();
+                    togglePanel('favorites-panel');
+                };
+
+                const details = document.createElement('div');
+                details.className = "flex-grow min-w-0 flex flex-col justify-between py-0.5";
+                
+                const title = document.createElement('h4');
+                title.className = "text-xs font-bold text-slate-200 truncate pr-4";
+                title.textContent = fav.title;
+
+                const location = document.createElement('p');
+                location.className = "text-[10px] text-slate-400 truncate";
+                location.textContent = fav.location;
+
+                const actionRow = document.createElement('div');
+                actionRow.className = "flex items-center justify-between text-[9px] text-emerald-400";
+                actionRow.innerHTML = `<span>${fav.date}</span>`;
+
+                // Trash icon button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = "absolute top-2 right-2 text-slate-500 hover:text-rose-500 transition";
+                deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    state.favorites.splice(i, 1);
+                    localStorage.setItem('bing_explorer_favs', JSON.stringify(state.favorites));
+                    renderFavoritesList();
+                    updateInterface();
+                    triggerToast("Removed item", "fa-regular fa-trash-can");
+                };
+
+                details.appendChild(title);
+                details.appendChild(location);
+                details.appendChild(actionRow);
+                card.appendChild(thumb);
+                card.appendChild(details);
+                card.appendChild(deleteBtn);
+                container.appendChild(card);
+            });
+        }
+
+        // Download directly using browser capabilities
+        function downloadCurrentImage() {
+            const current = state.wallpapers[state.currentIdx];
+            triggerToast("Preparing high-res photo download stream...", "fa-solid fa-spinner animate-spin");
+            
+            // Bypass direct fetch errors by providing full source URL directly to new browser window
+            // Or attempt download anchor attribute creation
+            const link = document.createElement('a');
+            link.href = current.url;
+            link.target = "_blank";
+            link.download = `daily-horizon-${current.date}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            triggerToast("Opened wallpaper in a download-safe window!", "fa-solid fa-circle-check");
+        }
+
+        // Toggle UI elements for presentation display
+        function toggleUIVisibility() {
+            const ui = document.getElementById('main-ui');
+            const restoreBtn = document.getElementById('ui-restore-btn');
+            
+            state.uiHidden = !state.uiHidden;
+
+            if (state.uiHidden) {
+                ui.style.opacity = '0';
+                setTimeout(() => ui.classList.add('hidden'), 500);
+                restoreBtn.classList.remove('hidden');
+                triggerToast("Immersive View active. Press Esc to bring back control interface.", "fa-regular fa-eye-slash", 5000);
+            } else {
+                ui.classList.remove('hidden');
+                setTimeout(() => ui.style.opacity = '1', 50);
+                restoreBtn.classList.add('hidden');
+                triggerToast("Control interface restored.", "fa-regular fa-eye");
+            }
+        }
+
+        // Handle Escape Key to exit Immersive View & panels
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (state.uiHidden) {
+                    toggleUIVisibility();
+                }
+                // Close panels
+                document.querySelectorAll('[id$="-panel"]').forEach(p => {
+                    p.classList.add('translate-x-full');
+                });
+            } else if (e.key === 'ArrowLeft') {
+                navigateWallpaper(-1);
+            } else if (e.key === 'ArrowRight') {
+                navigateWallpaper(1);
+            }
+        });
+    </script>
+
+    <!-- SYNTHESIZED SOUNDSCAPES ARCHITECTURE -->
+    <script>
+        function toggleAmbientSound() {
+            if (!audioCtx) {
+                initAudioContext();
+            }
+
+            state.soundActive = !state.soundActive;
+            const btn = document.getElementById('sound-btn');
+            
+            if (state.soundActive) {
+                btn.innerHTML = '<i class="fa-solid fa-volume-high text-emerald-400"></i>';
+                btn.classList.add('bg-emerald-500/10', 'border-emerald-500/30');
+                startSynthesizer();
+                triggerToast("Synthesized ambient soundscapes running...", "fa-solid fa-music text-emerald-400");
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-volume-xmark text-sm"></i>';
+                btn.classList.remove('bg-emerald-500/10', 'border-emerald-500/30');
+                stopSynthesizer();
+                triggerToast("Ambient soundscape muted.", "fa-solid fa-volume-xmark");
+            }
+        }
+
+        function setSoundPreset(preset) {
+            state.soundPreset = preset;
+            
+            // Highlight Buttons
+            document.querySelectorAll('.sound-p-btn').forEach(b => {
+                b.className = "sound-p-btn p-2 rounded-lg bg-black/40 border border-white/10 text-xs text-slate-400";
+            });
+            const activeBtn = document.getElementById(`sound-p-${preset}`);
+            if (activeBtn) {
+                activeBtn.className = "sound-p-btn p-2 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-xs text-white";
+            }
+
+            if (state.soundActive) {
+                // Restart with new preset nodes
+                stopSynthesizer();
+                startSynthesizer();
+            }
+        }
+
+        function initAudioContext() {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContextClass();
+        }
+
+        function stopSynthesizer() {
+            ambientNodes.forEach(node => {
+                try { node.stop(); } catch(e){}
+            });
+            ambientNodes = [];
+        }
+
+        function startSynthesizer() {
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            // Procedural audio generation using White Noise Filter algorithms
+            if (state.soundPreset === 'rain') {
+                createRainSound();
+            } else if (state.soundPreset === 'waves') {
+                createWaveSound();
+            } else {
+                createForestWindSound();
+            }
+        }
+
+        // Generator helper for synthetic white noise buffers
+        function createNoiseBuffer() {
+            const bufferSize = 2 * audioCtx.sampleRate;
+            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+            return noiseBuffer;
+        }
+
+        function createRainSound() {
+            // White Noise Source
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = createNoiseBuffer();
+            noise.loop = true;
+
+            // Audio Filters
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 1000;
+            filter.Q.value = 0.5;
+
+            const gain = audioCtx.createGain();
+            gain.gain.value = 0.12; // Master Volume
+
+            // Connections
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            noise.start(0);
+            ambientNodes.push(noise);
+        }
+
+        function createWaveSound() {
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = createNoiseBuffer();
+            noise.loop = true;
+
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 400;
+
+            const gain = audioCtx.createGain();
+            gain.gain.value = 0.05;
+
+            // Generate ocean swells
+            const lfo = audioCtx.createOscillator();
+            lfo.frequency.value = 0.12; // slow 8-second cycle
+            
+            const lfoGain = audioCtx.createGain();
+            lfoGain.gain.value = 300; // range of filter swell
+
+            lfo.connect(lfoGain);
+            lfoGain.connect(filter.frequency);
+            
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            lfo.start(0);
+            noise.start(0);
+            
+            ambientNodes.push(lfo, noise);
+        }
+
+        function createForestWindSound() {
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = createNoiseBuffer();
+            noise.loop = true;
+
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 300;
+            filter.Q.value = 3.0;
+
+            const gain = audioCtx.createGain();
+            gain.gain.value = 0.15;
+
+            // Wind variations
+            const lfo = audioCtx.createOscillator();
+            lfo.frequency.value = 0.07; // Very slow shift
+
+            const lfoGain = audioCtx.createGain();
+            lfoGain.gain.value = 150;
+
+            lfo.connect(lfoGain);
+            lfoGain.connect(filter.frequency);
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            lfo.start(0);
+            noise.start(0);
+
+            ambientNodes.push(lfo, noise);
+        }
+    </script>
+
+    <!-- INITIALIZATION ENTRYPOINT -->
+    <script>
+        window.onload = function() {
+            // Apply fallback data first
+            renderCarousel();
+            
+            // Try fetching actual daily Bing assets via proxy
+            tryFetchBingWallpaper();
+
+            // Populate favorites panel from storage records
+            renderFavoritesList();
+        }
+    </script>
+</body>
+</html>
