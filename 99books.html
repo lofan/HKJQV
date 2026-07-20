@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>愛書人99個私藏去處</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#15110d;
+    --bg-2:#1c1712;
+    --card:#221c16;
+    --card-hover:#2a231b;
+    --border:#3a2f22;
+    --border-soft:#2c2419;
+    --text:#f0e6d2;
+    --text-muted:#a89a80;
+    --text-faint:#6f6350;
+    --gold:#d4a24c;
+    --gold-soft:#e8c988;
+    --rust:#c17845;
+    --sage:#8ba07c;
+    --ink:#7d94a8;
+    --shadow: 0 10px 30px rgba(0,0,0,0.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(212,162,76,0.10), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Noto Sans TC', sans-serif;
+    font-weight:300;
+    line-height:1.75;
+  }
+  h1,h2,h3,h4{
+    font-family:'Noto Serif TC', serif;
+    font-weight:700;
+    margin:0;
+    color:var(--text);
+  }
+  a{color:inherit; text-decoration:none;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding:120px 24px 90px;
+    text-align:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    top:-220px; left:50%; transform:translateX(-50%);
+    width:640px; height:640px;
+    background:radial-gradient(circle, rgba(232,201,136,0.22) 0%, rgba(232,201,136,0.06) 40%, transparent 72%);
+    filter:blur(2px);
+    pointer-events:none;
+  }
+  .hero-eyebrow{
+    position:relative;
+    display:inline-block;
+    font-family:'Noto Sans TC', sans-serif;
+    letter-spacing:0.35em;
+    font-size:12px;
+    color:var(--gold-soft);
+    text-transform:uppercase;
+    margin-bottom:22px;
+  }
+  .hero h1{
+    position:relative;
+    font-size:clamp(34px, 6vw, 64px);
+    line-height:1.25;
+    letter-spacing:0.02em;
+    background:linear-gradient(180deg, var(--gold-soft) 0%, var(--gold) 55%, #a97a34 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p{
+    position:relative;
+    max-width:620px;
+    margin:26px auto 0;
+    color:var(--text-muted);
+    font-size:16px;
+  }
+  .hero-stats{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    gap:48px;
+    margin-top:46px;
+    flex-wrap:wrap;
+  }
+  .hero-stat b{
+    display:block;
+    font-family:'Noto Serif TC', serif;
+    font-size:30px;
+    color:var(--gold-soft);
+  }
+  .hero-stat span{
+    font-size:12px;
+    letter-spacing:0.15em;
+    color:var(--text-faint);
+  }
+
+  /* ---------- Sticky shelf nav ---------- */
+  .shelf-nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(21,17,13,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-soft);
+    padding:14px 16px;
+  }
+  .shelf-inner{
+    max-width:1100px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    overflow-x:auto;
+    scrollbar-width:thin;
+  }
+  .shelf-inner::-webkit-scrollbar{height:4px;}
+  .shelf-inner::-webkit-scrollbar-thumb{background:var(--border); border-radius:4px;}
+  .tab{
+    flex:0 0 auto;
+    padding:9px 18px;
+    border-radius:3px 3px 8px 8px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-top:3px solid var(--gold);
+    color:var(--text-muted);
+    font-size:13.5px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:transform .15s ease, color .15s ease, background .15s ease;
+    transform:rotate(-0.6deg);
+  }
+  .tab:nth-child(even){ transform:rotate(0.6deg); }
+  .tab:hover{ color:var(--gold-soft); background:var(--card-hover); }
+  .tab.active{
+    color:var(--bg);
+    background:var(--gold-soft);
+    border-color:var(--gold-soft);
+    transform:rotate(0deg) translateY(-2px);
+  }
+  .search-box{
+    margin-left:auto;
+    flex:0 0 auto;
+    position:relative;
+  }
+  .search-box input{
+    background:var(--bg-2);
+    border:1px solid var(--border);
+    border-radius:20px;
+    color:var(--text);
+    padding:9px 16px 9px 34px;
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:13.5px;
+    width:180px;
+    transition:width .2s ease, border-color .2s ease;
+  }
+  .search-box input:focus{
+    outline:none;
+    width:230px;
+    border-color:var(--gold);
+  }
+  .search-box::before{
+    content:"⌕";
+    position:absolute;
+    left:12px; top:50%; transform:translateY(-50%);
+    color:var(--text-faint);
+    font-size:15px;
+    pointer-events:none;
+  }
+
+  /* ---------- Sections ---------- */
+  main{ max-width:1100px; margin:0 auto; padding:60px 24px 40px; }
+  .section{ margin-bottom:74px; scroll-margin-top:78px; }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    margin-bottom:8px;
+    border-bottom:1px solid var(--border-soft);
+    padding-bottom:16px;
+  }
+  .section-head .num{
+    font-family:'Noto Serif TC', serif;
+    font-size:15px;
+    color:var(--text-faint);
+    letter-spacing:0.1em;
+  }
+  .section-head h2{ font-size:26px; }
+  .section-head .count{
+    margin-left:auto;
+    font-size:13px;
+    color:var(--text-faint);
+    font-family:'Noto Sans TC', sans-serif;
+  }
+  .section-desc{
+    color:var(--text-muted);
+    font-size:14.5px;
+    margin:14px 0 30px;
+    max-width:640px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:18px;
+  }
+  .card{
+    position:relative;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px 22px 20px;
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    border-color:var(--gold);
+    box-shadow:var(--shadow);
+    background:var(--card-hover);
+  }
+  .card-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .card h3{
+    font-size:17px;
+    line-height:1.4;
+  }
+  .card h3 a{
+    border-bottom:1px solid transparent;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .card h3 a:hover{
+    color:var(--gold-soft);
+    border-color:var(--gold-soft);
+  }
+  .badge{
+    flex:0 0 auto;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    padding:3px 9px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    color:var(--text-faint);
+    white-space:nowrap;
+  }
+  .badge.paid{ color:var(--rust); border-color:rgba(193,120,69,0.4); }
+  .badge.group{ color:var(--ink); border-color:rgba(125,148,168,0.4); }
+  .card p{
+    font-size:13.8px;
+    color:var(--text-muted);
+    margin:0;
+    flex:1;
+  }
+  .card .go{
+    font-size:12.5px;
+    color:var(--gold);
+    margin-top:auto;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+  }
+  .card .go::after{ content:"→"; transition:transform .15s ease; }
+  .card:hover .go::after{ transform:translateX(3px); }
+
+  .empty-state{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--text-faint);
+    font-size:14px;
+    display:none;
+  }
+
+  footer{
+    border-top:1px solid var(--border-soft);
+    padding:50px 24px 70px;
+    text-align:center;
+    color:var(--text-faint);
+    font-size:13px;
+  }
+  footer .quote{
+    font-family:'Noto Serif TC', serif;
+    font-size:17px;
+    color:var(--text-muted);
+    max-width:520px;
+    margin:0 auto 22px;
+    line-height:1.9;
+  }
+  footer a{ color:var(--gold-soft); }
+
+  @media (max-width:640px){
+    .hero{ padding:90px 20px 60px; }
+    .hero-stats{ gap:28px; }
+    main{ padding:44px 16px 20px; }
+    .search-box input{ width:130px; }
+    .search-box input:focus{ width:160px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-eyebrow">READING OUTPOST · 私藏收藏</div>
+  <h1>愛書人的<br>99個私藏去處</h1>
+  <p>喜歡看別人的讀書心得與書評嗎？這裡收藏了台灣與海外的書評網站、Youtube說書頻道、FB粉專與社團、以及愛書人的個人部落格——每一個都是曾經點亮過一盞閱讀燈的地方。</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><b id="stat-total">0</b><span>個私藏去處</span></div>
+    <div class="hero-stat"><b>6</b><span>大分類</span></div>
+    <div class="hero-stat"><b>2020</b><span>持續更新</span></div>
+  </div>
+</section>
+
+<nav class="shelf-nav">
+  <div class="shelf-inner" id="tabBar">
+    <button class="tab active" data-cat="all">全部</button>
+    <!-- category tabs injected by JS -->
+    <div class="search-box"><input id="searchInput" type="text" placeholder="搜尋名稱或簡介…"></div>
+  </div>
+</nav>
+
+<main id="main"></main>
+
+<div class="empty-state" id="emptyState">找不到符合的私藏去處，換個關鍵字試試？</div>
+
+<footer>
+  <p class="quote">「閱讀，是窮人的心理治療，也是陪伴我走過生活中種種風景的最佳旅伴。」</p>
+  <p>整理自 <a href="https://readingoutpost.com/" target="_blank" rel="noopener">閱讀前哨站</a>（Waki 瓦基）原文〈愛書人99個私藏去處〉，重新編排為分類收藏頁。</p>
+</footer>
+
+<script>
+const DATA = [
+  // ---- 台灣書評網站 ----
+  {cat:"tw", name:"博客來 OKAPI 閱讀生活誌", url:"https://okapi.books.com.tw/", desc:"博客來旗下書訊與書評站，「作家讀書筆記」「好評．外文書」兩專區水準之上、平易近人。"},
+  {cat:"tw", name:"大師輕鬆讀", url:"https://www.master60.com.tw/", desc:"付費商業書摘服務，快速掌握一本書的重點精華。", badge:"付費"},
+  {cat:"tw", name:"Readmoo 閱讀最前線", url:"https://news.readmoo.com/", desc:"讀墨旗下書訊站，固定收看排行榜專區與【讀墨閱讀書榜】影片。"},
+  {cat:"tw", name:"Openbook 閱讀誌", url:"https://www.openbook.org.tw/", desc:"定期更新8到10本書的簡短書評，人物專區訪談作家與藝文工作者，文章與Podcast並行。"},
+  {cat:"tw", name:"生鮮時書", url:"https://newsveg.tw/", desc:"書籍種類偏實用與職場，固定每月選書專欄，近期加入多位部落客的客座文章。"},
+  {cat:"tw", name:"紐約時報中文網", url:"https://cn.nytimes.com/books/zh-hant/", desc:"精選紐約時報英文書評翻譯成中文，作者多為專業書評人，立論豐富紮實。"},
+  {cat:"tw", name:"書單王國", url:"https://famousbooklist.blogspot.com/", desc:"蒐集世界各地名人私房書單——比爾蓋茲、歐巴馬、蔡康永、江振誠…靈感枯竭時的好去處。"},
+  {cat:"tw", name:"說書 Speaking of Books", url:"https://storystudio.tw/columnist-page/?columnist=558", desc:"故事網站旗下專欄，聚焦歷史、社會、文學、哲學，「百人說書」特輯值得一看。"},
+  {cat:"tw", name:"PTT 書版", url:"https://term.ptt.cc/", desc:"版名 Book，臥虎藏龍的討論版，充滿優質書評與心得，是最早啟發閱讀習慣的地方之一。"},
+
+  // ---- 書下載網站 ----
+  {cat:"dl", name:"Mobilism", url:"https://forum.mobilism.org/index.php", desc:"外文電子書資源討論論壇。"},
+  {cat:"dl", name:"好讀", url:"https://www.haodoo.net/#gsc.tab=0", desc:"經典中文電子書典藏站，公版書資源豐富。"},
+  {cat:"dl", name:"Anna's Archive", url:"https://annas-archive.gl/", desc:"大型書籍檢索站；使用前請留意各地著作權規範。"},
+  {cat:"dl", name:"Anna's Archive（維基介紹）", url:"https://en.wikipedia.org/wiki/Anna%27s_Archive", desc:"關於該站的背景說明與維基百科條目。"},
+
+  // ---- 國外書評網站 ----
+  {cat:"intl", name:"Goodreads", url:"https://www.goodreads.com/", desc:"Amazon旗下全球最大書評網站，買翻譯書前的必查站，每年舉辦年度選書大賞。"},
+  {cat:"intl", name:"Indigo", url:"https://www.indigo.ca/", desc:"加拿大最大連鎖書店之一，選書與書訊資源豐富。"},
+  {cat:"intl", name:"McKinsey Annual Book Recommendation", url:"https://www.mckinsey.com/featured-insights/annual-book-recommendations", desc:"麥肯錫年度選書，商業與管理視角的書單。"},
+  {cat:"intl", name:"FT Best Business Book Award", url:"https://ig.ft.com/sites/business-book-award/", desc:"金融時報年度最佳財經商業書獎。"},
+  {cat:"intl", name:"Five Books", url:"https://fivebooks.com/", desc:"各領域專家推薦五本必讀書單的深度訪談集。"},
+  {cat:"intl", name:"豆瓣", url:"https://book.douban.com/", desc:"簡體中文最大書評集散地，部分原文書只有簡體版能找到，可比較兩岸譯名品味差異。"},
+
+  // ---- Youtuber 說書頻道 ----
+  {cat:"yt", name:"啤啤廣東話讀書會", url:"https://www.youtube.com/@bearbearpodcast", desc:"廣東話說書頻道。"},
+  {cat:"yt", name:"暴走的陳老C-讀書會", url:"https://www.youtube.com/@ccccc", desc:"說書與讀書會頻道。"},
+  {cat:"yt", name:"閱部客", url:"https://www.youtube.com/channel/UCBvQ4hOEoDdYeIBu0tE-7Sg", desc:"說書人水丰刀，風格輕鬆有趣，容易一部接一部看下去。"},
+  {cat:"yt", name:"艾爾文", url:"https://www.youtube.com/channel/UCWDaU-qRXrZcUQYDRv2asvw", desc:"說書內容有條理，融入人生見解與洞察，偶爾介紹尚未翻譯的外文書。"},
+  {cat:"yt", name:"啾啾鞋", url:"https://www.youtube.com/user/chuchushoeTW", desc:"圖文並茂解說，「啾讀」系列說書，同時涉獵知識與時事類議題。"},
+  {cat:"yt", name:"超級歪", url:"https://www.youtube.com/channel/UCAM7yIYvZGYLJR6z6RqLlNw", desc:"說書內容紮實、製作精美如紀錄片，數量不多但質感突出。"},
+  {cat:"yt", name:"冏說書（冏冏子）", url:"https://www.youtube.com/user/shintaroReview", desc:"擅長心理學視角解讀，內容豐富多角度，惜近期已停更。"},
+  {cat:"yt", name:"好葉", url:"https://www.youtube.com/channel/UChjHWpmNm-3HbLFkQ3TPXaA", desc:"插圖動畫邊說邊畫，個人成長、人際關係、投資理財主題精簡呈現。"},
+  {cat:"yt", name:"文森說書", url:"https://www.youtube.com/channel/UCPgGtH2PxZ9xR0ehzQ27FHw/featured", desc:"舒服語調搭配簡潔動畫，10分鐘掌握一本書精華，FB粉專另有5分鐘濃縮版。"},
+  {cat:"yt", name:"NeKo嗚喵", url:"https://www.youtube.com/c/NeKoWu/featured", desc:"個人成長、商業書籍到兩性人際小說都涉獵，風格鮮明有個性。"},
+  {cat:"yt", name:"思維咖啡", url:"https://www.youtube.com/channel/UCc1rNJSBIks2LUsG2vYeZWA", desc:"手繪動畫說書，自我成長、生活改善、理財知識為主，風格簡潔幹練。"},
+  {cat:"yt", name:"CASE說書人", url:"https://www.youtube.com/playlist?list=PLil-R4o6jmGiLRLd8HyXCpi97dovLfKXr", desc:"台大科學教育發展中心科普書籍導讀節目，說書人皆為硬底子高手。"},
+
+  // ---- FB 粉專與社團 ----
+  {cat:"fb", name:"閱讀人", url:"https://www.facebook.com/reader314159/", desc:"臉書最大書籍粉專，破百萬讚，時常直播新書介紹；「閱讀人同學會」社團互動熱絡。"},
+  {cat:"fb", name:"聽書．BookListen", url:"https://www.facebook.com/BookListen2017", desc:"分享書訊與線下讀書會，特色為繪本童書與台灣特色書店介紹。"},
+  {cat:"fb", name:"JC 財經觀點", url:"https://www.facebook.com/JCInsightgroup/", desc:"財經書籍與投資觀念文章，搭配生活例子與投資概念解說。"},
+  {cat:"fb", name:"安納金 國際洞察", url:"https://www.facebook.com/anakin.global/", desc:"知名財經作家粉專，財經管理書訊，常舉辦抽書贈獎活動。"},
+  {cat:"fb", name:"顏擇雅", url:"https://www.facebook.com/joyce.yen.52", desc:"《最低的水果摘完之後》作者，評論時事、推薦經典，也分享「異溫層」資訊來源。"},
+  {cat:"fb", name:"讀書e誌", url:"https://www.facebook.com/epansbookclub/", desc:"分享許多台灣尚未翻譯的英文原文書，行文親切易讀，同步發布於部落格。"},
+  {cat:"fb", name:"Let Me Sing You A Waltz", url:"https://www.facebook.com/letmesingyouawaltz/", desc:"書評與影評並重，小說類型居多，文筆細膩動人。"},
+  {cat:"fb", name:"琳達讀讀書寫寫字", url:"https://www.facebook.com/Linda-Estoy-En-La-Luna-%E7%90%B3%E9%81%94%E8%AE%80%E8%AE%80%E6%9B%B8%E5%AF%AB%E5%AF%AB%E5%AD%97-630763277110595", desc:"小說、文學、個人成長心得與書摘，文字溫暖真誠。"},
+  {cat:"fb", name:"閱域 – 非文學閱書人", url:"https://www.facebook.com/HsuanChengLuReview/", desc:"定期分享好書介紹，文字平易近人，書籍類型廣泛多元。"},
+  {cat:"fb", name:"RBR-Ryan讀書房", url:"https://www.facebook.com/rbr.ryan/", desc:"連續分享閱讀人生14年，以書會友的長期實踐者。"},
+  {cat:"fb", name:"我愛紙本書", url:"https://www.facebook.com/Booksoul/", desc:"三位重度紙書信徒經營，純粹紙本書分享、日常閱讀所聞與書店資訊。"},
+  {cat:"fb", name:"芬妮說書 booksfannie", url:"https://www.facebook.com/booksfannie/", desc:"多年寫作與文案經驗，特別分享許多親子關係相關書籍。"},
+  {cat:"fb", name:"我的書櫃爆炸了", url:"https://www.facebook.com/groups/243619076009098/", desc:"分享心得需附書封照片，內容有長度與水準的閱讀社團。", badge:"社團"},
+  {cat:"fb", name:"就是愛閱讀", url:"https://www.facebook.com/groups/402031846836811/", desc:"公開社團，書籍種類多元，貼文更新頻率高。", badge:"社團"},
+  {cat:"fb", name:"好書共讀", url:"https://www.facebook.com/groups/readexcellentbooktogether/", desc:"討論度踴躍，格式不拘泥，常見數十到破百則留言互動。", badge:"社團"},
+  {cat:"fb", name:"閱讀教我們的五件事", url:"https://www.facebook.com/groups/2026416674262803", desc:"兩位大學女生創立，成員互動熱絡，分享閱讀對人生的啟發。", badge:"社團"},
+  {cat:"fb", name:"讓我們一起來讀書吧! ^^", url:"https://www.facebook.com/groups/readingispower/", desc:"Robert葉老師創立，會不定期公布推薦書單與星等評級。", badge:"社團"},
+  {cat:"fb", name:"阿鷹愛聽書", url:"https://www.facebook.com/groups/572834443164141/", desc:"英文有聲書社群，交流Audible資源、優惠與使用技巧。", badge:"社團"},
+  {cat:"fb", name:"電子閱讀討論區", url:"https://www.facebook.com/groups/ereadingclub/", desc:"各廠牌電子書閱讀器資訊、技巧與開箱心得，互動非常活絡。", badge:"社團"},
+
+  // ---- 個人部落格 ----
+  {cat:"blog", name:"Gatesnotes", url:"https://www.gatesnotes.com/Books", desc:"比爾．蓋茲的部落格，年度選書常被媒體引用，選書眼光獨到。"},
+  {cat:"blog", name:"Ryan Holiday", url:"https://ryanholiday.net/reading-list/", desc:"暢銷書作者，個人成長與行銷主題，鑽研斯多葛哲學。"},
+  {cat:"blog", name:"Tim Ferriss", url:"https://tim.blog/category/tim-ferriss-book-club/", desc:"《人生勝利聖經》作者，經常分享讀過的好書與訪談中聽到的推薦書單。"},
+  {cat:"blog", name:"綠角財經筆記", url:"https://greenhornfinancefootnote.blogspot.com/", desc:"投資理財經典書評啟蒙站，財經類分類累積超過480篇文章。"},
+  {cat:"blog", name:"蔡依澄的閱讀筆記", url:"https://i-chentsai.innovarad.tw/2013/01/reading.html", desc:"醫師觀點書評，歷史類書籍推薦豐富，視角獨特。"},
+  {cat:"blog", name:"學習長阿康閱讀筆記", url:"https://www.readtodie.com/", desc:"電商行銷背景出發，個人成長、職場策略、學習方法為主題。"},
+  {cat:"blog", name:"劉奕酉 – 職人簡報與商業思維", url:"https://medium.com/%E8%81%B7%E4%BA%BA%E7%B0%A1%E5%A0%B1%E8%88%87%E5%95%86%E6%A5%AD%E6%80%9D%E7%B6%AD", desc:"職場與商業思維書籍，書評常附「全息圖」一眼綜覽核心精華。"},
+  {cat:"blog", name:"Zen大的敦南新生活", url:"https://zen1976.com/category/%e6%9b%b8%e8%a8%8a%e8%88%87%e6%9b%b8%e8%a9%95/", desc:"年讀五百本書，累計655篇書評文章，對閱讀與寫作見解深刻。"},
+  {cat:"blog", name:"JAFF 比投資更重要的投資", url:"https://vocus.cc/user/@jaffbuda", desc:"投資理財書籍心得為主，購書回饋金捐贈公益機構的實踐者。"},
+  {cat:"blog", name:"姆斯的閱讀空間", url:"https://vocus.cc/maxjamesread/home", desc:"新銳書評作者，「2020年做得最好的決定就是開始寫讀書心得並公開發表」。"},
+  {cat:"blog", name:"閱讀前哨站", url:"https://readingoutpost.com/", desc:"站長 Waki 瓦基，每週分享閱讀筆記與讀後心得，另有 Podcast「下一本讀什麼？」。"},
+];
+
+const CATS = [
+  {key:"tw",   label:"台灣書評網站", icon:"📚"},
+  {key:"dl",   label:"書下載網站",   icon:"📥"},
+  {key:"intl", label:"國外書評網站", icon:"🌍"},
+  {key:"yt",   label:"Youtube說書頻道", icon:"▶"},
+  {key:"fb",   label:"FB粉專與社團", icon:"👥"},
+  {key:"blog", label:"個人部落格分享", icon:"✍"},
+];
+
+const tabBar = document.getElementById('tabBar');
+const main = document.getElementById('main');
+const searchInput = document.getElementById('searchInput');
+const emptyState = document.getElementById('emptyState');
+document.getElementById('stat-total').textContent = DATA.length;
+
+// inject category tabs before the search box
+const searchBox = tabBar.querySelector('.search-box');
+CATS.forEach(c => {
+  const btn = document.createElement('button');
+  btn.className = 'tab';
+  btn.dataset.cat = c.key;
+  btn.textContent = `${c.icon} ${c.label}`;
+  tabBar.insertBefore(btn, searchBox);
+});
+
+function buildSections(){
+  main.innerHTML = '';
+  CATS.forEach((c, i) => {
+    const items = DATA.filter(d => d.cat === c.key);
+    const section = document.createElement('section');
+    section.className = 'section';
+    section.id = 'sec-' + c.key;
+    section.innerHTML = `
+      <div class="section-head">
+        <span class="num">${String(i+1).padStart(2,'0')}</span>
+        <h2>${c.icon} ${c.label}</h2>
+        <span class="count">${items.length} 個</span>
+      </div>
+      <div class="grid" data-cat="${c.key}"></div>
+    `;
+    main.appendChild(section);
+    const grid = section.querySelector('.grid');
+    items.forEach(item => grid.appendChild(makeCard(item)));
+  });
+}
+
+function makeCard(item){
+  const card = document.createElement('a');
+  card.className = 'card';
+  card.href = item.url;
+  card.target = '_blank';
+  card.rel = 'noopener';
+  card.dataset.name = item.name.toLowerCase();
+  card.dataset.desc = item.desc.toLowerCase();
+  const badgeClass = item.badge === '付費' ? 'paid' : (item.badge === '社團' ? 'group' : '');
+  card.innerHTML = `
+    <div class="card-top">
+      <h3><span>${item.name}</span></h3>
+      ${item.badge ? `<span class="badge ${badgeClass}">${item.badge}</span>` : ''}
+    </div>
+    <p>${item.desc}</p>
+    <span class="go">前往看看</span>
+  `;
+  return card;
+}
+
+buildSections();
+
+// tab filter
+tabBar.addEventListener('click', (e) => {
+  const btn = e.target.closest('.tab');
+  if(!btn) return;
+  tabBar.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const cat = btn.dataset.cat;
+  document.querySelectorAll('.section').forEach(sec => {
+    sec.style.display = (cat === 'all' || sec.id === 'sec-' + cat) ? '' : 'none';
+  });
+  if(cat !== 'all'){
+    document.getElementById('sec-' + cat).scrollIntoView({behavior:'smooth', block:'start'});
+  }
+});
+
+// search filter
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  let anyVisible = false;
+  document.querySelectorAll('.section').forEach(sec => sec.style.display = '');
+  tabBar.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tabBar.querySelector('.tab[data-cat="all"]').classList.add('active');
+
+  document.querySelectorAll('.card').forEach(card => {
+    const match = !q || card.dataset.name.includes(q) || card.dataset.desc.includes(q);
+    card.style.display = match ? '' : 'none';
+    if(match) anyVisible = true;
+  });
+  document.querySelectorAll('.section').forEach(sec => {
+    const visibleCards = sec.querySelectorAll('.card:not([style*="display: none"])').length;
+    sec.style.display = visibleCards === 0 ? 'none' : '';
+  });
+  emptyState.style.display = anyVisible ? 'none' : 'block';
+});
+</script>
+</body>
+</html>
