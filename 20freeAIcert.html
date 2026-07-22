@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20個免費國際 AI 證照與課程導覽表</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-accent: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --badge-quick: #dbeafe;
+            --badge-quick-text: #1e40af;
+            --badge-system: #dcfce7;
+            --badge-system-text: #166534;
+            --badge-tech: #f3e8ff;
+            --badge-tech-text: #6b21a8;
+            --badge-biz: #ffedd5;
+            --badge-biz-text: #9a3412;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1.25rem 0;
+            color: var(--primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .category-title .tag {
+            font-size: 0.85rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            margin-left: 0.75rem;
+            font-weight: 600;
+        }
+
+        .tag-quick { background: var(--badge-quick); color: var(--badge-quick-text); }
+        .tag-system { background: var(--badge-system); color: var(--badge-system-text); }
+        .tag-tech { background: var(--badge-tech); color: var(--badge-tech-text); }
+        .tag-biz { background: var(--badge-biz); color: var(--badge-biz-text); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-num {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-accent);
+            background: #eff6ff;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .card-provider {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .card-desc {
+            font-size: 0.92rem;
+            color: #475569;
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.65rem 1rem;
+            background-color: var(--primary-accent);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-link:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-link svg {
+            width: 16px;
+            height: 16px;
+            margin-left: 6px;
+            fill: currentColor;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 640px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 1rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>20 個免費國際 AI 證照與學習地圖</h1>
+        <p>提升競爭力・掌握 AI 趨勢・直接連結至官方課程頁面</p>
+    </header>
+
+    <!-- SECTION 1 -->
+    <div class="category-title">
+        ⚡ 極速入門 (15分鐘 ~ 1小時)
+        <span class="tag tag-quick">快速取證</span>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">01</span>
+                    <span class="card-provider">Google Cloud</span>
+                </div>
+                <div class="card-title">Introduction to Generative AI</div>
+                <div class="card-desc">理解 GenAI 與傳統機器學習（ML）的本質差異，學習生成式 AI 的基礎架構與應用場景。</div>
+                <div class="card-meta">⏱️ 約 45 分鐘 | 🎓 官方 Skill Badge</div>
+            </div>
+            <a href="https://www.cloudskillsboost.google/course_templates/536" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">02</span>
+                    <span class="card-provider">Google Cloud</span>
+                </div>
+                <div class="card-title">Intro to Large Language Models</div>
+                <div class="card-desc">拆解大型語言模型（LLM）的基本原理，介紹 Prompt Tuning 及 Google 的 LLM 開發工具。</div>
+                <div class="card-meta">⏱️ 約 45 分鐘 | 🎓 官方 Skill Badge</div>
+            </div>
+            <a href="https://www.cloudskillsboost.google/course_templates/539" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">03</span>
+                    <span class="card-provider">Google Cloud</span>
+                </div>
+                <div class="card-title">Intro to Responsible AI</div>
+                <div class="card-desc">了解 Google 的 7 大負責任 AI 倫理原則，學習企業在落地 AI 技術時的風險評估與控管。</div>
+                <div class="card-meta">⏱️ 約 45 分鐘 | 🎓 官方 Skill Badge</div>
+            </div>
+            <a href="https://www.cloudskillsboost.google/course_templates/554" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">04</span>
+                    <span class="card-provider">AWS Skill Builder</span>
+                </div>
+                <div class="card-title">Fundamentals of ML and AI</div>
+                <div class="card-desc">一站式釐清 AI、機器學習、深度學習與生成式 AI 的關聯性，建立基本的技術視角。</div>
+                <div class="card-meta">⏱️ 約 1 小時 | 🎓 AWS 完課證明</div>
+            </div>
+            <a href="https://explore.skillbuilder.aws/learn/course/external/view/elearning/17557/fundamentals-of-machine-learning-and-artificial-intelligence" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="category-title">
+        📚 系統性學習 (1 ~ 20小時)
+        <span class="tag tag-system">架構建置</span>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">05</span>
+                    <span class="card-provider">IBM SkillsBuild</span>
+                </div>
+                <div class="card-title">Artificial Intelligence Fundamentals</div>
+                <div class="card-desc">系統化介紹機器學習、深度學習、自然語言處理（NLP）及 AI 倫理實務概念。</div>
+                <div class="card-meta">⏱️ 10 - 20 小時 | 🎓 Credly 國際徽章</div>
+            </div>
+            <a href="https://skillsbuild.org/students/course-catalog/artificial-intelligence-fundamentals" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">06</span>
+                    <span class="card-provider">IBM SkillsBuild</span>
+                </div>
+                <div class="card-title">Generative AI in Action</div>
+                <div class="card-desc">深入探討生成式 AI 的工作原理、Prompt 工程技巧與企業實務應用案例。</div>
+                <div class="card-meta">⏱️ 約 10 小時 | 🎓 Credly 國際徽章</div>
+            </div>
+            <a href="https://skillsbuild.org/" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">07</span>
+                    <span class="card-provider">AWS Skill Builder</span>
+                </div>
+                <div class="card-title">Introduction to Generative AI</div>
+                <div class="card-desc">介紹 Foundation Models、生成式 AI 應用案例以及使用 AWS 服務（如 Amazon Bedrock）進行開發的概念。</div>
+                <div class="card-meta">⏱️ 數小時 | 🎓 AWS 完成證明</div>
+            </div>
+            <a href="https://explore.skillbuilder.aws/learn/course/external/view/elearning/15223/introduction-to-generative-ai-art-of-the-possible" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">08</span>
+                    <span class="card-provider">AWS Skill Builder</span>
+                </div>
+                <div class="card-title">Machine Learning Foundations</div>
+                <div class="card-desc">涵蓋機器學習生命週期、資料準備、特徵工程與模型建置的基本概念。</div>
+                <div class="card-meta">⏱️ 數小時 | 🎓 AWS 完成證明</div>
+            </div>
+            <a href="https://explore.skillbuilder.aws/learn/course/external/view/elearning/13936/aws-educate-machine-learning-foundations" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">09</span>
+                    <span class="card-provider">Microsoft x LinkedIn</span>
+                </div>
+                <div class="card-title">Career Essentials in Generative AI</div>
+                <div class="card-desc">職場認可度極高！結合生成式 AI 基礎、Copilot 實戰、搜尋引擎演進與職場責任倫理。</div>
+                <div class="card-meta">⏱️ 約 4 小時 | 🎓 聯名職業證書</div>
+            </div>
+            <a href="https://www.linkedin.com/learning/paths/career-essentials-in-generative-ai-by-microsoft-and-linkedin" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">10</span>
+                    <span class="card-provider">Microsoft Learn</span>
+                </div>
+                <div class="card-title">Azure AI Fundamentals (AI-900)</div>
+                <div class="card-desc">探索機器學習、電腦視覺、NLP 與 Azure OpenAI 服務之微軟官方學習路徑。</div>
+                <div class="card-meta">⏱️ 5 - 10 小時 | 🎓 MS Learn 完成徽章</div>
+            </div>
+            <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="category-title">
+        🛠️ 技術/工程人員向
+        <span class="tag tag-tech">程式開發</span>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">11</span>
+                    <span class="card-provider">Hugging Face</span>
+                </div>
+                <div class="card-title">Hugging Face NLP Course</div>
+                <div class="card-desc">業界權威！深入自然語言處理、Transformers 模型架構、Datasets 與 Hub 技術實作。</div>
+                <div class="card-meta">⏱️ 自定進度 | 🎓 開源社群認可</div>
+            </div>
+            <a href="https://huggingface.co/learn/nlp-course/chapter1/1" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">12</span>
+                    <span class="card-provider">Anthropic</span>
+                </div>
+                <div class="card-title">Anthropic Interactive Courses</div>
+                <div class="card-desc">學習 Claude API 串接、提示工程（Prompt Engineering）與進階 Model Context Protocol (MCP)。</div>
+                <div class="card-meta">⏱️ 自定進度 | 🎓 GitHub 官方教材</div>
+            </div>
+            <a href="https://github.com/anthropics/courses" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">13</span>
+                    <span class="card-provider">Kaggle (Google)</span>
+                </div>
+                <div class="card-title">Intro to Machine Learning</div>
+                <div class="card-desc">高強度實戰！使用 Python (Pandas, Scikit-learn) 建立、評估並優化機器學習模型。</div>
+                <div class="card-meta">⏱️ 約 3 小時 | 🎓 Kaggle 官方證書</div>
+            </div>
+            <a href="https://www.kaggle.com/learn/intro-to-machine-learning" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">14</span>
+                    <span class="card-provider">Kaggle (Google)</span>
+                </div>
+                <div class="card-title">Intro to AI Ethics</div>
+                <div class="card-desc">以程式視角探討演算法偏見（Bias）、公平性指標與模型可解釋性（XAI）案例。</div>
+                <div class="card-meta">⏱️ 約 3 小時 | 🎓 Kaggle 官方證書</div>
+            </div>
+            <a href="https://www.kaggle.com/learn/intro-to-ai-ethics" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">15</span>
+                    <span class="card-provider">freeCodeCamp</span>
+                </div>
+                <div class="card-title">Machine Learning with Python</div>
+                <div class="card-desc">包含 TensorFlow、神經網路、自然語言處理與強化學習，完成 5 個實作專案領證。</div>
+                <div class="card-meta">⏱️ 數十小時 | 🎓 數位工程認證</div>
+            </div>
+            <a href="https://www.freecodecamp.org/learn/machine-learning-with-python/" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="category-title">
+        💼 商業/職場應用向
+        <span class="tag tag-biz">跨界實務</span>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">16</span>
+                    <span class="card-provider">HP LIFE</span>
+                </div>
+                <div class="card-title">AI for Beginners</div>
+                <div class="card-desc">由 HP 基金會提供，介紹生成式 AI、機器學習與 LLM 的基本概念及職業倫理。</div>
+                <div class="card-meta">⏱️ 數小時 | 🎓 HP LIFE 官方證明</div>
+            </div>
+            <a href="https://www.life-global.org/courses/ai-for-beginners" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">17</span>
+                    <span class="card-provider">HP LIFE</span>
+                </div>
+                <div class="card-title">AI for Business</div>
+                <div class="card-desc">聚焦 AI 在職場營運、生產力提升、行銷與商業決策優化上的實務應用。</div>
+                <div class="card-meta">⏱️ 數小時 | 🎓 HP LIFE 官方證明</div>
+            </div>
+            <a href="https://www.life-global.org/" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">18</span>
+                    <span class="card-provider">Salesforce Trailhead</span>
+                </div>
+                <div class="card-title">Get Started with AI</div>
+                <div class="card-desc">學習 AI 在 CRM、客戶體驗與商業領域的應用（如 Einstein AI），建立企業 AI 策略概念。</div>
+                <div class="card-meta">⏱️ 2 - 3 小時 | 🎓 Trailhead Badges</div>
+            </div>
+            <a href="https://trailhead.salesforce.com/content/learn/modules/get_started_with_artificial_intelligence" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">19</span>
+                    <span class="card-provider">赫爾辛基大學</span>
+                </div>
+                <div class="card-title">Elements of AI</div>
+                <div class="card-desc">歐洲最經典的免費 AI 通識課程！無需程式背景，兼具學術嚴謹度與易懂的邏輯說明。</div>
+                <div class="card-meta">⏱️ 約 30 小時 | 🎓 大學官方 E-Certificate</div>
+            </div>
+            <a href="https://www.elementsofai.com/" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="card-num">20</span>
+                    <span class="card-provider">台灣經濟部 / 數發部</span>
+                </div>
+                <div class="card-title">產業 AI 人才培訓專班</div>
+                <div class="card-desc">針對國內產業轉型，提供生成式 AI 工具應用、產業落地實戰與政府補助學習資源。</div>
+                <div class="card-meta">⏱️ 依課程而定 | 🎓 政府法人培訓證書</div>
+            </div>
+            <a href="https://aitrain.org.tw/" target="_blank" rel="noopener" class="btn-link">
+                前往課程連結
+                <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>💡 提示：點擊按鈕即可直接開啟該課程的官方學習頁面。大部分平台註冊免費帳號後即可直接開始學習與領證。</p>
+    </footer>
+</div>
+
+</body>
+</html>
