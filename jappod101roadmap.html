@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JapanesePod101 Complete Video Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .active-tab {
+            border-bottom: 3px solid #ef4444;
+            color: #ef4444;
+            font-weight: 600;
+        }
+        .completed-item {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-red-500 flex items-center gap-2">
+                    🇯🇵 JapanesePod101 Master Hub
+                </h1>
+                <p class="text-xs text-slate-400">Complete URL Collection with Interactive Progress Tracking</p>
+            </div>
+            
+            <!-- Global Search -->
+            <div class="w-full md:w-96">
+                <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="Search all lessons, kanji, topics..." 
+                       class="w-full px-4 py-2 rounded-lg bg-slate-800 text-slate-100 placeholder-slate-400 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm">
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-slate-800 border-t border-slate-700">
+            <div class="max-w-7xl mx-auto px-4 flex space-x-6 overflow-x-auto text-sm text-slate-300">
+                <button onclick="switchTab('all')" id="tab-all" class="py-3 px-1 whitespace-nowrap active-tab">All Lessons</button>
+                <button onclick="switchTab('kana')" id="tab-kana" class="py-3 px-1 whitespace-nowrap">Hiragana & Alphabet</button>
+                <button onclick="switchTab('kanji')" id="tab-kanji" class="py-3 px-1 whitespace-nowrap">Kanji Lessons</button>
+                <button onclick="switchTab('speaking')" id="tab-speaking" class="py-3 px-1 whitespace-nowrap">Speaking Practice</button>
+                <button onclick="switchTab('listening')" id="tab-listening" class="py-3 px-1 whitespace-nowrap">Listening & Reading</button>
+                <button onclick="switchTab('vocab')" id="tab-vocab" class="py-3 px-1 whitespace-nowrap">Vocab & Quizzes</button>
+                <button onclick="switchTab('monthly')" id="tab-monthly" class="py-3 px-1 whitespace-nowrap">Monthly Digests</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Video Player Sidebar -->
+        <div class="lg:col-span-5 order-first lg:order-last">
+            <div class="sticky top-32 bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Video Player</h2>
+                <div class="relative w-full aspect-video bg-slate-900 rounded-lg overflow-hidden mb-3">
+                    <iframe id="videoPlayer" class="w-full h-full" src="https://www.youtube.com/embed/-HXUN6nLQxo" 
+                            title="YouTube video player" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+                <h3 id="currentVideoTitle" class="font-medium text-slate-900 text-sm line-clamp-2">Here’s how you learn over 1500 Japanese words easily</h3>
+            </div>
+        </div>
+
+        <!-- Lessons Feed -->
+        <div class="lg:col-span-7">
+            <div id="lessonContainer" class="space-y-3">
+                <!-- Javascript will render all videos here -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const lessons = [
+            // Alphabet & Hiragana
+            { title: "Learn the Japanese Alphabet in 1 Hour or Less!", category: "kana", url: "https://www.youtube.com/watch?v=zwNOBSdxH1s", id: "zwNOBSdxH1s" },
+            { title: "Free 7-Day Challenge Learn to Read & Write Hiragana in 7 Days", category: "kana", url: "https://www.youtube.com/watch?v=TE9oEOEcwQQ", id: "TE9oEOEcwQQ" },
+            { title: "How to Read and Write Hiragana Alphabet | びゃ びゅ びょ ぴゃ ぴゅ ぴょ", category: "kana", url: "https://www.youtube.com/watch?v=vpdSfZa12mI", id: "vpdSfZa12mI" },
+            { title: "Can You Read and Write Hiragana Alphabet? | びゃ びゅ びょ ぴゃ ぴゅ ぴょ Quiz Review", category: "kana", url: "https://www.youtube.com/watch?v=pif34U0O9QI", id: "pif34U0O9QI" },
+            { title: "How to Read and Write Hiragana Alphabet | じゃ じゅ じょ ぢゃ ぢょ", category: "kana", url: "https://www.youtube.com/watch?v=yHaE3S6oSZI", id: "yHaE3S6oSZI" },
+            { title: "Can You Read and Write Hiragana Alphabet? | じゃ じゅ じょ ぢゃ ぢょ Quiz Review", category: "kana", url: "https://www.youtube.com/watch?v=cK_dGvHqZ0c", id: "cK_dGvHqZ0c" },
+            { title: "How to Read and Write Hiragana Alphabet | りゃ りゅ りょ ぎゃ ぎゅ ぎょ", category: "kana", url: "https://www.youtube.com/watch?v=YB0oSOpwxhI", id: "YB0oSOpwxhI" },
+            { title: "Can You Read and Write Hiragana Alphabet? | りゃ りゅ りょ ぎゃ ぎゅ ぎょ Quiz Review", category: "kana", url: "https://www.youtube.com/watch?v=Jb19G8pZ77w", id: "Jb19G8pZ77w" },
+            { title: "How to Read and Write Hiragana Alphabet | ひゃ ひゅ ひょ みゃ みょ", category: "kana", url: "https://www.youtube.com/watch?v=aZVsiVGyxqI", id: "aZVsiVGyxqI" },
+            { title: "Can You Read and Write Hiragana Alphabet? | ひゃ ひゅ ひょ みゃ みょ Quiz Review", category: "kana", url: "https://www.youtube.com/watch?v=2n6416Y-tVs", id: "2n6416Y-tVs" },
+            { title: "How to Read and Write Hiragana Alphabet | ちゃ ちゅ ちょ にゃ にゅ にょ", category: "kana", url: "https://www.youtube.com/watch?v=kihYjNsrIf0", id: "kihYjNsrIf0" },
+            { title: "Can You Read and Write Hiragana Alphabet? | ちゃ ちゅ ちょ にゃ にゅ にょ Quiz Review", category: "kana", url: "https://www.youtube.com/watch?v=Kz6lS9mNUpU", id: "Kz6lS9mNUpU" },
+            { title: "How to Read and Write Hiragana Alphabet | きゃ きゅ きょ しゃ しゅ しょ", category: "kana", url: "https://www.youtube.com/watch?v=vCpf-y0wNCQ", id: "vCpf-y0wNCQ" },
+            { title: "Can You Read and Write Hiragana Alphabet? | きゃ きゅ きょ しゃ しゅ しょ Quiz Review", category: "kana", url: "https://www.youtube.com/watch?v=zR1KzS3yV40", id: "zR1KzS3yV40" },
+            { title: "How to Read and Write Hiragana Alphabet | ぱ ぴ ぷ ぺ ぽ", category: "kana", url: "https://www.youtube.com/watch?v=k8Zvde-4_cw", id: "k8Zvde-4_cw" },
+            { title: "Can You Read and Write Hiragana Alphabet? | ぱ ぴ ぷ ぺ ぽ Quiz Review", category: "kana", url: "https://www.youtube.com/watch?v=2sDbgGg1lIs", id: "2sDbgGg1lIs" },
+            { title: "Stop Making These Japanese Pronunciation Mistakes!", category: "kana", url: "https://www.youtube.com/watch?v=fruD9ASvqHE", id: "fruD9ASvqHE" },
+            { title: "48 Basic Japanese Phrases for ALL Situations", category: "kana", url: "https://www.youtube.com/watch?v=uPgJ2YlV1GE", id: "uPgJ2YlV1GE" },
+
+            // Kanji
+            { title: "Learn Japanese Kanji in 3 Minutes - 日 - Sun / Day", category: "kanji", url: "https://www.youtube.com/watch?v=rDtOoayH3Yw", id: "rDtOoayH3Yw" },
+            { title: "Learn Japanese Kanji in 3 Minutes - 水 - water", category: "kanji", url: "https://www.youtube.com/watch?v=tQfwvobzUT4", id: "tQfwvobzUT4" },
+            { title: "Learn Japanese Kanji in 3 Minutes - 火 - fire", category: "kanji", url: "https://www.youtube.com/watch?v=nU-y63f-WGY", id: "nU-y63f-WGY" },
+            { title: "Learn Japanese Kanji in 3 Minutes - 山 - mountain", category: "kanji", url: "https://www.youtube.com/watch?v=n-h0driK_hk", id: "n-h0driK_hk" },
+            { title: "Learn Japanese Kanji in 3 Minutes - 車 - car", category: "kanji", url: "https://www.youtube.com/watch?v=cdwzYGaqqK4", id: "cdwzYGaqqK4" },
+            { title: "Learn Japanese Kanji in 3 Minutes - 店 - shop", category: "kanji", url: "https://www.youtube.com/watch?v=cZY_1cYGfYY", id: "cZY_1cYGfYY" },
+            { title: "Learn Japanese Kanji in 3 Minutes - 電 - electricity", category: "kanji", url: "https://www.youtube.com/watch?v=5O8c52zWeDo", id: "5O8c52zWeDo" },
+            { title: "Learn Japanese Kanji in 3 Minutes - 気 - spirit / energy", category: "kanji", url: "https://www.youtube.com/watch?v=M054Nl6-MmU", id: "M054Nl6-MmU" },
+            { title: "Learn Japanese Kanji in 3 Minutes - 魚 - fish", category: "kanji", url: "https://www.youtube.com/watch?v=Dn7KV_IxRNY", id: "Dn7KV_IxRNY" },
+            { title: "Learn Japanese Kanji in 3 Minutes - 新 - new", category: "kanji", url: "https://www.youtube.com/watch?v=1Kwp8lMOFVM", id: "1Kwp8lMOFVM" },
+            { title: "Kanji That Build Real Japanese Words #1 – People & Body", category: "kanji", url: "https://www.youtube.com/watch?v=VCvgU0PjkoA", id: "VCvgU0PjkoA" },
+            { title: "Kanji That Build Real Japanese Words #2 – Travel", category: "kanji", url: "https://www.youtube.com/watch?v=VmxRW-lpe7Q", id: "VmxRW-lpe7Q" },
+            { title: "Kanji That Build Real Japanese Words #3 – Nature", category: "kanji", url: "https://www.youtube.com/watch?v=pbiEybtTVAA", id: "pbiEybtTVAA" },
+
+            // Speaking
+            { title: "Practice Giving Your Age in Japanese 🇯🇵", category: "speaking", url: "https://www.youtube.com/watch?v=phkeLM0KTB8", id: "phkeLM0KTB8" },
+            { title: "Practice Giving the Date in Japanese 🇯🇵", category: "speaking", url: "https://www.youtube.com/watch?v=atifN1bmq98", id: "atifN1bmq98" },
+            { title: "Practice Giving the Day of the Week in Japanese 🇯🇵", category: "speaking", url: "https://www.youtube.com/watch?v=2YZH-_QhyvU", id: "2YZH-_QhyvU" },
+            { title: "Practice Giving Time in Japanese 🇯🇵", category: "speaking", url: "https://www.youtube.com/watch?v=A8rFJ6wXLH0", id: "A8rFJ6wXLH0" },
+            { title: "Practice Discussing Language Abilities in Japanese 🇯🇵", category: "speaking", url: "https://www.youtube.com/watch?v=dLm3ygVn_0w", id: "dLm3ygVn_0w" },
+            { title: "5 Expressions you need in Japanese convenience stores", category: "speaking", url: "https://www.youtube.com/watch?v=55dDdgIkZFk", id: "55dDdgIkZFk" },
+            { title: "5 Expressions you need in Japanese farms", category: "speaking", url: "https://www.youtube.com/watch?v=r_pCMNB_GCY", id: "r_pCMNB_GCY" },
+            { title: "4 Ways to Answer : 'Where are you from' in Japanese", category: "speaking", url: "https://www.youtube.com/watch?v=albUNTJ8e14", id: "albUNTJ8e14" },
+
+            // Listening & Reading
+            { title: "Listening Practice for Japanese Beginners", category: "listening", url: "https://www.youtube.com/watch?v=3PGi0zPFuwk", id: "3PGi0zPFuwk" },
+            { title: "Can You Understand This Japanese Dialogue? 🇯🇵 (Supermarket Quiz)", category: "listening", url: "https://www.youtube.com/watch?v=v3Ti3fgCdaU", id: "v3Ti3fgCdaU" },
+            { title: "Learn Japanese 🇯🇵 Listening Comprehension - Movie Night Debate", category: "listening", url: "https://www.youtube.com/watch?v=FAAzQr5vAO4", id: "FAAzQr5vAO4" },
+            { title: "Learn Japanese 🇯🇵 Listening Comprehension - House Hunting in Japan", category: "listening", url: "https://www.youtube.com/watch?v=CoVl-kB_PHg", id: "CoVl-kB_PHg" },
+            { title: "Learn Japanese 🇯🇵 Listening Comprehension - The High-Stakes Shirt", category: "listening", url: "https://www.youtube.com/watch?v=6S7sZz5qZz0", id: "6S7sZz5qZz0" },
+            { title: "Learn Japanese 🇯🇵 Listening Comprehension - The Networking Elevator", category: "listening", url: "https://www.youtube.com/watch?v=3OdZumXN5NE", id: "3OdZumXN5NE" },
+            { title: "Japanese Reading Practice: Making Weekend Plans", category: "listening", url: "https://www.youtube.com/watch?v=CzFuzvZaQSI", id: "CzFuzvZaQSI" },
+            { title: "Japanese Reading Practice: Movie Night Plans", category: "listening", url: "https://www.youtube.com/watch?v=K0e1c8z96Mk", id: "K0e1c8z96Mk" },
+            { title: "Japanese Reading Practice: Choosing a Lunch Place", category: "listening", url: "https://www.youtube.com/watch?v=zFNiZmZdPxI", id: "zFNiZmZdPxI" },
+
+            // Core Vocab & Quizzes
+            { title: "Here’s how you learn over 1500 Japanese words easily", category: "vocab", url: "https://www.youtube.com/watch?v=-HXUN6nLQxo", id: "-HXUN6nLQxo" },
+            { title: "Next 100 of the Core 2000 Words – Build Real Japanese Vocabulary Fast!", category: "vocab", url: "https://www.youtube.com/watch?v=F-7Cge3f3G0", id: "F-7Cge3f3G0" },
+            { title: "600 Japanese Words You'll Use Every Day - Basic Vocabulary #100", category: "vocab", url: "https://www.youtube.com/watch?v=otB_wEay6ik", id: "otB_wEay6ik" },
+            { title: "Quiz | 600 Japanese Words You'll Use Every Day - Basic Vocabulary #100", category: "vocab", url: "https://www.youtube.com/watch?v=LQnwY80S22w", id: "LQnwY80S22w" },
+            { title: "590 Japanese Words You'll Use Every Day - Basic Vocabulary #99", category: "vocab", url: "https://www.youtube.com/watch?v=lhvjOjoNIPQ", id: "lhvjOjoNIPQ" },
+            { title: "Quiz | 590 Japanese Words You'll Use Every Day - Basic Vocabulary #99", category: "vocab", url: "https://www.youtube.com/watch?v=q0IdUn66bIA", id: "q0IdUn66bIA" },
+
+            // Monthly Digest
+            { title: "FREE Japanese Gifts of June 2026", category: "monthly", url: "https://www.youtube.com/watch?v=u5k8WZ2VAgY", id: "u5k8WZ2VAgY" },
+            { title: "Your Monthly Dose of Japanese - Best of April 2026", category: "monthly", url: "https://www.youtube.com/watch?v=vi_m2ekyK9o", id: "vi_m2ekyK9o" },
+            { title: "Your Monthly Dose of Japanese - Best of March 2026", category: "monthly", url: "https://www.youtube.com/watch?v=p2A-G3CJ3AU", id: "p2A-G3CJ3AU" },
+            { title: "Your Monthly Dose of Japanese - Best of February 2026", category: "monthly", url: "https://www.youtube.com/watch?v=vbivtTL3IaU", id: "vbivtTL3IaU" },
+            { title: "Your Monthly Dose of Japanese - Best of January 2026", category: "monthly", url: "https://www.youtube.com/watch?v=MffQi76lBwI", id: "MffQi76lBwI" },
+            { title: "Your Monthly Dose of Japanese - Best of November 2025", category: "monthly", url: "https://www.youtube.com/watch?v=GCMhfl3trlg", id: "GCMhfl3trlg" }
+        ];
+
+        let currentCategory = 'all';
+
+        function renderLessons() {
+            const container = document.getElementById('lessonContainer');
+            container.innerHTML = '';
+
+            const filtered = lessons.filter(lesson => {
+                return currentCategory === 'all' || lesson.category === currentCategory;
+            });
+
+            filtered.forEach((lesson) => {
+                const isCompleted = localStorage.getItem(`completed_${lesson.id}`) === 'true';
+                
+                const card = document.createElement('div');
+                card.className = `lesson-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between gap-4 hover:border-slate-300 transition ${isCompleted ? 'completed-item' : ''}`;
+                card.setAttribute('data-title', lesson.title.toLowerCase());
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <input type="checkbox" ${isCompleted ? 'checked' : ''} 
+                               onchange="toggleComplete('${lesson.id}', this)"
+                               class="w-5 h-5 rounded text-red-600 focus:ring-red-500 border-slate-300 cursor-pointer">
+                        <span class="text-sm font-medium text-slate-800 truncate cursor-pointer hover:text-red-600"
+                              onclick="playVideo('${lesson.id}', '${escapeQuotes(lesson.title)}')">
+                            ${lesson.title}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="playVideo('${lesson.id}', '${escapeQuotes(lesson.title)}')" 
+                                class="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 font-semibold text-xs rounded-lg transition">
+                            Play
+                        </button>
+                        <a href="${lesson.url}" target="_blank" rel="noopener noreferrer" 
+                           class="px-2 py-1.5 text-slate-400 hover:text-slate-600 text-xs font-mono" title="Open directly on YouTube">
+                            [Link]
+                        </a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function playVideo(videoId, title) {
+            document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            document.getElementById('currentVideoTitle').innerText = title;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleComplete(id, checkbox) {
+            localStorage.setItem(`completed_${id}`, checkbox.checked);
+            renderLessons();
+        }
+
+        function switchTab(category) {
+            currentCategory = category;
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active-tab'));
+            document.getElementById(`tab-${category}`).classList.add('active-tab');
+            renderLessons();
+        }
+
+        function filterItems() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.lesson-card').forEach(card => {
+                const title = card.getAttribute('data-title');
+                if (title.includes(query)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function escapeQuotes(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        // Initial render
+        renderLessons();
+    </script>
+</body>
+</html>
