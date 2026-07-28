@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人成長與底層思考力 - 學習路線圖</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-200">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
+                    <i class="fa-solid fa-brain mr-2"></i>認知提升與人生主導力路線圖
+                </h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">系統化 5 階段學習觀看指南 (共 84 部影片)</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="themeToggle" class="p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:inline"></i>
+                </button>
+                <button id="resetProgress" class="px-3 py-2 text-xs text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 transition">
+                    <i class="fa-solid fa-rotate-right mr-1"></i>重置進度
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="max-w-6xl mx-auto px-4 pb-3">
+            <div class="flex justify-between items-center text-xs font-semibold mb-1 text-gray-600 dark:text-gray-400">
+                <span>整體觀看進度</span>
+                <span id="progressPercent">0% (0/84)</span>
+            </div>
+            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5 overflow-hidden">
+                <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+
+        <!-- Stage Filter Tabs -->
+        <div class="flex overflow-x-auto gap-2 mb-8 pb-2 scrollbar-none text-sm font-medium">
+            <button class="filter-btn active px-4 py-2 rounded-xl bg-blue-600 text-white whitespace-nowrap shadow-sm" data-stage="all">全部階段</button>
+            <button class="filter-btn px-4 py-2 rounded-xl bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 whitespace-nowrap" data-stage="1">階段一：築基除障</button>
+            <button class="filter-btn px-4 py-2 rounded-xl bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 whitespace-nowrap" data-stage="2">階段二：底層認知</button>
+            <button class="filter-btn px-4 py-2 rounded-xl bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 whitespace-nowrap" data-stage="3">階段三：哲學反脆弱</button>
+            <button class="filter-btn px-4 py-2 rounded-xl bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 whitespace-nowrap" data-stage="4">階段四：社交與博弈</button>
+            <button class="filter-btn px-4 py-2 rounded-xl bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 whitespace-nowrap" data-stage="5">階段五：理財與健康</button>
+        </div>
+
+        <!-- STAGE 1 -->
+        <section class="stage-block mb-10" data-stage="1">
+            <div class="mb-4 p-4 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30">
+                <h2 class="text-lg font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs">01</span>
+                    階段一：築基除障（清理內耗、重奪人生主導權）
+                </h2>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">目標：先幫大腦「減負」，停止無謂心理內耗，將注意力收返去自己身上（我本位），先有空間吸收新知識。</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v1">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">停止令你內耗的思維陷阱，《照顧好自己就好: 61個解放心靈的技巧》教你放過自己，降低90%壓力</span>
+                        <a href="https://www.youtube.com/watch?v=08LfdXjLiNQ" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v2">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">如何用「我本位」思考術，重奪人生主導權，活出真正的自我價值</span>
+                        <a href="https://www.youtube.com/watch?v=0_oNbOhKqQ0" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v3">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">一本令你立即從愁困中解脫的書《The Let Them Theory》，實用的心理應用指南，絕非雞湯咁簡單</span>
+                        <a href="https://www.youtube.com/watch?v=9TBEytdbkuE" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v4">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">別對每件事都有反應 2: 不執著的練習的落地實踐分享</span>
+                        <a href="https://www.youtube.com/watch?v=o9o0Gb8Mmq8" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v5">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">《別對每件事都有反應》的科學解釋及生活應用經驗分享</span>
+                        <a href="https://www.youtube.com/watch?v=pZwZ08ughSY" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v6">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">告別內耗，搵返內心嘅平靜。10個斯多葛哲學實用技巧，幫你消除生活上的焦慮。</span>
+                        <a href="https://www.youtube.com/watch?v=C1m3La4OUJk" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v7">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">3個小故事，說明斯多葛學派為何是人生處世的最強哲學</span>
+                        <a href="https://www.youtube.com/watch?v=G2dhxnA6L4A" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v8">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">4個小故事，分享：別太把別人當回事，活得從容自在的禪練習</span>
+                        <a href="https://www.youtube.com/watch?v=IykCQjUvwgg" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v9">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">11個提升「鈍感力」的心法，《你真的不必討好所有人》教你如何變得厚面皮，活得更豁達</span>
+                        <a href="https://www.youtube.com/watch?v=Co6pHWp5tQw" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v10">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">自責會毀掉你的人生！如何做到事事平常心，重獲內在平靜的4個小技巧</span>
+                        <a href="https://www.youtube.com/watch?v=Kn0KmjdAwDI" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v11">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">用科學角度解釋人的焦慮到底來自哪裡的3個小故事</span>
+                        <a href="https://www.youtube.com/watch?v=0k34jzC0X4U" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v12">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">暗黑小故事--只能活到25歲的女孩，用演化角度科學解釋為何人會有焦慮，為何冥想是擺脫焦慮的唯一方法！</span>
+                        <a href="https://www.youtube.com/watch?v=EAa_2X_4PDs" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v13">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">解鎖正向情緒！腦神經科學、心理學證實High Five方法有效減壓、啟發創意、提升自信！</span>
+                        <a href="https://www.youtube.com/watch?v=pmshc2Nvn5s" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="v14">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">用科學方法提升幸福感，10招促進血清素、催產素與多巴胺分泌</span>
+                        <a href="https://www.youtube.com/watch?v=31b9YjxzXtM" target="_blank" class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- STAGE 2 -->
+        <section class="stage-block mb-10" data-stage="2">
+            <div class="mb-4 p-4 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/30">
+                <h2 class="text-lg font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs">02</span>
+                    階段二：底層認知與大腦 Hack（升級思考框架與執行力）
+                </h2>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">目標：了解大腦運作機制，打破思維盲點，建立超強學習、決策與自律習慣。</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v15">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">麥肯錫精英教你如何建立強大的底層心智，《麥肯錫情緒處理法與菁英養成》讓你成為頂尖人才</span>
+                        <a href="https://www.youtube.com/watch?v=9wD6X960eoY" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v16">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">4個方法，結合心理學與哲學的現實應用，提升四種底層核心思考力</span>
+                        <a href="https://www.youtube.com/watch?v=IjRxgY-jqQk" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v17">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">教你點樣避開人類思考盲點！《康乃爾最經典的思考邏輯課》力數各種邏輯謬誤同思想陷阱</span>
+                        <a href="https://www.youtube.com/watch?v=c1HPL8KGY2Q" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v18">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">18個經典的邏輯謬誤，弄清楚後變得更聰明，解鎖你的智商上限</span>
+                        <a href="https://www.youtube.com/watch?v=AbTtmqx4Ejg" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v19">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">別再憑直覺做決策！這10個決策思維工具，讓你輕鬆作出最佳選擇</span>
+                        <a href="https://www.youtube.com/watch?v=gj4p7QBh_I8" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v20">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">掌握邏輯思考的方法，用3個思考框架，提升決策力與問題解決能力的實用指南</span>
+                        <a href="https://www.youtube.com/watch?v=r7jL-nuI_kg" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v21">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">要掌控人生，必須擁有系統思維！有通透的系統思維，就能在複雜的世界中遊刃有餘，獲得成功</span>
+                        <a href="https://www.youtube.com/watch?v=rPIWB_D8tNI" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v22">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">9個高層次思考方法，改變對世界的認知，解鎖新的成就</span>
+                        <a href="https://www.youtube.com/watch?v=D2krO-T5Xg0" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v23">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">7招提升思維層次，學懂如何轉一轉想法，便得到一切想要的</span>
+                        <a href="https://www.youtube.com/watch?v=QCY7sTbg-KE" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v24">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">10個逆向思維小故事，學習用另一角度看事物本質</span>
+                        <a href="https://www.youtube.com/watch?v=zOejGNMZoqA" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v25">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">10個故事秒懂如何Think Out of the Box，利用突破性思維解決生活上問題</span>
+                        <a href="https://www.youtube.com/watch?v=lmnXGT98SRs" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v26">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">7個日常生活做到的科學方法，Hack你的大腦，輕鬆做到「突破思維」</span>
+                        <a href="https://www.youtube.com/watch?v=VtX9A6Lvrqo" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v27">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">如何用數值化思維規劃和檢視你的人生</span>
+                        <a href="https://www.youtube.com/watch?v=5fgQAY_b6k4" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v28">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">如何破解大腦的取捨機制，勇於作出改變，建立自律的習慣</span>
+                        <a href="https://www.youtube.com/watch?v=5ICoXy5q4kg" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v29">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">一個中年大叔用《原子習慣》，挽救了一段婚姻</span>
+                        <a href="https://www.youtube.com/watch?v=cOOIIO21Z3Q" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v30">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">每日5個小習慣Hack你的大腦，啟動未開發的大腦潛能，讓你30日內強大一倍（腦神經科學證實）</span>
+                        <a href="https://www.youtube.com/watch?v=jz8u2V9xQVk" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v31">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">如何Hack你的大腦 令你變得專注</span>
+                        <a href="https://www.youtube.com/watch?v=bepGEtrcccw" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v32">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">如何巧妙運用多巴胺提升工作和學習動力，讓你超級專注，提升效率</span>
+                        <a href="https://www.youtube.com/watch?v=EcjNkStDuY4" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v33">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">《超速學習》：只要用對這9個方法，便可快速學懂任何東西</span>
+                        <a href="https://www.youtube.com/watch?v=93rsJtdE0y0" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v34">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">用這6個方法HACK你的大腦，就能快速學習任何東西</span>
+                        <a href="https://www.youtube.com/watch?v=DQCh9h_2Wvs" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v35">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">超強閱讀方法，享受知識複息效應，最少時間獲得最多學問</span>
+                        <a href="https://www.youtube.com/watch?v=rIFUokpdEhU" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v36">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">1個方法消滅拖延、恐懼、多疑，超越現時的自己。《The War of Art》教你擊敗內心阻力，邁向成功的超有效方法</span>
+                        <a href="https://www.youtube.com/watch?v=_Xd6_6n-PPw" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v37">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">為何你越努力越無法成功？5個故事解釋，白熊效應如何影響我們的工作和生活各方面</span>
+                        <a href="https://www.youtube.com/watch?v=PKL4hWR8-b8" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v38">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">讀了這本書，我成了羅志祥級別的時間管理大師</span>
+                        <a href="https://www.youtube.com/watch?v=CUaZhb7PZxA" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v39">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">【廣東話】總覺得自己沒有天賦？用這3個方法練習，任何事都能成功！《隱性潛能》讀後心得</span>
+                        <a href="https://www.youtube.com/watch?v=QxNkCo5pjq0" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v40">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">馬斯克成天才的5個思維模式，普通人都能逆襲成功</span>
+                        <a href="https://www.youtube.com/watch?v=jBEZOsifjYw" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" data-id="v41">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">就係呢5個隱性壞習慣阻礙你成功！改晒佢哋，你人生從此不一樣！</span>
+                        <a href="https://www.youtube.com/watch?v=3MQaCJnZChg" target="_blank" class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- STAGE 3 -->
+        <section class="stage-block mb-10" data-stage="3">
+            <div class="mb-4 p-4 rounded-xl bg-purple-50/50 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/30">
+                <h2 class="text-lg font-bold text-purple-600 dark:text-purple-400 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xs">03</span>
+                    階段三：哲學深造與心智反脆弱（應對隨機性、不安與人性）
+                </h2>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">目標：借用東西方哲學巨擘智慧，建構「反脆弱」心態，喺不確定嘅世界中獲得真正平靜。</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v42">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">看了這本書，我才知道自己原來一直被隨機性愚弄！《隨機騙局》這本書教會我的血淚教訓，讓我知道如何才能成功</span>
+                        <a href="https://www.youtube.com/watch?v=0MkDmCtRIQ8" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v43">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">3個令人心寒的暗黑小小故事，認識「反脆弱」理論，應對風險令自己更強大</span>
+                        <a href="https://www.youtube.com/watch?v=s5N5vYwX3vA" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v44">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">黑格爾哲學的人生應用！幫助我們提升思維層次，不再被矛盾和痛苦所困</span>
+                        <a href="https://www.youtube.com/watch?v=sFVH8eZ_Rfk" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v45">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">7個故事徹底看懂莊子的7大思維，可解決80%人生難題</span>
+                        <a href="https://www.youtube.com/watch?v=wYQyTGXP9PM" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v46">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">用古今中外的哲學解釋，如何像貓般過著自信、自由、自在的人生</span>
+                        <a href="https://www.youtube.com/watch?v=DLjOK962Vsw" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v47">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">透過5個小故事探討，尼采的哲學在當代如何應用</span>
+                        <a href="https://www.youtube.com/watch?v=F3-LgG1cv7U" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v48">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">叔本華哲學如何幫助我們找到真正的快樂和內心平靜？用3個小故事去解釋</span>
+                        <a href="https://www.youtube.com/watch?v=5uP80C9mejs" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v49">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">從孔子到康德，探討6個中西哲學家教我們如何找到真正的快樂</span>
+                        <a href="https://www.youtube.com/watch?v=IBnmgXNHp1g" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v50">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">俄國最具爭議的哲學家Fyodor Dostoevsky，為何其哲學被人推崇備至？一齊來認識他如何看待人性、孤獨、自由意志和生命的意義</span>
+                        <a href="https://www.youtube.com/watch?v=QznBVBnPlps" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v51">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">榮格心理學指南：卸下人格面具，學會擁抱真我與面對內心陰影</span>
+                        <a href="https://www.youtube.com/watch?v=J0jnm9mWbzU" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v52">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">一個暗黑小故事解釋 MBTI之父榮格認為我們可如何解決抑鬱</span>
+                        <a href="https://www.youtube.com/watch?v=H-63atv5op8" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v53">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">科學家證實「我」只是幻覺，自由意志並不存在，用3個小故事探討</span>
+                        <a href="https://www.youtube.com/watch?v=8YatWI6cjhg" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v54">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">3個小故事探討「不安」如何困擾現代人，如何減低對未知的憂慮</span>
+                        <a href="https://www.youtube.com/watch?v=SF3jvfZPOOI" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v55">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">「不安」是如何壓垮你的人生？哲學層面探討不安，用「離心生活」重奪內心平靜</span>
+                        <a href="https://www.youtube.com/watch?v=bUtcmDA9Ohg" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v56">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">3個小故事分享《你要如何衡量你的人生？》，哈佛商學院教授教你如何活出應該有的人生</span>
+                        <a href="https://www.youtube.com/watch?v=nirZK1i2Cc4" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-id="v57">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">李小龍12金句，要成為強者必定要讀，讀了就能在任何環境中變得強大</span>
+                        <a href="https://www.youtube.com/watch?v=iDKwnbS5dkM" target="_blank" class="text-purple-600 dark:text-purple-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- STAGE 4 -->
+        <section class="stage-block mb-10" data-stage="4">
+            <div class="mb-4 p-4 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/30">
+                <h2 class="text-lg font-bold text-amber-600 dark:text-amber-400 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xs">04</span>
+                    階段四：人際社交、溝通與博弈（處世與保護自己）
+                </h2>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">目標：看透社會底層運作規則，做到「演而不假」，既能維持真誠好人緣，又能防止被操控或消耗。</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v58">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">21條社會心理定律，看清世界的底層運作規則</span>
+                        <a href="https://www.youtube.com/watch?v=zGOdS0rz3i8" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v59">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">7個關於人際關係的社會學理論，學會看透人際關係的本質，讓你在社交中穩佔上風</span>
+                        <a href="https://www.youtube.com/watch?v=NFW_GdnEXS4" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v60">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">20個人性真相大揭秘！《人性博奕》20個人性實驗和研究，助你順人性成事，逆人性成長</span>
+                        <a href="https://www.youtube.com/watch?v=9bIqr452Lgk" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v61">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">社會學家教你6個「印象管理」技巧，保持真誠又好人緣，「演」不代表「假」</span>
+                        <a href="https://www.youtube.com/watch?v=jZJFUuwr_IY" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v62">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">7個心理駭客溝通術，完勝任何人際衝突，還令對方更喜歡你</span>
+                        <a href="https://www.youtube.com/watch?v=c5ndHw-7KMI" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v63">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">10個實用溝通技巧，用言語影響他人，改變對方決策，引導潛意識令你更具影響力</span>
+                        <a href="https://www.youtube.com/watch?v=S_m3jwUV_Kw" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v64">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">聊天過程中用這7個心理操縱技巧，便能讓對方覺得超「爽」</span>
+                        <a href="https://www.youtube.com/watch?v=ZrLiXarz-2A" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v65">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">不刻意討好人，但又能令別別人開心的10種科學方法</span>
+                        <a href="https://www.youtube.com/watch?v=fLxo_xhzZF0" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v66">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">9個科學證實的方法，控制你的潛意識，令你自卑時重拾自信</span>
+                        <a href="https://www.youtube.com/watch?v=d-yX2sWsIRw" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v67">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">只要用這5個方法，你就能讓人看起來自信滿滿，社恐i人都變魅力四射</span>
+                        <a href="https://www.youtube.com/watch?v=PQsi0y9egwE" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v68">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">高敏感人群的生存之道，用這4個方法能獲得巨大成就</span>
+                        <a href="https://www.youtube.com/watch?v=iFcDdXdKlIE" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v69">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">社交才是慢性消耗？科學解碼：為何獨處才是最高級的快樂？獨處時才能併發出創意？</span>
+                        <a href="https://www.youtube.com/watch?v=PUNZObQ5WwA" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v70">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">孤獨嘅最高境界：睇得通盧梭《一個孤獨漫步者的遐想》，你就睇通咗自己</span>
+                        <a href="https://www.youtube.com/watch?v=IvSDf31A4o4" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v71">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">看懂厚黑學經典《權力的48法則》，你就能在任何群體中游刃有餘</span>
+                        <a href="https://www.youtube.com/watch?v=xMyjFoUQ6IE" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v72">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">如何在每次博弈中勝出，10個出奇制勝，保護自己的博弈技巧</span>
+                        <a href="https://www.youtube.com/watch?v=1niBQvfRAPs" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v73">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">善用蜜獾效應，越不在乎，越會贏得一切</span>
+                        <a href="https://www.youtube.com/watch?v=PUwsxp4J9r4" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-id="v74">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">記憶絕不可靠，只要6個方法，很容易就能操縱別人的記憶！</span>
+                        <a href="https://www.youtube.com/watch?v=mE-G4fkXx_w" target="_blank" class="text-amber-600 dark:text-amber-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- STAGE 5 -->
+        <section class="stage-block mb-10" data-stage="5">
+            <div class="mb-4 p-4 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30">
+                <h2 class="text-lg font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs">05</span>
+                    階段五：財富本質、商業邏輯與身體管理（現實變現與長遠復利）
+                </h2>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">目標：理解商業運作、防割韭菜、建立長遠理財哲學，同時護養好身體呢個最重要嘅資產。</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v75">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">《錢是虛構的》，助你看清金錢的本質，掌控財富，不再被世間假象愚弄</span>
+                        <a href="https://www.youtube.com/watch?v=1eamkcrds1A" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v76">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">5個小故事，解釋金錢心理學，富人跟窮人看事物的角度不同，導致財富差距懸殊</span>
+                        <a href="https://www.youtube.com/watch?v=dyAMHdYgM00" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v77">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">《塔木德》蘊藏可怕的理財智慧，猶太人致富的原因全在書中！5個小故事讓你明白猶太人財富思維</span>
+                        <a href="https://www.youtube.com/watch?v=QlP7e2wCLH0" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v78">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">10個經常被商家用來割韮菜用的經濟學底層邏輯，顛覆你對商場的認知，從此不再被輕易愚弄</span>
+                        <a href="https://www.youtube.com/watch?v=XMplPK8Xa28" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v79">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">何解超市貨品越來越細件？商家透過巧妙包裝設計偷走你的錢</span>
+                        <a href="https://www.youtube.com/watch?v=BWgnHy7BRks" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v80">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">3個小故事，解釋通縮到底有什麼不好</span>
+                        <a href="https://www.youtube.com/watch?v=xVncA1W1Dz8" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v81">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">經歷無數失敗與遺憾之後，人到中年再翻看《窮查理的普通常識》時給我的15個啟發</span>
+                        <a href="https://www.youtube.com/watch?v=onLBlCu1D4Q" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v82">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">巴菲特最核心的人生哲學，不單止用於投資，學懂了在人生各方面都能有一番成就</span>
+                        <a href="https://www.youtube.com/watch?v=uM-P6TKyd8s" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v83">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">什麼是價值投資的底層邏輯？菲利普費雪智慧語錄讓你徹底了解！</span>
+                        <a href="https://www.youtube.com/watch?v=wW-AvwiZUgw" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v84">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">點解越窮越要定期定額投資？10個《持續買進》比我嘅insight，徹底改變我理財觀念嘅反直覺真相</span>
+                        <a href="https://www.youtube.com/watch?v=GgWrNkz2RAU" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v85">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">小投資者要大賺，不應炒炒賣賣，只要看清這一點，就能有驚人回報</span>
+                        <a href="https://www.youtube.com/watch?v=F44B01dn-AU" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v86">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">中國股市爆升的今日，小投資者應如何自處呢？聽聽這8個關於投資哲學的小故事，學習保持理性，用正確的態度面對投資市場</span>
+                        <a href="https://www.youtube.com/watch?v=MevfAlkM4kY" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v87">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">每月出多份糧！超高息債券ETF咁樣買，低風險自製被動收入</span>
+                        <a href="https://www.youtube.com/watch?v=fUUFfnfMkVs" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v88">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">用8個小故事，解釋投資ETF的缺點</span>
+                        <a href="https://www.youtube.com/watch?v=Y4ipfWhOrEM" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v89">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">《你快樂，所以你成功》：6個方法令你提升快樂力，人生更美滿，離成功更近</span>
+                        <a href="https://www.youtube.com/watch?v=Ty3uC7Z-tV4" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v90">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">Crocs的最深層秘密，一雙膠鞋靠操作大眾審美觀，建數十億鞋業王國</span>
+                        <a href="https://www.youtube.com/watch?v=9yBxl7qom-E" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v91">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">Prada與Gucci的百年豪門恩怨史，聯手LVMH競購Gucci，間接令Gucci黯然賣給開雲</span>
+                        <a href="https://www.youtube.com/watch?v=CPtEDQ7cf5Y" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v92">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">以為香港搵錢惠州退休好爽？隨時中伏極速返貧！退休要住得好，應該咁樣做！</span>
+                        <a href="https://www.youtube.com/watch?v=elinyxT901o" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v93">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">用最高效率休息，最短時間恢復體力和身心健康，提升專注力</span>
+                        <a href="https://www.youtube.com/watch?v=xHQExNm5CCs" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v94">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">正確地喝咖啡，健康提升！8個科學喝法別再喝錯</span>
+                        <a href="https://www.youtube.com/watch?v=szzCuSdDlW8" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+                <div class="video-card group">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition cursor-pointer">
+                        <input type="checkbox" class="video-check mt-1 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4" data-id="v95">
+                        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">水，你可能一直都飲錯！用呢10個正確飲水法，身體質素大幅提升，越活越後生！</span>
+                        <a href="https://www.youtube.com/watch?v=5mA4S3I2ww4" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> 播放</a>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-gray-800 py-6 text-center text-xs text-gray-500">
+        <p>系統化學習計畫 • 保持持續閱讀與認知反復利</p>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('.video-check');
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            const themeToggle = document.getElementById('themeToggle');
+            const resetBtn = document.getElementById('resetProgress');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const stageBlocks = document.querySelectorAll('.stage-block');
+
+            // 1. Dark Mode Persistence
+            if (localStorage.getItem('theme') === 'light') {
+                document.documentElement.classList.remove('dark');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+
+            // 2. Load Progress from LocalStorage
+            function updateProgress() {
+                const total = checkboxes.length;
+                let checkedCount = 0;
+
+                checkboxes.forEach(cb => {
+                    const id = cb.getAttribute('data-id');
+                    if (localStorage.getItem(id) === 'true') {
+                        cb.checked = true;
+                    }
+                    if (cb.checked) {
+                        checkedCount++;
+                    }
+                });
+
+                const percentage = Math.round((checkedCount / total) * 100);
+                progressBar.style.width = `${percentage}%`;
+                progressPercent.textContent = `${percentage}% (${checkedCount}/${total})`;
+            }
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    localStorage.setItem(id, e.target.checked);
+                    updateProgress();
+                });
+            });
+
+            // 3. Reset Progress
+            resetBtn.addEventListener('click', () => {
+                if (confirm('確定要重置所有影片的觀看紀錄嗎？')) {
+                    checkboxes.forEach(cb => {
+                        cb.checked = false;
+                        const id = cb.getAttribute('data-id');
+                        localStorage.removeItem(id);
+                    });
+                    updateProgress();
+                }
+            });
+
+            // 4. Stage Filtering Logic
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-blue-600', 'text-white');
+                        b.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-300');
+                    });
+
+                    btn.classList.add('active', 'bg-blue-600', 'text-white');
+                    btn.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-300');
+
+                    const targetStage = btn.getAttribute('data-stage');
+
+                    stageBlocks.forEach(block => {
+                        if (targetStage === 'all' || block.getAttribute('data-stage') === targetStage) {
+                            block.style.display = 'block';
+                        } else {
+                            block.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Initial run
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
