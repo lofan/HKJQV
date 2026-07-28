@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Checklist & Card Generator</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'Consolas', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts, Lucide Icons & FontAwesome for YouTube brand icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .code-syntax-keyword { color: #f472b6; }
+        .code-syntax-attr { color: #38bdf8; }
+        .code-syntax-string { color: #4ade80; }
+        .code-syntax-tag { color: #fb7185; }
+        .code-syntax-comment { color: #64748b; font-style: italic; }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans antialiased text-slate-200 bg-slate-950 overflow-x-hidden">
+
+    <!-- Navigation Header -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-red-600 to-blue-600 p-2.5 rounded-xl text-white shadow-lg shadow-blue-500/20">
+                    <i class="fa-brands fa-youtube text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-white flex items-center gap-2">
+                        YouTube Card HTML Generator
+                        <span class="text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full">Pro Studio</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Generate interactive checkbox YouTube video cards for websites & learning playlists</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="loadSampleData()" class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-1.5">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> Load Sample
+                </button>
+                <button onclick="clearAllItems()" class="text-xs px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-red-950/40 hover:text-red-400 text-slate-400 transition flex items-center gap-1.5">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear All
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- Generator Controls Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- Input & Configuration Side (5 Columns) -->
+            <div class="lg:col-span-5 space-y-5">
+                
+                <!-- Main URL Input Card -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl relative overflow-hidden">
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="plus-circle" class="w-4 h-4 text-blue-400"></i> Add YouTube Item
+                        </label>
+                        <div class="flex text-xs bg-slate-950 p-1 rounded-lg border border-slate-800">
+                            <button id="mode-single-btn" onclick="setMode('single')" class="px-2.5 py-1 rounded-md bg-blue-600 text-white font-medium transition">Single</button>
+                            <button id="mode-batch-btn" onclick="setMode('batch')" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition">Batch Import</button>
+                        </div>
+                    </div>
+
+                    <!-- Single Input Form -->
+                    <div id="single-input-container" class="space-y-3">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">YouTube URL</label>
+                            <div class="relative flex items-center">
+                                <i class="fa-brands fa-youtube text-red-500 absolute left-3"></i>
+                                <input type="text" id="input-url" placeholder="https://www.youtube.com/watch?v=..." 
+                                    value="https://www.youtube.com/watch?v=31b9YjxzXtM"
+                                    oninput="handleUrlInput()"
+                                    class="w-full bg-slate-950 border border-slate-700 focus:border-blue-500 text-slate-100 text-xs rounded-xl pl-9 pr-20 py-2.5 outline-none transition font-mono">
+                                <button onclick="pasteClipboard()" class="absolute right-1.5 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded-lg border border-slate-700 transition">
+                                    Paste
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="block text-xs text-slate-400">Video Title / Card Label</label>
+                                <button onclick="autoFetchTitle()" id="fetch-title-btn" class="text-[11px] text-blue-400 hover:underline flex items-center gap-1">
+                                    <i data-lucide="refresh-cw" class="w-3 h-3"></i> Fetch Title
+                                </button>
+                            </div>
+                            <input type="text" id="input-title" placeholder="e.g. 用科學方法提升幸福感..." 
+                                value="用科學方法提升幸福感，10招促進血清素、催產素與多巴胺分泌"
+                                class="w-full bg-slate-950 border border-slate-700 focus:border-blue-500 text-slate-100 text-xs rounded-xl px-3 py-2.5 outline-none transition">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Data ID (`data-id`)</label>
+                                <input type="text" id="input-id" value="v14" placeholder="v14" 
+                                    class="w-full bg-slate-950 border border-slate-700 focus:border-blue-500 text-slate-100 text-xs rounded-xl px-3 py-2 outline-none font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Play Link Text</label>
+                                <input type="text" id="input-play-text" value="播放" placeholder="播放 or Watch" 
+                                    class="w-full bg-slate-950 border border-slate-700 focus:border-blue-500 text-slate-100 text-xs rounded-xl px-3 py-2 outline-none">
+                            </div>
+                        </div>
+
+                        <button onclick="addCurrentItem()" class="w-full mt-2 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add to Video List
+                        </button>
+                    </div>
+
+                    <!-- Batch Input Form (Hidden by default) -->
+                    <div id="batch-input-container" class="space-y-3 hidden">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Paste Multiple Links or Video List (One per line or Title - URL)</label>
+                            <textarea id="batch-textarea" rows="6" placeholder="https://www.youtube.com/watch?v=31b9YjxzXtM
+用科學方法提升幸福感 - https://www.youtube.com/watch?v=31b9YjxzXtM
+https://youtu.be/dQw4w9WgXcQ"
+                                class="w-full bg-slate-950 border border-slate-700 focus:border-blue-500 text-slate-100 text-xs rounded-xl p-3 outline-none transition font-mono leading-relaxed"></textarea>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <div class="w-1/2">
+                                <label class="block text-xs text-slate-400 mb-1">ID Prefix</label>
+                                <input type="text" id="batch-id-prefix" value="v" placeholder="e.g. v" class="w-full bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-1.5 outline-none font-mono">
+                            </div>
+                            <div class="w-1/2">
+                                <label class="block text-xs text-slate-400 mb-1">Start Index</label>
+                                <input type="number" id="batch-id-start" value="1" min="1" class="w-full bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-1.5 outline-none font-mono">
+                            </div>
+                        </div>
+
+                        <button onclick="processBatchInput()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20">
+                            <i data-lucide="layers" class="w-4 h-4"></i> Process & Generate All Items
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Template Settings Card -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-4">
+                    <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="sliders" class="w-4 h-4 text-emerald-400"></i> HTML Customization Options
+                    </h2>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+                            <span class="text-xs text-slate-300">Wrap with Container Layout</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="opt-wrap-container" checked onchange="updateGeneratedOutput()" class="sr-only peer">
+                                <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+                            <span class="text-xs text-slate-300">Include FontAwesome CDN Script</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="opt-include-fa" checked onchange="updateGeneratedOutput()" class="sr-only peer">
+                                <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+                            <span class="text-xs text-slate-300">Target Blank (`target="_blank"`)</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="opt-target-blank" checked onchange="updateGeneratedOutput()" class="sr-only peer">
+                                <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items List Manager -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="list-todo" class="w-4 h-4 text-amber-400"></i> Video List (<span id="item-count-badge">1</span>)
+                        </h3>
+                        <span class="text-[11px] text-slate-500">Drag/reorder or delete</span>
+                    </div>
+
+                    <div id="items-list" class="space-y-2 max-h-52 overflow-y-auto pr-1">
+                        <!-- Dynamic Item Entries will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview & Code Output Side (7 Columns) -->
+            <div class="lg:col-span-7 space-y-6">
+
+                <!-- Tab Controls for Preview vs Code -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-2 flex items-center justify-between">
+                    <div class="flex gap-2">
+                        <button id="tab-preview-btn" onclick="switchTab('preview')" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold text-xs transition flex items-center gap-2 shadow-md shadow-blue-600/20">
+                            <i data-lucide="eye" class="w-4 h-4"></i> Interactive Preview
+                        </button>
+                        <button id="tab-code-btn" onclick="switchTab('code')" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-semibold text-xs transition flex items-center gap-2">
+                            <i data-lucide="code" class="w-4 h-4"></i> HTML Code
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2 pr-2">
+                        <!-- Dark/Light preview background toggle -->
+                        <div class="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
+                            <button onclick="setPreviewBg('dark')" id="bg-dark-btn" class="px-2 py-1 rounded bg-slate-800 text-slate-200">Dark</button>
+                            <button onclick="setPreviewBg('light')" id="bg-light-btn" class="px-2 py-1 rounded text-slate-400">Light</button>
+                        </div>
+
+                        <button onclick="copyGeneratedCode()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs rounded-lg transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy HTML
+                        </button>
+                        <button onclick="downloadHtmlFile()" class="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg transition" title="Download HTML File">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PREVIEW CONTAINER -->
+                <div id="preview-panel" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl min-h-[420px] flex flex-col justify-between transition-colors">
+                    <div>
+                        <div class="flex justify-between items-center pb-4 mb-4 border-b border-slate-800">
+                            <span class="text-xs font-semibold uppercase text-slate-400 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Live View Output
+                            </span>
+                            <span class="text-[11px] text-slate-500 font-mono">Tailwind CSS + FontAwesome</span>
+                        </div>
+
+                        <!-- Rendered Output Target -->
+                        <div id="live-render-target" class="space-y-3 p-4 rounded-xl border border-slate-800/60 transition-all">
+                            <!-- Injected HTML will be rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Usage Instructions Footer -->
+                    <div class="mt-6 pt-4 border-t border-slate-800/60 text-xs text-slate-500 flex items-center justify-between">
+                        <span><i data-lucide="info" class="w-3.5 h-3.5 inline text-blue-400 mr-1"></i> Checkboxes support line-through styling on active state.</span>
+                        <span class="font-mono text-[11px] text-slate-600">group-has-[:checked]</span>
+                    </div>
+                </div>
+
+                <!-- CODE OUTPUT CONTAINER -->
+                <div id="code-panel" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl min-h-[420px] hidden flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center pb-4 mb-3 border-b border-slate-800">
+                            <span class="text-xs font-semibold uppercase text-slate-400 flex items-center gap-2">
+                                <i data-lucide="file-code" class="w-4 h-4 text-blue-400"></i> Generated Code Snippet
+                            </span>
+                            <button onclick="copyGeneratedCode()" class="text-xs text-blue-400 hover:underline flex items-center gap-1">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy to Clipboard
+                            </button>
+                        </div>
+
+                        <div class="relative">
+                            <pre class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-200 overflow-x-auto border border-slate-800/80 leading-relaxed max-h-[360px]" id="code-text-block"><code><!-- HTML code snippet will be inserted here --></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+                        <span>Ready to paste directly into your website, blog, or project.</span>
+                        <span id="copy-toast" class="text-emerald-400 opacity-0 transition-opacity font-semibold">Copied!</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // State Management
+        let videoItems = [
+            {
+                id: 'v14',
+                title: '用科學方法提升幸福感，10招促進血清素、催產素與多巴胺分泌',
+                url: 'https://www.youtube.com/watch?v=31b9YjxzXtM',
+                playText: '播放'
+            }
+        ];
+
+        let activeTab = 'preview';
+        let previewBgMode = 'dark';
+        let currentMode = 'single';
+
+        // Initialization on Load
+        window.onload = function() {
+            lucide.createIcons();
+            renderItemsList();
+            updateGeneratedOutput();
+        };
+
+        // Switch Mode (Single vs Batch)
+        function setMode(mode) {
+            currentMode = mode;
+            const singleContainer = document.getElementById('single-input-container');
+            const batchContainer = document.getElementById('batch-input-container');
+            const singleBtn = document.getElementById('mode-single-btn');
+            const batchBtn = document.getElementById('mode-batch-btn');
+
+            if (mode === 'single') {
+                singleContainer.classList.remove('hidden');
+                batchContainer.classList.add('hidden');
+                singleBtn.className = 'px-2.5 py-1 rounded-md bg-blue-600 text-white font-medium transition';
+                batchBtn.className = 'px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition';
+            } else {
+                singleContainer.classList.add('hidden');
+                batchContainer.classList.remove('hidden');
+                batchBtn.className = 'px-2.5 py-1 rounded-md bg-blue-600 text-white font-medium transition';
+                singleBtn.className = 'px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition';
+            }
+        }
+
+        // Parse YouTube URL to extract Clean Standard URL & Video ID
+        function parseYouTubeUrl(urlStr) {
+            let cleanUrl = urlStr.trim();
+            let videoId = '';
+
+            try {
+                if (cleanUrl.includes('youtu.be/')) {
+                    videoId = cleanUrl.split('youtu.be/')[1].split('?')[0].split('&')[0];
+                } else if (cleanUrl.includes('youtube.com/watch')) {
+                    const urlObj = new URL(cleanUrl);
+                    videoId = urlObj.searchParams.get('v') || '';
+                } else if (cleanUrl.includes('youtube.com/shorts/')) {
+                    videoId = cleanUrl.split('youtube.com/shorts/')[1].split('?')[0];
+                }
+            } catch (e) {
+                console.error("URL parsing error", e);
+            }
+
+            if (videoId) {
+                cleanUrl = `https://www.youtube.com/watch?v=${videoId}`;
+            }
+
+            return { videoId, cleanUrl };
+        }
+
+        // Auto Fetch Title from YouTube oEmbed
+        async function autoFetchTitle() {
+            const rawUrl = document.getElementById('input-url').value;
+            const { cleanUrl } = parseYouTubeUrl(rawUrl);
+
+            if (!cleanUrl) {
+                alert('Please enter a valid YouTube URL first.');
+                return;
+            }
+
+            const fetchBtn = document.getElementById('fetch-title-btn');
+            fetchBtn.innerHTML = `<i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Fetching...`;
+            lucide.createIcons();
+
+            try {
+                const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(cleanUrl)}`);
+                const data = await res.json();
+                if (data && data.title) {
+                    document.getElementById('input-title').value = data.title;
+                } else {
+                    fetchTitleViaGemini(cleanUrl);
+                }
+            } catch (err) {
+                console.log("Fallback fetching via oembed...");
+                document.getElementById('input-title').value = "YouTube Video - " + cleanUrl;
+            } finally {
+                fetchBtn.innerHTML = `<i data-lucide="refresh-cw" class="w-3 h-3"></i> Fetch Title`;
+                lucide.createIcons();
+            }
+        }
+
+        // Fallback Gemini API call if direct fetch is blocked
+        async function fetchTitleViaGemini(url) {
+            try {
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: `Find the official title for this YouTube video: ${url}. Return ONLY the plain title string.` }] }],
+                        tools: [{ "google_search": {} }]
+                    })
+                });
+
+                const result = await response.json();
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+                if (text) {
+                    document.getElementById('input-title').value = text;
+                }
+            } catch (e) {
+                console.error("Gemini title fetch failed", e);
+            }
+        }
+
+        function handleUrlInput() {
+            // Auto update ID counter recommendation
+            const rawUrl = document.getElementById('input-url').value;
+            const { videoId } = parseYouTubeUrl(rawUrl);
+            if (videoId && !document.getElementById('input-id').value) {
+                document.getElementById('input-id').value = 'v' + (videoItems.length + 1);
+            }
+        }
+
+        async function pasteClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    document.getElementById('input-url').value = text.trim();
+                    handleUrlInput();
+                    autoFetchTitle();
+                }
+            } catch (err) {
+                alert("Clipboard access denied or unavailable.");
+            }
+        }
+
+        // Add Single Item
+        function addCurrentItem() {
+            const rawUrl = document.getElementById('input-url').value;
+            const title = document.getElementById('input-title').value || 'YouTube Video Title';
+            const dataId = document.getElementById('input-id').value || ('v' + (videoItems.length + 1));
+            const playText = document.getElementById('input-play-text').value || '播放';
+
+            const { cleanUrl } = parseYouTubeUrl(rawUrl);
+
+            if (!cleanUrl) {
+                alert('Please enter a valid YouTube link.');
+                return;
+            }
+
+            videoItems.push({
+                id: dataId,
+                title: title,
+                url: cleanUrl,
+                playText: playText
+            });
+
+            // Increment next ID default
+            const nextNum = parseInt(dataId.replace(/\D/g, '')) + 1 || (videoItems.length + 1);
+            document.getElementById('input-id').value = 'v' + nextNum;
+
+            renderItemsList();
+            updateGeneratedOutput();
+        }
+
+        // Process Batch Input
+        function processBatchInput() {
+            const rawText = document.getElementById('batch-textarea').value.trim();
+            if (!rawText) {
+                alert("Please enter URLs or text lines.");
+                return;
+            }
+
+            const prefix = document.getElementById('batch-id-prefix').value || 'v';
+            let startIndex = parseInt(document.getElementById('batch-id-start').value) || 1;
+
+            const lines = rawText.split('\n');
+            const newItems = [];
+
+            lines.forEach(line => {
+                const trimmed = line.trim();
+                if (!trimmed) return;
+
+                let title = '';
+                let urlStr = '';
+
+                // Check if line contains " - " or separator
+                if (trimmed.includes('http://') || trimmed.includes('https://')) {
+                    const httpIdx = trimmed.search(/https?:\/\//);
+                    if (httpIdx > 0) {
+                        title = trimmed.substring(0, httpIdx).replace(/[-–—]/g, '').trim();
+                        urlStr = trimmed.substring(httpIdx).trim();
+                    } else {
+                        urlStr = trimmed;
+                        title = 'YouTube Video';
+                    }
+                }
+
+                if (urlStr) {
+                    const { cleanUrl } = parseYouTubeUrl(urlStr);
+                    if (cleanUrl) {
+                        newItems.push({
+                            id: `${prefix}${startIndex}`,
+                            title: title || 'YouTube Video',
+                            url: cleanUrl,
+                            playText: '播放'
+                        });
+                        startIndex++;
+                    }
+                }
+            });
+
+            if (newItems.length > 0) {
+                videoItems = [...videoItems, ...newItems];
+                renderItemsList();
+                updateGeneratedOutput();
+                setMode('single');
+                document.getElementById('batch-textarea').value = '';
+            } else {
+                alert("No valid YouTube URLs found in the text.");
+            }
+        }
+
+        // Render List Entries
+        function renderItemsList() {
+            const container = document.getElementById('items-list');
+            document.getElementById('item-count-badge').innerText = videoItems.length;
+
+            if (videoItems.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 italic text-center py-4">No videos added yet.</p>`;
+                return;
+            }
+
+            container.innerHTML = videoItems.map((item, idx) => `
+                <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-slate-700 transition group text-xs">
+                    <div class="flex items-center gap-2 overflow-hidden flex-1">
+                        <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0">${escapeHtml(item.id)}</span>
+                        <span class="text-slate-200 font-medium truncate max-w-[200px]">${escapeHtml(item.title)}</span>
+                    </div>
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button onclick="moveItemUp(${idx})" class="p-1 text-slate-500 hover:text-slate-300 transition" title="Move Up"><i data-lucide="chevron-up" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="moveItemDown(${idx})" class="p-1 text-slate-500 hover:text-slate-300 transition" title="Move Down"><i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="deleteItem(${idx})" class="p-1 text-slate-500 hover:text-red-400 transition" title="Delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function deleteItem(index) {
+            videoItems.splice(index, 1);
+            renderItemsList();
+            updateGeneratedOutput();
+        }
+
+        function moveItemUp(index) {
+            if (index > 0) {
+                const temp = videoItems[index];
+                videoItems[index] = videoItems[index - 1];
+                videoItems[index - 1] = temp;
+                renderItemsList();
+                updateGeneratedOutput();
+            }
+        }
+
+        function moveItemDown(index) {
+            if (index < videoItems.length - 1) {
+                const temp = videoItems[index];
+                videoItems[index] = videoItems[index + 1];
+                videoItems[index + 1] = temp;
+                renderItemsList();
+                updateGeneratedOutput();
+            }
+        }
+
+        function clearAllItems() {
+            if (confirm("Are you sure you want to clear all video items?")) {
+                videoItems = [];
+                renderItemsList();
+                updateGeneratedOutput();
+            }
+        }
+
+        function loadSampleData() {
+            videoItems = [
+                {
+                    id: 'v14',
+                    title: '用科學方法提升幸福感，10招促進血清素、催產素與多巴胺分泌',
+                    url: 'https://www.youtube.com/watch?v=31b9YjxzXtM',
+                    playText: '播放'
+                },
+                {
+                    id: 'v15',
+                    title: '10分鐘深度放鬆冥想，迅速緩解焦慮與工作壓力',
+                    url: 'https://www.youtube.com/watch?v=jfKfPfyJRdk',
+                    playText: '播放'
+                },
+                {
+                    id: 'v16',
+                    title: '高效學習法的底層邏輯：如何建立長久記憶連結',
+                    url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    playText: '觀看影片'
+                }
+            ];
+            renderItemsList();
+            updateGeneratedOutput();
+        }
+
+        // Helper to HTML escape
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#039;");
+        }
+
+        // Core HTML Code Generator function matching exact requested format
+        function generateSingleCardHtml(item, targetBlank) {
+            const targetAttr = targetBlank ? ' target="_blank"' : '';
+            return `<div class="video-card group">
+    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition cursor-pointer">
+        <input type="checkbox" class="video-check mt-1 rounded text-blue-600 focus:ring-blue-500 w-4 h-4" data-id="${escapeHtml(item.id)}">
+        <span class="text-sm flex-1 group-has-[:checked]:line-through group-has-[:checked]:text-gray-400 dark:group-has-[:checked]:text-gray-500">${escapeHtml(item.title)}</span>
+        <a href="${escapeHtml(item.url)}"${targetAttr} class="text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline flex items-center gap-1 shrink-0"><i class="fa-brands fa-youtube text-red-500"></i> ${escapeHtml(item.playText)}</a>
+    </label>
+</div>`;
+        }
+
+        // Main Code Generation Assembler
+        function updateGeneratedOutput() {
+            const wrapContainer = document.getElementById('opt-wrap-container').checked;
+            const includeFA = document.getElementById('opt-include-fa').checked;
+            const targetBlank = document.getElementById('opt-target-blank').checked;
+
+            if (videoItems.length === 0) {
+                document.getElementById('live-render-target').innerHTML = `<div class="text-center py-12 text-slate-500 text-xs">No video cards to display. Add items using the panel on the left.</div>`;
+                document.getElementById('code-text-block').innerText = `<!-- No video items added -->`;
+                return;
+            }
+
+            const cardsCode = videoItems.map(item => generateSingleCardHtml(item, targetBlank)).join('\n\n');
+
+            let fullOutputHtml = '';
+
+            if (wrapContainer) {
+                let faCDN = includeFA ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">\n` : '';
+                fullOutputHtml = `${faCDN}<!-- YouTube Video List Checklist Container -->
+<div class="video-list-container space-y-3 max-w-2xl mx-auto p-4">
+${cardsCode}
+</div>`;
+            } else {
+                let faCDN = includeFA ? `<!-- Include FontAwesome for YouTube Icon: <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> -->\n\n` : '';
+                fullOutputHtml = faCDN + cardsCode;
+            }
+
+            // Update Render Target
+            document.getElementById('live-render-target').innerHTML = cardsCode;
+
+            // Update Syntax Highlighted Code
+            document.getElementById('code-text-block').innerText = fullOutputHtml;
+        }
+
+        // UI Tabs Switcher
+        function switchTab(tab) {
+            activeTab = tab;
+            const previewPanel = document.getElementById('preview-panel');
+            const codePanel = document.getElementById('code-panel');
+            const previewBtn = document.getElementById('tab-preview-btn');
+            const codeBtn = document.getElementById('tab-code-btn');
+
+            if (tab === 'preview') {
+                previewPanel.classList.remove('hidden');
+                previewPanel.classList.add('flex');
+                codePanel.classList.add('hidden');
+                codePanel.classList.remove('flex');
+
+                previewBtn.className = 'px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold text-xs transition flex items-center gap-2 shadow-md shadow-blue-600/20';
+                codeBtn.className = 'px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-semibold text-xs transition flex items-center gap-2';
+            } else {
+                codePanel.classList.remove('hidden');
+                codePanel.classList.add('flex');
+                previewPanel.classList.add('hidden');
+                previewPanel.classList.remove('flex');
+
+                codeBtn.className = 'px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold text-xs transition flex items-center gap-2 shadow-md shadow-blue-600/20';
+                previewBtn.className = 'px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-semibold text-xs transition flex items-center gap-2';
+            }
+        }
+
+        // Background Theme Toggle for Live Preview
+        function setPreviewBg(mode) {
+            previewBgMode = mode;
+            const target = document.getElementById('live-render-target');
+            const darkBtn = document.getElementById('bg-dark-btn');
+            const lightBtn = document.getElementById('bg-light-btn');
+
+            if (mode === 'dark') {
+                target.classList.remove('bg-gray-100', 'text-slate-900', 'light');
+                target.classList.add('bg-slate-950', 'text-slate-100', 'dark');
+                darkBtn.className = 'px-2 py-1 rounded bg-slate-800 text-slate-200';
+                lightBtn.className = 'px-2 py-1 rounded text-slate-400';
+            } else {
+                target.classList.remove('bg-slate-950', 'text-slate-100', 'dark');
+                target.classList.add('bg-gray-100', 'text-slate-900', 'light');
+                lightBtn.className = 'px-2 py-1 rounded bg-white text-slate-900 shadow-sm';
+                darkBtn.className = 'px-2 py-1 rounded text-slate-400';
+            }
+        }
+
+        // Copy Code Function
+        function copyGeneratedCode() {
+            const codeText = document.getElementById('code-text-block').innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = codeText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const toast = document.getElementById('copy-toast');
+            toast.style.opacity = '1';
+            setTimeout(() => { toast.style.opacity = '0'; }, 2000);
+        }
+
+        // Download HTML Snippet File
+        function downloadHtmlFile() {
+            const codeText = document.getElementById('code-text-block').innerText;
+            const blob = new Blob([codeText], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'youtube-video-cards.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
