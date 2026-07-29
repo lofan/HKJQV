@@ -153,6 +153,8 @@
     padding:12px 14px;
     transition:.15s;
     position:relative;
+    display:flex;
+    flex-direction:column;
   }
   .book-card:hover{border-color:var(--text-dim);transform:translateY(-2px);}
   .book-card .num{
@@ -179,6 +181,41 @@
     border-radius:20px;
     margin-top:6px;
     color:var(--text-dim);
+    align-self:flex-start;
+  }
+
+  /* 新增搜尋按鈕樣式 */
+  .search-btns{
+    display:flex;
+    gap:6px;
+    margin-top:10px;
+    padding-top:8px;
+    border-top:1px solid rgba(255,255,255,0.05);
+  }
+  .search-btn{
+    flex:1;
+    text-align:center;
+    padding:4px 6px;
+    font-size:0.72em;
+    border-radius:6px;
+    text-decoration:none;
+    color:var(--text);
+    background:var(--bg-alt);
+    border:1px solid var(--border);
+    transition:.2s;
+    font-weight:500;
+  }
+  .search-btn:hover{
+    background:rgba(255,255,255,0.1);
+    border-color:var(--text-dim);
+  }
+  .search-btn.google:hover{
+    color:#4285F4;
+    border-color:#4285F4;
+  }
+  .search-btn.ddg:hover{
+    color:#DE5833;
+    border-color:#DE5833;
   }
 
   footer{
@@ -420,13 +457,24 @@ const books = [
 function render(){
   for(let era=1; era<=4; era++){
     const grid = document.querySelector(`.book-grid[data-era="${era}"]`);
-    grid.innerHTML = books.filter(b=>b.e===era).map(b=>`
-      <div class="book-card${b.fixed?' fixed':''}" data-num="${b.n}" data-title="${b.t}" data-era="${b.e}">
-        <div class="num">${b.n}</div>
-        <div class="title">${b.t}</div>
-        ${b.s?`<div class="series-tag">${b.s}</div>`:''}
-      </div>
-    `).join('');
+    grid.innerHTML = books.filter(b=>b.e===era).map(b=>{
+      const query = encodeURIComponent(`衛斯理 ${b.t}`);
+      const gUrl = `https://www.google.com/search?q=${query}`;
+      const ddgUrl = `https://duckduckgo.com/?q=${query}`;
+      
+      return `
+        <div class="book-card${b.fixed?' fixed':''}" data-num="${b.n}" data-title="${b.t}" data-era="${b.e}">
+          <div class="num">${b.n}</div>
+          <div class="title">${b.t}</div>
+          ${b.s?`<div class="series-tag">${b.s}</div>`:''}
+          <div style="flex:1;"></div>
+          <div class="search-btns">
+            <a class="search-btn google" href="${gUrl}" target="_blank" rel="noopener">Google</a>
+            <a class="search-btn ddg" href="${ddgUrl}" target="_blank" rel="noopener">DDG</a>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 }
 render();
