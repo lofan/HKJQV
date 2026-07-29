@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>衛斯理系列書目 · 完整整理</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-alt:#161b22;
+    --card:#1c2128;
+    --border:#2d333b;
+    --text:#e6edf3;
+    --text-dim:#8b949e;
+    --accent1:#e8c46a;   /* 早期 - 金 */
+    --accent2:#6ab0e8;   /* 中期 - 藍 */
+    --accent3:#e86a8a;   /* 後期1 - 粉紅 */
+    --accent4:#8a6ae8;   /* 後期2 - 紫 */
+    --fix:#f0883e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",-apple-system,sans-serif;
+    line-height:1.6;
+    padding-bottom:60px;
+  }
+  header.hero{
+    padding:60px 20px 40px;
+    text-align:center;
+    background:radial-gradient(ellipse at top, #1a2332 0%, var(--bg) 65%);
+    border-bottom:1px solid var(--border);
+  }
+  header.hero h1{
+    font-size:2.2em;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2),var(--accent3),var(--accent4));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-bottom:10px;
+    letter-spacing:2px;
+  }
+  header.hero p{color:var(--text-dim);font-size:1em;}
+  nav.sticky{
+    position:sticky;top:0;z-index:50;
+    background:rgba(13,17,23,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+    display:flex;flex-wrap:wrap;
+    justify-content:center;gap:6px;
+    padding:12px 16px;
+  }
+  nav.sticky a{
+    color:var(--text-dim);
+    text-decoration:none;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:0.88em;
+    border:1px solid transparent;
+    transition:.2s;
+  }
+  nav.sticky a:hover{border-color:var(--border);color:var(--text);background:var(--card);}
+  .container{max-width:1000px;margin:0 auto;padding:0 20px;}
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:14px;
+    margin:30px auto;
+    max-width:1000px;
+    padding:0 20px;
+  }
+  .stat-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+    text-align:center;
+  }
+  .stat-card .num{font-size:1.7em;font-weight:700;color:var(--accent2);}
+  .stat-card .label{color:var(--text-dim);font-size:0.82em;margin-top:2px;}
+
+  .callout{
+    background:linear-gradient(135deg,rgba(240,136,62,0.12),rgba(240,136,62,0.04));
+    border:1px solid rgba(240,136,62,0.35);
+    border-radius:12px;
+    padding:18px 20px;
+    margin:24px auto;
+    max-width:960px;
+  }
+  .callout h3{color:var(--fix);margin-bottom:8px;font-size:1em;}
+  .callout ul{margin-left:20px;color:var(--text-dim);font-size:0.9em;}
+  .callout li{margin-bottom:4px;}
+  .callout code{background:var(--bg-alt);padding:2px 6px;border-radius:4px;color:var(--accent1);}
+  .callout .note{margin-top:10px;font-size:0.82em;color:var(--text-dim);opacity:0.85;}
+
+  .controls{
+    max-width:960px;margin:20px auto 10px;padding:0 20px;
+    display:flex;gap:12px;flex-wrap:wrap;
+  }
+  .search-input{
+    flex:1;min-width:220px;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:10px 16px;
+    border-radius:10px;
+    font-size:0.95em;
+  }
+  .search-input:focus{outline:none;border-color:var(--accent2);}
+  .filter-tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-tags button{
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text-dim);
+    padding:8px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:0.88em;
+    transition:.2s;
+  }
+  .filter-tags button.active{color:var(--bg);font-weight:600;}
+  .filter-tags button[data-f="all"].active{background:var(--text);}
+  .filter-tags button[data-f="1"].active{background:var(--accent1);}
+  .filter-tags button[data-f="2"].active{background:var(--accent2);}
+  .filter-tags button[data-f="3"].active{background:var(--accent3);}
+  .filter-tags button[data-f="4"].active{background:var(--accent4);}
+
+  section.era{max-width:1000px;margin:36px auto 0;padding:0 20px;}
+  section.era h2{
+    font-size:1.3em;
+    padding:10px 16px;
+    border-radius:10px;
+    margin-bottom:16px;
+    display:flex;align-items:center;gap:10px;
+  }
+  section.era h2 .badge{font-size:0.6em;color:var(--text-dim);font-weight:400;}
+  #era1 h2{background:rgba(232,196,106,0.12);color:var(--accent1);border-left:4px solid var(--accent1);}
+  #era2 h2{background:rgba(106,176,232,0.12);color:var(--accent2);border-left:4px solid var(--accent2);}
+  #era3 h2{background:rgba(232,106,138,0.12);color:var(--accent3);border-left:4px solid var(--accent3);}
+  #era4 h2{background:rgba(138,106,232,0.12);color:var(--accent4);border-left:4px solid var(--accent4);}
+
+  .book-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:10px;
+  }
+  .book-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    transition:.15s;
+    position:relative;
+  }
+  .book-card:hover{border-color:var(--text-dim);transform:translateY(-2px);}
+  .book-card .num{
+    font-size:0.75em;
+    color:var(--text-dim);
+    font-family:monospace;
+  }
+  .book-card .title{font-size:1em;margin-top:2px;font-weight:600;}
+  .book-card.fixed::after{
+    content:"已校正";
+    position:absolute;top:8px;right:8px;
+    font-size:0.65em;
+    background:rgba(240,136,62,0.18);
+    color:var(--fix);
+    padding:2px 7px;
+    border-radius:20px;
+  }
+  .book-card.hidden{display:none;}
+  .series-tag{
+    display:inline-block;
+    font-size:0.7em;
+    background:rgba(255,255,255,0.06);
+    padding:1px 8px;
+    border-radius:20px;
+    margin-top:6px;
+    color:var(--text-dim);
+  }
+
+  .search-links{
+    display:flex;
+    gap:6px;
+    margin-top:10px;
+  }
+  .search-links a{
+    flex:1;
+    text-align:center;
+    text-decoration:none;
+    font-size:0.72em;
+    padding:5px 0;
+    border-radius:7px;
+    border:1px solid var(--border);
+    color:var(--text-dim);
+    transition:.15s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+  }
+  .search-links a:hover{
+    color:var(--text);
+    border-color:var(--text-dim);
+    background:rgba(255,255,255,0.04);
+  }
+  .search-links a svg{width:12px;height:12px;flex-shrink:0;}
+  .search-links a.google:hover{border-color:var(--accent2);color:var(--accent2);}
+  .search-links a.ddg:hover{border-color:var(--accent1);color:var(--accent1);}
+
+  footer{
+    text-align:center;
+    color:var(--text-dim);
+    font-size:0.82em;
+    margin-top:50px;
+    padding:0 20px;
+  }
+  .empty-msg{
+    text-align:center;color:var(--text-dim);
+    padding:40px 0;display:none;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>衛斯理系列書目</h1>
+  <p>1963年3月連載開始 · 早期 → 中期 → 後期 · 全145冊完整目錄</p>
+</header>
+
+<nav class="sticky">
+  <a href="#era1">早期 001-045</a>
+  <a href="#era2">中期 046-091</a>
+  <a href="#era3">後期1 092-123</a>
+  <a href="#era4">後期2 124-145</a>
+  <a href="#note">校正說明</a>
+</nav>
+
+<div class="container">
+  <div class="stats">
+    <div class="stat-card"><div class="num">145</div><div class="label">總冊數</div></div>
+    <div class="stat-card"><div class="num">41</div><div class="label">連載年份 (1963-2004)</div></div>
+    <div class="stat-card"><div class="num">4</div><div class="label">創作階段</div></div>
+    <div class="stat-card"><div class="num">2</div><div class="label">校正序號點</div></div>
+  </div>
+
+  <div class="callout" id="note">
+    <h3>⚠ 順序校正說明</h3>
+    <ul>
+      <li>原始文字資料中 <code>087. 繼續探險</code> 排在 <code>086. 探險</code> 前，已按順序調整為 086 → 087。</li>
+      <li>原始文字資料中 <code>119. 買命</code> 排在 <code>118. 洪荒</code> 前，已按順序調整為 118 → 119。</li>
+    </ul>
+    <div class="note">校正後全表由 001 至 145 編號完全連貫且無重複。早期與中期作品之連載排序僅供參考。每本書卡片下方設有 Google 及 DuckDuckGo 搜尋按鈕，方便查找內容或購買連結。</div>
+  </div>
+
+  <div class="controls">
+    <input type="text" id="searchInput" class="search-input" placeholder="搜尋書名或編號 (如: 046, 探險, 陰間)...">
+    <div class="filter-tags" id="filterTags">
+      <button data-f="all" class="active">全部 (145)</button>
+      <button data-f="1">早期 (45)</button>
+      <button data-f="2">中期 (46)</button>
+      <button data-f="3">後期1 (32)</button>
+      <button data-f="4">後期2 (22)</button>
+    </div>
+  </div>
+</div>
+
+<section class="era" id="era1">
+  <h2>早期 (1963年3月起) <span class="badge">連載時間排序 · 45冊</span></h2>
+  <div class="book-grid" data-era="1"></div>
+</section>
+
+<section class="era" id="era2">
+  <h2>中期 (1973初 - 1978停筆五年後) <span class="badge">連載時間排序 · 46冊</span></h2>
+  <div class="book-grid" data-era="2"></div>
+</section>
+
+<section class="era" id="era3">
+  <h2>後期第一部分 <span class="badge">序言日期排序 · 32冊</span></h2>
+  <div class="book-grid" data-era="3"></div>
+</section>
+
+<section class="era" id="era4">
+  <h2>後期第二部分 <span class="badge">序言日期排序 · 2004年二月底封筆 · 22冊</span></h2>
+  <div class="book-grid" data-era="4"></div>
+</section>
+
+<div class="empty-msg" id="emptyMsg">未有找到符合條件的書籍</div>
+
+<footer>
+  衛斯理系列 145 冊完整檢索目錄
+</footer>
+
+<script>
+const books = [
+// 早期 1
+{n:"001",t:"鑽石花",e:1},
+{n:"002",t:"地底奇人(上) 衛斯理與白素(下)",e:1},
+{n:"003",t:"妖火(上) 真菌之毀滅(下)",e:1},
+{n:"004",t:"藍血人(上) 回歸悲劇(下)",e:1},
+{n:"005",t:"透明光(上) 真空密室之謎(下)",e:1},
+{n:"006",t:"地心洪爐",e:1},
+{n:"007",t:"蜂雲",e:1},
+{n:"008",t:"奇玉",e:1},
+{n:"009",t:"原子空間",e:1},
+{n:"010",t:"天外金球",e:1},
+{n:"011",t:"支離人",e:1},
+{n:"012",t:"不死藥",e:1},
+{n:"013",t:"紅月亮",e:1},
+{n:"014",t:"換頭記",e:1},
+{n:"015",t:"蠱惑",e:1},
+{n:"016",t:"奇門",e:1},
+{n:"017",t:"屍變",e:1},
+{n:"018",t:"合成",e:1},
+{n:"019",t:"筆友",e:1},
+{n:"020",t:"叢林之神",e:1},
+{n:"021",t:"再來一次",e:1},
+{n:"022",t:"盡頭",e:1},
+{n:"023",t:"湖水",e:1},
+{n:"024",t:"消失",e:1},
+{n:"025",t:"影子",e:1},
+{n:"026",t:"多了一個",e:1},
+{n:"027",t:"仙境",e:1},
+{n:"028",t:"狐變",e:1},
+{n:"029",t:"古聲",e:1},
+{n:"030",t:"虛像",e:1},
+{n:"031",t:"訪客",e:1},
+{n:"032",t:"風水",e:1},
+{n:"033",t:"環",e:1},
+{n:"034",t:"聚寶盆",e:1},
+{n:"035",t:"雨花台石",e:1},
+{n:"036",t:"魔磁",e:1},
+{n:"037",t:"創造",e:1},
+{n:"038",t:"鬼子",e:1},
+{n:"039",t:"老貓",e:1},
+{n:"040",t:"貝殼",e:1},
+{n:"041",t:"地圖",e:1},
+{n:"042",t:"規律",e:1},
+{n:"043",t:"沉船",e:1},
+{n:"044",t:"大廈",e:1},
+{n:"045",t:"新年",e:1},
+// 中期 2
+{n:"046",t:"頭髮",e:2},
+{n:"047",t:"眼睛",e:2},
+{n:"048",t:"迷藏",e:2},
+{n:"049",t:"天書",s:"奇門續集",e:2},
+{n:"050",t:"木炭",e:2},
+{n:"051",t:"玩具",e:2},
+{n:"052",t:"連鎖(上) 願網猴神(下)",e:2},
+{n:"053",t:"尋夢",e:2},
+{n:"054",t:"第二種人",e:2},
+{n:"055",t:"後備",e:2},
+{n:"056",t:"盜墓",e:2},
+{n:"057",t:"搜靈",e:2},
+{n:"058",t:"茫點",e:2},
+{n:"059",t:"神仙",e:2},
+{n:"060",t:"追龍",e:2},
+{n:"061",t:"洞天",e:2},
+{n:"062",t:"活俑",e:2},
+{n:"063",t:"犀照",e:2},
+{n:"064",t:"命運",e:2},
+{n:"065",t:"十七年",s:"命運附篇",e:2},
+{n:"066",t:"異寶",e:2},
+{n:"067",t:"極刑",e:2},
+{n:"068",t:"電王",e:2},
+{n:"069",t:"遊戲",e:2},
+{n:"070",t:"生死鎖",e:2},
+{n:"071",t:"黃金故事",e:2},
+{n:"072",t:"廢墟",e:2},
+{n:"073",t:"密碼",e:2},
+{n:"074",t:"血統",s:"屍變續集",e:2},
+{n:"075",t:"謎蹤",e:2},
+{n:"076",t:"瘟神",e:2},
+{n:"077",t:"招魂",e:2},
+{n:"078",t:"背叛",e:2},
+{n:"079",t:"鬼混",e:2},
+{n:"080",t:"報應",e:2},
+{n:"081",t:"錯手",e:2},
+{n:"082",t:"真相",e:2},
+{n:"083",t:"毒誓",e:2},
+{n:"084",t:"拼命",e:2},
+{n:"085",t:"怪物",e:2},
+{n:"086",t:"探險",s:"探險系列1",e:2,fixed:true},
+{n:"087",t:"繼續探險",s:"探險系列2",e:2,fixed:true},
+{n:"088",t:"圈套",e:2},
+{n:"089",t:"烈火女",s:"探險系列3",e:2},
+{n:"090",t:"大秘密",e:2},
+{n:"091",t:"禍根",s:"探險系列4",e:2},
+// 後期1 3
+{n:"092",t:"從陰間來",s:"陰間系列1",e:3},
+{n:"093",t:"到陰間去",s:"陰間系列2",e:3},
+{n:"094",t:"少年衛斯理",e:3},
+{n:"095",t:"陰差陽錯",s:"陰間系列3",e:3},
+{n:"096",t:"陰魂不散",s:"陰間系列4",e:3},
+{n:"097",t:"許願",s:"陰間系列5",e:3},
+{n:"098",t:"還陽",e:3},
+{n:"099",t:"運氣",e:3},
+{n:"100",t:"開心",e:3},
+{n:"101",t:"轉世暗號",e:3},
+{n:"102",t:"將來",s:"思想儀系列1",e:3},
+{n:"103",t:"改變",s:"思想儀系列2",e:3},
+{n:"104",t:"暗號之二",e:3},
+{n:"105",t:"闖禍",s:"思想儀系列3",e:3},
+{n:"106",t:"在數難逃",e:3},
+{n:"107",t:"解脫",s:"生死鎖續集",e:3},
+{n:"108",t:"遺傳",s:"還陽續集",e:3},
+{n:"109",t:"爆炸",e:3},
+{n:"110",t:"水晶宮",e:3},
+{n:"111",t:"前世",e:3},
+{n:"112",t:"新武器",e:3},
+{n:"113",t:"病毒",e:3},
+{n:"114",t:"算帳",e:3},
+{n:"115",t:"原形",s:"成精系列1",e:3},
+{n:"116",t:"活路",e:3},
+{n:"117",t:"雙程",e:3},
+{n:"118",t:"洪荒",e:3,fixed:true},
+{n:"119",t:"買命",e:3,fixed:true},
+{n:"120",t:"賣命",e:3},
+{n:"121",t:"考驗",e:3},
+{n:"122",t:"傳說",e:3},
+{n:"123",t:"豪賭",e:3},
+// 後期2 4
+{n:"124",t:"真實幻境",s:"成精系列2",e:4},
+{n:"125",t:"成精變人",s:"成精系列3",e:4},
+{n:"126",t:"未來身分",e:4},
+{n:"127",t:"移魂怪物",e:4},
+{n:"128",t:"人面組合",e:4},
+{n:"129",t:"本性難移",e:4},
+{n:"130",t:"天打雷劈",e:4},
+{n:"131",t:"另類複製",e:4},
+{n:"132",t:"解開密碼",s:"密碼續集",e:4},
+{n:"133",t:"異種人生",e:4},
+{n:"134",t:"偷天換日",e:4},
+{n:"135",t:"閉關開關",e:4},
+{n:"136",t:"行動救星",e:4},
+{n:"137",t:"乾坤挪",e:4},
+{n:"138",t:"財神寶庫",e:4},
+{n:"139",t:"一半一半",e:4},
+{n:"140",t:"身外化身",e:4},
+{n:"141",t:"非常遭遇",e:4},
+{n:"142",t:"一個地方",e:4},
+{n:"143",t:"須彌芥子",e:4},
+{n:"144",t:"死去活來",e:4},
+{n:"145",t:"只限老友",s:"考驗續集 · 思想儀系列4",e:4},
+];
+
+// SVG icons for search engines
+const googleIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/></svg>`;
+const ddgIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>`;
+
+function buildQuery(b){
+  const parts = ["衛斯理", "倪匡", b.t];
+  if(b.s) parts.push(b.s);
+  return parts.join(" ");
+}
+
+function render(){
+  for(let era=1; era<=4; era++){
+    const grid = document.querySelector(`.book-grid[data-era="${era}"]`);
+    grid.innerHTML = books.filter(b=>b.e===era).map(b=>{
+      const q = encodeURIComponent(buildQuery(b));
+      const googleUrl = `https://www.google.com/search?q=${q}`;
+      const ddgUrl = `https://duckduckgo.com/?q=${q}`;
+      return `
+      <div class="book-card${b.fixed?' fixed':''}" data-num="${b.n}" data-title="${b.t}" data-era="${b.e}">
+        <div class="num">${b.n}</div>
+        <div class="title">${b.t}</div>
+        ${b.s?`<div class="series-tag">${b.s}</div>`:''}
+        <div class="search-links">
+          <a class="google" href="${googleUrl}" target="_blank" rel="noopener noreferrer" title="Google 搜尋">${googleIcon}Google</a>
+          <a class="ddg" href="${ddgUrl}" target="_blank" rel="noopener noreferrer" title="DuckDuckGo 搜尋">${ddgIcon}DDG</a>
+        </div>
+      </div>
+    `;
+    }).join('');
+  }
+}
+render();
+
+const searchInput = document.getElementById('searchInput');
+const filterTags = document.getElementById('filterTags');
+const emptyMsg = document.getElementById('emptyMsg');
+let currentFilter = 'all';
+
+function applyFilter(){
+  const q = searchInput.value.trim().toLowerCase();
+  let visibleCount = 0;
+  document.querySelectorAll('.book-card').forEach(card=>{
+    const matchesText = card.dataset.num.includes(q) || card.dataset.title.toLowerCase().includes(q);
+    const matchesEra = currentFilter==='all' || card.dataset.era===currentFilter;
+    const show = matchesText && matchesEra;
+    card.classList.toggle('hidden', !show);
+    if(show) visibleCount++;
+  });
+  document.querySelectorAll('section.era').forEach(sec=>{
+    const eraNum = sec.id.replace('era','');
+    const anyVisible = [...sec.querySelectorAll('.book-card')].some(c=>!c.classList.contains('hidden'));
+    sec.style.display = (currentFilter==='all' || currentFilter===eraNum) && anyVisible ? '' : 'none';
+  });
+  emptyMsg.style.display = visibleCount===0 ? 'block' : 'none';
+}
+
+searchInput.addEventListener('input', applyFilter);
+filterTags.addEventListener('click', e=>{
+  if(e.target.tagName!=='BUTTON') return;
+  filterTags.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  currentFilter = e.target.dataset.f;
+  applyFilter();
+});
+</script>
+
+</body>
+</html>
