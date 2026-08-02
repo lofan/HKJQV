@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>東野圭吾經典改編作品全解析與影音目錄</title>
+    <style>
+        :root {
+            --primary-color: #1a252f;
+            --secondary-color: #2c3e50;
+            --accent-red: #e74c3c;
+            --accent-blue: #2980b9;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #626d78;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.05em;
+        }
+
+        .nav-menu {
+            background-color: #edf2f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 35px;
+        }
+
+        .nav-menu h2 {
+            font-size: 1.1em;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--secondary-color);
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+        }
+
+        .nav-menu a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent-red);
+        }
+
+        .film-card {
+            margin-bottom: 35px;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            border-left: 6px solid var(--secondary-color);
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .film-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .cast-info {
+            font-size: 0.95em;
+            background-color: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .description {
+            font-size: 1em;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .link-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 9px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .btn-youtube {
+            background-color: var(--accent-red);
+            color: #ffffff;
+        }
+
+        .btn-youtube:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-article {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+        }
+
+        .btn-article:hover {
+            background-color: #1f618d;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .film-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>東野圭吾影視改編經典作品目錄</h1>
+        <p class="subtitle">收錄 11 部代表性作品劇情拆解與 YouTube 預告/主題影片連結</p>
+    </header>
+
+    <!-- 導航菜單 -->
+    <div class="nav-menu">
+        <h2>目錄快捷跳轉：</h2>
+        <ul>
+            <li><a href="#baiyehang">1. 《白夜行》</a></li>
+            <li><a href="#galileo">2. 《破案天才伽利略》</a></li>
+            <li><a href="#liuxing">3. 《流星之絆》</a></li>
+            <li><a href="#fanghuang">4. 《徬徨之刃》</a></li>
+            <li><a href="#xincanzhe">5. 《新參者》</a></li>
+            <li><a href="#mimi">6. 《秘密》</a></li>
+            <li><a href="#jieyou">7. 《解憂雜貨店》</a></li>
+            <li><a href="#jiamen">8. 《假面飯店》</a></li>
+            <li><a href="#weixian">9. 《危險維納斯》</a></li>
+            <li><a href="#bangjia">10. 《綁架遊戲》</a></li>
+            <li><a href="#blackshowman">11. 《迷宮裡的魔術師》</a></li>
+            <li><a href="#references">12. 外部參考報導</a></li>
+        </ul>
+    </div>
+
+    <!-- 1. 白夜行 -->
+    <div class="film-card" id="baiyehang">
+        <div class="film-title">《白夜行》(びゃくやこう)</div>
+        <div class="cast-info">🎬 改編紀錄：2006年日劇版（綾瀨遙、山田孝之）/ 2011年電影版（堀北真希、高良健吾）</div>
+        <div class="description">
+            故事描寫亮司與雪穗背負著共同的祕密，在黑暗中相互扶持，卻無法光明正大地相愛。亮司為了讓雪穗能永遠活在陽光下，不惜讓自己的雙手沾滿鮮血，而且無怨無悔。當觀眾看盡人性最黑暗的一面，也同時感受到那份近乎悲壯、純粹又深刻的愛意。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=g3-WcNlNVNc" target="_blank">▶ 觀看 YouTube 相關影片 (1)</a>
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=QTMpYW1IQwY" target="_blank">▶ 觀看 YouTube 相關影片 (2)</a>
+        </div>
+    </div>
+
+    <!-- 2. 破案天才伽利略 -->
+    <div class="film-card" id="galileo">
+        <div class="film-title">《破案天才伽利略》（ガリレオ）</div>
+        <div class="cast-info">🎬 改編紀錄：2007年日劇版一路延伸至2022年電影版（福山雅治 主演）</div>
+        <div class="description">
+            由福山雅治飾演天才物理學副教授湯川學，憑藉縝密的科學知識與驚人的推理能力，協助警方破解一樁又一樁離奇案件。劇中巧妙融合科學、推理與人性描寫，加上福山雅治充滿魅力的演出，使《破案天才伽利略》成為東野圭吾最具代表性的影視改編作品之一。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=CEdzv8i-HBg" target="_blank">▶ 觀看 YouTube 相關影片 (1)</a>
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=4SmMG4KqffU" target="_blank">▶ 觀看 YouTube 相關影片 (2)</a>
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=WimkwR26DVY" target="_blank">▶ 觀看 YouTube 相關影片 (3)</a>
+        </div>
+    </div>
+
+    <!-- 3. 流星之絆 -->
+    <div class="film-card" id="liuxing">
+        <div class="film-title">《流星之絆》（流星の絆）</div>
+        <div class="cast-info">🎬 改編紀錄：2008年日劇版（二宮和也、錦戶亮、戶田惠梨香 / 宮藤官九郎改編）</div>
+        <div class="description">
+            故事描述三兄妹童年目睹雙親遭人殺害，長大後靠著詐騙維生，並在追訴期將至之際，展開最後的復仇計畫。宮藤官九郎巧妙融入大量幽默橋段，讓沉重的復仇故事增添輕快節奏，而三兄妹之間深厚的情感與羈絆，更成為全劇最打動人心的地方。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=3viaEH5OHv0" target="_blank">▶ 觀看 YouTube 預告影片</a>
+        </div>
+    </div>
+
+    <!-- 4. 徬徨之刃 -->
+    <div class="film-card" id="fanghuang">
+        <div class="film-title">《徬徨之刃》（さまよう刃）</div>
+        <div class="cast-info">🎬 改編紀錄：2009年電影版（寺尾聰）/ 2021年日劇版（竹野內豐）</div>
+        <div class="description">
+            故事描述與女兒相依為命的長峰重樹，在女兒遭凌虐殺害後，得知兇手竟受到少年法保護，於是決定親手展開復仇。作品透過父親的悲痛與掙扎，深刻探討法律、公義與復仇之間的界線，是東野圭吾最具衝擊力的社會派作品之一。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=lLid2MzDVuw" target="_blank">▶ 觀看 YouTube 預告影片</a>
+        </div>
+    </div>
+
+    <!-- 5. 新參者 -->
+    <div class="film-card" id="xincanzhe">
+        <div class="film-title">《新參者》（しんざんもの）</div>
+        <div class="cast-info">🎬 改編紀錄：日劇與電影系列（阿部寬 主演）</div>
+        <div class="description">
+            由阿部寬飾演刑警加賀恭一郎，他細膩沉穩的演出，讓這位東野圭吾筆下的經典角色更加深入人心。加賀擁有敏銳的觀察力，總能從微不足道的細節中發現真相，比起逮捕犯人，他更在意每位嫌犯背後隱藏的故事。作品融合推理與濃厚的人情味，帶給觀眾療癒與感動。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=8HdTBUsq4jw" target="_blank">▶ 觀看 YouTube 預告影片</a>
+        </div>
+    </div>
+
+    <!-- 6. 秘密 -->
+    <div class="film-card" id="mimi">
+        <div class="film-title">《秘密》</div>
+        <div class="cast-info">🎬 改編紀錄：1999年電影版（廣末涼子、小林薰）/ 日劇版（志田未來、佐佐木藏之介）</div>
+        <div class="description">
+            故事描述妻子在車禍中身亡，靈魂卻附在女兒身上，讓丈夫不得不與擁有女兒外表、妻子靈魂的「她」展開全新的生活。看似奇幻的設定，卻細膩描寫愛情、親情與生離死別，令人忍不住為角色的命運落淚。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=gQX1LfbkVl4" target="_blank">▶ 觀看 YouTube 預告影片</a>
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=WfsvCDDxf7Q" target="_blank">▶ 觀看 YouTube 預告影片2</a>
+        </div>
+    </div>
+
+    <!-- 7. 解憂雜貨店 -->
+    <div class="film-card" id="jieyou">
+        <div class="film-title">《解憂雜貨店》（ナミヤ雑貨店の奇蹟）</div>
+        <div class="cast-info">🎬 改編紀錄：電影版（山田涼介、西田敏行 共演）</div>
+        <div class="description">
+            被譽為東野圭吾最暖心的代表作，劇情描寫30年前有一家「浪矢雜貨店」，不只賣日常用品，還可以幫人消憂解惑。而30年後的晚上，三位剛犯完案的小偷為了躲避追捕，誤打誤撞進入廢棄的雜貨店，意外經歷一個奇妙夜晚。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=1J7qAfTODVA" target="_blank">▶ 觀看 YouTube 預告影片</a>
+        </div>
+    </div>
+
+    <!-- 8. 假面飯店 -->
+    <div class="film-card" id="jiamen">
+        <div class="film-title">《假面飯店》（マスカレード・ホテル）</div>
+        <div class="cast-info">🎬 改編紀錄：電影系列（木村拓哉、長澤雅美 共演）</div>
+        <div class="description">
+            將推理懸疑與飯店職場文化巧妙結合。警方根據連續殺人案留下的線索，推測下一起命案將發生在豪華飯店，因此派遣菁英刑警新田浩介潛入臥底，與專業櫃檯人員山岸尚美攜手追查真相。隨著嫌犯身分逐漸浮現，緊張刺激的推理過程令人目不轉睛。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=SVEvPyOrCeI" target="_blank">▶ 觀看 YouTube 預告影片</a>
+        </div>
+    </div>
+
+    <!-- 9. 危險維納斯 -->
+    <div class="film-card" id="weixian">
+        <div class="film-title">《危險維納斯》（危険なビーナス）</div>
+        <div class="cast-info">🎬 改編紀錄：2020年日劇版（妻夫木聰、吉高由里子 共演）</div>
+        <div class="description">
+            融合推理、懸疑與豪門家族鬥爭。獸醫手島伯朗因自稱弟媳的神祕女子楓突然現身，得知失蹤弟弟可能牽涉龐大的遺產繼承案，於是展開調查。隨著真相一步步揭曉，他不僅被捲入30億日圓遺產爭奪戰，也逐漸揭開矢神家不為人知的祕密。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=C7WvZPSDtSg" target="_blank">▶ 觀看 YouTube 預告影片</a>
+        </div>
+    </div>
+
+    <!-- 10. 綁架遊戲 -->
+    <div class="film-card" id="bangjia">
+        <div class="film-title">《綁架遊戲》（ゲームの名は誘拐）</div>
+        <div class="cast-info">🎬 改編紀錄：2003年電影《g@me.》（藤木直人、仲間由紀惠）/ 2024年日劇版（龜梨和也、見上愛）</div>
+        <div class="description">
+            故事圍繞一場精心策劃的假綁架，以及男女主角彼此試探、互相利用的心理攻防。劇情反轉再反轉，令人難以預料結局，令和版更將故事背景更新至現代，為這部經典作品注入全新的魅力。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=MPXW_gnn5cw" target="_blank">▶ 觀看 YouTube 預告影片</a>
+        </div>
+    </div>
+
+    <!-- 11. 迷宮裡的魔術師 -->
+    <div class="film-card" id="blackshowman">
+        <div class="film-title">《迷宮裡的魔術師》（Black Showman / ブラック・ショーマン）</div>
+        <div class="cast-info">🎬 改編紀錄：電影版（福山雅治、有村架純 主演）</div>
+        <div class="description">
+            故事講述一處在疫情蔓延後失去活力的小鎮，前國中教師神尾英一慘遭殺害。女兒真世在收到噩耗後重返小鎮尋找真相，卻意外迎來許久不見的叔叔武史（曾是拉斯維加斯頂尖魔術師）。武史運用精湛魔術技藝、觀察力與審問技巧，與真世一同踏上破解命案的旅途。
+        </div>
+        <div class="link-group">
+            <a class="btn btn-youtube" href="https://www.youtube.com/watch?v=IsuzyLDAuAo" target="_blank">▶ 觀看 YouTube 預告影片</a>
+        </div>
+    </div>
+
+    <!-- 12. 外部連結 -->
+    <div class="film-card" id="references">
+        <div class="film-title">補充資料與報導網址</div>
+        <div class="description">
+            隨附之相關專題報導與介紹網址連結：
+        </div>
+        <div class="link-group">
+            <a class="btn btn-article" href="https://japaholic.com/tw/article/detail/944315" target="_blank">🔗 Japaholic 專題報導</a>
+            <a class="btn btn-article" href="https://www.storm.mg/lifestyle/11151973" target="_blank">🔗 風傳媒 相關報導</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
