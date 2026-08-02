@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《思考的藝術》+《行為的藝術》104 個非受迫性認知與行為偏誤全景總拆解</title>
+<style>
+  :root {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2a2a2a;
+    --accent-color: #00adb5;
+    --accent-hover: #00fff5;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --border-color: #333333;
+    --highlight-bg: #22333b;
+    --quote-bg: #1a262c;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", "PingFang HK", "Microsoft JhengHei", sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.8;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 25px 80px 25px;
+  }
+
+  header {
+    text-align: center;
+    padding: 40px 0 30px 0;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 30px;
+  }
+
+  h1 {
+    color: #ffffff;
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+  }
+
+  .subtitle {
+    color: var(--accent-color);
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+
+  .book-ref-link {
+    margin-top: 15px;
+    font-size: 0.95rem;
+  }
+
+  .book-ref-link a, a.ext-link {
+    color: var(--accent-hover);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+
+  .book-ref-link a:hover, a.ext-link:hover {
+    color: #ffffff;
+  }
+
+  /* Sticky Navigation Bar */
+  nav.toc-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 20px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .toc-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .toc-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 5px 12px;
+    background-color: var(--bg-tertiary);
+    border-radius: 18px;
+    transition: all 0.2s ease;
+    border: 1px solid var(--border-color);
+  }
+
+  .toc-link:hover {
+    background-color: var(--accent-color);
+    color: #121212;
+    font-weight: bold;
+  }
+
+  section {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 35px;
+    border: 1px solid var(--border-color);
+  }
+
+  h2 {
+    color: var(--accent-color);
+    font-size: 1.55rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-top: 0;
+  }
+
+  h3 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+  }
+
+  h3::before {
+    content: "■";
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    margin-right: 10px;
+  }
+
+  p {
+    margin-bottom: 15px;
+    text-align: justify;
+  }
+
+  ul, ol {
+    padding-left: 25px;
+    margin-bottom: 20px;
+  }
+
+  li {
+    margin-bottom: 8px;
+  }
+
+  blockquote {
+    background-color: var(--quote-bg);
+    border-left: 4px solid var(--accent-color);
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #d0d0d0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+  }
+
+  th {
+    background-color: #24343d;
+    color: var(--accent-hover);
+    font-weight: 600;
+  }
+
+  tr:hover {
+    background-color: rgba(0, 173, 181, 0.05);
+  }
+
+  .cantonese-highlight {
+    color: #ffd369;
+    font-weight: 500;
+  }
+
+  .book-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-right: 6px;
+  }
+
+  .tag-thinking {
+    background-color: #1a3a4b;
+    color: #00fff5;
+    border: 1px solid #00adb5;
+  }
+
+  .tag-acting {
+    background-color: #3d2b1f;
+    color: #ff9f43;
+    border: 1px solid #ee5253;
+  }
+
+  .back-to-top {
+    text-align: right;
+    font-size: 0.85rem;
+  }
+
+  .back-to-top a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .back-to-top a:hover {
+    color: var(--accent-color);
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border-color);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header id="top">
+    <h1>《思考的藝術》+《行為的藝術》雙璧合璧</h1>
+    <div class="subtitle">104 個非受迫性認知與行為偏誤全景廣東話拆解、決策架構與反思指南</div>
+    <div class="book-ref-link">
+      📖 原著英文書單與延伸參考：<a href="https://meaningring.com/2016/06/10/book040-the-art-of-thinking-clearly/" target="_blank" rel="noopener noreferrer">The Art of Thinking Clearly by Rolf Dobelli</a>
+    </div>
+  </header>
+</div>
+
+<nav class="toc-nav">
+  <div class="toc-container">
+    <a href="#intro" class="toc-link">導言：雙書底層邏輯</a>
+    <a href="#cat1" class="toc-link">一、統計盲區與機率扭曲</a>
+    <a href="#cat2" class="toc-link">二、敘事因果與認知幻覺</a>
+    <a href="#cat3" class="toc-link">三、心理帳戶與價值評估</a>
+    <a href="#cat4" class="toc-link">四、社交制約與群體盲從</a>
+    <a href="#cat5" class="toc-link">五、自我防禦與控制錯覺</a>
+    <a href="#cat6" class="toc-link">六、行動癱瘓與執行陷阱</a>
+    <a href="#framework" class="toc-link">實戰矩陣與反思清單</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- 導言 -->
+  <section id="intro">
+    <h2>導言：從「知錯」到「改行」的104個進化陷阱</h2>
+    <p>瑞士知名作家羅夫·杜伯里（Rolf Dobelli）嘅兩本代表作——《思考的藝術》（<em>Die Kunst des klaren Denkens / <a href="https://meaningring.com/2016/06/10/book040-the-art-of-thinking-clearly/" target="_blank" rel="noopener noreferrer" class="ext-link">The Art of Thinking Clearly</a></em>）與《行為的藝術》（<em>Die Kunst des klugen Handelns / The Art of Acting Clearly</em>），合共組成了 104 個人類演化過程留落嚟嘅非受迫性偏誤（Unforced Errors）。</p>
+    
+    <p>如果話《思考的藝術》側重喺<span class="cantonese-highlight">「我哋點樣睇錯個世界」（認知資訊過濾、機率誤判）</span>，咁《行為的藝術》就進一步剖析<span class="cantonese-highlight">「我哋點樣喺執行與行動上自爆」（行動癱瘓、戰略失誤、自我麻痺）</span>。兩本書相互呼應，構建咗一套極之完備嘅行為經濟學與心理學反思圖譜。</p>
+
+    <blockquote>
+      <strong>廣東話點解：</strong>「思考錯誤係你對眼有白內障，睇嘢扭曲；行為偏誤係你明知前面有坑，個腳骨力仲硬係要踩落去。兩者合體，就係人類日常『作死』嘅全貌。」
+    </blockquote>
+
+    <p>本文將兩本書共 104 個偏誤進行系統化重新歸類與深度融合，分為六大維度，用最接地氣嘅廣東話與硬核邏輯進行全景拆解！詳細原著章節對照亦可參考 <a href="https://meaningring.com/2016/06/10/book040-the-art-of-thinking-clearly/" target="_blank" rel="noopener noreferrer" class="ext-link">The Art of Thinking Clearly 英文版目錄連結</a>。</p>
+  </section>
+
+  <!-- 第一類 -->
+  <section id="cat1">
+    <h2>一、統計盲區與機率扭曲（Statistical & Probability Blindspots）</h2>
+    <p>人類大腦係線性思考器，對於隨機性、概率基數與極端統計極度不敏感。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 01</span> <a href="https://meaningring.com/2016/03/03/why-you-should-visit-cemeteries-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">存活者偏誤 (Survivorship Bias)</a></h3>
+    <p>只見光鮮嘅成功者，無視底下龐大嘅沉默墓園。評估勝率必須去「墓仔埔」睇失敗者。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 02</span> <a href="https://meaningring.com/2016/03/04/does-harvard-make-you-smarter-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">泳將身材的錯覺 (Swimmer’s Body Illusion)</a></h3>
+    <p>混淆「選擇標準」與「結果」。游泳選手身材好係因為天生條件適合游泳，而非游泳變好。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 11</span> <a href="https://meaningring.com/2016/03/13/why-we-prefer-a-wrong-map-to-none-at-all-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">現成偏誤 (Availability Bias)</a></h3>
+    <p>靠記憶提取嘅難易度來評估風險。畫面震撼嘅飛機失事比的士車禍更令人害怕，即使概率極低。</p>
+
+    <h3><span class="book-tag tag-acting">行為 11</span> <a href="https://meaningring.com/2016/05/02/the-law-of-small-numbers-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">小數法則 (Law of Small Numbers)</a></h3>
+    <p><strong>現象拆解：</strong>當樣本數極小（例如只有 10 個人或小分店），統計結果極容易出現極端值。小分店績效第一不代表它管理好，只係因為樣本小、波動大。</p>
+    <p><strong>廣東話精髓：</strong><span class="cantonese-highlight">「基數太細，個數據靚一靚都係假象。」</span></p>
+
+    <h3><span class="book-tag tag-thinking">思考 26</span> <a href="https://meaningring.com/2016/03/28/neglect-of-probability-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">輕忽機率偏誤 (Neglect of Probability)</a></h3>
+    <p>對機率大小不敏感，只對「會發生」或「不會發生」有情緒反應。彩金加倍就瘋狂，無視中獎率已被稀釋。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 27</span> 零風險偏誤 (Zero-Risk Bias)</h3>
+    <p>寧願花巨資把 1% 風險降到 0%，都不願花少量錢把 90% 風險降到 10%。病態追求絕對安全。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 29</span> <a href="https://meaningring.com/2016/03/30/base-rate-neglect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">忽視基本比率 (Base-Rate Neglect)</a></h3>
+    <p>忽視背景概率（Base Rate）。罕見病發病率只有 0.1%，即使檢測準確率 99%，測出陽性依然大概率沒病。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 30</span> <a href="https://meaningring.com/2016/03/31/gamblers-fallacy-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">賭徒謬誤 (Gambler’s Fallacy)</a></h3>
+    <p>以為連續開 10 次紅，下一次開黑機率會變大。大腦誤以為宇宙有平衡命運嘅力量。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 35</span> <a href="https://meaningring.com/2016/04/05/exponential-growth-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">指數增長 (Exponential Growth)</a></h3>
+    <p>直覺係線性，無法理解幾何級數。紙張對摺 50 次厚度能到太陽；完全低估複利與通脹嘅威力。</p>
+
+    <h3><span class="book-tag tag-acting">行為 04</span> <a href="https://meaningring.com/2016/04/26/the-problem-with-averages-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">平均的問題 (The Problem of Average)</a></h3>
+    <p><strong>現象拆解：</strong>「平均數」會掩蓋極端風險。如果比爾·蓋茨走進一家酒吧，酒吧內顧客嘅「平均資產」點算？立刻突破億萬，但其他人依然係窮人。不要雙腳跨過平均深度 1 米的河流，因為中間可能深 5 米。</p>
+
+    <h3><span class="book-tag tag-acting">行為 26</span> <a href="https://meaningring.com/2016/05/16/the-black-swan-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">黑天鵝效應 (Black Swan)</a></h3>
+    <p>極罕見、衝擊力極大、且事後會被合理化嘅事件。人類過去嘅經驗完全無法預測黑天鵝，必須建立極度韌性（Antifragile）。</p>
+
+    <h3><span class="book-tag tag-acting">行為 51</span> <a href="https://meaningring.com/2016/06/08/intention-to-treat-error-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">治療意向錯誤 (Intention-To-Treat-Error)</a></h3>
+    <p><strong>現象拆解：</strong>統計研究時，研究者往往把中途退出或死亡嘅樣本踢出統計，導致結果嚴重偏頗。例如「賽車手係較安全駕駛人」，因為最差嘅賽車手早就在比賽中車禍身亡，沒被統計進去。</p>
+
+    <div class="back-to-top"><a href="#top">↑ 返回頂部</a></div>
+  </section>
+
+  <!-- 第二類 -->
+  <section id="cat2">
+    <h2>二、敘事因果與認知幻覺（Narrative, Causality & Blindness）</h2>
+    <p>人類強行給混亂世界套上因果，並且對看不到、沒發生、或過於簡化的事物產生盲區。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 13</span> <a href="https://meaningring.com/2016/03/15/even-true-stories-are-fairy-tales-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">故事偏誤 (Story Bias)</a></h3>
+    <p>用簡化故事取代複雜現實。聽落合邏輯嘅故事，往往遮蔽咗多變量嘅真實世界。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 14</span> <a href="https://meaningring.com/2016/03/16/why-you-should-keep-a-diary-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">後見之明偏誤 (Hindsight Bias)</a></h3>
+    <p>事後諸葛亮。事後覺得「我早就知道會咁」，修改記憶以維持自我英明感。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 38</span> <a href="https://meaningring.com/2016/04/08/false-causality-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">錯誤的因果關係 (False Causality)</a></h3>
+    <p>把相關性當因果性。聽莫札特嘅小朋友成績好，真相係家境富裕，而非音樂本身。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 42</span> <a href="https://meaningring.com/2016/04/12/conjunction-fallacy-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">聯結謬誤 (Conjunction Fallacy)</a></h3>
+    <p>情節越具體豐富，大腦越覺得真；但數學上，條件越多，同時成立嘅機率越低。</p>
+
+    <h3><span class="book-tag tag-acting">行為 09</span> <a href="https://meaningring.com/2016/03/05/why-you-see-shapes-in-the-clouds-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">群聚錯覺 (Clustering Illusion)</a></h3>
+    <p><strong>現象拆解：</strong>在隨機排列嘅點陣或雲朵中看見規律（例如在月亮看到一張臉，在股票圖表看見必勝型態）。大腦無法接受純粹嘅隨機（Noise），一定要找出 Pattern。</p>
+
+    <h3><span class="book-tag tag-acting">行為 14</span> <a href="https://meaningring.com/2016/05/05/forer-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">福勒效應 / 巴納姆效應 (Forer Effect)</a></h3>
+    <p><strong>現象拆解：</strong>星座與算命騙局嘅底層邏輯。拿一套放諸四海皆準、模稜兩可嘅廢話（如「你外表堅強但內心脆弱」），每個人都會覺得「超準！這就是我！」</p>
+
+    <h3><span class="book-tag tag-acting">行為 20</span> <a href="https://meaningring.com/2016/05/11/sleeper-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">睡眠效應 (Sleeper Effect)</a></h3>
+    <p><strong>現象拆解：</strong>宣傳與洗腦嘅長期效應。我們剛開始會因為來源不可靠（如劣質媒體）而拒絕某種觀點，但隨著時間推移，大腦會忘記「資訊來源」，只留下「觀點內容」，最後相信咗假新聞。</p>
+
+    <h3><span class="book-tag tag-acting">行為 21</span> <a href="https://meaningring.com/2016/05/12/alternative-blindness-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">選擇盲從性 (Alternative Blindness)</a></h3>
+    <p><strong>現象拆解：</strong>評估方案時，我們只拿 A 與 B 比，完全無視存在選項 C、D、E 甚至「不做」。我們習慣喺給定嘅極窄框架內做選擇。</p>
+
+    <h3><span class="book-tag tag-acting">行為 27</span> <a href="https://meaningring.com/2016/05/17/domain-dependence-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">領域依賴性 (Domain Dependence)</a></h3>
+    <p><strong>現象拆解：</strong>知識無法跨領域轉移。一個在金融市場冷靜理性嘅頂尖交易員，回到家中可能被騙子騙走一生積蓄；在課堂懂理論，在實戰完全失效。</p>
+
+    <h3><span class="book-tag tag-acting">行為 34</span> <a href="https://meaningring.com/2016/05/24/salience-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">顯著性效果 (Salience Effect)</a></h3>
+    <p><strong>現象拆解：</strong>特別引人注目、鮮艷或突出嘅特徵（如明星嘅醜聞、特別突出的顏色），會搶走我們所有注意力，讓我們忽視背後真正重要但平淡嘅底層因素。</p>
+
+    <h3><span class="book-tag tag-acting">行為 39</span> <a href="https://meaningring.com/2016/05/28/personification-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">擬人化 (Personification)</a></h3>
+    <p><strong>現象拆解：</strong>我們對抽象數據無感，但對具體有血有肉嘅個體極具同理心。冷冰冰嘅「災民人數 10,000 人」不如一個小女孩哭泣嘅故事更能引發捐款。</p>
+
+    <h3><span class="book-tag tag-acting">行為 41</span> <a href="https://meaningring.com/2016/05/29/illusion-of-attention-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">注意力錯覺 (Illusion of Attention)</a></h3>
+    <p><strong>現象拆解：</strong>經典「隱形猩猩實驗」。當我們極度專注於數籃球傳球次數時，即使一隻大猩猩走過鏡頭，我們也完全看不見。我們只看得見我們正在尋找的東西。</p>
+
+    <h3><span class="book-tag tag-acting">行為 48</span> <a href="https://meaningring.com/2016/06/05/feature-positive-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">正面特點效應 (Feature Positive Effect)</a></h3>
+    <p><strong>現象拆解：</strong>我們只會注意到「存在的事物（Presence）」，無視「不存在的事物（Absence）」。醫生容易注意到出現嘅症狀，忽視沒出現嘅症狀；我們抱怨沒發生的好事，無視災難沒發生的幸運。</p>
+
+    <h3><span class="book-tag tag-acting">行為 49</span> <a href="https://meaningring.com/2016/06/06/cherry-picking-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">撿櫻桃 (Cherry Picking)</a></h3>
+    <p><strong>現象拆解：</strong>先射飛鏢再畫靶。機構展示業績時，只挑選表現最好嘅基金或數據，隱藏失敗案例，營造完美的假象。</p>
+
+    <h3><span class="book-tag tag-acting">行為 50</span> <a href="https://meaningring.com/2016/06/07/fallacy-of-the-single-cause-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">單因謬誤 (Fallacy of the Single Cause)</a></h3>
+    <p><strong>現象拆解：</strong>把極度複雜、多變量交織嘅結果（如二戰爆發、股市崩盤），歸咎於單一原因（例如「都是因為某某政策」）。尋找單一代罪羔羊係石器時代大腦嘅簡化本能。</p>
+
+    <div class="back-to-top"><a href="#top">↑ 返回頂部</a></div>
+  </section>
+
+  <!-- 第三類 -->
+  <section id="cat3">
+    <h2>三、心理帳戶與價值評估（Valuation, Anchors & Loss）</h2>
+    <p>價值從來不是客觀的。時間、金錢、沉沒成本與選擇框架，隨時隨地在扭曲我們的價值判斷。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 05</span> <a href="https://meaningring.com/2016/03/07/why-you-should-forget-the-past-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">沉沒成本謬誤 (Sunk Cost Fallacy)</a></h3>
+    <p>因為已投入資源而捨不得止損。決策應只睇未來的邊際成本與收益。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 10</span> <a href="https://meaningring.com/2016/03/12/leave-your-supermodel-friends-at-home-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">對比效應 (Contrast Effect)</a></h3>
+    <p>沒有絕對標準。買 10,000 元西裝時，覺得 500 元領帶便宜；單買領帶卻覺得貴。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 21</span> <a href="https://meaningring.com/2016/03/23/paradox-of-choice-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">選擇的弔詭 (Paradox of Choice)</a></h3>
+    <p>選擇越多，分析癱瘓，滿意度越低。少即是多。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 23</span> <a href="https://meaningring.com/2016/03/25/endowment-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">稟賦效應 (Endowment Effect)</a></h3>
+    <p>一旦擁有某物，對其估值瞬間暴增。捨不得扔垃圾或高價賣中古車。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 28</span> <a href="https://meaningring.com/2016/03/29/scarcity-error-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">稀少性謬誤 (Scarcity Error)</a></h3>
+    <p>「限時限量」觸發搶奪本能。我們想要某物，往往只因它快沒有了。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 31</span> <a href="https://meaningring.com/2016/04/01/the-anchor-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">錨定 (The Anchor)</a></h3>
+    <p>不確定時，大腦抓住隨機數字作為錨點，影響後續定價判斷。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 33</span> <a href="https://meaningring.com/2016/04/03/loss-aversion-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">損失規避 (Loss Aversion)</a></h3>
+    <p>失去的痛感是獲得快感的 2 倍。導致投資賺少許就急賣，虧損死抱。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 43</span> <a href="https://meaningring.com/2016/04/13/framing-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">框架 (Framing)</a></h3>
+    <p>表達方式改變決策。「90% 存活率」聽起來像福音，「10% 死亡率」像毒藥。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 52</span> <a href="https://meaningring.com/2016/04/22/hyperbolic-discounting-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">雙曲貼現 (Hyperbolic Discounting)</a></h3>
+    <p>極度重即時滿足。寧要今天 100，不要明天 110；導致儲蓄與減肥極難。</p>
+
+    <h3><span class="book-tag tag-acting">行為 03</span> <a href="https://meaningring.com/2016/04/25/contagion-bias-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">傳染性偏見 (Contagion Bias)</a></h3>
+    <p><strong>現象拆解：</strong>情感與屬性會像病毒一樣「傳染」。即使一件毛衛衣洗得再乾淨、完全無菌，只要告訴你「這件毛衣希特勒穿過」，你依然極度拒絕穿上。我們被神秘主義感官控制。</p>
+
+    <h3><span class="book-tag tag-acting">行為 10</span> <a href="https://meaningring.com/2016/05/01/effort-justification-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">勞力辯證 (Effort Justification)</a></h3>
+    <p><strong>現象拆解：</strong>「宜家效應」（IKEA Effect）。越係辛苦得嚟、親手組裝嘅家具或經歷，我們越會盲目給予極高評價，因為大腦需要證明自己的辛苦沒有白費。</p>
+
+    <h3><span class="book-tag tag-acting">行為 19</span> <a href="https://meaningring.com/2016/05/10/neomania-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">嗜新狂 (Neomania)</a></h3>
+    <p><strong>現象拆解：</strong>盲目崇拜「最新」嘅科技或產品，以為新的一定比舊的好。但塔勒布（Taleb）嘅「林迪效應」（Lindy Effect）表明：技術存在越久，未來存活時間越長；古典作品比當代暢銷書更能經受時間考驗。</p>
+
+    <h3><span class="book-tag tag-acting">行為 25</span> <a href="https://meaningring.com/2016/05/15/not-invented-here-syndrome-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">非我發明症候群 (Not-Invented-Here Syndrome)</a></h3>
+    <p><strong>現象拆解：</strong>「自己煮嘅麵最好食，自己寫嘅方案最完美」。我們傾向排斥外來嘅點子，極度偏愛自己團隊或自己腦袋想出來嘅產物。</p>
+
+    <h3><span class="book-tag tag-acting">行為 36</span> <a href="https://meaningring.com/2016/05/25/house-money-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">私房錢效應 / 賭場錢效應 (House-Money Effect)</a></h3>
+    <p><strong>現象拆解：</strong>把意外之財（如賭場贏嚟嘅錢、股票賺嘅快錢、退稅）放在獨立嘅「心理帳戶」，消費或冒險時極度大方，視為「免費嘅錢」，最終迅速揮霍一空。</p>
+
+    <h3><span class="book-tag tag-acting">行為 38</span> <a href="https://meaningring.com/2016/05/27/envy-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">嫉妒 (Envy)</a></h3>
+    <p><strong>現象拆解：</strong>我們不會嫉妒遙遠嘅億萬富翁（如馬斯克），但會極度嫉妒身邊表現比自己好少少嘅同事、朋友或鄰居。嫉妒係針對「同一個圈子」嘅內耗情緒。</p>
+
+    <div class="back-to-top"><a href="#top">↑ 返回頂部</a></div>
+  </section>
+
+  <!-- 第四類 -->
+  <section id="cat4">
+    <h2>四、社交制約與群體盲從（Social Influence & Group Behavior）</h2>
+    <p>為了在部落中生存，我們的大腦被硬編碼去討好群體、屈服權威、並盲目排外。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 04</span> <a href="https://meaningring.com/2016/03/06/if-fifty-million-people-say-something-foolish-it-is-still-foolish-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">社會認同 (Social Proof)</a></h3>
+    <p>羊群心理。大家做就跟著做，百萬人做蠢事，蠢事依然係蠢事。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 06</span> <a href="https://meaningring.com/2016/03/08/dont-accept-free-drinks-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">互惠 (Reciprocity)</a></h3>
+    <p>免費試用裝引發強烈虧欠感，迫使你答應不合理要求。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 09</span> <a href="https://meaningring.com/2016/03/11/dont-bow-to-authority-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">權威偏誤 (Authority Bias)</a></h3>
+    <p>在專家或高層面前自動關閉批判思考。米爾格倫電擊實驗。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 22</span> <a href="https://meaningring.com/2016/03/24/liking-bias-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">討喜偏誤 (Liking Bias)</a></h3>
+    <p>越喜歡一個人，越容易相信他。外貌、相似性與恭維係三大武器。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 25</span> <a href="https://meaningring.com/2016/03/27/groupthink-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">團體迷思 (Groupthink)</a></h3>
+    <p>同質化團隊為了表面和諧，無人敢提異議，導致狂妄崩潰決策。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 34</span> <a href="https://meaningring.com/2016/04/04/social-loafing-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">社會性懈怠 (Social Loafing)</a></h3>
+    <p>搭便車。團隊越大，個人越偷懶，責任被稀釋。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 39</span> <a href="https://meaningring.com/2016/04/09/halo-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">月暈效應 (Halo Effect)</a></h3>
+    <p>以偏概全。長得好看自動被推論為品德好、能力強。</p>
+
+    <h3><span class="book-tag tag-acting">行為 01</span> <a href="https://meaningring.com/2016/04/23/because-justification-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">理由的正當性 (Because-Justification)</a></h3>
+    <p><strong>現象拆解：</strong>排隊時只要你講句「因為...」（例如：因為我趕時間），就算理由極度爛或無意義，別人答應你插隊嘅機率會暴增。大腦對「Because」這個詞有條件反射式嘅服從。</p>
+
+    <h3><span class="book-tag tag-acting">行為 05</span> <a href="https://meaningring.com/2016/04/27/motivation-crowding-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">誘因排擠 (Motivation Crowding)</a></h3>
+    <p><strong>現象拆解：</strong>引入金錢獎勵反而毀掉內在動力！例如：志工本來出於善意幫忙，如果你給他極微薄嘅車馬費，他反而覺得被侮辱而拒絕幫忙；托兒所對遲到家長罰款，家長反而理直氣壯遲到（因為變成了付費服務）。</p>
+
+    <h3><span class="book-tag tag-acting">行為 06</span> <a href="https://meaningring.com/2016/04/28/twaddle-tendency-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">廢話潮流 (Twaddle Tendency)</a></h3>
+    <p><strong>現象拆解：</strong>用大量空洞、高深莫測嘅專業術語（Bullshit）包裝無知。越係沒實料嘅人，越喜歡用廢話掩飾思想嘅貧瘠。</p>
+
+    <h3><span class="book-tag tag-acting">行為 15</span> <a href="https://meaningring.com/2016/05/06/volunteers-folly-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">志工的愚蠢 (Volunteer’s Folly)</a></h3>
+    <p><strong>現象拆解：</strong>一個頂尖律師如果花 2 小時去街頭掃街（替代清潔工），係極度低效嘅。他應該用 2 小時賺取律師費，然後將錢捐出嚟聘用 10 個清潔工。除非你是大明星能帶來新聞效應，否則普通人不要盲目做體力志工。</p>
+
+    <h3><span class="book-tag tag-acting">行為 22</span> <a href="https://meaningring.com/2016/05/13/social-comparison-bias-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">社會比較偏差 (Social Comparison Bias)</a></h3>
+    <p><strong>現象拆解：</strong>拒絕推薦或提拔比自己優秀嘅新人，害怕對方威脅自己地位。這種傾向會導致整個組織迅速平庸化（A 級人才招 A+，B 級人才招 C 級）。</p>
+
+    <h3><span class="book-tag tag-acting">行為 28</span> <a href="https://meaningring.com/2016/05/18/false-consensus-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">假共識效應 (False-Consensus Effect)</a></h3>
+    <p><strong>現象拆解：</strong>過度高估別人與自己觀點一致嘅比例。喜歡吃辣的人以為大家都喜歡辣；支持某政治觀點的人以為全世界都認同他。</p>
+
+    <h3><span class="book-tag tag-acting">行為 30</span> <a href="https://meaningring.com/2016/05/20/in-group-out-group-bias-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">圈內圈外偏見 (In-Group Out-Group Bias)</a></h3>
+    <p><strong>現象拆解：</strong>只要隨機分組（例如支持不同足球隊），我們就會盲目偏愛「圈內人（In-Group）」，並對「圈外人（Out-Group）」產生敵意與偏見。部落主義嘅遺毒。</p>
+
+    <h3><span class="book-tag tag-acting">行為 42</span> <a href="https://meaningring.com/2016/05/30/strategic-misrepresentation-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">策略性不實陳述 (Strategic Misrepresentation)</a></h3>
+    <p><strong>現象拆解：</strong>在競標、大型工程（如港珠澳大橋、高鐵）或求職時，故意大幅低估成本、高估收益。因為吹噓得最誇張的人才能拿到項目，過後再不斷追加預算。</p>
+
+    <div class="back-to-top"><a href="#top">↑ 返回頂部</a></div>
+  </section>
+
+  <!-- 第五類 -->
+  <section id="cat5">
+    <h2>五、自我防禦與控制錯覺（Self-Defense & Ego Blindspots）</h2>
+    <p>為了維護自尊與虛假嘅掌控感，大腦會扭曲記憶、忽略事實、甚至自欺欺人。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 03</span> <a href="https://meaningring.com/2016/03/17/why-you-systematically-overestimate-your-knowledge-and-abilities-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">過度自信效應 (Overconfidence Effect)</a></h3>
+    <p>系統性高估能力。80% 司機自認技術高於平均。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 07 & 08</span> <a href="https://meaningring.com/2016/03/09/beware-the-special-case-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">確認偏誤 (Confirmation Bias Part 1)</a> / <a href="https://meaningring.com/2016/03/10/murder-your-darlings-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link"> Part 2</a></h3>
+    <p>偏誤之王！只看符合觀點嘅證據，無視反駁證據。幹掉你的寶貝。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 15</span> <a href="https://meaningring.com/2016/03/18/dont-take-news-anchors-seriously-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">司機的知識 (Chauffeur Knowledge)</a></h3>
+    <p>區分真知與只擅長背誦名詞演戲嘅司機知識。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 16</span> <a href="https://meaningring.com/2016/03/19/illusion-of-control-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">控制的錯覺 (Illusion of Control)</a></h3>
+    <p>以為能控制機率事件。過馬路安撫按鈕與用力擲骰子。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 18</span> <a href="https://meaningring.com/2016/03/21/regression-to-mean-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">均值迴歸 (Regression to Mean)</a></h3>
+    <p>極端表現必然回歸平均值。誤以為罵學生或吃草藥有效。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 46</span> <a href="https://meaningring.com/2016/04/16/self-serving-bias-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">自利偏誤 (Self-Serving Bias)</a></h3>
+    <p>成功歸自己能力，失敗歸外在環境。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 51</span> <a href="https://meaningring.com/2016/04/21/cognitive-dissonance-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">認知失調 (Cognitive Dissonance)</a></h3>
+    <p>吃不到葡萄說葡萄酸。修改價值觀以消除現實衝突痛苦。</p>
+
+    <h3><span class="book-tag tag-acting">行為 07</span> <a href="https://meaningring.com/2016/04/29/will-rogers-phenomenon-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">威爾·羅傑斯現象 (Will Rogers Phenomenon)</a></h3>
+    <p><strong>現象拆解：</strong>「階段遷移」（Stage Migration）。把集合 A 中低於平均但高於集合 B 平均嘅元素從 A 移到 B，兩個集合嘅平均值會同時提高！例如把低風險癌症病人從「健康組」移到「生病組」，兩組嘅平均壽命數據都會變靚，但事實上沒有任何人被治癒。</p>
+
+    <h3><span class="book-tag tag-acting">行為 17</span> <a href="https://meaningring.com/2016/05/08/introspection-illusion-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">內省錯覺 (Introspection Illusion)</a></h3>
+    <p><strong>現象拆解：</strong>堅信「只要我深刻反省、剖析內心，我就能找到真相」。事實上，內省只係自我合理化（Rationalization）嘅過程。你看不到自己的盲點，你對自己的了解往往不如客觀第三者。</p>
+
+    <h3><span class="book-tag tag-acting">行為 23</span> <a href="https://meaningring.com/2016/05/14/primacy-and-recency-effects-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">首因效應與時近效應 (Primacy and Recency Effects)</a></h3>
+    <p><strong>現象拆解：</strong>最先出現嘅資訊（第一印象，首因）與最後出現嘅資訊（剛剛發生，時近）會占據記憶；中間嘅資訊全部被忽略。</p>
+
+    <h3><span class="book-tag tag-acting">行為 24</span> 放血效應 (Bloodletting Effect)</h3>
+    <p><strong>現象拆解：</strong>中世紀醫生用放血療法害死無數人，卻堅持咗幾百年。當一個理論（或商業模式）完全錯漏百出，只要沒有替代方案，人類依然會執迷不悟地繼續執行愚昧。</p>
+
+    <h3><span class="book-tag tag-acting">行為 29</span> <a href="https://meaningring.com/2016/05/19/falsification-of-history-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">歷史修正 (Falsification of History)</a></h3>
+    <p><strong>現象拆解：</strong>大腦會偷偷修改記憶，讓你以為自己「過去嘅觀點」與「現在完全一致」。我們無法準確記起自己在 10 年前的真實想法與愚蠢判斷。</p>
+
+    <h3><span class="book-tag tag-acting">行為 40</span> 「那殺不死我的，將使我更強壯」的謬論</h3>
+    <p><strong>現象拆解：</strong>尼采名言嘅迷思。危機極少讓人變強，通常只會讓人殘廢、創傷（PTSD）或破產。倖存者變強只係「存活者偏誤」，死掉的人根本無法說話。</p>
+
+    <h3><span class="book-tag tag-acting">行為 45</span> <a href="https://meaningring.com/2016/06/02/deformation-professionnelle-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">專業曲解 (Déformation Professionnelle)</a></h3>
+    <p><strong>現象拆解：</strong>馬斯洛名言：「手拿錘子的人，看什麼都像釘子。」醫師用疾病角度看人，工程師用系統漏洞看人，金融家用資本角度看人。專業狹隘性限制咗對全貌嘅認知。</p>
+
+    <h3><span class="book-tag tag-acting">行為 47</span> <a href="https://meaningring.com/2016/06/04/illusion-of-skill-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">能力錯覺 (Illusion of Skill)</a></h3>
+    <p><strong>現象拆解：</strong>許多行業（如對沖基金經理、選股專家）嘅長期績效純粹係隨機運氣，但從業者卻堅信係自己嘅「高超技術」。懂得划船不如選對一艘順水漂流嘅船（趨勢）。</p>
+
+    <div class="back-to-top"><a href="#top">↑ 返回頂部</a></div>
+  </section>
+
+  <!-- 第六類 -->
+  <section id="cat6">
+    <h2>六、行動癱瘓與執行陷阱（Execution, Action & Information Overload）</h2>
+    <p>明知正確方向卻無法執行，或者在錯誤方向上越忙越亂。這係《行為的藝術》獨有的硬核實戰剖析。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 20</span> <a href="https://meaningring.com/2016/03/22/outcome-bias-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">結果偏誤 (Outcome Bias)</a></h3>
+    <p>單憑結果論英雄。酒駕安全返家不代表酒駕對；精準決策因天災虧損不代表決策錯。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 44</span> <a href="https://meaningring.com/2016/04/14/action-bias-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">行動偏誤 (Action Bias)</a></h3>
+    <p>不確定時強行「做點事」。守門員撲罰球亂跳，因為靜觀其變罪惡感太強。</p>
+
+    <h3><span class="book-tag tag-thinking">思考 45</span> <a href="https://meaningring.com/2016/04/15/omission-bias-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">不作為偏誤 (Omission Bias)</a></h3>
+    <p>認為「做錯」比「不做而錯」更罪過。寧願按兵不動、抱殘守缺。</p>
+
+    <h3><span class="book-tag tag-acting">行為 02</span> <a href="https://meaningring.com/2016/04/24/decision-fatigue-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">決策疲勞 (Decision Fatigue)</a></h3>
+    <p><strong>現象拆解：</strong>意志力係消耗品！做決策會消耗血糖與意志力。假釋法官在清晨或食完午飯後批準假釋嘅機率高達 65%，但在傍晚精神疲憊時，批準率驟降到 0%（直接選預設值：拒絕）。重大決策不要喺累嘅時候做！</p>
+
+    <h3><span class="book-tag tag-acting">行為 08</span> <a href="https://meaningring.com/2016/04/30/information-bias-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">資訊偏差 (Information Bias)</a></h3>
+    <p><strong>現象拆解：</strong>以為「資訊越多，決策越準」。事實上，超過臨界點後，額外嘅資訊只會增加噪音、浪費時間、並帶來虛假嘅安全感。精簡關鍵數據遠勝資訊大海。</p>
+
+    <h3><span class="book-tag tag-acting">行為 12</span> <a href="https://meaningring.com/2016/05/03/expectations-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">期待 (Expectations)</a></h3>
+    <p><strong>現象拆解：</strong>「安慰劑效應」（Placebo Effect）與「羅森塔爾效應」（Pygmalion Effect）。期待能改變生理與行為，但過高嘅期待係絕望嘅源頭。善用期待，但保持現實。</p>
+
+    <h3><span class="book-tag tag-acting">行為 13</span> <a href="https://meaningring.com/2016/05/04/simple-logic-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">簡單的邏輯 (Simple Logic)</a></h3>
+    <p><strong>現象拆解：</strong>CRT 認知反射測試（如：球棒與球共 1.1 美元，球棒比球貴 1 美元，球多少錢？直覺答 0.1 美元係錯嘅，答案係 0.05 美元）。不要相信每一個直覺，直覺常喺簡單邏輯上栽跟頭。</p>
+
+    <h3><span class="book-tag tag-acting">行為 16</span> <a href="https://meaningring.com/2016/05/07/affect-heuristic-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">情意的捷徑 (Affect Heuristic)</a></h3>
+    <p><strong>現象拆解：</strong>我們不是根據「理性利弊」做決定，而是根據「喜歡/討厭（Like/Dislike）」嘅情緒感覺。喜歡就放大收益、忽視風險；討厭就視為一無是處。</p>
+
+    <h3><span class="book-tag tag-acting">行為 18</span> <a href="https://meaningring.com/2016/05/09/inability-to-close-doors-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">無法關上機會之門 (Inability to Close Doors)</a></h3>
+    <p><strong>現象拆解：</strong>希望保留所有可能性（Keep options open），結果分散精力，在所有領域都平庸。項羽破釜沉舟、曹操燒船，唯有主動關上後路，才能專注突破。</p>
+
+    <h3><span class="book-tag tag-acting">行為 31</span> <a href="https://meaningring.com/2016/05/21/ambiguity-aversion-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">對模糊的無法容忍度 (Ambiguity Aversion)</a></h3>
+    <p><strong>現象拆解：</strong>我們喜歡已知嘅風險（如擲骰子知道機率），極度厭惡「未知嘅模糊」（連機率都不知道）。這導致我們不敢探索全新領域或進行顛覆式創新。</p>
+
+    <h3><span class="book-tag tag-acting">行為 32</span> <a href="https://meaningring.com/2016/05/22/default-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">預設值效應 (Default Effect)</a></h3>
+    <p><strong>現象拆解：</strong>安於現狀。只要選項上有「預設勾選（Default）」，90% 的人都懶得去改。器官捐贈率高的國家，只係因為預設值係「同意」。</p>
+
+    <h3><span class="book-tag tag-acting">行為 33</span> <a href="https://meaningring.com/2016/05/23/fear-of-regret-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">對懊悔的恐懼 (Fear of Regret)</a></h3>
+    <p><strong>現象拆解：</strong>害怕做出改變後會後悔，導致癱瘓在原地。「最後機會」嘅行銷話術正是利用這點讓你失理智。</p>
+
+    <h3><span class="book-tag tag-acting">行為 35</span> 知識的另一面 (The Other Side of Knowledge)</h3>
+    <p><strong>現象拆解：</strong>文字與理論知識（Formal Knowledge）被嚴重高估，而實踐經驗與默會知識（Tacit Knowledge，如騎單車、飛行員操作）無法被書本取代。坐而言不如起而行。</p>
+
+    <h3><span class="book-tag tag-acting">行為 37</span> <a href="https://meaningring.com/2016/05/26/procrastination-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">拖延症 (Procrastination)</a></h3>
+    <p><strong>現象拆解：</strong>理性大腦與即時滿足大腦嘅拉鋸戰。解決拖延症不能靠意志力，必須靠「外部硬性截止日期（Deadlines）」與拆解成微小步驟。</p>
+
+    <h3><span class="book-tag tag-acting">行為 43</span> <a href="https://meaningring.com/2016/05/31/overthinking-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">顧慮太多 (Overthinking)</a></h3>
+    <p><strong>現象拆解：</strong>熟練技能（如彈鋼琴、打高爾夫球、甚至走路）如果過度用理性大腦去「思考動作細節」，動作傳統上會僵硬崩潰。直覺適合熟練技能，理性適合複雜分析。</p>
+
+    <h3><span class="book-tag tag-acting">行為 44</span> <a href="https://meaningring.com/2016/06/01/planning-fallacy-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">規劃謬論 (Planning Fallacy)</a></h3>
+    <p><strong>現象拆解：</strong>好高騖遠。永遠過度樂觀估計項目所需時間與成本（例如雪梨歌劇院預算超標 14 倍）。破解法：參考同類項目的「外在觀點（Outside View）」實際耗時。</p>
+
+    <h3><span class="book-tag tag-acting">行為 46</span> <a href="https://meaningring.com/2016/06/03/zeigarnik-effect-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">蔡加尼克效應 (Zeigarnik Effect)</a></h3>
+    <p><strong>現象拆解：</strong>大腦對「未完成嘅任務」會念念不忘，造成持續嘅精神焦慮。只要擬定好清晰嘅執行計劃（Workflow），大腦就會放鬆，認為「已經在處理了」。</p>
+
+    <h3><span class="book-tag tag-acting">行為 52</span> <a href="https://meaningring.com/2016/06/09/news-illusion-by-rolf-dobelli/" target="_blank" rel="noopener noreferrer" class="ext-link">新聞錯覺 (News Illusion)</a></h3>
+    <p><strong>現象拆解：</strong>新聞係大腦嘅垃圾食物（Junk Food）！新聞只關注極端、震撼、碎片化嘅事件，完全無法幫你理解世界運行嘅底層結構，反而引發無謂焦慮。作者建議：徹底戒斷新聞，改讀長篇書籍與深度分析。</p>
+
+    <div class="back-to-top"><a href="#top">↑ 返回頂部</a></div>
+  </section>
+
+  <!-- 終極矩陣與架構 -->
+  <section id="framework">
+    <h2>終極實戰矩陣：雙書 104 個偏誤嘅清單化防禦（Checklist System）</h2>
+    <p>面對 104 個大腦 Bug，我們不可能隨時背誦。杜伯里嘅核心建議係：<span class="cantonese-highlight">「將偏誤分類，在不同場景下觸發防禦機制。」</span></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>決策場景</th>
+          <th>最常踩嘅致命爆頭坑（Top Biases）</th>
+          <th>防禦機制與心智模型 (Mental Models)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>重大投資與資產配置</strong></td>
+          <td>沉沒成本、損失規避、私房錢效應、能力錯覺、賭徒謬誤、黑天鵝</td>
+          <td><strong>零基思考（Zero-Based）</strong>：假設今天清倉，我還會買嗎？劃定止損點；避開槓桿，擁抱抗脆弱。</td>
+        </tr>
+        <tr>
+          <td><strong>企業戰略與項目管理</strong></td>
+          <td>規劃謬論、團體迷思、策略性不實陳述、非我發明、專業曲解</td>
+          <td><strong>事前驗屍（Pre-mortem）</strong>：假設項目一年後慘敗，眾人找死因；參考外部同類歷史數據（Outside View）。</td>
+        </tr>
+        <tr>
+          <td><strong>資訊吸收與媒體素養</strong></td>
+          <td>新聞錯覺、資訊偏差、確認偏誤、睡眠效應、故事偏誤</td>
+          <td><strong>戒斷新聞（Media Fast）</strong>：停止看碎片新聞，隻字不提廢話；只看原始論文、數據與經受時間考驗嘅經典。參考：<a href="https://meaningring.com/2016/06/10/book040-the-art-of-thinking-clearly/" target="_blank" rel="noopener noreferrer" class="ext-link">The Art of Thinking Clearly Reference</a>。</td>
+        </tr>
+        <tr>
+          <td><strong>職場管理與團隊合作</strong></td>
+          <td>決策疲勞、誘因排擠、社會比較偏差、社會性懈怠、權威偏誤</td>
+          <td><strong>簡化流程與機制設計</strong>：重大決策放在早晨；不要用微薄金錢羞辱內在動力；鼓勵匿名異議（Devil's Advocate）。</td>
+        </tr>
+        <tr>
+          <td><strong>個人成長與日常執行</strong></td>
+          <td>拖延症、雙曲貼現、蔡加尼克效應、關不上機會之門、顧慮太多</td>
+          <td><strong>主動關門與清單化</strong>：破釜沉舟，專注單點；寫下清晰步驟解除大腦焦慮；熟練技能靠肌肉記憶，不微觀管理自己。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>終極心法：查理·芒格嘅「逆向思考」（Inversion）</h3>
+    <blockquote>
+      <p>「如果我知道自己會死喺邊度，我一生都唔會去嗰度。」</p>
+    </blockquote>
+    <p>104 個非受迫性偏誤，唔係要你變成無情嘅理性機器，而係給你一張地圖，標示出人類歷史上所有集體踩過嘅「地雷區」。只要你在人生重大關頭，拿出這張 Checklist 避開這 104 個坑，你不需要變得特別聰明，你就已經跑贏咗身邊 99% 嘅人！</p>
+  </section>
+
+  <footer>
+    <p>© 2026 《思考的藝術》+《行為的藝術》104 個非受迫性偏誤全景廣東話拆解指南 | English Reference: <a href="https://meaningring.com/2016/06/10/book040-the-art-of-thinking-clearly/" target="_blank" rel="noopener noreferrer" class="ext-link">The Art of Thinking Clearly</a></p>
+  </footer>
+</div>
+
+</body>
+</html>
