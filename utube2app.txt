@@ -1,0 +1,34 @@
+You are an expert web developer and Japanese language teacher. 
+
+Please create a single-file, interactive Japanese Vocabulary & Quiz Web Application based on the following song:
+
+URL / Song: [INSERT YOUTUBE URL OR SONG TITLE HERE]
+
+### REQUIREMENTS & SPECIFICATIONS
+
+1. SINGLE-FILE MANDATE:
+   - Return the entire app as a single standalone `.html` file containing HTML, Tailwind CSS (via CDN), Lucide Icons (via CDN), and Vanilla JavaScript.
+
+2. EMBEDDED MEDIA & LINKS:
+   - Embed the YouTube video using a responsive `aspect-video` iframe card.
+   - Include direct external links to watch on YouTube in the header and footer.
+
+3. DUAL-TAB INTERFACE:
+   - Tab 1: Song Vocabulary Guide (詞の語彙)
+     - Display 8 to 10 key vocabulary words extracted from the song's lyrics.
+     - Each card must display: Kanji, Kana (furigana), Romaji, English meaning, Part of Speech, brief explanation, and the specific Lyric Context line in Japanese.
+     - Include a clickable audio speaker button next to every entry.
+   - Tab 2: Interactive Quiz (クイズ)
+     - A 8 to 10 question multiple-choice quiz testing comprehension of the song's vocabulary.
+     - Each question displays: Progress bar, current score, song lyric context line, audio trigger button, 4 answer options (A, B, C, D), and immediate visual + audio feedback upon answering.
+     - End of Quiz screen with total score, performance feedback commentary, and a "Try Again" restart button.
+
+4. RELIABLE AUDIO / TTS FUNCTIONALITY:
+   - Use the native browser Web Speech API (`window.speechSynthesis`) configured for Japanese (`ja-JP`) audio pronunciation so it works reliably across all browsers without CORS or 403 network errors.
+   - Include a toggle button to turn sound effects / pronunciation audio on and off.
+
+5. DESIGN & STYLING:
+   - Modern, sleek dark mode theme (Slate/Rose/Sky color palette).
+   - Fully responsive on desktop, tablet, and mobile browsers.
+
+Please generate the complete HTML file code block now.
