@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTCROS Prompt Studio Ultimate v2.6</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --bg-body: #f0f2f5; --bg-panel: #ffffff; --text-main: #1e293b; --text-sub: #64748b;
+            --border: #e2e8f0; --primary: #2563eb; --market: #f59e0b; --history: #64748b;
+            --draw: #ec4899; --danger: #ef4444; --magic: #db2777; --input-bg: #ffffff;
+            --lang-zh: #10b981; --lang-en: #3b82f6; --lang-ja: #f43f5e;
+        }
+        [data-theme="dark"] {
+            --bg-body: #0f172a; --bg-panel: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8;
+            --border: #334155; --input-bg: #0f172a; --market-item: #334155; --market-border: #475569;
+        }
+        body { font-family: 'PingFang HK', 'Microsoft JhengHei', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 10px; height: 100vh; overflow: hidden; box-sizing: border-box; transition: 0.3s; }
+        .main-layout { display: grid; grid-template-columns: 320px 1fr 300px; gap: 12px; height: calc(100vh - 20px); max-width: 1920px; margin: 0 auto; }
+        .panel { background: var(--bg-panel); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); }
+        .panel-header { padding: 12px 15px; border-bottom: 2px solid var(--border); flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); }
+        h3 { margin: 0; font-size: 0.9rem; font-weight: 700; }
+        .scroll-area { flex-grow: 1; overflow-y: auto; padding: 10px; scrollbar-width: thin; }
+
+        /* 分類零件庫 Accordion */
+        .cat-group { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+        .cat-header { width: 100%; padding: 10px; background: rgba(0,0,0,0.03); border: none; text-align: left; font-weight: bold; font-size: 13px; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; }
+        .cat-content { display: none; padding: 8px; flex-wrap: wrap; gap: 6px; border-top: 1px solid var(--border); }
+        .cat-group.active .cat-content { display: flex; }
+        .tag-item { background: var(--bg-body); border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .tag-item:hover { border-color: var(--primary); color: var(--primary); }
+        .tag-del { color: #ccc; cursor: pointer; font-size: 12px; }
+
+        /* 工具列與按鈕 */
+        .ai-bridge { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 10px; }
+        .btn-ai { padding: 8px 0; border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 10px; font-weight: bold; transition: 0.2s; text-align: center; }
+        .lang-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 10px; }
+        .btn-lang { padding: 6px 0; border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 10px; }
+        .btn-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+        .btn { padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 12px; }
+
+        /* 編輯器 */
+        textarea { width: 100%; flex-grow: 1; border: 1px solid var(--border); border-radius: 10px; padding: 15px; font-size: 14px; line-height: 1.6; resize: none; outline: none; background: var(--input-bg); color: var(--text-main); box-sizing: border-box; }
+        .optimize-box { background: #fdf2f8; border: 1px dashed var(--magic); border-radius: 10px; padding: 12px; margin-bottom: 10px; display: none; }
+        [data-theme="dark"] .optimize-box { background: #351628; }
+
+        /* 管理器與列表 */
+        .manager-ui { padding: 10px; border-top: 2px solid var(--border); background: rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 5px; }
+        .manager-ui input { padding: 6px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; background: var(--input-bg); color: var(--text-main); }
+        .item-card { padding: 10px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; position: relative; border: 1px solid var(--border); font-size: 11px; }
+        .market-card { background: #fffbeb; border-color: #fde68a; color: #1e293b; }
+        [data-theme="dark"] .market-card { background: #334155; border-color: #475569; color: #f1f5f9; }
+        .del-icon { position: absolute; top: 5px; right: 8px; color: var(--danger); cursor: pointer; }
+    </style>
+</head>
+<body data-theme="light">
+
+<div class="main-layout">
+    <div class="panel">
+        <div class="panel-header"><h3>🏗️ 零件庫 v2.6</h3><button onclick="toggleTheme()" style="border:none;background:none;cursor:pointer;">🌓</button></div>
+        <div class="scroll-area" id="partsContainer"></div>
+        
+        <div class="manager-ui">
+            <input type="text" id="newCat" placeholder="分類 (如: 👤角色)">
+            <input type="text" id="newName" placeholder="名稱 (如: 專家)">
+            <input type="text" id="newText" placeholder="Prompt 內容">
+            <button class="btn" style="background:var(--primary); padding:5px;" onclick="addPart()">新增零件</button>
+        </div>
+
+        <div class="panel-header" style="border-top:1px solid var(--border)"><h3>⏳ 版本紀錄</h3></div>
+        <div class="scroll-area" id="historyList"></div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <h3>📝 編輯中心</h3>
+            <div style="display:flex; gap:5px;">
+                <button class="btn" style="background:var(--magic); padding:5px 10px;" onclick="magicOpt('text')">🪄 文字優化</button>
+                <button class="btn" style="background:var(--draw); padding:5px 10px;" onclick="magicOpt('draw')">🎨 繪圖優化</button>
+            </div>
+        </div>
+        
+        <div class="scroll-area" style="display:flex; flex-direction:column;">
+            <div class="ai-bridge">
+                <button class="btn-ai" style="background:#10a37f" onclick="sendToAI('https://chatgpt.com')">ChatGPT</button>
+                <button class="btn-ai" style="background:#d97706" onclick="sendToAI('https://claude.ai')">Claude</button>
+                <button class="btn-ai" style="background:#4285f4" onclick="sendToAI('https://gemini.google.com')">Gemini</button>
+                <button class="btn-ai" style="background:#20b2aa" onclick="sendToAI('https://www.perplexity.ai')">Perplexity</button>
+                <button class="btn-ai" style="background:#000" onclick="sendToAI('https://grok.com')">Grok</button>
+                <button class="btn-ai" style="background:#60a5fa" onclick="sendToAI('https://chat.deepseek.com')">DeepSeek</button>
+                <button class="btn-ai" style="background:#6d4aff" onclick="sendToAI('https://lumo.proton.me/')">Proton Lumo</button>
+                <button class="btn-ai" style="background:#de5833" onclick="sendToAI('https://duck.ai/')">Duck AI</button>
+            </div>
+
+            <div class="lang-grid">
+                <button class="btn-lang" style="background:var(--lang-zh)" onclick="translateTo('zh-TW')">繁中</button>
+                <button class="btn-lang" style="background:var(--lang-en)" onclick="translateTo('en')">EN</button>
+                <button class="btn-lang" style="background:var(--lang-ja)" onclick="translateTo('ja')">JA</button>
+                <button class="btn-lang" style="background:#475569" onclick="translateTo('de')">DE</button>
+                <button class="btn-lang" style="background:#ec4899" onclick="translateTo('ko')">KO</button>
+                <button class="btn-lang" style="background:#6366f1" onclick="translateTo('fr')">FR</button>
+            </div>
+
+            <div id="optBox" class="optimize-box">
+                <div id="optPreview" style="font-size:11px; color:var(--text-sub); margin-bottom:8px;"></div>
+                <button class="btn" style="background:var(--magic); padding:4px 8px; font-size:10px;" onclick="applyOpt()">✅ 採納優化</button>
+            </div>
+
+            <textarea id="mainPrompt" placeholder="在這裡編寫你的 Prompt..." oninput="autoSave()"></textarea>
+            
+            <div style="display:flex; justify-content:space-between; margin-top:8px;">
+                <button class="tag-item" onclick="clearVars()">🧹 清空 [ ]</button>
+                <div style="font-size:11px; color:var(--text-sub)">字數: <span id="wCount">0</span></div>
+            </div>
+
+            <div class="btn-grid">
+                <button class="btn" style="background:var(--primary)" onclick="copyText()">📋 複製</button>
+                <button class="btn" style="background:var(--market)" onclick="saveMarket()">🌟 存市場</button>
+                <button class="btn" style="background:#dc2626" onclick="exportPDF()">📄 PDF</button>
+                <button class="btn" style="background:#64748b" onclick="resetAll()">🧹 清空</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <h3>🛒 我的市場</h3>
+            <div style="display:flex; gap:5px;">
+                <button onclick="exportJSON()" title="備份零件與市場">📤</button>
+                <button onclick="document.getElementById('fIn').click()" title="導入備份">📥</button>
+                <input type="file" id="fIn" style="display:none" onchange="importJSON(this)">
+            </div>
+        </div>
+        <div class="scroll-area" id="mktList"></div>
+    </div>
+</div>
+
+<script>
+    let myParts = JSON.parse(localStorage.getItem('rtcros-parts')) || [
+        { cat: "👤 角色", name: "資深專家", text: "你而家係一名資深 [職位/財經] 專家，擁有超過 [10] 年經驗。" },
+        { cat: "👤 角色", name: "毒舌評論員", text: "你而家係一名[某領域]毒舌評論員。" },
+        { cat: "👤 角色", name: "專家辯論", text: "想像一下，一群[某領域]專家正在討論這個問題。不同的專家會在哪些方面有分歧？" },
+        { cat: "👤 角色", name: "講故事官", text: "你而家係一名首席講故事官Chief StoryTeller。" },
+        { cat: "👤 角色", name: "人物模仿", text: "你而家係 [某著名人物] 的分身，請模仿其口吻。" },
+        { cat: "👤 角色", name: "翻譯官", text: "你而家係一名 [語言] 翻譯官，專精於在地化" },
+        { cat: "🎯 任務", name: "分析拆解", text: "用廣東話分析拆解書/文章/影片 [內容]。用[600]字總結以上内容" },
+        { cat: "🎯 任務", name: "教我", text: "用guided learning，一步一步教我日語[內容]" },
+        { cat: "🎯 任務", name: "重點新聞", text: "今天/下周[AI/財經/娛樂]重點新聞" },
+        { cat: "🎯 任務", name: "潤色風格", text: "請幫我將 [內容] 潤色成 [商務/幽默] 風格" },
+        { cat: "🎯 任務", name: "IG1", text: "A professional and clean modern business infographic template, with [three] distinct [vertical columns], flat vector illustration style. Each column has a large placeholder circle for an icon at the top and a structured rectangular container for text below. The colors are [Blue, Purple, and Green] from left to right. The background is a clean, abstract tech pattern. High quality, zero text or characters. title:[標題]  [內容]。" },
+        { cat: "🎯 任務", name: "IG2", text: "What is the main topic or message of the infographic? What is the desired style or tone? (e.g., modern/clean, playful/cartoonish, minimalist, corporate/professional, illustrative/vintage) What specific information or key points must be included? The more detailed you are, the better the infographic will reflect your specific needs.Who is the intended audience? (e.g., children, professionals, general public, students)Is there any specific data, quotes, or visuals you want incorporated?" },
+        { cat: "🎯 任務", name: "內容總結", text: "將以下 [技術文檔] 總結給 [初學者] 睇。" },
+        { cat: "🎯 任務", name: "分析股票", text: "用廣東話分析拆解 1 fundamental analysis and technical analysis of US stock VRT,  2 你計下佢現價嘅合理價值DCF 估），3 想睇下佢同同類股. 例如 ADI, TXN 嘅對比,  4 想我幫你睇埋 VRT 嚟緊個季嘅「期權異動」，睇下大戶博佢升到幾多" },
+        { cat: "🎯 任務", name: "方案撰寫", text: "針對 [主題]，撰寫一份包含 [3] 個方案的計劃。" },
+        { cat: "🧠 Reasoning (推理邏輯)", name: "先理解後建議", text: "請先解釋你對 [問題] 的理解，然後再給出建議。" },
+        { cat: "🧠 Reasoning (推理邏輯)", name: "思維框架", text: "運用 [第一原理/SCAMPER] 框架來分析 [現象]。" },
+        { cat: "🧠 Reasoning (推理邏輯)", name: "假設標註", text: "請逐步思考，並標註出每個步驟的 [假設]。" },
+        { cat: "📊 Output (格式與終止)", name: "格式指定", text: "請用 [表格/JSON/CSV] 輸出，並確保包含 [欄位名稱]。" },
+        { cat: "📊 Output (格式與終止)", name: "極簡輸出", text: "寫完 [重點] 就停，唔好講任何開場白。" },
+        { cat: "Image", name: "Theme", text: "A masterpiece, of the highest quality, ultra-detailed, high-resolution, photorealistic." },
+        { cat: "Image", name: "Actor", text: "A 21-year-old Hong Kong woman, with a sweet and friendly smile, revealing white teeth, bright eyes, and natural makeup of light pink lipstick and blush, her brown hair tied in a high ponytail, exudes enthusiasm and cheerfulness." }, 
+        { cat: "Image", name: "Wear1", text: "She wears a McDonalds Hong Kong employee uniform, a bright pink short-sleeved polo shirt with the McDonalds logo printed on the chest, a grey-green triangular scarf neatly tied around her neck, and a black skirt or apron skirt, the hem of which reveals black trousers or a skirt, a name tag is optional." },
+        { cat: "Image", name: "Arm", text: "Her arms are crossed in front of her chest, her posture confident." },
+        { cat: "Image", name: "Back1", text: "She stands in front of a row of tall, white self-service ordering machines in a Hong Kong McDonalds restaurant. Large vertical touchscreens display Chinese menus for Fried Chicken, Crispy Fried Food, and promotional images of fried chicken nuggets, a green Safety button, a red Checkout button, and payment icons for Visa, Octopus, and other cards. " },
+        { cat: "Image", name: "Back2", text: "Next to the ordering machines are yellow promotional pillars/signs, prominently displaying in Chinese Movie Ordering Time and Order Here, in vibrant colors. Stickers, posters, fried food, and drinks are displayed against the backdrop of a modern McDonalds restaurant interior. The distinctive red and black walls, counter, kitchen area, blurred employees, and masked customers are all visible." },
+        { cat: "Image", name: "Light", text: "Warm, bright LED lighting from chandeliers and ceiling spotlights, along with reflective dark wood floor tiles, create an urban fast-food atmosphere." },
+        { cat: "Image", name: "Shot", text: "A medium-length full-body shot, taken from a slightly low angle, at eye level with the customers, showcases the employees energetic and proud demeanor. The knitted texture of their sweaters is clearly visible, with V-neck folds and soft shadows, realistic skin pores and fine beads of sweat, radiant smiles, and sparkling eyes. The clear reflection of text and icons on the kiosk, the yellow pillars, and the smooth surfaces all contribute to the cinematic color grading, capturing the vibrant Hong Kong McDonalds palette, dominated by gray, yellow, red, and black. Shot using a Fujifilm X-T5 or Canon EOS R6, with slight professional graininess and 8K resolution." }, 
+        { cat: "⚡ Daily Use", name: "會議摘要", text: "幫我總結呢段會議紀錄。要求：用 Bullet points 列出 1. 核心決議、2. 待辦事項 (Action Items)、3. 負責人及期限。" },
+        { cat: "⚡ Daily Use", name: "內容擴充", text: "根據我提供嘅核心[重點]，將其擴充成一段結構完整、邏輯嚴密嘅論述。要求：增加細節描述，令內容更有說服力" },
+    ];
+    let market = JSON.parse(localStorage.getItem('rtcros-market')) || [];
+    let history = JSON.parse(localStorage.getItem('rtcros-history')) || [];
+    let tempOpt = "", saveTimer;
+
+    // --- 介面渲染 ---
+    function renderParts() {
+        const container = document.getElementById('partsContainer');
+        container.innerHTML = '';
+        const cats = [...new Set(myParts.map(p => p.cat))];
+        cats.forEach(c => {
+            const group = document.createElement('div');
+            group.className = 'cat-group active';
+            group.innerHTML = `<button class="cat-header" onclick="this.parentElement.classList.toggle('active')">${c} <span>▾</span></button><div class="cat-content"></div>`;
+            const content = group.querySelector('.cat-content');
+            myParts.filter(p => p.cat === c).forEach((p, i) => {
+                const tag = document.createElement('div');
+                tag.className = 'tag-item';
+                tag.innerHTML = `<span onclick="addText('${p.text}')">${p.name}</span><span class="tag-del" onclick="delPart(${myParts.indexOf(p)})">✕</span>`;
+                content.appendChild(tag);
+            });
+            container.appendChild(group);
+        });
+    }
+
+    function renderHistory() {
+        const l = document.getElementById('historyList');
+        l.innerHTML = history.map((h, i) => `<div class="item-card" onclick="loadHist(${i})"><div style="font-size:9px;color:var(--text-sub)">${h.time}</div><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h.content}</div></div>`).join('');
+    }
+
+    function renderMarket() {
+        const l = document.getElementById('mktList');
+        l.innerHTML = market.map((m, i) => `<div class="item-card market-card" onclick="loadMkt(${i})"><div class="del-icon" onclick="delMkt(event, ${i})">✕</div><strong>${m.name}</strong><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.content}</div></div>`).join('');
+    }
+
+    // --- 核心功能 ---
+    function addText(t) { const a = document.getElementById('mainPrompt'); a.value += t + "\n"; updateWC(); }
+    function updateWC() { document.getElementById('wCount').innerText = document.getElementById('mainPrompt').value.length; }
+    function copyText() { navigator.clipboard.writeText(document.getElementById('mainPrompt').value); alert("已複製！"); }
+    function copyTextw() { navigator.clipboard.writeText(document.getElementById('mainPrompt').value);}
+    function clearVars() { document.getElementById('mainPrompt').value = document.getElementById('mainPrompt').value.replace(/\[.*?\]/g, "[ ]"); }
+    function resetAll() { if(confirm("確定清空？")) document.getElementById('mainPrompt').value = ""; updateWC(); }
+    function toggleTheme() { const n = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', n); localStorage.setItem('rtcros-theme', n); }
+    function sendToAI(url) { copyTextw(); window.open(url, '_blank'); }
+
+    // --- 翻譯與優化 ---
+    async function translateTo(lang) {
+        const a = document.getElementById('mainPrompt'); if(!a.value) return;
+        try {
+            const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(a.value)}`);
+            const data = await res.json(); a.value = data[0].map(x => x[0]).join(''); updateWC();
+        } catch(e) { alert("服務繁忙"); }
+    }
+    function magicOpt(type) {
+        const val = document.getElementById('mainPrompt').value.trim(); if(!val) return;
+        if(type === 'draw') tempOpt = val + ", ultra-detailed, 8k, cinematic lighting, masterpiece --ar 16:9";
+        else tempOpt = "你而家係資深 Prompt 工程師，請根據以下內容生成結構嚴謹的指令：\n\n" + val;
+        document.getElementById('optPreview').innerText = tempOpt; document.getElementById('optBox').style.display = 'block';
+    }
+    function applyOpt() { document.getElementById('mainPrompt').value = tempOpt; document.getElementById('optBox').style.display = 'none'; updateWC(); }
+
+    // --- 零件管理 ---
+    function addPart() {
+        const c = document.getElementById('newCat').value || "未分類";
+        const n = document.getElementById('newName').value;
+        const t = document.getElementById('newText').value;
+        if(!n || !t) return;
+        myParts.push({cat:c, name:n, text:t}); localStorage.setItem('rtcros-parts', JSON.stringify(myParts)); renderParts();
+    }
+    function delPart(i) { myParts.splice(i,1); localStorage.setItem('rtcros-parts', JSON.stringify(myParts)); renderParts(); }
+
+    // --- 歷史與市場 ---
+    function autoSave() {
+        updateWC(); clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+            const v = document.getElementById('mainPrompt').value.trim();
+            if(v.length > 5 && (!history[0] || v !== history[0].content)) {
+                history.unshift({time: new Date().toLocaleTimeString(), content: v});
+                if(history.length > 15) history.pop();
+                localStorage.setItem('rtcros-history', JSON.stringify(history)); renderHistory();
+            }
+        }, 3000);
+    }
+    function loadHist(i) { document.getElementById('mainPrompt').value = history[i].content; updateWC(); }
+    function saveMarket() { const n = prompt("命名 Prompt:"); if(n) { market.unshift({name:n, content:document.getElementById('mainPrompt').value}); localStorage.setItem('rtcros-market', JSON.stringify(market)); renderMarket(); } }
+    function loadMkt(i) { document.getElementById('mainPrompt').value = market[i].content; updateWC(); }
+    function delMkt(e, i) { e.stopPropagation(); market.splice(i,1); localStorage.setItem('rtcros-market', JSON.stringify(market)); renderMarket(); }
+
+    // --- 備份 ---
+    function exportJSON() {
+        const data = { parts: myParts, market: market };
+        const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "RTCROS_Full_Backup.json"; a.click();
+    }
+    function importJSON(input) {
+        const r = new FileReader();
+        r.onload = (e) => {
+            const d = JSON.parse(e.target.result);
+            if(d.parts) { myParts = d.parts; market = d.market; localStorage.setItem('rtcros-parts', JSON.stringify(myParts)); localStorage.setItem('rtcros-market', JSON.stringify(market)); renderParts(); renderMarket(); }
+        };
+        r.readAsText(input.files[0]);
+    }
+
+    function exportPDF() {
+        const { jsPDF } = window.jspdf; const doc = new jsPDF();
+        doc.text(doc.splitTextToSize(document.getElementById('mainPrompt').value, 180), 10, 10); doc.save("prompt.pdf");
+    }
+
+    window.onload = () => {
+        document.body.setAttribute('data-theme', localStorage.getItem('rtcros-theme') || 'light');
+        renderParts(); renderHistory(); renderMarket();
+    };
+</script>
+</body>
+</html>
