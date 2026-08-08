@@ -119,7 +119,7 @@
     .modal fieldset { border: none; display: flex; flex-direction: column; gap: 0.25rem; }
     .modal label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
     
-    /* URL input with fetch status indicator */
+    /* URL input wrapper */
     .url-input-wrapper { display: flex; gap: 0.5rem; }
     .url-input-wrapper input { flex: 1; }
     .btn-fetch-title { padding: 0.6rem 0.8rem; font-size: 0.85rem; white-space: nowrap; }
@@ -144,6 +144,7 @@
     <div class="header-actions">
       <button class="secondary" onclick="toggleDarkMode()" id="themeBtn">🌙 Dark</button>
       <button class="secondary" onclick="toggleAuthorMode()" id="modeBtn">🔒 Author Login</button>
+      <button class="secondary author-only" onclick="openChangePasswordModal()">🔑 Change Password</button>
       <button class="secondary author-only" onclick="exportJSON()">📥 Export JSON</button>
       <button class="secondary author-only" onclick="document.getElementById('importInput').click()">📤 Import JSON</button>
       <input type="file" id="importInput" accept=".json" style="display:none" onchange="importJSON(event)">
@@ -224,40 +225,164 @@
     </div>
   </div>
 
+  <!-- Change Password Modal -->
+  <div class="modal-overlay" id="changePasswordModal">
+    <div class="modal">
+      <h2>Change Admin Password</h2>
+      <form onsubmit="changePassword(event)">
+        <fieldset>
+          <label for="newPassword">New Password</label>
+          <input type="password" id="newPassword" required placeholder="Enter new password">
+        </fieldset>
+        <fieldset>
+          <label for="confirmPassword">Confirm New Password</label>
+          <input type="password" id="confirmPassword" required placeholder="Re-enter new password">
+        </fieldset>
+        <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem;">
+          <button type="button" class="secondary" onclick="closeChangePasswordModal()">Cancel</button>
+          <button type="submit">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
-    const AUTHOR_PASSWORD = "0";
     let isAuthorMode = false;
 
     // Pagination State
     let currentPage = 1;
     let itemsPerPage = 12;
 
-    const defaultSites = [
+    /* ==========================================================================
+       CRYPTOGRAPHY SYSTEM (Web Crypto API - AES-GCM + PBKDF2)
+       ========================================================================== */
+    const VERIFICATION_PHRASE = "AUTHOR_AUTHENTICATED_OK";
+    const DEFAULT_INIT_PASS = "admin123";
+
+    // Helper: Convert ArrayBuffer <-> Base64
+    function bufferToBase64(buf) {
+      return btoa(String.fromCharCode(...new Uint8Array(buf)));
+    }
+    function base64ToBuffer(b64) {
+      return Uint8Array.from(atob(b64), c => c.charCodeAt(0)).buffer;
+    }
+
+    // Derive AES-GCM 256-bit encryption key using PBKDF2
+    async function deriveKey(password, salt) {
+      const enc = new TextEncoder();
+      const passKey = await window.crypto.subtle.importKey(
+        "raw",
+        enc.encode(password),
+        { name: "PBKDF2" },
+        false,
+        ["deriveKey"]
+      );
+      return window.crypto.subtle.deriveKey(
+        {
+          name: "PBKDF2",
+          salt: salt,
+          iterations: 100000,
+          hash: "SHA-256"
+        },
+        passKey,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["encrypt", "decrypt"]
+      );
+    }
+
+    // Encrypt text payload with password
+    async function encryptPayload(password, textPayload) {
+      const enc = new TextEncoder();
+      const salt = window.crypto.getRandomValues(new Uint8Array(16));
+      const iv = window.crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(password, salt);
+
+      const encryptedContent = await window.crypto.subtle.encrypt(
+        { name: "AES-GCM", iv: iv },
+        key,
+        enc.encode(textPayload)
+      );
+
+      return JSON.stringify({
+        salt: bufferToBase64(salt),
+        iv: bufferToBase64(iv),
+        ciphertext: bufferToBase64(encryptedContent)
+      });
+    }
+
+    // Decrypt encrypted payload with password
+    async function decryptPayload(password, encryptedJson) {
+      try {
+        const { salt, iv, ciphertext } = JSON.parse(encryptedJson);
+        const saltBuffer = base64ToBuffer(salt);
+        const ivBuffer = base64ToBuffer(iv);
+        const cipherBuffer = base64ToBuffer(ciphertext);
+
+        const key = await deriveKey(password, saltBuffer);
+        const decryptedContent = await window.crypto.subtle.decrypt(
+          { name: "AES-GCM", iv: ivBuffer },
+          key,
+          cipherBuffer
+        );
+
+        return new TextDecoder().decode(decryptedContent);
+      } catch (e) {
+        return null; // Return null if password is incorrect or decryption fails
+      }
+    }
+
+    // Initialize or retrieve encrypted master credential
+    async function ensureEncryptedAuthInitialized() {
+      if (!localStorage.getItem('encrypted_auth_payload')) {
+        const encryptedDefault = await encryptPayload(DEFAULT_INIT_PASS, VERIFICATION_PHRASE);
+        localStorage.setItem('encrypted_auth_payload', encryptedDefault);
+      }
+    }
+
+    /* ==========================================================================
+       DIRECTORY APP LOGIC & AUTO LOAD FROM d.json
+       ========================================================================== */
+    const defaultSitesFallback = [
       { id: '1', title: '12ft Ladder', url: 'https://12ft.io', tags: ['Utility', 'Reading', 'Web'], description: 'Bypass paywalls and clean up web pages for easier reading.' },
       { id: '2', title: 'Library Genesis', url: 'https://libgen.is', tags: ['Books', 'Academic', 'Education'], description: 'Free repository offering millions of textbooks, research papers, and books.' },
-      { id: '3', title: 'Sci-Hub', url: 'https://sci-hub.se', tags: ['Academic', 'Research', 'Science'], description: 'Provides free access to millions of academic research papers.' },
-      { id: '4', title: 'AlternativeTo', url: 'https://alternativeto.net', tags: ['Software', 'Utility', 'Tech'], description: 'Find crowd-sourced free and open-source alternatives to popular software.' },
-      { id: '5', title: 'JustWatch', url: 'https://justwatch.com', tags: ['Media', 'Movies', 'Streaming'], description: 'Search and find streaming availability across platforms for movies and TV shows.' },
-      { id: '6', title: 'Internet Archive', url: 'https://archive.org', tags: ['Archive', 'History', 'Web'], description: 'Explore millions of free books, movies, software, and historic web pages via Wayback Machine.' },
-      { id: '7', title: 'Project Gutenberg', url: 'https://gutenberg.org', tags: ['Books', 'Reading', 'Classics'], description: 'Library of over 70,000 free, public domain eBooks.' },
-      { id: '8', title: 'PDF Drive', url: 'https://pdfdrive.com', tags: ['Books', 'PDF', 'Education'], description: 'Search engine for downloading millions of free PDF books.' },
-      { id: '9', title: 'Open Culture', url: 'https://openculture.com', tags: ['Education', 'Courses', 'Media'], description: 'Free educational media including online university courses, audiobooks, and movies.' },
-      { id: '10', title: 'WolframAlpha', url: 'https://wolframalpha.com', tags: ['Math', 'Science', 'AI'], description: 'Computational intelligence engine that solves math problems and answers technical queries.' },
-      { id: '11', title: 'Photopea', url: 'https://photopea.com', tags: ['Design', 'Graphics', 'Editor'], description: 'Advanced image editor in your browser supporting PSD, AI, and Sketch formats.' },
-      { id: '12', title: 'Squoosh', url: 'https://squoosh.app', tags: ['Design', 'Image', 'Utility'], description: 'Compress and optimize images locally in your browser with real-time comparison.' },
-      { id: '13', title: 'Remove.bg', url: 'https://remove.bg', tags: ['Image', 'AI', 'Design'], description: 'Remove backgrounds automatically from any image using AI.' },
-      { id: '14', title: 'Cleanup.pictures', url: 'https://cleanup.pictures', tags: ['Image', 'AI', 'Editor'], description: 'Erase unwanted objects, people, or defects from any photo.' },
-      { id: '15', title: 'Unscreen', url: 'https://unscreen.com', tags: ['Video', 'AI', 'Media'], description: 'Remove background from video files or GIFs automatically.' },
-      { id: '16', title: 'Carbon', url: 'https://carbon.now.sh', tags: ['Developer', 'Code', 'Design'], description: 'Create and share beautiful high-resolution images of your source code.' },
-      { id: '17', title: 'Ray.so', url: 'https://ray.so', tags: ['Developer', 'Code', 'Design'], description: 'Create stylish code screenshots with custom gradients, themes, and padding.' },
-      { id: '18', title: 'Shots.so', url: 'https://shots.so', tags: ['Design', 'Mockup', 'Graphics'], description: 'Create sleek presentation mockups for apps, websites, and images.' },
-      { id: '19', title: 'Smartmockups', url: 'https://smartmockups.com', tags: ['Design', 'Mockup', 'Product'], description: 'Create high-resolution product mockups online without needing Photoshop.' },
-      { id: '20', title: 'Have I Been Pwned', url: 'https://haveibeenpwned.com', tags: ['Security', 'Privacy', 'Utility'], description: 'Check if your email or account credentials have been exposed in a data breach.' }
+      { id: '3', title: 'Sci-Hub', url: 'https://sci-hub.se', tags: ['Academic', 'Research', 'Science'], description: 'Provides free access to millions of academic research papers.' }
     ];
 
-    let sites = JSON.parse(localStorage.getItem('curated_sites_v3')) || defaultSites;
+    let sites = [];
 
-    // Live Clock Function
+    // Automatically fetch d.json into Local Storage on initial startup
+    async function initializeData() {
+      const storedData = localStorage.getItem('curated_sites_v3');
+      if (storedData) {
+        try {
+          sites = JSON.parse(storedData);
+        } catch (e) {
+          sites = [];
+        }
+      }
+
+      if (!sites || sites.length === 0) {
+        try {
+          const response = await fetch('d.json');
+          if (!response.ok) throw new Error('d.json HTTP fetch failed');
+          const jsonData = await response.json();
+          if (Array.isArray(jsonData) && jsonData.length > 0) {
+            sites = jsonData;
+            saveToStorage();
+          } else {
+            throw new Error('Invalid or empty array inside d.json');
+          }
+        } catch (err) {
+          console.warn('Could not auto-load d.json, falling back to default set:', err);
+          sites = defaultSitesFallback;
+          saveToStorage();
+        }
+      }
+
+      renderCards();
+    }
+
     function startLiveClock() {
       function updateClock() {
         const now = new Date();
@@ -318,19 +443,62 @@
       document.getElementById('password').value = '';
     }
 
-    function verifyPassword(e) {
+    // Decrypt and verify user-entered password against stored AES payload
+    async function verifyPassword(e) {
       e.preventDefault();
       const inputPass = document.getElementById('password').value;
+      const storedPayload = localStorage.getItem('encrypted_auth_payload');
+
+      if (!storedPayload) {
+        alert("Authentication store uninitialized.");
+        return;
+      }
+
+      const decryptedResult = await decryptPayload(inputPass, storedPayload);
       
-      if (inputPass === AUTHOR_PASSWORD) {
+      if (decryptedResult === VERIFICATION_PHRASE) {
         isAuthorMode = true;
         document.body.classList.remove('reader-mode');
         document.getElementById('modeBtn').textContent = '🔓 Logout Author';
         closePasswordModal();
         renderCards();
       } else {
-        alert('Incorrect password!');
+        alert('Incorrect password! Authentication failed.');
       }
+    }
+
+    function openChangePasswordModal() {
+      if (!isAuthorMode) return;
+      document.getElementById('changePasswordModal').style.display = 'flex';
+    }
+
+    function closeChangePasswordModal() {
+      document.getElementById('changePasswordModal').style.display = 'none';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('confirmPassword').value = '';
+    }
+
+    // Re-encrypt verification key payload with new password
+    async function changePassword(e) {
+      e.preventDefault();
+      const newPass = document.getElementById('newPassword').value;
+      const confirmPass = document.getElementById('confirmPassword').value;
+
+      if (newPass !== confirmPass) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      if (newPass.length < 4) {
+        alert("Password must be at least 4 characters long.");
+        return;
+      }
+
+      const newEncryptedPayload = await encryptPayload(newPass, VERIFICATION_PHRASE);
+      localStorage.setItem('encrypted_auth_payload', newEncryptedPayload);
+
+      alert("Admin password successfully changed and re-encrypted!");
+      closeChangePasswordModal();
     }
 
     function saveToStorage() {
@@ -642,9 +810,11 @@
       event.target.value = '';
     }
 
+    // Initialize App & Auto-Load System
+    ensureEncryptedAuthInitialized();
     initTheme();
     startLiveClock();
-    renderCards();
+    initializeData();
   </script>
 </body>
 </html>
