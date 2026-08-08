@@ -1,0 +1,330 @@
+[
+  {
+    "id": "1786206073601",
+    "title": "Ritholtz.com",
+    "url": "https://ritholtz.com/",
+    "tags": [
+      "Blog",
+      "Invest"
+    ],
+    "description": "The Big Picture"
+  },
+  {
+    "id": "1786205926807",
+    "title": "Google One Storage Manager",
+    "url": "https://one.google.com/storage/management",
+    "tags": [
+      "Tools"
+    ],
+    "description": "Google One Storage Manager"
+  },
+  {
+    "id": "1786205869621",
+    "title": "Google Xlate",
+    "url": "https://translate.google.com/?sl=auto&tl=zh-TW&text=unprecedented&op=translate",
+    "tags": [
+      "Tools"
+    ],
+    "description": "Google Xlate"
+  },
+  {
+    "id": "1786205837839",
+    "title": "Blackstump.com.au",
+    "url": "https://app.raindrop.io/my/-1",
+    "tags": [
+      "Tools"
+    ],
+    "description": "My Bookmarks"
+  },
+  {
+    "id": "1786205812829",
+    "title": "BlackStump",
+    "url": "https://www.blackstump.com.au/",
+    "tags": [
+      "Tools"
+    ],
+    "description": "BlackStump"
+  },
+  {
+    "id": "1786205724495",
+    "title": "電腦玩物",
+    "url": "https://www.playpcesor.com/",
+    "tags": [
+      "Tools"
+    ],
+    "description": "電腦玩物"
+  },
+  {
+    "id": "1786205661677",
+    "title": "Adersaytech.com",
+    "url": "https://adersaytech.com/",
+    "tags": [
+      "Developer",
+      "Tech"
+    ],
+    "description": "Ted Developer"
+  },
+  {
+    "id": "1786205406610",
+    "title": "Technews",
+    "url": "https://technews.tw/",
+    "tags": [
+      "News"
+    ],
+    "description": "TechnewsTW"
+  },
+  {
+    "id": "1786205370541",
+    "title": "大師輕鬆讀",
+    "url": "https://www.master60.com.tw/index.php",
+    "tags": [
+      "Books"
+    ],
+    "description": "大師輕鬆讀"
+  },
+  {
+    "id": "1786205098369",
+    "title": "Ask Woody",
+    "url": "https://www.askwoody.com/",
+    "tags": [
+      "Blog"
+    ],
+    "description": "MS Blog"
+  },
+  {
+    "id": "1786205022866",
+    "title": "Google Admin Toolbox",
+    "url": "https://toolbox.googleapps.com/apps/main/",
+    "tags": [
+      "Tools"
+    ],
+    "description": "Google Admin Toolbox"
+  },
+  {
+    "id": "1786204985424",
+    "title": "香港經濟日報",
+    "url": "https://www.hket.com/",
+    "tags": [
+      "News"
+    ],
+    "description": "香港經濟日報"
+  },
+  {
+    "id": "1786204935521",
+    "title": "Anna’s Archive",
+    "url": "https://annas-archive.gl/",
+    "tags": [
+      "Books"
+    ],
+    "description": "The largest truly open library in human history"
+  },
+  {
+    "id": "2",
+    "title": "Library Genesis",
+    "url": "https://libgen.is",
+    "tags": [
+      "Books",
+      "Academic",
+      "Education"
+    ],
+    "description": "Free repository offering millions of textbooks, research papers, and books."
+  },
+  {
+    "id": "3",
+    "title": "Sci-Hub",
+    "url": "https://sci-hub.se",
+    "tags": [
+      "Academic",
+      "Research",
+      "Science"
+    ],
+    "description": "Provides free access to millions of academic research papers."
+  },
+  {
+    "id": "4",
+    "title": "AlternativeTo",
+    "url": "https://alternativeto.net",
+    "tags": [
+      "Software",
+      "Utility",
+      "Tech"
+    ],
+    "description": "Find crowd-sourced free and open-source alternatives to popular software."
+  },
+  {
+    "id": "5",
+    "title": "JustWatch",
+    "url": "https://justwatch.com",
+    "tags": [
+      "Media",
+      "Movies",
+      "Streaming"
+    ],
+    "description": "Search and find streaming availability across platforms for movies and TV shows."
+  },
+  {
+    "id": "6",
+    "title": "Internet Archive",
+    "url": "https://archive.org",
+    "tags": [
+      "Archive",
+      "History",
+      "Web"
+    ],
+    "description": "Explore millions of free books, movies, software, and historic web pages via Wayback Machine."
+  },
+  {
+    "id": "7",
+    "title": "Project Gutenberg",
+    "url": "https://gutenberg.org",
+    "tags": [
+      "Books",
+      "Reading",
+      "Classics"
+    ],
+    "description": "Library of over 70,000 free, public domain eBooks."
+  },
+  {
+    "id": "8",
+    "title": "PDF Drive",
+    "url": "https://pdfdrive.com",
+    "tags": [
+      "Books",
+      "PDF",
+      "Education"
+    ],
+    "description": "Search engine for downloading millions of free PDF books."
+  },
+  {
+    "id": "9",
+    "title": "Open Culture",
+    "url": "https://openculture.com",
+    "tags": [
+      "Education",
+      "Courses",
+      "Media"
+    ],
+    "description": "Free educational media including online university courses, audiobooks, and movies."
+  },
+  {
+    "id": "10",
+    "title": "WolframAlpha",
+    "url": "https://wolframalpha.com",
+    "tags": [
+      "Math",
+      "Science",
+      "AI"
+    ],
+    "description": "Computational intelligence engine that solves math problems and answers technical queries."
+  },
+  {
+    "id": "11",
+    "title": "Photopea",
+    "url": "https://photopea.com",
+    "tags": [
+      "Design",
+      "Graphics",
+      "Editor"
+    ],
+    "description": "Advanced image editor in your browser supporting PSD, AI, and Sketch formats."
+  },
+  {
+    "id": "12",
+    "title": "Squoosh",
+    "url": "https://squoosh.app",
+    "tags": [
+      "Design",
+      "Image",
+      "Utility"
+    ],
+    "description": "Compress and optimize images locally in your browser with real-time comparison."
+  },
+  {
+    "id": "13",
+    "title": "Remove.bg",
+    "url": "https://remove.bg",
+    "tags": [
+      "Image",
+      "AI",
+      "Design"
+    ],
+    "description": "Remove backgrounds automatically from any image using AI."
+  },
+  {
+    "id": "14",
+    "title": "Cleanup.pictures",
+    "url": "https://cleanup.pictures",
+    "tags": [
+      "Image",
+      "AI",
+      "Editor"
+    ],
+    "description": "Erase unwanted objects, people, or defects from any photo."
+  },
+  {
+    "id": "15",
+    "title": "Unscreen",
+    "url": "https://unscreen.com",
+    "tags": [
+      "Video",
+      "AI",
+      "Media"
+    ],
+    "description": "Remove background from video files or GIFs automatically."
+  },
+  {
+    "id": "16",
+    "title": "Carbon",
+    "url": "https://carbon.now.sh",
+    "tags": [
+      "Developer",
+      "Code",
+      "Design"
+    ],
+    "description": "Create and share beautiful high-resolution images of your source code."
+  },
+  {
+    "id": "17",
+    "title": "Ray.so",
+    "url": "https://ray.so",
+    "tags": [
+      "Developer",
+      "Code",
+      "Design"
+    ],
+    "description": "Create stylish code screenshots with custom gradients, themes, and padding."
+  },
+  {
+    "id": "18",
+    "title": "Shots.so",
+    "url": "https://shots.so",
+    "tags": [
+      "Design",
+      "Mockup",
+      "Graphics"
+    ],
+    "description": "Create sleek presentation mockups for apps, websites, and images."
+  },
+  {
+    "id": "19",
+    "title": "Smartmockups",
+    "url": "https://smartmockups.com",
+    "tags": [
+      "Design",
+      "Mockup",
+      "Product"
+    ],
+    "description": "Create high-resolution product mockups online without needing Photoshop."
+  },
+  {
+    "id": "20",
+    "title": "Have I Been Pwned",
+    "url": "https://haveibeenpwned.com",
+    "tags": [
+      "Security",
+      "Privacy",
+      "Utility"
+    ],
+    "description": "Check if your email or account credentials have been exposed in a data breach."
+  }
+]
