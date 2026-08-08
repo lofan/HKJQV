@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curated Resource Directory</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --border: #e2e8f0;
+      --badge-bg: #eff6ff;
+      --badge-border: #dbeafe;
+      --radius: 12px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #3b82f6;
+      --border: #334155;
+      --badge-bg: #1e3a8a;
+      --badge-border: #1d4ed8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+    body { background: var(--bg); color: var(--text); padding: 1.5rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+    /* Top Stats & Clock Banner */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding: 0.6rem 1rem;
+      margin-bottom: 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .top-bar-stat { display: flex; align-items: center; gap: 0.5rem; }
+    .top-bar-stat strong { color: var(--primary); font-weight: 700; font-size: 1.05rem; }
+
+    header { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    h1 { font-size: 1.75rem; font-weight: 700; }
+    
+    .header-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+
+    .controls { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    
+    /* Search Wrapper with Clear X Button */
+    .search-wrapper { position: relative; flex: 1; min-width: 200px; display: flex; align-items: center; }
+    .search-wrapper input { width: 100%; padding-right: 2.25rem; }
+    .search-clear-btn {
+      position: absolute;
+      right: 0.6rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 0 0.3rem;
+      display: none;
+      line-height: 1;
+      border-radius: 50%;
+    }
+    .search-clear-btn:hover { color: var(--text); background: transparent; opacity: 1; }
+
+    input, select, button { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border); font-size: 0.95rem; background: var(--card-bg); color: var(--text); }
+    
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
+    button:hover { opacity: 0.9; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    button.secondary { background: var(--card-bg); color: var(--text); border: 1px solid var(--border); }
+    button.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+    
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+    .favicon { width: 24px; height: 24px; border-radius: 4px; object-fit: contain; background: var(--border); }
+    .card-title { font-size: 1.1rem; font-weight: 600; text-decoration: none; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-title:hover { color: var(--primary); }
+    
+    .tag-container { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.75rem; }
+    .badge { font-size: 0.75rem; background: var(--badge-bg); color: var(--text); padding: 0.2rem 0.5rem; border-radius: 6px; font-weight: 600; border: 1px solid var(--badge-border); }
+    
+    .card-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.4; margin-bottom: 1rem; flex: 1; }
+    
+    .card-actions { display: flex; gap: 0.5rem; border-top: 1px solid var(--border); padding-top: 0.75rem; }
+    .card-actions button, .card-actions a { font-size: 0.85rem; padding: 0.4rem 0.75rem; text-decoration: none; border-radius: 6px; text-align: center; }
+    .btn-visit { background: var(--primary); color: white; flex: 1; }
+    .btn-edit { background: var(--card-bg); color: var(--text); border: 1px solid var(--border); }
+    .btn-danger { background: #fee2e2; color: #991b1b; }
+    [data-theme="dark"] .btn-danger { background: #451a1a; color: #fca5a5; }
+
+    /* Pagination Controls */
+    .pagination-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .pagination-info { font-size: 0.9rem; color: var(--muted); }
+    .pagination-controls { display: flex; gap: 0.35rem; align-items: center; }
+
+    /* Hide elements based on mode */
+    body.reader-mode .author-only { display: none !important; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; padding: 1rem; z-index: 100; }
+    .modal { background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 1rem; border: 1px solid var(--border); }
+    .modal form { display: flex; flex-direction: column; gap: 1rem; }
+    .modal fieldset { border: none; display: flex; flex-direction: column; gap: 0.25rem; }
+    .modal label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+    
+    /* URL input with fetch status indicator */
+    .url-input-wrapper { display: flex; gap: 0.5rem; }
+    .url-input-wrapper input { flex: 1; }
+    .btn-fetch-title { padding: 0.6rem 0.8rem; font-size: 0.85rem; white-space: nowrap; }
+  </style>
+</head>
+<body class="reader-mode">
+
+  <!-- Top Banner: Stats and Live Date/Time -->
+  <div class="top-bar">
+    <div class="top-bar-stat">
+      <span>🌐 Total Websites:</span>
+      <strong id="totalCountDisplay">0</strong>
+    </div>
+    <div class="top-bar-stat">
+      <span>📅</span>
+      <span id="liveDateTime">Loading date & time...</span>
+    </div>
+  </div>
+
+  <header>
+    <h1>Curated Directory</h1>
+    <div class="header-actions">
+      <button class="secondary" onclick="toggleDarkMode()" id="themeBtn">🌙 Dark</button>
+      <button class="secondary" onclick="toggleAuthorMode()" id="modeBtn">🔒 Author Login</button>
+      <button class="secondary author-only" onclick="exportJSON()">📥 Export JSON</button>
+      <button class="secondary author-only" onclick="document.getElementById('importInput').click()">📤 Import JSON</button>
+      <input type="file" id="importInput" accept=".json" style="display:none" onchange="importJSON(event)">
+      <button class="author-only" onclick="openModal()">+ Add Website</button>
+    </div>
+  </header>
+
+  <section class="controls">
+    <div class="search-wrapper">
+      <input type="text" id="searchInput" placeholder="Search title, description, or tags..." oninput="onSearchOrFilterChange()">
+      <button type="button" class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" title="Clear search">✕</button>
+    </div>
+    <select id="tagFilter" onchange="onSearchOrFilterChange()">
+      <option value="">All Tags</option>
+    </select>
+    <select id="itemsPerPageSelect" onchange="changeItemsPerPage(this.value)">
+      <option value="12">12 per page</option>
+      <option value="24">24 per page</option>
+      <option value="48">48 per page</option>
+      <option value="all">Show All</option>
+    </select>
+  </section>
+
+  <main class="grid" id="cardGrid"></main>
+
+  <footer class="pagination-bar" id="paginationBar">
+    <div class="pagination-info" id="paginationInfo">Showing 0 of 0 items</div>
+    <div class="pagination-controls" id="paginationControls"></div>
+  </footer>
+
+  <!-- Add/Edit Site Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h2 id="modalTitle">Add New Website</h2>
+      <form id="siteForm" onsubmit="saveSite(event)">
+        <input type="hidden" id="siteId">
+        <fieldset>
+          <label for="url">URL</label>
+          <div class="url-input-wrapper">
+            <input type="url" id="url" required placeholder="https://developer.mozilla.org" onchange="autoFetchTitle()" onblur="autoFetchTitle()">
+            <button type="button" class="secondary btn-fetch-title" onclick="autoFetchTitle(true)" title="Fetch Title From URL">🔍 Auto-Fetch</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <label for="title">Title</label>
+          <input type="text" id="title" required placeholder="e.g. MDN Web Docs">
+        </fieldset>
+        <fieldset>
+          <label for="tags">Tags (comma-separated)</label>
+          <input type="text" id="tags" required placeholder="e.g. Documentation, Reference, JS">
+        </fieldset>
+        <fieldset>
+          <label for="description">Description</label>
+          <input type="text" id="description" required placeholder="Brief note about this site">
+        </fieldset>
+        <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem;">
+          <button type="button" class="secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit">Save Entry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Password Modal -->
+  <div class="modal-overlay" id="passwordModal">
+    <div class="modal">
+      <h2>Author Login</h2>
+      <form onsubmit="verifyPassword(event)">
+        <fieldset>
+          <label for="password">Enter Password</label>
+          <input type="password" id="password" required placeholder="Default password is admin123">
+        </fieldset>
+        <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem;">
+          <button type="button" class="secondary" onclick="closePasswordModal()">Cancel</button>
+          <button type="submit">Unlock Author Mode</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const AUTHOR_PASSWORD = "admin123";
+    let isAuthorMode = false;
+
+    // Pagination State
+    let currentPage = 1;
+    let itemsPerPage = 12;
+
+    const defaultSites = [
+      { id: '1', title: '12ft Ladder', url: 'https://12ft.io', tags: ['Utility', 'Reading', 'Web'], description: 'Bypass paywalls and clean up web pages for easier reading.' },
+      { id: '2', title: 'Library Genesis', url: 'https://libgen.is', tags: ['Books', 'Academic', 'Education'], description: 'Free repository offering millions of textbooks, research papers, and books.' },
+      { id: '3', title: 'Sci-Hub', url: 'https://sci-hub.se', tags: ['Academic', 'Research', 'Science'], description: 'Provides free access to millions of academic research papers.' },
+      { id: '4', title: 'AlternativeTo', url: 'https://alternativeto.net', tags: ['Software', 'Utility', 'Tech'], description: 'Find crowd-sourced free and open-source alternatives to popular software.' },
+      { id: '5', title: 'JustWatch', url: 'https://justwatch.com', tags: ['Media', 'Movies', 'Streaming'], description: 'Search and find streaming availability across platforms for movies and TV shows.' },
+      { id: '6', title: 'Internet Archive', url: 'https://archive.org', tags: ['Archive', 'History', 'Web'], description: 'Explore millions of free books, movies, software, and historic web pages via Wayback Machine.' },
+      { id: '7', title: 'Project Gutenberg', url: 'https://gutenberg.org', tags: ['Books', 'Reading', 'Classics'], description: 'Library of over 70,000 free, public domain eBooks.' },
+      { id: '8', title: 'PDF Drive', url: 'https://pdfdrive.com', tags: ['Books', 'PDF', 'Education'], description: 'Search engine for downloading millions of free PDF books.' },
+      { id: '9', title: 'Open Culture', url: 'https://openculture.com', tags: ['Education', 'Courses', 'Media'], description: 'Free educational media including online university courses, audiobooks, and movies.' },
+      { id: '10', title: 'WolframAlpha', url: 'https://wolframalpha.com', tags: ['Math', 'Science', 'AI'], description: 'Computational intelligence engine that solves math problems and answers technical queries.' },
+      { id: '11', title: 'Photopea', url: 'https://photopea.com', tags: ['Design', 'Graphics', 'Editor'], description: 'Advanced image editor in your browser supporting PSD, AI, and Sketch formats.' },
+      { id: '12', title: 'Squoosh', url: 'https://squoosh.app', tags: ['Design', 'Image', 'Utility'], description: 'Compress and optimize images locally in your browser with real-time comparison.' },
+      { id: '13', title: 'Remove.bg', url: 'https://remove.bg', tags: ['Image', 'AI', 'Design'], description: 'Remove backgrounds automatically from any image using AI.' },
+      { id: '14', title: 'Cleanup.pictures', url: 'https://cleanup.pictures', tags: ['Image', 'AI', 'Editor'], description: 'Erase unwanted objects, people, or defects from any photo.' },
+      { id: '15', title: 'Unscreen', url: 'https://unscreen.com', tags: ['Video', 'AI', 'Media'], description: 'Remove background from video files or GIFs automatically.' },
+      { id: '16', title: 'Carbon', url: 'https://carbon.now.sh', tags: ['Developer', 'Code', 'Design'], description: 'Create and share beautiful high-resolution images of your source code.' },
+      { id: '17', title: 'Ray.so', url: 'https://ray.so', tags: ['Developer', 'Code', 'Design'], description: 'Create stylish code screenshots with custom gradients, themes, and padding.' },
+      { id: '18', title: 'Shots.so', url: 'https://shots.so', tags: ['Design', 'Mockup', 'Graphics'], description: 'Create sleek presentation mockups for apps, websites, and images.' },
+      { id: '19', title: 'Smartmockups', url: 'https://smartmockups.com', tags: ['Design', 'Mockup', 'Product'], description: 'Create high-resolution product mockups online without needing Photoshop.' },
+      { id: '20', title: 'Have I Been Pwned', url: 'https://haveibeenpwned.com', tags: ['Security', 'Privacy', 'Utility'], description: 'Check if your email or account credentials have been exposed in a data breach.' }
+    ];
+
+    let sites = JSON.parse(localStorage.getItem('curated_sites_v3')) || defaultSites;
+
+    // Live Clock Function
+    function startLiveClock() {
+      function updateClock() {
+        const now = new Date();
+        const options = { 
+          weekday: 'short', 
+          year: 'numeric', 
+          month: 'short', 
+          day: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit', 
+          second: '2-digit' 
+        };
+        document.getElementById('liveDateTime').textContent = now.toLocaleDateString(undefined, options);
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    }
+
+    function updateTotalCount() {
+      document.getElementById('totalCountDisplay').textContent = sites.length;
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.getElementById('themeBtn').textContent = '☀️ Light';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('themeBtn').textContent = '🌙 Dark';
+      }
+    }
+
+    function toggleDarkMode() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      document.getElementById('themeBtn').textContent = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    }
+
+    function toggleAuthorMode() {
+      if (isAuthorMode) {
+        isAuthorMode = false;
+        document.body.classList.add('reader-mode');
+        document.getElementById('modeBtn').textContent = '🔒 Author Login';
+        renderCards();
+      } else {
+        document.getElementById('passwordModal').style.display = 'flex';
+      }
+    }
+
+    function closePasswordModal() {
+      document.getElementById('passwordModal').style.display = 'none';
+      document.getElementById('password').value = '';
+    }
+
+    function verifyPassword(e) {
+      e.preventDefault();
+      const inputPass = document.getElementById('password').value;
+      
+      if (inputPass === AUTHOR_PASSWORD) {
+        isAuthorMode = true;
+        document.body.classList.remove('reader-mode');
+        document.getElementById('modeBtn').textContent = '🔓 Logout Author';
+        closePasswordModal();
+        renderCards();
+      } else {
+        alert('Incorrect password!');
+      }
+    }
+
+    function saveToStorage() {
+      localStorage.setItem('curated_sites_v3', JSON.stringify(sites));
+      updateTotalCount();
+    }
+
+    function getFaviconUrl(domainUrl) {
+      try {
+        const hostname = new URL(domainUrl).hostname;
+        return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+      } catch (e) {
+        return '';
+      }
+    }
+
+    /* Auto-fetch Webpage Title Function */
+    let lastFetchedUrl = '';
+    async function autoFetchTitle(force = false) {
+      const urlInput = document.getElementById('url');
+      const titleInput = document.getElementById('title');
+      let targetUrl = urlInput.value.trim();
+
+      if (!targetUrl) return;
+
+      if (!/^https?:\/\//i.test(targetUrl)) {
+        targetUrl = 'https://' + targetUrl;
+        urlInput.value = targetUrl;
+      }
+
+      if (!force && targetUrl === lastFetchedUrl) return;
+      if (!force && titleInput.value.trim() !== '') return;
+
+      lastFetchedUrl = targetUrl;
+      const originalTitleVal = titleInput.value;
+      titleInput.value = "Fetching title...";
+
+      try {
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+        const response = await fetch(proxyUrl);
+        
+        if (!response.ok) throw new Error('Network error');
+        
+        const data = await response.json();
+        if (data.contents) {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(data.contents, 'text/html');
+          const pageTitle = doc.querySelector('title')?.innerText.trim();
+
+          if (pageTitle) {
+            titleInput.value = pageTitle.replace(/\s+/g, ' ');
+            return;
+          }
+        }
+        throw new Error('Title not found');
+      } catch (err) {
+        if (originalTitleVal && originalTitleVal !== "Fetching title...") {
+          titleInput.value = originalTitleVal;
+        } else {
+          try {
+            const domain = new URL(targetUrl).hostname.replace('www.', '');
+            titleInput.value = domain.charAt(0).toUpperCase() + domain.slice(1);
+          } catch(e) {
+            titleInput.value = '';
+          }
+        }
+      }
+    }
+
+    function updateTagDropdown() {
+      const select = document.getElementById('tagFilter');
+      const allTags = [...new Set(sites.flatMap(s => s.tags || []))].sort();
+      const currentVal = select.value;
+      
+      select.innerHTML = '<option value="">All Tags</option>' + 
+        allTags.map(t => `<option value="${t}" ${t === currentVal ? 'selected' : ''}>${t}</option>`).join('');
+    }
+
+    function onSearchOrFilterChange() {
+      const searchInput = document.getElementById('searchInput');
+      const clearBtn = document.getElementById('searchClearBtn');
+      
+      clearBtn.style.display = searchInput.value.trim().length > 0 ? 'block' : 'none';
+
+      currentPage = 1;
+      renderCards();
+    }
+
+    function clearSearch() {
+      const searchInput = document.getElementById('searchInput');
+      searchInput.value = '';
+      onSearchOrFilterChange();
+      searchInput.focus();
+    }
+
+    function changeItemsPerPage(val) {
+      itemsPerPage = val === 'all' ? sites.length || 1 : parseInt(val, 10);
+      currentPage = 1;
+      renderCards();
+    }
+
+    function renderCards() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const selectedTag = document.getElementById('tagFilter').value;
+      const grid = document.getElementById('cardGrid');
+
+      const filtered = sites.filter(s => {
+        const matchesSearch = s.title.toLowerCase().includes(search) || 
+                              s.description.toLowerCase().includes(search) ||
+                              (s.tags && s.tags.some(t => t.toLowerCase().includes(search)));
+        const matchesTag = !selectedTag || (s.tags && s.tags.includes(selectedTag));
+        return matchesSearch && matchesTag;
+      });
+
+      const totalItems = filtered.length;
+      const effectiveItemsPerPage = itemsPerPage === 'all' ? totalItems || 1 : itemsPerPage;
+      const totalPages = Math.ceil(totalItems / effectiveItemsPerPage) || 1;
+
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIndex = (currentPage - 1) * effectiveItemsPerPage;
+      const endIndex = Math.min(startIndex + effectiveItemsPerPage, totalItems);
+      const paginatedItems = filtered.slice(startIndex, endIndex);
+
+      grid.innerHTML = paginatedItems.map(s => {
+        const faviconSrc = getFaviconUrl(s.url);
+        const tagBadges = (s.tags || []).map(t => `<span class="badge">${t}</span>`).join('');
+
+        return `
+          <article class="card">
+            <div>
+              <div class="card-header">
+                <img class="favicon" src="${faviconSrc}" alt="" onerror="this.style.opacity='0'">
+                <a href="${s.url}" target="_blank" class="card-title" title="${s.title}">${s.title}</a>
+              </div>
+              <div class="tag-container">${tagBadges}</div>
+              <p class="card-desc">${s.description}</p>
+            </div>
+            <div class="card-actions">
+              <a href="${s.url}" target="_blank" class="btn-visit">Visit Site ↗</a>
+              ${isAuthorMode ? `
+                <button class="btn-edit author-only" onclick="openModal('${s.id}')">Edit</button>
+                <button class="btn-danger author-only" onclick="deleteSite('${s.id}')">Delete</button>
+              ` : ''}
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      renderPaginationControls(totalItems, startIndex, endIndex, totalPages);
+      updateTagDropdown();
+      updateTotalCount();
+    }
+
+    function renderPaginationControls(totalItems, startIndex, endIndex, totalPages) {
+      const infoText = document.getElementById('paginationInfo');
+      const controlsContainer = document.getElementById('paginationControls');
+
+      if (totalItems === 0) {
+        infoText.textContent = "No entries found";
+        controlsContainer.innerHTML = "";
+        return;
+      }
+
+      infoText.textContent = `Showing ${startIndex + 1}–${endIndex} of ${totalItems} items`;
+
+      if (totalPages <= 1) {
+        controlsContainer.innerHTML = "";
+        return;
+      }
+
+      let buttonsHtml = `<button class="secondary" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← Prev</button>`;
+
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+          buttonsHtml += `<button class="${i === currentPage ? 'active' : 'secondary'}" onclick="goToPage(${i})">${i}</button>`;
+        } else if (i === currentPage - 3 || i === currentPage + 3) {
+          buttonsHtml += `<span style="padding: 0 0.25rem; color: var(--muted);">...</span>`;
+        }
+      }
+
+      buttonsHtml += `<button class="secondary" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next →</button>`;
+
+      controlsContainer.innerHTML = buttonsHtml;
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      renderCards();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openModal(siteId = null) {
+      if (!isAuthorMode && siteId) return;
+
+      const modal = document.getElementById('modal');
+      const modalTitle = document.getElementById('modalTitle');
+      const hiddenIdInput = document.getElementById('siteId');
+
+      lastFetchedUrl = '';
+
+      if (siteId) {
+        const site = sites.find(s => s.id === siteId);
+        if (!site) return;
+
+        modalTitle.textContent = "Edit Website";
+        hiddenIdInput.value = site.id;
+        document.getElementById('title').value = site.title;
+        document.getElementById('url').value = site.url;
+        document.getElementById('tags').value = (site.tags || []).join(', ');
+        document.getElementById('description').value = site.description;
+        lastFetchedUrl = site.url;
+      } else {
+        modalTitle.textContent = "Add New Website";
+        hiddenIdInput.value = "";
+        document.getElementById('siteForm').reset();
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() { 
+      document.getElementById('modal').style.display = 'none';
+      document.getElementById('siteForm').reset();
+      document.getElementById('siteId').value = "";
+      lastFetchedUrl = '';
+    }
+
+    function saveSite(e) {
+      e.preventDefault();
+      const siteId = document.getElementById('siteId').value;
+      const rawTags = document.getElementById('tags').value;
+      const parsedTags = rawTags.split(',').map(t => t.trim()).filter(t => t.length > 0);
+
+      const title = document.getElementById('title').value;
+      const url = document.getElementById('url').value;
+      const description = document.getElementById('description').value;
+
+      if (siteId) {
+        const siteIndex = sites.findIndex(s => s.id === siteId);
+        if (siteIndex !== -1) {
+          sites[siteIndex] = {
+            ...sites[siteIndex],
+            title,
+            url,
+            tags: parsedTags,
+            description
+          };
+        }
+      } else {
+        const newSite = {
+          id: Date.now().toString(),
+          title,
+          url,
+          tags: parsedTags,
+          description
+        };
+        sites.unshift(newSite);
+        currentPage = 1;
+      }
+
+      saveToStorage();
+      renderCards();
+      closeModal();
+    }
+
+    function deleteSite(id) {
+      if (!isAuthorMode) return;
+      if (confirm("Are you sure you want to delete this bookmark?")) {
+        sites = sites.filter(s => s.id !== id);
+        saveToStorage();
+        renderCards();
+      }
+    }
+
+    function exportJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(sites, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `directory_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importJSON(event) {
+      if (!isAuthorMode) return;
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedSites = JSON.parse(e.target.result);
+          if (Array.isArray(importedSites)) {
+            sites = importedSites;
+            saveToStorage();
+            currentPage = 1;
+            renderCards();
+            alert("Directory imported successfully!");
+          } else {
+            alert("Invalid format: JSON file must contain an array of website objects.");
+          }
+        } catch (err) {
+          alert("Error parsing JSON file.");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    initTheme();
+    startLiveClock();
+    renderCards();
+  </script>
+</body>
+</html>
