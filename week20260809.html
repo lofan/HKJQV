@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本週操盤筆記 - 財經事件行事曆 (0809-0815)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            background: #e0e0e0;
+            padding: 2px;
+        }
+
+        .day-header {
+            background: #f5f5f5;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .day {
+            background: white;
+            min-height: 180px;
+            padding: 10px;
+            position: relative;
+        }
+
+        .day-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .day.other-month {
+            background: #f9f9f9;
+            color: #ccc;
+        }
+
+        .event {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .event:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .event.critical {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .event.important {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .event.normal {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .event-time {
+            font-size: 10px;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+
+        .event-title {
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        .legend {
+            padding: 20px;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        .legend-color.critical {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .legend-color.important {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .legend-color.normal {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .weekend {
+            background: #fff5f5;
+        }
+
+        .today {
+            border: 3px solid #f5576c;
+        }
+
+        @media (max-width: 768px) {
+            .calendar {
+                grid-template-columns: 1fr;
+            }
+
+            .day {
+                min-height: auto;
+            }
+
+            .day-header {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📅 本週操盤筆記</h1>
+            <p>財經事件行事曆 | 2026 年 8 月 9 日 - 8 月 15 日</p>
+        </header>
+
+        <div class="calendar">
+            <!-- Day Headers -->
+            <div class="day-header">週日</div>
+            <div class="day-header">週一</div>
+            <div class="day-header">週二</div>
+            <div class="day-header">週三</div>
+            <div class="day-header">週四</div>
+            <div class="day-header">週五</div>
+            <div class="day-header">週六</div>
+
+            <!-- Week 1 -->
+            <div class="day other-month">
+                <div class="day-number">2</div>
+            </div>
+            <div class="day other-month">
+                <div class="day-number">3</div>
+            </div>
+            <div class="day other-month">
+                <div class="day-number">4</div>
+            </div>
+            <div class="day other-month">
+                <div class="day-number">5</div>
+            </div>
+            <div class="day other-month">
+                <div class="day-number">6</div>
+            </div>
+            <div class="day other-month">
+                <div class="day-number">7</div>
+            </div>
+            <div class="day other-month">
+                <div class="day-number">8</div>
+            </div>
+
+            <!-- Week 2 -->
+            <div class="day weekend today">
+                <div class="day-number">9</div>
+                <div class="event normal">
+                    <div class="event-time">全週開始</div>
+                    <div class="event-title">📊 本週操盤筆記開始</div>
+                </div>
+            </div>
+
+            <div class="day">
+                <div class="day-number">10</div>
+                <div class="event normal">
+                    <div class="event-time">盤前</div>
+                    <div class="event-title">📈 美股期貨交易</div>
+                </div>
+            </div>
+
+            <div class="day">
+                <div class="day-number">11</div>
+                <div class="event critical">
+                    <div class="event-time">澳洲央行決策</div>
+                    <div class="event-title">🇦🇺 RBA 利率決策 (預期 4.35%)</div>
+                </div>
+                <div class="event important">
+                    <div class="event-time">日本央行</div>
+                    <div class="event-title">🇯🇵 7 月會議意見摘要</div>
+                </div>
+            </div>
+
+            <div class="day">
+                <div class="day-number">12</div>
+                <div class="event critical">
+                    <div class="event-time">20:30 ET</div>
+                    <div class="event-title">🇺🇸 7 月 CPI 數據公佈</div>
+                </div>
+                <div class="event important">
+                    <div class="event-time">歐洲</div>
+                    <div class="event-title">🇬🇧 英國 Q2 GDP 初值</div>
+                </div>
+            </div>
+
+            <div class="day">
+                <div class="day-number">13</div>
+                <div class="event critical">
+                    <div class="event-time">08:30 ET</div>
+                    <div class="event-title">🇺🇸 7 月 PPI 數據</div>
+                </div>
+                <div class="event important">
+                    <div class="event-time">09:15 ET</div>
+                    <div class="event-title">🇺🇸 零售銷售數據 (預期 +0.2%)</div>
+                </div>
+            </div>
+
+            <div class="day">
+                <div class="day-number">14</div>
+                <div class="event important">
+                    <div class="event-time">盤前</div>
+                    <div class="event-title">📊 企業財報：思科 (CSCO)</div>
+                </div>
+                <div class="event normal">
+                    <div class="event-time">09:45 ET</div>
+                    <div class="event-title">🇺🇸 密西根大學消費者信心</div>
+                </div>
+            </div>
+
+            <div class="day weekend">
+                <div class="day-number">15</div>
+                <div class="event normal">
+                    <div class="event-time">週末</div>
+                    <div class="event-title">📝 本週操盤筆記結束</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color critical"></div>
+                <span>🔴 重大事件 (通膨數據、央行決策)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color important"></div>
+                <span>🔵 重要事件 (GDP、零售銷售、財報)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color normal"></div>
+                <span>🟢 一般事件 (其他經濟指標)</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
