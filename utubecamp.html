@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CAMPSPOT - Outdoor YouTube Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            slate: {
+              850: '#111827',
+              950: '#030712',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #030712;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1f2937;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #374151;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center space-x-3 shrink-0">
+        <div class="bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">
+          <i data-lucide="compass" class="w-5 h-5 text-emerald-400"></i>
+        </div>
+        <h1 class="text-lg font-bold tracking-wide flex items-center gap-2">
+          CAMPSPOT
+          <span class="text-[10px] font-mono uppercase px-2 py-0.5 bg-emerald-950 text-emerald-400 rounded border border-emerald-800">
+            Dashboard
+          </span>
+        </h1>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-md relative">
+        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search channels, gear, rain ASMR, dogs..."
+          class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-8 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+        />
+        <button id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-white">
+          &times;
+        </button>
+      </div>
+
+      <!-- Tab Controls -->
+      <nav class="flex items-center space-x-1 bg-slate-950 p-1 rounded-lg border border-slate-800 shrink-0">
+        <button
+          id="tab-discover"
+          onclick="switchTab('discover')"
+          class="tab-btn flex items-center space-x-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition bg-emerald-600 text-white shadow"
+        >
+          <i data-lucide="grid" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Discover</span>
+        </button>
+
+        <button
+          id="tab-theater"
+          onclick="switchTab('theater')"
+          class="tab-btn flex items-center space-x-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-slate-200"
+        >
+          <i data-lucide="tv" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Player</span>
+        </button>
+
+        <button
+          id="tab-favorites"
+          onclick="switchTab('favorites')"
+          class="tab-btn flex items-center space-x-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-slate-200"
+        >
+          <i data-lucide="heart" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Saved</span>
+          <span id="favCount" class="bg-emerald-950 text-emerald-300 border border-emerald-800 px-1.5 py-0.2 text-[10px] rounded-full">
+            2
+          </span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col space-y-6">
+    
+    <!-- Category Pills Bar -->
+    <div class="flex items-center space-x-2 overflow-x-auto pb-1" id="categoryPills">
+      <i data-lucide="filter" class="w-4 h-4 text-slate-500 shrink-0 mr-1"></i>
+      <!-- Pills inserted dynamically -->
+    </div>
+
+    <!-- TAB 1: DISCOVER GRID VIEW -->
+    <section id="view-discover" class="tab-view grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- Cards rendered dynamically -->
+    </section>
+
+    <!-- TAB 2: PLAYER / THEATER VIEW -->
+    <section id="view-theater" class="tab-view hidden grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-8 flex flex-col space-y-4">
+        <!-- Responsive Video Container -->
+        <div class="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-slate-800">
+          <iframe
+            id="mainIframe"
+            class="absolute inset-0 w-full h-full"
+            src=""
+            title="Camping Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <!-- Video Details -->
+        <div class="bg-slate-900/80 rounded-xl p-5 border border-slate-800 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 id="activeChannelName" class="text-xl font-bold text-white"></h2>
+              <span id="activeChannelHandle" class="text-xs text-emerald-400 font-mono"></span>
+            </div>
+
+            <a
+              id="activeChannelUrl"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-medium transition"
+            >
+              <i data-lucide="youtube" class="w-4 h-4"></i>
+              <span>Channel Link</span>
+            </a>
+          </div>
+
+          <p id="activeChannelDesc" class="text-xs md:text-sm text-slate-300 leading-relaxed"></p>
+        </div>
+      </div>
+
+      <!-- Theater Sidebar Switcher -->
+      <div class="lg:col-span-4 flex flex-col space-y-3 max-h-[600px] overflow-y-auto pr-1">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 px-1">
+          Up Next / Playlists
+        </h3>
+        <div id="theaterPlaylist" class="space-y-2">
+          <!-- Playlist items rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: FAVORITES VIEW -->
+    <section id="view-favorites" class="tab-view hidden space-y-4">
+      <h2 class="text-sm font-semibold text-slate-400 flex items-center gap-2">
+        <i data-lucide="heart" class="w-4 h-4 text-rose-500 fill-rose-500"></i>
+        <span>Saved Camping Channels</span>
+      </h2>
+      <div id="favoritesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Favorite items rendered dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Application Logic -->
+  <script>
+    const INITIAL_CHANNELS = [
+      {
+        id: "Haneulcamp",
+        name: "놀면뭐하늘 (Haneulcamp)",
+        handle: "@Haneulcamp",
+        channelUrl: "https://www.youtube.com/@Haneulcamp",
+        featuredVideoId: "d6i8I-05s24",
+        vibe: "Pet-Friendly & Mukbang",
+        category: "Pet Camping",
+        description: "Solo camping adventures with Dubu, an 11-year-old Labrador Retriever. Blends nature, delicious campsite meals, and creek ASMR.",
+        tags: ["Dog Camping", "Mukbang", "Solo Female"]
+      },
+      {
+        id: "ForestGirlLiving",
+        name: "Forest Girl Living",
+        handle: "@ForestGirlLiving",
+        channelUrl: "https://www.youtube.com/@ForestGirlLiving",
+        featuredVideoId: "UoNjX4Z_Heg",
+        vibe: "Slow-Living Wilderness",
+        category: "Relaxation & ASMR",
+        description: "Cinematic solo female camping focused on reconnecting with nature, outdoor cooking, and mindfulness in quiet settings.",
+        tags: ["Slow Living", "Nature ASMR", "Mindfulness"]
+      },
+      {
+        id: "KirinCamp",
+        name: "Kirin Camp",
+        handle: "@KirinCamp",
+        channelUrl: "https://www.youtube.com/@KirinCamp",
+        featuredVideoId: "XdbOpoeE7uI",
+        vibe: "Heavy Rain ASMR & Air Tents",
+        category: "Relaxation & ASMR",
+        description: "Famous for high-end air-tent setups, luxury gear, and high-fidelity audio of heavy rain falling on canvas shelters.",
+        tags: ["Heavy Rain", "Air Tent", "Luxury Gear"]
+      },
+      {
+        id: "Uni_Camp",
+        name: "UNI CAMP",
+        handle: "@Uni_Camp",
+        channelUrl: "https://www.youtube.com/@Uni_Camp",
+        featuredVideoId: "bIfDdofUhVU",
+        vibe: "Cozy Solo & Pet Kkomi",
+        category: "Pet Camping",
+        description: "Cozy solo trips accompanied by her pet dog Kkomi. Features high production value, aesthetic setups, and tasty Korean camp meals.",
+        tags: ["Dog-Friendly", "Cozy Setup", "Korean Food"]
+      },
+      {
+        id: "dulgiyat",
+        name: "둘기얏 (dulgiyat)",
+        handle: "@dulgiyat",
+        channelUrl: "https://www.youtube.com/@dulgiyat",
+        featuredVideoId: "3mP_NnZ9R80",
+        vibe: "Minimalist & Clean",
+        category: "Solo Camping",
+        description: "Known for clean, quiet edits, practical outdoor gear usage, mountain setups, and peaceful camp cooking ASMR.",
+        tags: ["Minimalist", "Mountain Camping", "Quiet Vlogs"]
+      },
+      {
+        id: "AYACAMPING",
+        name: "AYA CAMPING",
+        handle: "@AYACAMPING",
+        channelUrl: "https://www.youtube.com/@AYACAMPING",
+        featuredVideoId: "9SgLd0T1pC0",
+        vibe: "SUV Car Camping (차박)",
+        category: "Car Camping",
+        description: "Versatile outdoor trips focusing on SUV car camping, winter snow shelters, and satisfying outdoor meal preparations.",
+        tags: ["Car Camping", "Snow Camping", "Shelter"]
+      },
+      {
+        id: "RYUCAMP",
+        name: "RYU CAMP",
+        handle: "@RYUCAMP",
+        channelUrl: "https://www.youtube.com/@RYUCAMP",
+        featuredVideoId: "0S1wTzYyT3E",
+        vibe: "Stealth & Heavy Rain",
+        category: "Relaxation & ASMR",
+        description: "Atmospheric solo camping featuring rich natural soundscapes, heavy rain shelter setups, and winter woodstove heating.",
+        tags: ["Stealth Camping", "Woodstove", "Rain Sound"]
+      },
+      {
+        id: "bushcraft",
+        name: "bushcraft",
+        handle: "@bushcraftb1485",
+        channelUrl: "https://www.youtube.com/@bushcraftb1485",
+        featuredVideoId: "k5vJ4p4f9d0",
+        vibe: "Primitive Survival",
+        category: "Bushcraft & Survival",
+        description: "Pure bushcraft skills—building natural shelters from forest timber, friction fire starting, and primitive survival cooking.",
+        tags: ["Bushcraft", "Survival", "Natural Shelter"]
+      },
+      {
+        id: "Wild_Anne",
+        name: "Wild Anne",
+        handle: "@Wild_Anne",
+        channelUrl: "https://www.youtube.com/@Wild_Anne",
+        featuredVideoId: "l8p2zX7vX8Y",
+        vibe: "Rugged Wilderness",
+        category: "Bushcraft & Survival",
+        description: "Adventurous solo female camping through extreme weather, deep forest explorations, and tarp shelter setups.",
+        tags: ["Rugged", "Extreme Weather", "Tarp Shelter"]
+      },
+      {
+        id: "yoyocamp",
+        name: "Yoyo Camp",
+        handle: "@yoyocamp",
+        channelUrl: "https://www.youtube.com/@yoyocamp",
+        featuredVideoId: "7e9pA4bX2dQ",
+        vibe: "Aesthetic Chill",
+        category: "Solo Camping",
+        description: "Relaxing solo camping vlogs featuring sleek aesthetic gear, mood lighting, and comforting campfire recipes.",
+        tags: ["Aesthetic", "Chill", "Modern Gear"]
+      }
+    ];
+
+    const CATEGORIES = ["All", "Relaxation & ASMR", "Pet Camping", "Solo Camping", "Car Camping", "Bushcraft & Survival"];
+
+    // App State
+    let currentTab = "discover";
+    let searchQuery = "";
+    let selectedCategory = "All";
+    let selectedChannel = INITIAL_CHANNELS[0];
+    let favorites = ["Haneulcamp", "KirinCamp"];
+
+    // DOM Elements
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+    const categoryPills = document.getElementById("categoryPills");
+    const favCount = document.getElementById("favCount");
+
+    // Initialize Application
+    function init() {
+      renderCategoryPills();
+      setupEventListeners();
+      updateView();
+    }
+
+    function setupEventListeners() {
+      searchInput.addEventListener("input", (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        clearSearchBtn.classList.toggle("hidden", searchQuery === "");
+        updateView();
+      });
+
+      clearSearchBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        searchQuery = "";
+        clearSearchBtn.classList.add("hidden");
+        updateView();
+      });
+    }
+
+    // Tab Navigation
+    function switchTab(tab) {
+      currentTab = tab;
+      
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.className = "tab-btn flex items-center space-x-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-slate-200";
+      });
+      
+      const activeBtn = document.getElementById(`tab-${tab}`);
+      activeBtn.className = "tab-btn flex items-center space-x-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition bg-emerald-600 text-white shadow";
+
+      document.querySelectorAll(".tab-view").forEach(view => view.classList.add("hidden"));
+      
+      if (tab === "discover") {
+        document.getElementById("view-discover").classList.remove("hidden");
+        document.getElementById("view-discover").classList.add("grid");
+      } else if (tab === "theater") {
+        document.getElementById("view-theater").classList.remove("hidden");
+        document.getElementById("view-theater").classList.add("grid");
+      } else if (tab === "favorites") {
+        document.getElementById("view-favorites").classList.remove("hidden");
+        document.getElementById("view-favorites").classList.add("block");
+      }
+
+      updateView();
+    }
+
+    // Render Categories
+    function renderCategoryPills() {
+      categoryPills.innerHTML = `<i data-lucide="filter" class="w-4 h-4 text-slate-500 shrink-0 mr-1"></i>`;
+      CATEGORIES.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = `px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition ${
+          selectedCategory === cat
+            ? "bg-slate-200 text-slate-900 font-semibold"
+            : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200"
+        }`;
+        btn.innerText = cat;
+        btn.onclick = () => {
+          selectedCategory = cat;
+          renderCategoryPills();
+          updateView();
+        };
+        categoryPills.appendChild(btn);
+      });
+      lucide.createIcons();
+    }
+
+    // Toggle Favorites
+    function toggleFavorite(id) {
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(favId => favId !== id);
+      } else {
+        favorites.push(id);
+      }
+      favCount.innerText = favorites.length;
+      updateView();
+    }
+
+    // Set Channel for Theater View
+    function playChannel(channelId) {
+      const channel = INITIAL_CHANNELS.find(c => c.id === channelId);
+      if (channel) {
+        selectedChannel = channel;
+        switchTab("theater");
+      }
+    }
+
+    // Filter Logic
+    function getFilteredChannels() {
+      return INITIAL_CHANNELS.filter(channel => {
+        const matchesSearch =
+          channel.name.toLowerCase().includes(searchQuery) ||
+          channel.vibe.toLowerCase().includes(searchQuery) ||
+          channel.tags.some(tag => tag.toLowerCase().includes(searchQuery));
+
+        const matchesCategory = selectedCategory === "All" || channel.category === selectedCategory;
+
+        return matchesSearch && matchesCategory;
+      });
+    }
+
+    // Master Render Function
+    function updateView() {
+      const filtered = getFilteredChannels();
+
+      // Update Discover Grid
+      const discoverGrid = document.getElementById("view-discover");
+      if (filtered.length === 0) {
+        discoverGrid.innerHTML = `
+          <div class="col-span-full text-center py-16 bg-slate-900/40 rounded-xl border border-slate-800">
+            <p class="text-slate-400 text-sm">No channels matched your filter criteria.</p>
+          </div>`;
+      } else {
+        discoverGrid.innerHTML = filtered.map(channel => {
+          const isFav = favorites.includes(channel.id);
+          return `
+            <div class="bg-slate-900/70 rounded-xl border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition group">
+              <div>
+                <div class="flex items-start justify-between gap-2 mb-2">
+                  <div>
+                    <span class="text-[10px] uppercase font-mono text-emerald-400 tracking-wider">${channel.category}</span>
+                    <h3 class="font-semibold text-white group-hover:text-emerald-400 transition">${channel.name}</h3>
+                    <p class="text-xs text-slate-400">${channel.handle}</p>
+                  </div>
+                  <button
+                    onclick="toggleFavorite('${channel.id}')"
+                    class="p-1.5 rounded-lg border transition ${isFav ? 'bg-rose-950/50 border-rose-800 text-rose-400' : 'bg-slate-950 border-slate-800 text-slate-500 hover:text-slate-300'}"
+                  >
+                    <i data-lucide="heart" class="w-4 h-4 ${isFav ? 'fill-rose-400' : ''}"></i>
+                  </button>
+                </div>
+                <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed mb-4">${channel.description}</p>
+              </div>
+
+              <div>
+                <div class="flex flex-wrap gap-1.5 mb-4">
+                  ${channel.tags.map(tag => `<span class="text-[10px] px-2 py-0.5 bg-slate-950 border border-slate-800 text-slate-400 rounded">#${tag}</span>`).join('')}
+                </div>
+                <div class="flex items-center gap-2 pt-3 border-t border-slate-800/80">
+                  <button
+                    onclick="playChannel('${channel.id}')"
+                    class="flex-1 flex items-center justify-center space-x-1.5 py-1.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-medium transition"
+                  >
+                    <i data-lucide="play" class="w-3.5 h-3.5 fill-white"></i>
+                    <span>Watch Featured</span>
+                  </button>
+                  <a
+                    href="${channel.channelUrl}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-400 hover:text-white transition"
+                  >
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Update Theater Screen
+      document.getElementById("mainIframe").src = `https://www.youtube-nocookie.com/embed/${selectedChannel.featuredVideoId}?autoplay=0&rel=0`;
+      document.getElementById("activeChannelName").innerText = selectedChannel.name;
+      document.getElementById("activeChannelHandle").innerText = selectedChannel.handle;
+      document.getElementById("activeChannelDesc").innerText = selectedChannel.description;
+      document.getElementById("activeChannelUrl").href = selectedChannel.channelUrl;
+
+      // Update Theater Sidebar
+      const theaterPlaylist = document.getElementById("theaterPlaylist");
+      theaterPlaylist.innerHTML = filtered.map(chan => {
+        const isSelected = selectedChannel.id === chan.id;
+        return `
+          <button
+            onclick="playChannel('${chan.id}')"
+            class="w-full text-left p-3 rounded-xl transition border flex flex-col justify-between ${
+              isSelected
+                ? "bg-emerald-950/40 border-emerald-500/50 text-white"
+                : "bg-slate-900/60 border-slate-800/80 text-slate-300 hover:bg-slate-800/50"
+            }"
+          >
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="font-medium text-xs text-white">${chan.name}</h4>
+                <p class="text-[11px] text-emerald-400/90 font-mono mt-0.5">${chan.vibe}</p>
+              </div>
+              ${isSelected ? `<span class="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">Active</span>` : ''}
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      // Update Favorites Tab
+      const favoritesGrid = document.getElementById("favoritesGrid");
+      const favChannels = INITIAL_CHANNELS.filter(c => favorites.includes(c.id));
+
+      if (favChannels.length === 0) {
+        favoritesGrid.innerHTML = `
+          <div class="col-span-full text-center py-16 bg-slate-900/40 rounded-xl border border-slate-800">
+            <p class="text-slate-400 text-sm">No saved channels yet. Click the heart icon on any card to save it.</p>
+          </div>`;
+      } else {
+        favoritesGrid.innerHTML = favChannels.map(channel => `
+          <div class="bg-slate-900/70 rounded-xl border border-slate-800 p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div>
+                  <span class="text-[10px] uppercase font-mono text-emerald-400">${channel.category}</span>
+                  <h3 class="font-semibold text-white">${channel.name}</h3>
+                  <p class="text-xs text-slate-400">${channel.handle}</p>
+                </div>
+                <button
+                  onclick="toggleFavorite('${channel.id}')"
+                  class="p-1.5 rounded-lg border bg-rose-950/50 border-rose-800 text-rose-400"
+                >
+                  <i data-lucide="heart" class="w-4 h-4 fill-rose-400"></i>
+                </button>
+              </div>
+              <p class="text-xs text-slate-300 line-clamp-2 mb-4">${channel.description}</p>
+            </div>
+            <button
+              onclick="playChannel('${channel.id}')"
+              class="w-full flex items-center justify-center space-x-1.5 py-1.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-medium transition"
+            >
+              <i data-lucide="play" class="w-3.5 h-3.5 fill-white"></i>
+              <span>Watch Video</span>
+            </button>
+          </div>
+        `).join('');
+      }
+
+      // Re-initialize Lucide Icons for dynamic content
+      lucide.createIcons();
+    }
+
+    // Run application on load
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
