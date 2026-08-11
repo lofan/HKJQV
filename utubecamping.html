@@ -53,7 +53,7 @@
         <h1 class="text-lg font-bold tracking-wide flex items-center gap-2">
           CAMPSPOT
           <span class="text-[10px] font-mono uppercase px-2 py-0.5 bg-emerald-950 text-emerald-400 rounded border border-emerald-800">
-            Dashboard
+            Live Feed
           </span>
         </h1>
       </div>
@@ -129,7 +129,7 @@
             id="mainIframe"
             class="absolute inset-0 w-full h-full"
             src=""
-            title="Camping Video"
+            title="Latest Outdoor Video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>
@@ -148,7 +148,7 @@
               href="#"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-medium transition"
+              class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-medium transition"
             >
               <i data-lucide="youtube" class="w-4 h-4"></i>
               <span>Channel Link</span>
@@ -162,7 +162,7 @@
       <!-- Theater Sidebar Switcher -->
       <div class="lg:col-span-4 flex flex-col space-y-3 max-h-[600px] overflow-y-auto pr-1">
         <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 px-1">
-          Up Next / Playlists
+          Channels (Latest Uploads)
         </h3>
         <div id="theaterPlaylist" class="space-y-2">
           <!-- Playlist items rendered dynamically -->
@@ -185,13 +185,14 @@
 
   <!-- Application Logic -->
   <script>
+    // Channel list configured with YouTube Uploads Playlist IDs (UU + Channel ID base)
     const INITIAL_CHANNELS = [
       {
         id: "Haneulcamp",
         name: "놀면뭐하늘 (Haneulcamp)",
         handle: "@Haneulcamp",
         channelUrl: "https://www.youtube.com/@Haneulcamp",
-        featuredVideoId: "d6i8I-05s24",
+        uploadsPlaylistId: "UUk7M83J8O3K5yV34t21I9sQ", // Plays latest upload
         vibe: "Pet-Friendly & Mukbang",
         category: "Pet Camping",
         description: "Solo camping adventures with Dubu, an 11-year-old Labrador Retriever. Blends nature, delicious campsite meals, and creek ASMR.",
@@ -202,7 +203,7 @@
         name: "Forest Girl Living",
         handle: "@ForestGirlLiving",
         channelUrl: "https://www.youtube.com/@ForestGirlLiving",
-        featuredVideoId: "UoNjX4Z_Heg",
+        uploadsPlaylistId: "UUyL65e2EOnXN98QZ47c_q-g",
         vibe: "Slow-Living Wilderness",
         category: "Relaxation & ASMR",
         description: "Cinematic solo female camping focused on reconnecting with nature, outdoor cooking, and mindfulness in quiet settings.",
@@ -213,7 +214,7 @@
         name: "Kirin Camp",
         handle: "@KirinCamp",
         channelUrl: "https://www.youtube.com/@KirinCamp",
-        featuredVideoId: "XdbOpoeE7uI",
+        uploadsPlaylistId: "UU125G2j-i3528bI-uY8M70A",
         vibe: "Heavy Rain ASMR & Air Tents",
         category: "Relaxation & ASMR",
         description: "Famous for high-end air-tent setups, luxury gear, and high-fidelity audio of heavy rain falling on canvas shelters.",
@@ -224,7 +225,7 @@
         name: "UNI CAMP",
         handle: "@Uni_Camp",
         channelUrl: "https://www.youtube.com/@Uni_Camp",
-        featuredVideoId: "bIfDdofUhVU",
+        uploadsPlaylistId: "UUZ_9yA4vWc3OqI4X-Xz9zDA",
         vibe: "Cozy Solo & Pet Kkomi",
         category: "Pet Camping",
         description: "Cozy solo trips accompanied by her pet dog Kkomi. Features high production value, aesthetic setups, and tasty Korean camp meals.",
@@ -235,7 +236,7 @@
         name: "둘기얏 (dulgiyat)",
         handle: "@dulgiyat",
         channelUrl: "https://www.youtube.com/@dulgiyat",
-        featuredVideoId: "3mP_NnZ9R80",
+        uploadsPlaylistId: "UU3O074p8Zz0yM758mZg973A",
         vibe: "Minimalist & Clean",
         category: "Solo Camping",
         description: "Known for clean, quiet edits, practical outdoor gear usage, mountain setups, and peaceful camp cooking ASMR.",
@@ -246,7 +247,7 @@
         name: "AYA CAMPING",
         handle: "@AYACAMPING",
         channelUrl: "https://www.youtube.com/@AYACAMPING",
-        featuredVideoId: "9SgLd0T1pC0",
+        uploadsPlaylistId: "UUEK8O_L6y85wK6qK3x6Y4xA",
         vibe: "SUV Car Camping (차박)",
         category: "Car Camping",
         description: "Versatile outdoor trips focusing on SUV car camping, winter snow shelters, and satisfying outdoor meal preparations.",
@@ -257,7 +258,7 @@
         name: "RYU CAMP",
         handle: "@RYUCAMP",
         channelUrl: "https://www.youtube.com/@RYUCAMP",
-        featuredVideoId: "0S1wTzYyT3E",
+        uploadsPlaylistId: "UU33Wz_bT1qA1Q7xS7O7c4Bw",
         vibe: "Stealth & Heavy Rain",
         category: "Relaxation & ASMR",
         description: "Atmospheric solo camping featuring rich natural soundscapes, heavy rain shelter setups, and winter woodstove heating.",
@@ -268,7 +269,7 @@
         name: "bushcraft",
         handle: "@bushcraftb1485",
         channelUrl: "https://www.youtube.com/@bushcraftb1485",
-        featuredVideoId: "k5vJ4p4f9d0",
+        uploadsPlaylistId: "UU-44Q7A9z59C8p3aV80_M9A",
         vibe: "Primitive Survival",
         category: "Bushcraft & Survival",
         description: "Pure bushcraft skills—building natural shelters from forest timber, friction fire starting, and primitive survival cooking.",
@@ -279,7 +280,7 @@
         name: "Wild Anne",
         handle: "@Wild_Anne",
         channelUrl: "https://www.youtube.com/@Wild_Anne",
-        featuredVideoId: "l8p2zX7vX8Y",
+        uploadsPlaylistId: "UU5m2Kz5zB1S6vX3x4x6W0AA",
         vibe: "Rugged Wilderness",
         category: "Bushcraft & Survival",
         description: "Adventurous solo female camping through extreme weather, deep forest explorations, and tarp shelter setups.",
@@ -290,7 +291,7 @@
         name: "Yoyo Camp",
         handle: "@yoyocamp",
         channelUrl: "https://www.youtube.com/@yoyocamp",
-        featuredVideoId: "7e9pA4bX2dQ",
+        uploadsPlaylistId: "UUy054A_k8G2y1t3B5M6L49A",
         vibe: "Aesthetic Chill",
         category: "Solo Camping",
         description: "Relaxing solo camping vlogs featuring sleek aesthetic gear, mood lighting, and comforting campfire recipes.",
@@ -462,7 +463,7 @@
                     class="flex-1 flex items-center justify-center space-x-1.5 py-1.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-medium transition"
                   >
                     <i data-lucide="play" class="w-3.5 h-3.5 fill-white"></i>
-                    <span>Watch Featured</span>
+                    <span>Watch Latest Upload</span>
                   </button>
                   <a
                     href="${channel.channelUrl}"
@@ -479,8 +480,13 @@
         }).join('');
       }
 
-      // Update Theater Screen (uses standard youtube.com domain to eliminate Error 153)
-      document.getElementById("mainIframe").src = `https://www.youtube.com/embed/${selectedChannel.featuredVideoId}?enablejsapi=1`;
+      // Update Player View with YouTube Uploads Playlist (Loads newest video automatically)
+      const embedUrl = `https://www.youtube.com/embed?listType=playlist&list=${selectedChannel.uploadsPlaylistId}&enablejsapi=1`;
+      const iframe = document.getElementById("mainIframe");
+      if (iframe.src !== embedUrl) {
+        iframe.src = embedUrl;
+      }
+
       document.getElementById("activeChannelName").innerText = selectedChannel.name;
       document.getElementById("activeChannelHandle").innerText = selectedChannel.handle;
       document.getElementById("activeChannelDesc").innerText = selectedChannel.description;
@@ -504,7 +510,7 @@
                 <h4 class="font-medium text-xs text-white">${chan.name}</h4>
                 <p class="text-[11px] text-emerald-400/90 font-mono mt-0.5">${chan.vibe}</p>
               </div>
-              ${isSelected ? `<span class="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">Active</span>` : ''}
+              ${isSelected ? `<span class="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">Playing Latest</span>` : ''}
             </div>
           </button>
         `;
@@ -543,13 +549,13 @@
               class="w-full flex items-center justify-center space-x-1.5 py-1.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-medium transition"
             >
               <i data-lucide="play" class="w-3.5 h-3.5 fill-white"></i>
-              <span>Watch Video</span>
+              <span>Watch Latest Upload</span>
             </button>
           </div>
         `).join('');
       }
 
-      // Re-initialize icons for newly added elements
+      // Re-initialize Lucide icons
       lucide.createIcons();
     }
 
