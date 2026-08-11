@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CAMPSPOT - YouTube App Generator</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            slate: {
+              850: '#111827',
+              950: '#030712',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans p-4 md:p-8">
+
+  <div class="max-w-4xl mx-auto w-full space-y-6">
+    
+    <!-- Header -->
+    <div class="flex items-center space-x-3 border-b border-slate-800 pb-4">
+      <div class="bg-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/20">
+        <i data-lucide="code" class="w-6 h-6 text-emerald-400"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold text-white tracking-wide">YouTube Dashboard Generator</h1>
+        <p class="text-xs text-slate-400">Paste YouTube URLs below to generate a standalone dashboard HTML app.</p>
+      </div>
+    </div>
+
+    <!-- Input Form Section -->
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 shadow-xl">
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+          YouTube Links List (One URL per line)
+        </label>
+        <textarea
+          id="urlInput"
+          rows="8"
+          placeholder="https://www.youtube.com/@ssoberrycamping&#10;https://www.youtube.com/@Haneulcamp&#10;https://www.youtube.com/@KirinCamp&#10;https://www.youtube.com/@ForestGirlLiving"
+          class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono text-emerald-300 placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition"
+        ></textarea>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button
+          onclick="populateSampleLinks()"
+          class="text-xs text-slate-400 hover:text-emerald-400 underline transition"
+        >
+          Load Sample Camping Links
+        </button>
+
+        <button
+          onclick="generateAppCode()"
+          class="flex items-center space-x-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold tracking-wide transition shadow-lg shadow-emerald-950"
+        >
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>Generate HTML App</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Output Section -->
+    <div id="outputContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 shadow-xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="file-code" class="w-4 h-4 text-emerald-400"></i>
+          <h2 class="text-sm font-bold text-white">Generated App Code (`index.html`)</h2>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button
+            onclick="copyToClipboard()"
+            class="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-md text-xs font-medium transition"
+          >
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span id="copyBtnText">Copy Code</span>
+          </button>
+          <button
+            onclick="downloadHTMLFile()"
+            class="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md text-xs font-medium transition"
+          >
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Download HTML File</span>
+          </button>
+        </div>
+      </div>
+
+      <textarea
+        id="codeOutput"
+        rows="12"
+        readonly
+        class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-300 focus:outline-none"
+      ></textarea>
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function populateSampleLinks() {
+      document.getElementById("urlInput").value = 
+`https://www.youtube.com/@ssoberrycamping
+https://www.youtube.com/@Haneulcamp
+https://www.youtube.com/@ForestGirlLiving
+https://www.youtube.com/@KirinCamp
+https://www.youtube.com/@Uni_Camp
+https://www.youtube.com/@dulgiyat`;
+    }
+
+    function parseYouTubeUrl(rawUrl, index) {
+      const clean = rawUrl.trim();
+      if (!clean) return null;
+
+      let handle = "";
+      let name = "";
+
+      // Extract handle or user identifier
+      const handleMatch = clean.match(/@([a-zA-Z0-9_\-\.]+)/);
+      if (handleMatch) {
+        handle = "@" + handleMatch[1];
+        name = handleMatch[1].replace(/_/g, ' ');
+        name = name.charAt(0).toUpperCase() + name.slice(1);
+      } else {
+        handle = `@channel_${index + 1}`;
+        name = `Outdoor Channel ${index + 1}`;
+      }
+
+      // Format channel URL to /videos
+      const baseUrl = clean.split('/videos')[0].replace(/\/+$/, '');
+      const videosUrl = `${baseUrl}/videos`;
+
+      return {
+        id: `channel_${index + 1}`,
+        name: name,
+        handle: handle,
+        subscribers: "1.00M",
+        channelUrl: baseUrl,
+        videosUrl: videosUrl,
+        category: index % 2 === 0 ? "Pet Camping" : "Solo Camping",
+        description: `Automated feed for ${name}. Includes cozy setups, camp cooking, outdoor equipment, and nature soundscapes.`,
+        tags: ["Outdoor", "Camping", "Vlog", "ASMR"]
+      };
+    }
+
+    function generateAppCode() {
+      const input = document.getElementById("urlInput").value;
+      const lines = input.split("\n").filter(line => line.trim() !== "");
+
+      if (lines.length === 0) {
+        alert("Please enter at least one YouTube link.");
+        return;
+      }
+
+      const parsedChannels = lines.map((url, i) => parseYouTubeUrl(url, i)).filterBoolean();
+
+      const generatedAppHtml = `<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CAMPSPOT - Outdoor YouTube Directory</title>
+  <script src="https://cdn.tailwindcss.com"><\/script>
+  <script src="https://unpkg.com/lucide@latest"><\/script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            slate: { 850: '#111827', 950: '#030712' }
+          }
+        }
+      }
+    }
+  <\/script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans pb-12">
+
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center space-x-3 shrink-0">
+        <div class="bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">
+          <i data-lucide="compass" class="w-5 h-5 text-emerald-400"></i>
+        </div>
+        <h1 class="text-lg font-bold tracking-wide">CAMPSPOT</h1>
+      </div>
+
+      <div class="flex-1 max-w-md relative">
+        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search channels, gear, rain ASMR..."
+          class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-8 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+        />
+      </div>
+
+      <nav class="flex items-center space-x-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+        <button id="tab-discover" onclick="switchTab('discover')" class="tab-btn flex items-center space-x-1.5 px-3 py-1.5 rounded-md text-xs font-medium bg-emerald-600 text-white shadow">
+          <i data-lucide="grid" class="w-3.5 h-3.5"></i>
+          <span>Discover</span>
+        </button>
+        <button id="tab-favorites" onclick="switchTab('favorites')" class="tab-btn flex items-center space-x-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-slate-400 hover:text-slate-200">
+          <i data-lucide="heart" class="w-3.5 h-3.5"></i>
+          <span>Saved</span>
+          <span id="favCount" class="bg-emerald-950 text-emerald-300 border border-emerald-800 px-1.5 py-0.2 text-[10px] rounded-full">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col space-y-6">
+    <section id="view-discover" class="tab-view grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></section>
+    <section id="view-favorites" class="tab-view hidden space-y-4">
+      <h2 class="text-sm font-semibold text-slate-400 flex items-center gap-2">
+        <i data-lucide="heart" class="w-4 h-4 text-rose-500 fill-rose-500"></i>
+        <span>Saved Channels</span>
+      </h2>
+      <div id="favoritesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+  </main>
+
+  <script>
+    const CHANNELS = ${JSON.stringify(parsedChannels, null, 2)};
+    let searchQuery = "";
+    let favorites = JSON.parse(localStorage.getItem("campspot_favorites") || "[]");
+
+    function init() {
+      document.getElementById("favCount").innerText = favorites.length;
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        updateView();
+      });
+      updateView();
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll(".tab-view").forEach(v => v.classList.add("hidden"));
+      if (tab === 'discover') document.getElementById("view-discover").classList.remove("hidden");
+      if (tab === 'favorites') document.getElementById("view-favorites").classList.remove("hidden");
+      updateView();
+    }
+
+    function toggleFavorite(id) {
+      favorites = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id];
+      localStorage.setItem("campspot_favorites", JSON.stringify(favorites));
+      document.getElementById("favCount").innerText = favorites.length;
+      updateView();
+    }
+
+    function updateView() {
+      const filtered = CHANNELS.filter(c => c.name.toLowerCase().includes(searchQuery) || c.handle.toLowerCase().includes(searchQuery));
+      
+      document.getElementById("view-discover").innerHTML = filtered.map(c => {
+        const isFav = favorites.includes(c.id);
+        return \`
+          <div class="bg-slate-900/70 rounded-xl border border-slate-800 p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div>
+                  <span class="text-[10px] uppercase font-mono text-emerald-400">\${c.category}</span>
+                  <h3 class="font-semibold text-white">\${c.name}</h3>
+                  <p class="text-xs text-slate-400">\${c.handle}</p>
+                </div>
+                <button onclick="toggleFavorite('\${c.id}')" class="p-1.5 rounded-lg border \${isFav ? 'bg-rose-950/50 border-rose-800 text-rose-400' : 'bg-slate-950 border-slate-800 text-slate-500'}">
+                  <i data-lucide="heart" class="w-4 h-4 \${isFav ? 'fill-rose-400' : ''}"></i>
+                </button>
+              </div>
+              <p class="text-xs text-slate-300 mb-4">\${c.description}</p>
+            </div>
+            <a href="\${c.channelUrl}/videos" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center space-x-1.5 py-2 px-3 bg-red-600 hover:bg-red-500 text-white rounded-lg text-xs font-medium">
+              <i data-lucide="youtube" class="w-4 h-4"></i>
+              <span>Watch Latest Uploads</span>
+            </a>
+          </div>\`;
+      }).join('');
+
+      const favs = CHANNELS.filter(c => favorites.includes(c.id));
+      document.getElementById("favoritesGrid").innerHTML = favs.length === 0 
+        ? '<p class="text-xs text-slate-500">No saved channels.</p>'
+        : favs.map(c => \`
+          <div class="bg-slate-900/70 rounded-xl border border-slate-800 p-5 flex flex-col justify-between">
+            <div>
+              <h3 class="font-semibold text-white">\${c.name}</h3>
+              <p class="text-xs text-slate-400 mb-3">\${c.handle}</p>
+            </div>
+            <a href="\${c.channelUrl}/videos" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center space-x-1.5 py-2 px-3 bg-red-600 text-white rounded-lg text-xs font-medium">
+              <i data-lucide="youtube" class="w-4 h-4"></i>
+              <span>Watch Latest Uploads</span>
+            </a>
+          </div>\`).join('');
+
+      lucide.createIcons();
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  <\/script>
+</body>
+</html>`;
+
+      document.getElementById("codeOutput").value = generatedAppHtml;
+      document.getElementById("outputContainer").classList.remove("hidden");
+    }
+
+    function copyToClipboard() {
+      const codeArea = document.getElementById("codeOutput");
+      codeArea.select();
+      navigator.clipboard.writeText(codeArea.value);
+      const btnText = document.getElementById("copyBtnText");
+      btnText.innerText = "Copied!";
+      setTimeout(() => btnText.innerText = "Copy Code", 2000);
+    }
+
+    function downloadHTMLFile() {
+      const codeArea = document.getElementById("codeOutput").value;
+      const blob = new Blob([codeArea], { type: "text/html" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "campspot_dashboard.html";
+      a.click();
+      a.remove();
+    }
+  </script>
+</body>
+</html>
