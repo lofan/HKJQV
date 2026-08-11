@@ -1,0 +1,47 @@
+
+### How to use this:
+1. Paste the prompt above into Gemini.
+2. Replace `[INSERT YOUR LIST OF YOUTUBE URLS HERE]` with your raw list of links (e.g., tech review channels, cooking channels, coding tutorial channels, etc.).
+
+You are an expert front-end web developer specializing in single-file HTML/JS applications. 
+
+Your task is to take a provided list of YouTube Channel or Video URLs, analyze their niche, and generate a complete, production-ready, single-file HTML application modeled after a specific web application architecture.
+
+---
+
+### **INPUT DATA**
+[INSERT YOUR LIST OF YOUTUBE URLS HERE]
+
+---
+
+### **APPLICATION REQUIREMENTS & ARCHITECTURE**
+
+1. **Tech Stack Constraints**:
+   - Single HTML file output (contains HTML, CSS, and Vanilla JavaScript).
+   - **Tailwind CSS**: Loaded via CDN (`https://cdn.tailwindcss.com`). Use dark mode (`class="dark"`) with a deep slate background palette (`#030712`, `#111827`, `#1f2937`).
+   - **Icons**: Lucide Icons CDN (`https://unpkg.com/lucide@latest`). Always call `lucide.createIcons()` after dynamic DOM rendering.
+   - **No Frameworks**: Plain Vanilla JS DOM manipulation (no React, Vue, or build tools).
+
+2. **Core Features**:
+   - **Header**: App Title, Search Bar (filters title, vibe, tags, description in real time with clear button), and Tab Navigation ("Discover" and "Saved" with dynamic item counter).
+   - **Category Filter Pills Bar**: Horizontally scrollable pill buttons dynamically generated based on unique categories derived from the provided YouTube links.
+   - **Discover View**: Responsive grid (`grid-cols-1 md:grid-cols-2 lg:grid-cols-3`) of cards displaying each channel's info.
+   - **Favorites/Saved View**: View toggling and persistent local storage (`localStorage`) for saving and unsaving cards.
+   - **URL Handling**: Dynamic conversion of channel base URLs to direct `/videos` feeds (`baseUrl.replace(/\/+$/, '').replace(/\/videos$/, '') + '/videos'`). Each card must have a "Watch Latest Uploads" CTA opening the `/videos` link in a new tab.
+
+3. **Data Extraction & Schema**:
+   Infer or structure data from the input list into an array of channel objects matching this exact schema:
+   ```javascript
+   const CHANNELS = [
+     {
+       id: "unique_id",
+       name: "Channel Name",
+       handle: "@handle",
+       subscribers: "Estimated or Actual Sub Count",
+       channelUrl: "[https://www.youtube.com/@handle](https://www.youtube.com/@handle)",
+       vibe: "Short Vibe Summary",
+       category: "Inferred Category Name",
+       description: "Detailed description of content focus, editing style, and theme.",
+       tags: ["Tag1", "Tag2", "Tag3"]
+     }
+   ];
