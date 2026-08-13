@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampVibe - Outdoor & Solo Travel Creators Hub</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              500: '#22c55e',
+              600: '#16a34a',
+              900: '#14532d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar for horizontal pill scrolling */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen font-sans flex flex-col selection:bg-emerald-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between py-4 gap-4">
+        
+        <!-- App Title / Logo -->
+        <div class="flex items-center space-x-3">
+          <div class="p-2.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400">
+            <i data-lucide="tent" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+              CampVibe
+            </h1>
+            <p class="text-xs text-gray-400">Curated Solo Camping, Outdoor & Overland Creators Feed</p>
+          </div>
+        </div>
+
+        <!-- Search Bar & View Tabs -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+          <!-- Search Input -->
+          <div class="relative w-full sm:w-80">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search title, vibe, tags, or description..."
+              class="w-full pl-9 pr-8 py-2 bg-gray-950 border border-gray-800 rounded-lg text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all"
+            />
+            <button
+              id="clearSearchBtn"
+              class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 p-0.5 rounded-full"
+              title="Clear search"
+            >
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Navigation Tabs -->
+          <div class="flex items-center p-1 bg-gray-950 border border-gray-800 rounded-lg w-full sm:w-auto justify-center">
+            <button
+              id="tabDiscover"
+              class="flex items-center space-x-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all bg-emerald-600 text-white shadow-sm"
+            >
+              <i data-lucide="compass" class="w-4 h-4"></i>
+              <span>Discover</span>
+            </button>
+            <button
+              id="tabSaved"
+              class="flex items-center space-x-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all text-gray-400 hover:text-gray-200"
+            >
+              <i data-lucide="bookmark" class="w-4 h-4"></i>
+              <span>Saved</span>
+              <span id="savedCounter" class="ml-1 px-1.5 py-0.2 text-xs rounded-full bg-gray-800 text-gray-300 font-semibold">0</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Dynamic Category Filter Pills Bar -->
+      <div id="categoryPillsContainer" class="flex items-center space-x-2 py-3 overflow-x-auto no-scrollbar border-t border-gray-800/50">
+        <!-- Dynamic Category Pills Render Here -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    
+    <!-- Status Header / Stats -->
+    <div class="flex items-center justify-between mb-6">
+      <div id="activeFilterBadge" class="text-sm text-gray-400 flex items-center gap-2">
+        <span>Showing <strong id="visibleCount" class="text-emerald-400">0</strong> channels</span>
+      </div>
+      <div id="sortOption" class="text-xs text-emerald-400/90 bg-emerald-950/40 border border-emerald-800/40 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+        <i data-lucide="arrow-down-narrow-wide" class="w-3.5 h-3.5"></i>
+        <span>Sorted by Click Count (Descending)</span>
+      </div>
+    </div>
+
+    <!-- Grid View -->
+    <div id="channelsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Cards rendered via JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-16 px-4">
+      <div class="w-16 h-16 mx-auto mb-4 p-4 rounded-full bg-gray-900 border border-gray-800 text-gray-500 flex items-center justify-center">
+        <i data-lucide="ghost" class="w-8 h-8"></i>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-300 mb-1">No channels found</h3>
+      <p class="text-sm text-gray-500 max-w-md mx-auto">Try adjusting your search query or selecting a different category filter.</p>
+      <button id="resetFiltersBtn" class="mt-4 inline-flex items-center space-x-2 px-4 py-2 bg-gray-900 border border-gray-800 hover:border-gray-700 text-sm text-emerald-400 rounded-lg transition-colors">
+        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+        <span>Reset Filters</span>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 border-t border-gray-800 py-6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500 space-y-2">
+      <p>CampVibe — Single-File Web App Hub for Outdoor & Solo Travel Creators.</p>
+      <p class="text-gray-600">Built with Tailwind CSS, Lucide Icons & Vanilla JavaScript.</p>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script>
+    // Deduplicated and Structured Channel Data
+    const CHANNELS = [
+      {
+        id: "mountainousrurallife",
+        name: "Nguyet - Mountainous Rural Life",
+        handle: "@MountainousRuralLife",
+        subscribers: "150K+",
+        channelUrl: "https://www.youtube.com/@MountainousRuralLife",
+        vibe: "Solo Forest Survival & Rural Living",
+        category: "Bushcraft & Backpacking",
+        description: "Captivating long-duration solo survival, rainforest shelter building, and primitive mountain living featuring relaxing ambient nature sounds and rain ASMR.",
+        tags: ["Rainforest", "Solo Survival", "Shelter", "ASMR"]
+      },
+      {
+        id: "panghuyvette",
+        name: "胖虎Yvette (Yv) ",
+        handle: "@panghuyvette",
+        subscribers: "280K+",
+        channelUrl: "https://www.youtube.com/@panghuyvette",
+        vibe: "Female Trucker & Cross-Border Overland Life",
+        category: "Overland & Truck Life",
+        description: "Daily life of a female long-haul trucker driving across Canada and the US. Features semi-truck living, highway scenery, road trips, and life on the road.",
+        tags: ["Truck Driver", "Overland", "Road Trip", "Solo Travel"]
+      },
+      {
+        id: "haneulcamp",
+        name: "Haneulcamp (하늘캠)",
+        handle: "@Haneulcamp",
+        subscribers: "450K+",
+        channelUrl: "https://www.youtube.com/@Haneulcamp",
+        vibe: "Cozy Solo Camping & ASMR Cooking",
+        category: "Solo Camping",
+        description: "Aesthetic solo camping videos in the Korean countryside featuring high-quality binaural sound design, gourmet tent cooking, and peaceful tent setups during winter snow and autumn rain.",
+        tags: ["ASMR", "Solo Tent", "Camp Cooking", "Korea"]
+      },
+      {
+        id: "forestgirlliving",
+        name: "ForestGirlLiving",
+        handle: "@ForestGirlLiving",
+        subscribers: "320K+",
+        channelUrl: "https://www.youtube.com/@ForestGirlLiving",
+        vibe: "Serene Wilderness Life & Cabin Vibe",
+        category: "Wilderness & Cabin Life",
+        description: "Experience serene outdoor living, wood stove cooking, bushcraft living, and serene forest setups surrounded by natural wildlife and calm acoustic soundscapes.",
+        tags: ["Forest", "Woodstove", "Off-grid", "Nature"]
+      },
+      {
+        id: "ssoberrycamping",
+        name: "Ssoberry Camping",
+        handle: "@ssoberrycamping",
+        subscribers: "580K+",
+        channelUrl: "https://www.youtube.com/@ssoberrycamping",
+        vibe: "Cozy Rain Camping & Car Camping",
+        category: "Rain & Car Camping",
+        description: "Popular Korean solo female camper focusing on heavy rain tent camping, cozy SUV car bed setups, delicious food preparation, and extreme weather comfort.",
+        tags: ["Rain Camping", "Car Camping", "SUV Bed", "Foodie"]
+      },
+      {
+        id: "victoriaoutside",
+        name: "Victoria Outside",
+        handle: "@VictoriaOutside",
+        subscribers: "210K+",
+        channelUrl: "https://www.youtube.com/@VictoriaOutside",
+        vibe: "Rugged Bushcraft & Mountain Backpacking",
+        category: "Bushcraft & Backpacking",
+        description: "High-altitude hiking, hammock shelters, tarp camping, and raw survival bushcraft skills amidst scenic European mountain ranges and pine forests.",
+        tags: ["Backpacking", "Bushcraft", "Tarp Shelter", "Hiking"]
+      },
+      {
+        id: "kirincamp",
+        name: "KirinCamp",
+        handle: "@KirinCamp",
+        subscribers: "190K+",
+        channelUrl: "https://www.youtube.com/@KirinCamp",
+        vibe: "Minimalist Japanese Solo Camping",
+        category: "Solo Camping",
+        description: "Detailed gear showcases, ultralight Japanese camping aesthetic, wood-burning stove setups, and relaxing coffee brewing rituals in serene woods.",
+        tags: ["Minimalist", "Japan", "Gear Review", "Coffee"]
+      },
+      {
+        id: "toricamping",
+        name: "TORI CAMPING",
+        handle: "@TORICAMPING",
+        subscribers: "310K+",
+        channelUrl: "https://www.youtube.com/@TORICAMPING",
+        vibe: "Cozy Tent Comforts & Outdoor Feasts",
+        category: "Solo Camping",
+        description: "Warm shelter setups, comforting Korean hotpot dishes over open campfires, and relaxing night atmospheres with lanterns and fire pits.",
+        tags: ["Campfire", "Hotpot", "Lanterns", "Winter Camp"]
+      },
+      {
+        id: "unicamp",
+        name: "Uni Camp",
+        handle: "@Uni_Camp",
+        subscribers: "150K+",
+        channelUrl: "https://www.youtube.com/@Uni_Camp",
+        vibe: "Car Camping Escapes & Scenic Coastlines",
+        category: "Rain & Car Camping",
+        description: "Coastal car camping, sunset views from tailgate setups, quick weekend getaways, and simple single-burner stove recipes.",
+        tags: ["Car Camping", "Ocean View", "Vanlife", "Easy Meals"]
+      },
+      {
+        id: "dulgiyat",
+        name: "Dulgiyat",
+        handle: "@dulgiyat",
+        subscribers: "120K+",
+        channelUrl: "https://www.youtube.com/@dulgiyat",
+        vibe: "Deep Forest Shelter Building & Survival",
+        category: "Bushcraft & Backpacking",
+        description: "Immersive natural sound shelter construction, primitive wood crafting, campfire baking, and wilderness living without speaking.",
+        tags: ["Primitive", "Shelter", "Wilderness", "No Talk"]
+      },
+      {
+        id: "ayacamping",
+        name: "AYA CAMPING",
+        handle: "@AYACAMPING",
+        subscribers: "270K+",
+        channelUrl: "https://www.youtube.com/@AYACAMPING",
+        vibe: "Chic Vintage Camping & Glamping Vibe",
+        category: "Solo Camping",
+        description: "Beautifully organized cotton tents, retro camping gear, specialized coffee drip setups, and relaxing aesthetic outdoor lifestyle.",
+        tags: ["Vintage Gear", "Cotton Tent", "Coffee Drip", "Glamping"]
+      },
+      {
+        id: "bushcraftb1485",
+        name: "Bushcraft B1485",
+        handle: "@bushcraftb1485",
+        subscribers: "95K+",
+        channelUrl: "https://www.youtube.com/@bushcraftb1485",
+        vibe: "Traditional Axe Craft & Timber Camps",
+        category: "Bushcraft & Backpacking",
+        description: "Heavy bushcraft skill display including timber shelter creation, hand-carved utensils, fire starting techniques, and raw nature immersion.",
+        tags: ["Axes", "Timber", "Survival Skill", "Woodworking"]
+      },
+      {
+        id: "wildanne",
+        name: "Wild Anne",
+        handle: "@Wild_Anne",
+        subscribers: "180K+",
+        channelUrl: "https://www.youtube.com/@Wild_Anne",
+        vibe: "Wilderness Expeditions & Tarp Camping",
+        category: "Bushcraft & Backpacking",
+        description: "Exploring remote forests, sleeping under minimalist tarps during heavy rain, and foraging natural herbs and teas in the wild.",
+        tags: ["Tarp", "Wilderness", "Foraging", "Rain ASMR"]
+      },
+      {
+        id: "omitsuoutdoor",
+        name: "omitsu outdoor",
+        handle: "@omitsu_outdoor",
+        subscribers: "340K+",
+        channelUrl: "https://www.youtube.com/@omitsu_outdoor",
+        vibe: "Japanese Solo Camp & Solo Vanlife",
+        category: "Solo Camping",
+        description: "Charming Japanese solo camping in snow, forest glades, and quiet campsites. Focuses on hot camp meals, tea rituals, and pristine gear.",
+        tags: ["Japan", "Snow Camping", "Tea Ritual", "Quiet"]
+      },
+      {
+        id: "yoyocamp",
+        name: "Yoyo Camp",
+        handle: "@yoyocamp",
+        subscribers: "110K+",
+        channelUrl: "https://www.youtube.com/@yoyocamp",
+        vibe: "Compact Campervan & Scenic Road Trips",
+        category: "Vanlife & Car Camping",
+        description: "Micro camper conversions, Japanese kei van camping, scenic mountain road trips, and space-efficient camping hacks.",
+        tags: ["Kei Van", "Micro Van", "Road Trip", "Japan"]
+      },
+      {
+        id: "campingwithleyla",
+        name: "Camping With Leyla",
+        handle: "@CampingWithLeyla",
+        subscribers: "410K+",
+        channelUrl: "https://www.youtube.com/@CampingWithLeyla",
+        vibe: "Extreme Weather Rain & Snow Camping",
+        category: "Rain & Car Camping",
+        description: "Unfiltered rain camping videos, storm survival in heavy canvas tents, hot soup cooking, and calming rain soundscapes.",
+        tags: ["Rainstorm", "Canvas Tent", "Storm", "ASMR"]
+      },
+      {
+        id: "sakivanlifeinjapan",
+        name: "Saki Vanlife in Japan",
+        handle: "@saki_vanlifeinjapan",
+        subscribers: "290K+",
+        channelUrl: "https://www.youtube.com/@saki_vanlifeinjapan",
+        vibe: "Solo Vanlife Across Japan",
+        category: "Vanlife & Car Camping",
+        description: "Exploring hidden hot springs, seaside parking spots, and authentic Japanese countryside markets while living full-time in a custom van.",
+        tags: ["Vanlife", "Onsen", "Japan Travel", "Solo Travel"]
+      },
+      {
+        id: "nayucamping",
+        name: "Nayu Camping",
+        handle: "@nayu.camping",
+        subscribers: "160K+",
+        channelUrl: "https://www.youtube.com/@nayu.camping",
+        vibe: "Aesthetic Solo Camping & Dessert Making",
+        category: "Solo Camping",
+        description: "Delicate outdoor baking, sweet campsite treats, bonfire relaxation, and beautifully lit night tent setups.",
+        tags: ["Camp Baking", "Sweet Treats", "Bonfire", "Night Vibe"]
+      },
+      {
+        id: "campsite1783bg",
+        name: "1783BG Camping",
+        handle: "@1783bg",
+        subscribers: "88K+",
+        channelUrl: "https://www.youtube.com/@1783bg",
+        vibe: "Heavy Rain Car Overnight & ASMR",
+        category: "Rain & Car Camping",
+        description: "Cozy car sleeping setups with rain hitting the sunroof, simple skillet cooking, and ambient night relaxation.",
+        tags: ["Rain Sunroof", "Car Sleep", "Ambient", "Simple Cooking"]
+      },
+      {
+        id: "sundaysomewheretravels",
+        name: "Sunday Somewhere Travels",
+        handle: "@SundaySomewhereTravels",
+        subscribers: "130K+",
+        channelUrl: "https://www.youtube.com/@SundaySomewhereTravels",
+        vibe: "Global Outdoor Wanderlust & Camping",
+        category: "Wilderness & Cabin Life",
+        description: "Exploring world national parks, scenic wild camping spots, long-distance trail hiking, and nature photography.",
+        tags: ["Travel", "National Parks", "Hiking", "Wild Camp"]
+      },
+      {
+        id: "saeyeon222",
+        name: "Saeyeon (새연)",
+        handle: "@saeyeon222",
+        subscribers: "220K+",
+        channelUrl: "https://www.youtube.com/@saeyeon222",
+        vibe: "Quiet Nature Healing & Camping Meals",
+        category: "Solo Camping",
+        description: "Peaceful solo camping trips focusing on nature healing sounds, seasonal campfire barbecue recipes, and tranquil morning routines.",
+        tags: ["Healing", "Morning Routine", "Nature", "Barbecue"]
+      },
+      {
+        id: "youminggg",
+        name: "Youming",
+        handle: "@youminggg",
+        subscribers: "175K+",
+        channelUrl: "https://www.youtube.com/@youminggg",
+        vibe: "Charming Outdoor Escapes & Gear Setup",
+        category: "Solo Camping",
+        description: "Crisp 4K video quality showing step-by-step tent assembly, stove lighting, and cozy winter sleeping bag reviews.",
+        tags: ["4K Nature", "Gear Setup", "Winter Camp", "Relaxing"]
+      },
+      {
+        id: "sashichannn",
+        name: "Sashichan",
+        handle: "@Sashichannn",
+        subscribers: "140K+",
+        channelUrl: "https://www.youtube.com/@Sashichannn",
+        vibe: "Solo Motocamp & Lightweight Tent Life",
+        category: "Vanlife & Car Camping",
+        description: "Motorcycle camping journeys, ultralight gear packing, roadside camping, and discovering hidden mountain lookouts.",
+        tags: ["Moto Camp", "Motorcycle", "Ultralight", "Roadside"]
+      },
+      {
+        id: "nagumorui",
+        name: "Nagumo Rui",
+        handle: "@nagumorui",
+        subscribers: "105K+",
+        channelUrl: "https://www.youtube.com/@nagumorui",
+        vibe: "Solo Camping in Japanese Snowlands",
+        category: "Solo Camping",
+        description: "Winter snow camping in deep forest powder, wood heater setup, hot ramen cooking, and cozy winter insulation techniques.",
+        tags: ["Snow Camp", "Ramen", "Wood Heater", "Winter"]
+      },
+      {
+        id: "pitocamp",
+        name: "Pito Camp",
+        handle: "@pitocamp",
+        subscribers: "165K+",
+        channelUrl: "https://www.youtube.com/@pitocamp",
+        vibe: "Solo Rooftop Car Tent Adventures",
+        category: "Rain & Car Camping",
+        description: "Rooftop tent camping on cars, quick setup overnight stays, stargazing from roof platforms, and easy outdoor stove meals.",
+        tags: ["Rooftop Tent", "Overland", "Stargazing", "Quick Setup"]
+      },
+      {
+        id: "marilife",
+        name: "Mari Life",
+        handle: "@MariLife",
+        subscribers: "205K+",
+        channelUrl: "https://www.youtube.com/@MariLife",
+        vibe: "Peaceful Seaside & Lake Camping",
+        category: "Wilderness & Cabin Life",
+        description: "Lakeside tent camping, kayaking to secluded islands, campfire grilling, and sleeping near gentle water sounds.",
+        tags: ["Lakeside", "Kayaking", "Island Camp", "Water ASMR"]
+      },
+      {
+        id: "komusubicamp86",
+        name: "Komusubi Camp",
+        handle: "@komusubicamp86",
+        subscribers: "92K+",
+        channelUrl: "https://www.youtube.com/@komusubicamp86",
+        vibe: "Cute Riceball & Camp Kitchen ASMR",
+        category: "Solo Camping",
+        description: "Japanese camp cooking specialties focusing on hand-shaped onigiri, skillet steaks, and cozy solo campsite setups.",
+        tags: ["Onigiri", "Camp Kitchen", "Cast Iron", "Japan"]
+      },
+      {
+        id: "umacamping",
+        name: "Uma Camping",
+        handle: "@UmaCamping",
+        subscribers: "115K+",
+        channelUrl: "https://www.youtube.com/@UmaCamping",
+        vibe: "Heavy Rain Shelter & Night Relaxation",
+        category: "Rain & Car Camping",
+        description: "Soothing rain sounds, tarp tent fort building in heavy storms, hot coffee brewing, and deep sleep ambient camping.",
+        tags: ["Storm", "Heavy Rain", "Fort Building", "Sleep Aid"]
+      },
+      {
+        id: "jennydrinking",
+        name: "Jenny Drinking Outdoors",
+        handle: "@jennydrinking",
+        subscribers: "185K+",
+        channelUrl: "https://www.youtube.com/@jennydrinking",
+        vibe: "Outdoor Craft Drink & Gourmet Meal Pairing",
+        category: "Solo Camping",
+        description: "Enjoying craft beers, wine, and traditional cocktails paired with gourmet campfire meals in scenic forest backdrops.",
+        tags: ["Drinks", "Camp Cuisine", "Craft Beer", "Relaxation"]
+      },
+      {
+        id: "campinsep",
+        name: "Camp in Sep",
+        handle: "@campinsep",
+        subscribers: "135K+",
+        channelUrl: "https://www.youtube.com/@campinsep",
+        vibe: "Autocamping & SUV Sleeping Sanctuary",
+        category: "Vanlife & Car Camping",
+        description: "Transforming standard SUVs into high-comfort sleeping sanctuaries with fairy lights, warm bedding, and portable heaters.",
+        tags: ["SUV Transformation", "Fairy Lights", "Autocamp", "Cozy"]
+      },
+      {
+        id: "binaacamping",
+        name: "BINAA (비나)",
+        handle: "@BINAA비나",
+        subscribers: "300K+",
+        channelUrl: "https://www.youtube.com/@BINAA비나",
+        vibe: "Aesthetic Solo Camping & Car Camping",
+        category: "Rain & Car Camping",
+        description: "Cinematic Korean solo camping and car camping trips featuring heavy rain sounds, beautiful lighting, and delicious outdoor food preparation.",
+        tags: ["Cinematic", "Korean Camping", "Rain Sounds", "Aesthetic"]
+      }
+    ];
+
+    // App State Variables
+    let currentTab = 'discover'; // 'discover' | 'saved'
+    let currentCategory = 'All';
+    let searchQuery = '';
+    let savedIds = JSON.parse(localStorage.getItem('campvibe_saved_ids') || '[]');
+    let clickCounts = JSON.parse(localStorage.getItem('campvibe_click_counts') || '{}');
+
+    // Helper: Get click count for channel
+    function getClickCount(id) {
+      return clickCounts[id] || 0;
+    }
+
+    // Increment click counter
+    function incrementCounter(id) {
+      clickCounts[id] = (clickCounts[id] || 0) + 1;
+      localStorage.setItem('campvibe_click_counts', JSON.stringify(clickCounts));
+      renderGrid();
+    }
+
+    // DOM Elements
+    const channelsGrid = document.getElementById('channelsGrid');
+    const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const tabDiscover = document.getElementById('tabDiscover');
+    const tabSaved = document.getElementById('tabSaved');
+    const savedCounter = document.getElementById('savedCounter');
+    const categoryPillsContainer = document.getElementById('categoryPillsContainer');
+    const visibleCount = document.getElementById('visibleCount');
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+    // Helper: Convert Channel Base URL to direct /videos URL feed
+    function getDirectVideosUrl(url) {
+      if (!url) return '';
+      const cleanUrl = url.trim().replace(/\/+$/, '').replace(/\/videos$/, '');
+      return `${cleanUrl}/videos`;
+    }
+
+    // Initialize Categories dynamically
+    function getUniqueCategories() {
+      const categories = ['All', ...new Set(CHANNELS.map(c => c.category))];
+      return categories;
+    }
+
+    // Render Category Pills
+    function renderCategoryPills() {
+      const categories = getUniqueCategories();
+      categoryPillsContainer.innerHTML = '';
+
+      categories.forEach(cat => {
+        const isSelected = currentCategory === cat;
+        const pill = document.createElement('button');
+        pill.className = `px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${
+          isSelected
+            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-sm'
+            : 'bg-gray-900 text-gray-400 border-gray-800 hover:text-gray-200 hover:border-gray-700'
+        }`;
+        pill.textContent = cat;
+        pill.addEventListener('click', () => {
+          currentCategory = cat;
+          renderCategoryPills();
+          renderGrid();
+        });
+        categoryPillsContainer.appendChild(pill);
+      });
+    }
+
+    // Toggle Saved / Favorite status
+    function toggleSaveChannel(id) {
+      if (savedIds.includes(id)) {
+        savedIds = savedIds.filter(savedId => savedId !== id);
+      } else {
+        savedIds.push(id);
+      }
+      localStorage.setItem('campvibe_saved_ids', JSON.stringify(savedIds));
+      updateSavedCounter();
+      renderGrid();
+    }
+
+    // Update Saved Counter Badge
+    function updateSavedCounter() {
+      savedCounter.textContent = savedIds.length;
+    }
+
+    // Filter Channels Logic & Sort Descending by Counter
+    function getFilteredChannels() {
+      const filtered = CHANNELS.filter(channel => {
+        // Tab Filter
+        if (currentTab === 'saved' && !savedIds.includes(channel.id)) {
+          return false;
+        }
+
+        // Category Filter
+        if (currentCategory !== 'All' && channel.category !== currentCategory) {
+          return false;
+        }
+
+        // Search Query Filter (Title, Vibe, Tags, Description)
+        if (searchQuery.trim() !== '') {
+          const q = searchQuery.toLowerCase().trim();
+          const matchesTitle = channel.name.toLowerCase().includes(q);
+          const matchesHandle = channel.handle.toLowerCase().includes(q);
+          const matchesVibe = channel.vibe.toLowerCase().includes(q);
+          const matchesCategory = channel.category.toLowerCase().includes(q);
+          const matchesDesc = channel.description.toLowerCase().includes(q);
+          const matchesTags = channel.tags.some(t => t.toLowerCase().includes(q));
+
+          return matchesTitle || matchesHandle || matchesVibe || matchesCategory || matchesDesc || matchesTags;
+        }
+
+        return true;
+      });
+
+      // Sort by counter in Descending Order (highest clicks first)
+      return filtered.sort((a, b) => getClickCount(b.id) - getClickCount(a.id));
+    }
+
+    // Render Cards in Grid
+    function renderGrid() {
+      const filtered = getFilteredChannels();
+      visibleCount.textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        channelsGrid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      channelsGrid.innerHTML = '';
+
+      filtered.forEach(channel => {
+        const isSaved = savedIds.includes(channel.id);
+        const count = getClickCount(channel.id);
+        const directVideosUrl = getDirectVideosUrl(channel.channelUrl);
+
+        const card = document.createElement('div');
+        card.className = "bg-gray-900 border border-gray-800/90 rounded-xl p-5 hover:border-gray-700 transition-all flex flex-col justify-between group hover:shadow-xl hover:shadow-emerald-950/20";
+
+        card.innerHTML = `
+          <div>
+            <!-- Header Row: Title, Counter Badge & Bookmark -->
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div class="pr-2">
+                <h3 class="font-bold text-gray-100 text-base group-hover:text-emerald-400 transition-colors">
+                  ${channel.name}
+                </h3>
+                <div class="flex items-center space-x-2 text-xs text-gray-400 mt-0.5">
+                  <span class="text-emerald-500 font-medium">${channel.handle}</span>
+                  <span>•</span>
+                  <span>${channel.subscribers} subs</span>
+                </div>
+              </div>
+              
+              <div class="flex items-center space-x-2">
+                <!-- Counter Badge -->
+                <div class="flex items-center space-x-1 px-2 py-1 rounded-md bg-gray-950 border border-gray-800 text-[11px] font-semibold text-emerald-400/90" title="${count} total clicks">
+                  <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                  <span>${count}</span>
+                </div>
+
+                <!-- Bookmark Button -->
+                <button
+                  onclick="toggleSaveChannel('${channel.id}')"
+                  class="p-2 rounded-lg bg-gray-950/80 border border-gray-800 hover:border-emerald-500/40 text-gray-400 hover:text-emerald-400 transition-all"
+                  title="${isSaved ? 'Remove from saved' : 'Save channel'}"
+                >
+                  <i data-lucide="${isSaved ? 'bookmark-check' : 'bookmark'}" class="w-4 h-4 ${isSaved ? 'text-emerald-400 fill-emerald-400/20' : ''}"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Category & Vibe Badge -->
+            <div class="my-3 flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-950/60 text-emerald-400 border border-emerald-800/40">
+                ${channel.category}
+              </span>
+              <span class="text-xs text-gray-300 italic bg-gray-950 px-2 py-0.5 rounded border border-gray-800">
+                "${channel.vibe}"
+              </span>
+            </div>
+
+            <!-- Description -->
+            <p class="text-xs text-gray-400 line-clamp-3 mb-4 leading-relaxed">
+              ${channel.description}
+            </p>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 mb-5">
+              ${channel.tags.map(tag => `<span class="text-[10px] px-2 py-0.5 bg-gray-950 text-gray-400 rounded border border-gray-800/80">#${tag}</span>`).join('')}
+            </div>
+          </div>
+
+          <!-- CTA Button -->
+          <div class="pt-3 border-t border-gray-800/80">
+            <a
+              href="${directVideosUrl}"
+              target="_blank"
+              rel="noopener noreferrer"
+              onclick="incrementCounter('${channel.id}')"
+              class="w-full inline-flex items-center justify-center space-x-2 py-2 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs transition-colors shadow-sm"
+            >
+              <i data-lucide="play-circle" class="w-4 h-4"></i>
+              <span>Watch Latest Uploads</span>
+              <i data-lucide="external-link" class="w-3 h-3 ml-0.5 opacity-80"></i>
+            </a>
+          </div>
+        `;
+
+        channelsGrid.appendChild(card);
+      });
+
+      // Re-initialize Lucide Icons
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+
+    // Event Listeners Setup
+    function setupEventListeners() {
+      // Search Input
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        if (searchQuery.length > 0) {
+          clearSearchBtn.classList.remove('hidden');
+        } else {
+          clearSearchBtn.classList.add('hidden');
+        }
+        renderGrid();
+      });
+
+      // Clear Search Button
+      clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        clearSearchBtn.classList.add('hidden');
+        renderGrid();
+      });
+
+      // Reset Filters Button
+      resetFiltersBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        clearSearchBtn.classList.add('hidden');
+        currentCategory = 'All';
+        renderCategoryPills();
+        renderGrid();
+      });
+
+      // Tab Switchers
+      tabDiscover.addEventListener('click', () => {
+        currentTab = 'discover';
+        tabDiscover.className = "flex items-center space-x-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all bg-emerald-600 text-white shadow-sm";
+        tabSaved.className = "flex items-center space-x-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all text-gray-400 hover:text-gray-200";
+        renderGrid();
+      });
+
+      tabSaved.addEventListener('click', () => {
+        currentTab = 'saved';
+        tabSaved.className = "flex items-center space-x-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all bg-emerald-600 text-white shadow-sm";
+        tabDiscover.className = "flex items-center space-x-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all text-gray-400 hover:text-gray-200";
+        renderGrid();
+      });
+    }
+
+    // Initial App Load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateSavedCounter();
+      renderCategoryPills();
+      renderGrid();
+      setupEventListeners();
+    });
+  </script>
+</body>
+</html>
