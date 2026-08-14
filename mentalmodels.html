@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farnam Street 心智模型 (Mental Models) 全景格柵指南</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --accent-blue: #38bdf8;
+            --accent-green: #34d399;
+            --accent-purple: #c084fc;
+            --accent-amber: #fbbf24;
+            --accent-rose: #f43f5e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang HK", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.75;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Header Bar */
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        header a.fs-link {
+            color: var(--accent-amber);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid var(--accent-amber);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        header a.fs-link:hover {
+            background-color: var(--accent-amber);
+            color: var(--bg-primary);
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar Navigation */
+        nav.sidebar {
+            position: sticky;
+            top: 5rem;
+            height: calc(100vh - 7rem);
+            overflow-y: auto;
+            background-color: var(--bg-secondary);
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        nav.sidebar h2 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        nav.sidebar ul {
+            list-style: none;
+        }
+
+        nav.sidebar li {
+            margin-bottom: 0.5rem;
+        }
+
+        nav.sidebar a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.88rem;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        nav.sidebar a:hover {
+            background-color: var(--bg-card);
+            color: var(--accent-blue);
+        }
+
+        /* Content Area */
+        main.content {
+            background-color: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            border-left: 6px solid var(--accent-blue);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-banner h1 {
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-banner p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .source-tag {
+            display: inline-block;
+            margin-top: 1rem;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-blue);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .source-tag:hover {
+            background: rgba(56, 189, 248, 0.3);
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 6rem;
+        }
+
+        h2.section-title {
+            font-size: 1.7rem;
+            color: var(--accent-blue);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .model-block {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .model-block:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .model-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .model-header h3 {
+            font-size: 1.3rem;
+            color: var(--accent-amber);
+            margin: 0;
+        }
+
+        .fs-ref-link {
+            font-size: 0.8rem;
+            color: var(--accent-blue);
+            text-decoration: none;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .fs-ref-link:hover {
+            text-decoration: underline;
+        }
+
+        .bilingual-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .lang-col {
+            background-color: var(--bg-card);
+            padding: 1.25rem;
+            border-radius: 8px;
+        }
+
+        .lang-col.cantonese {
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .lang-col.english {
+            border-left: 4px solid var(--accent-purple);
+        }
+
+        .lang-col h4 {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .lang-col.cantonese h4 { color: var(--accent-green); }
+        .lang-col.english h4 { color: var(--accent-purple); }
+
+        .lang-col p, .lang-col ul {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            margin-bottom: 0.75rem;
+        }
+
+        .lang-col ul {
+            padding-left: 1.25rem;
+        }
+
+        .lang-col li {
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box {
+            background-color: var(--bg-card);
+            border-left: 4px solid var(--accent-amber);
+            padding: 1rem 1.25rem;
+            margin-top: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.92rem;
+            color: #e2e8f0;
+        }
+
+        /* Responsive */
+        @media (max-width: 950px) {
+            .container { grid-template-columns: 1fr; }
+            nav.sidebar { display: none; }
+            .bilingual-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🧠 Mental Models Matrix — Farnam Street Latticework</h1>
+        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-link">🔗 Official Farnam Street Guide</a>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <h2>七大心智模型領域</h2>
+            <ul>
+                <li><a href="#general-thinking">1. General Thinking Tools</a></li>
+                <li><a href="#physics-chem-bio">2. Physics, Chemistry, Biology</a></li>
+                <li><a href="#systems">3. Systems Thinking</a></li>
+                <li><a href="#numeracy">4. Numeracy & Math</a></li>
+                <li><a href="#microeconomics">5. Microeconomics</a></li>
+                <li><a href="#military-war">6. Military and War Strategy</a></li>
+                <li><a href="#human-nature">7. Human Nature & Judgment</a></li>
+                <li><a href="#synthesis">8. Multi-Disciplinary Latticework</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            <div class="hero-banner">
+                <h1>Farnam Street 心智模型全景圖譜 (Latticework Guide)</h1>
+                <p>本指南完整收錄並深度拆解 <a href="https://fs.blog/mental-models/" target="_blank" style="color: var(--accent-blue);">Farnam Street (fs.blog)</a> 提出的全部心智模型。結合廣東話實戰評析與 English 精確定義，構建跨學科的思考格柵（Latticework），幫助你在複雜變化的世界中做出高品質決策。</p>
+                <a href="https://fs.blog/mental-models/" target="_blank" class="source-tag">🌐 參考來源: https://fs.blog/mental-models/</a>
+            </div>
+
+            <!-- SECTION 1: GENERAL THINKING TOOLS -->
+            <section id="general-thinking">
+                <h2 class="section-title">1. General Thinking Tools (通用思考工具)</h2>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>💡 First Principles Thinking (第一性原理思考)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p><strong>核心定義：</strong> 剝離所有傳統假設同類比（Reasoning by Analogy），將問題拆解至最底層、無法再被質疑嘅物理或事實真相（Fundamental Truths），然後再由零開始重新建構。</p>
+                            <p><strong>實戰應用：</strong> 唔好問「人哋係點做？」，而係問「呢件事嘅物理/經濟底限係咩？」。例如設計新產品時，直接計算原料與能量嘅物理極限成本，而非參考現有市場產品嘅定價。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Deconstructing a problem to its most foundational, undeniable truths, and reasoning up from there rather than reasoning by analogy.</p>
+                            <p><strong>Key Insight:</strong> Removes legacy assumptions, prevents groupthink, and enables ground-up innovation rather than incremental tweaking.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🔄 Inversion (逆向思考)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p><strong>核心定義：</strong> 查理·芒格名言：「Invert, always invert（反過來想，總是反過來想）。」唔好問「點樣成功」，而係問「點樣會必定失敗」，然後全力避開所有失敗誘因。</p>
+                            <p><strong>實戰應用：</strong> 執行專案前進行 Pre-mortem（事前剖析）：假定一年後專案徹底失敗，條列出所有致命原因（現金流斷裂、市場不對位、團隊內耗），並提前建立防範機制。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Approaching problems backward by focusing on what you want to avoid rather than only what you want to achieve.</p>
+                            <p><strong>Key Insight:</strong> Avoiding systematic failure modes is often much easier and more effective than chasing perfection.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🌊 Second-Order Thinking (二階思考)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p><strong>核心定義：</strong> 追問 "And then what?（然後呢？）"。考慮長遠、連鎖反應（Cascading Downstream Effects）同非預期後果（Unintended Consequences），而非只看眼前直覺結果。</p>
+                            <p><strong>實戰應用：</strong> 短期降價促銷可以帶來即時銷量（一階），但長期會拉低品牌定位、引發價格戰同損害毛利（二階/三階）。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Evaluating the long-term, cascading downstream consequences of a decision beyond immediate, first-order effects.</p>
+                            <p><strong>Key Insight:</strong> Extraordinary outcomes come from mastering the second and third-order effects that others overlook.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🗡️ Occam’s Razor (奧咸剃刀)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>「如無必要，勿增實體。」當有多個解釋或假設可以解釋同一個現象時，假設最少、最簡單嘅嗰個通常係正確嘅。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Among competing hypotheses, the one with the fewest assumptions is usually the correct one.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🪒 Hanlon’s Razor (漢隆剃刀)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>「切勿將能以愚蠢或疏忽解釋嘅事，歸咎於惡意。」能有效減少人際溝通中嘅陰謀論與情感內耗。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Never attribute to malice that which is adequately explained by carelessness, stupidity, or misunderstanding.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🗺️ Map is Not the Territory (地圖不等於疆域)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>模型、圖表、財務報表都只係對現實嘅簡化抽象（Representation），絕對唔等同於現實本身。永遠要警惕模型忽視咗嘅細節與極端狀況。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Models and abstraction tools simplify reality and always leave out nuance; never mistake the simplified model for reality itself.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🧪 Thought Experiments (思想實驗)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>利用有結構嘅想像力，在腦海中推演極端邊界條件同極限狀況（例如：愛因斯坦想像跟著光速飛行），測試假設嘅有效性。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Structured mental exercises used to test hypotheses, explore boundary conditions, and analyze scenarios physically impossible to test.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⭕ Circle of Competence (能力圈)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>清楚劃出自己真正精通嘅領域邊界，只喺圈內做重大決策；同時坦誠面對圈外嘅盲點，唔好將「運氣」誤認為「能力」。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Identifying and operating strictly within areas where you have genuine deep understanding, while being aware of your blind spots.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🎲 Probabilistic Thinking (概率思維)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>放棄黑白二元論（絕對成功或絕對失敗），改用概率估算（Expected Value / 期望值）評估決策。重視貝葉斯更新（Bayesian Updating），根據新數據不斷修正機率。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Estimating the likelihood of outcomes using probability and basic statistics rather than binary thinking (certainty vs. impossibility).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: PHYSICS, CHEMISTRY, AND BIOLOGY -->
+            <section id="physics-chem-bio">
+                <h2 class="section-title">2. Physics, Chemistry, and Biology (硬科學模型)</h2>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🌌 Relativity (相對論)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>觀察者嘅參考系（Frame of Reference）會決定其觀測結果。在商業同談判中，不同持份者因立場與利益不同，對同一事實嘅解讀會有天壤之別。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> An observer’s frame of reference fundamentally alters how an event or measurement is perceived.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⚛️ Thermodynamics & Entropy (熱力學與熵增)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>封閉系統必然走向混亂同衰退（熵增）。組織、企業與個人習慣如果不持續注入外部能量（創新、優化、反思），就會自然走向混亂同官僚化。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Closed systems naturally degenerate into disorder (entropy) over time unless external energy is continuously applied.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🧱 Inertia & Momentum (慣性與動量)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>物體（以及組織或個人習慣）會維持原有運動狀態，直到外力作用。改變大型組織嘅方向需要極大阻力，但一旦建立動量，亦具備極強貫性。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Systems tend to keep doing what they are already doing unless acted upon by a strong external force.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⚡ Activation Energy (活化能)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>啟動化學反應或新行為所需嘅最低能量門檻。欲培養新習慣，必須降低初期 Activation Energy（如將目標縮小至每日看 1 頁書）。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> The minimum amount of baseline energy required to initiate a reaction or trigger a new behavioral process.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🧪 Catalysts (催化劑)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>能顯著加速反應且自身不被消耗嘅元素。在商業中，極致嘅 UIUX 設計或關鍵技術突破，即係降低客戶轉換門檻嘅催化劑。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Elements or conditions that significantly speed up a reaction without being consumed in the process.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🏗️ Leverage (槓桿原理)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>阿基米德：「給我一個支點，我可以移動地球。」在合適支點施加微小力量，產生不成比例嘅巨大產出（例如：代碼、媒體、資本槓桿）。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> A small input applied at the right pivot point (fulcrum) produces a disproportionately large output.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🧬 Evolution by Natural Selection (天擇演化)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>變異、選擇、遺傳。適者生存（Survival of the Fittest）唔係指最強壯，而係指最能適應環境變化。商業產品亦需快速叠代測試。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Adaptation through variation, selection, and retention; traits that best fit the environment survive and multiply.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🌿 Ecosystems (生態系統)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>高度互相依存嘅網絡。系統內單一節點或物種嘅改變，會產生漣漪效應影響整條食物鏈與生態體系。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Interdependent networks where a change in one node ripples through the entire community.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>👑 Co-Evolution & Red Queen Effect (共演化與紅皇后效應)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>「你必須全力奔跑，才能停在原地。」競爭者與捕食者都在升級，停留原地意味著被快速淘汰。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Organisms must continuously adapt simply to maintain relative fitness in an environment where competitors are also evolving.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: SYSTEMS THINKING -->
+            <section id="systems">
+                <h2 class="section-title">3. Systems Thinking (系統思考)</h2>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🔁 Feedback Loops (正/負回饋迴路)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p><strong>Positive (正回饋)：</strong> 自自我強化（Self-reinforcing），引發滾雪球或飛輪效應（複利、網路效應）。</p>
+                            <p><strong>Negative (負回饋)：</strong> 自我調節（Balancing），阻礙改變並維持系統穩定與平衡（冷氣機恆溫器）。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Positive Loops:</strong> Amplifies changes leading to exponential growth or runaway decline.</p>
+                            <p><strong>Negative Loops:</strong> Dampens changes to maintain systemic equilibrium.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🚧 Bottlenecks & Theory of Constraints (瓶頸與限制理論)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>系統整體吞吐量完全由最窄嘅嗰個限制（Bottleneck）決定。喺非瓶頸位置優化，對整體產出嘅改善係零。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Total throughput is limited by the single narrowest constraint; optimizing non-bottlenecks yields no overall improvement.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🛡️ Margin of Safety (安全邊際)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>預留超額承重力、時間或資本緩衝，用以吸收未知風險、計算失誤及極端黑天鵝事件。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Building deliberate buffer capacity to absorb unexpected strain, calculation errors, or shocks.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🐜 Emergence (湧現)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>「整體大於部分之和。」簡單個體依循基本規則互動，組合後展現出單個個體完全不具備嘅複雜集體行為（如蟻群、金融市場）。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Complex properties and behaviors that arise out of a combination of simple individual components.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🛑 Choke Points (咽喉要道/瓶頸點)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>網絡或流量必經之關鍵節點。掌控 Choke Point（如關鍵專利、獨佔渠道）即可控制整個系統嘅流量與價值分配。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Critical nodes or narrow pathways in a system where flow can easily be controlled, restricted, or blocked.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⚖️ Homeostasis (體內平衡 / 自我調節)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>系統透過內部反饋機制，克服外部環境波動，自發維護內部動態穩定嘅能力。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Self-regulating mechanisms by which a system maintains internal stability despite external fluctuations.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>📐 Non-Linearity & Scale Effects (非線性與規模效應)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>輸入與輸出不成等比例。規模擴大可能帶來規模經濟（Diminishing costs），亦可能觸發規模不經濟（Diseconomies of scale）。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> System inputs do not scale proportionally to outputs; scaling causes non-linear shifts in behavior.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: NUMERACY -->
+            <section id="numeracy">
+                <h2 class="section-title">4. Numeracy & Math (數據與數理邏輯)</h2>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>📈 Compounding (複利效應)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>收益持續再投資所產生嘅指數級增長。時間同一致性係複利發揮威力嘅核心。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Exponential growth resulting from continuous reinvestment of returns over time.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🎲 Law of Large Numbers (大數法則)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>隨着樣本量增加，樣本平均值會越來越接近總體真實平均值。短期小樣本極易產生隨機偏差。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> As sample size grows, its mean gets closer to the average of the whole population.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>📉 Regression to the Mean (均值回歸)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>極端或異常嘅表現之後，通常會跟隨相對溫和、接近平均水平嘅表現。切勿將隨機波動誤認為長期趨勢。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Extreme or unusual events are typically followed by more average events due to statistical variance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🎯 Base Rate Fallacy (基本比率謬誤)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>做判斷時忽略背景整體概率（Base Rate），過度關注眼前生動嘅個案細節。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Overlooking general class statistics (base rates) in favor of specific, vivid details.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🐋 Fat-Tailed Distributions (肥尾分佈 / 冪律)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>極端罕見事件（黑天鵝）貢獻絕大部分影響力。在 Power-law 領域（VC、金融），平均值失去參考意義。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Environments where rare, extreme events (outliers) account for the vast majority of cumulative impact.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>0️⃣ Multiplying by Zero (乘以零)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>連乘鏈條中只要有一個零，總結果即為零。即使營銷與產品極佳，若合規或安全為零，整體歸零。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> A single zero in a chain of multiplication voids the entire result, regardless of how large other numbers are.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>📡 Signal vs. Noise (訊號與雜訊)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>區分底層真實趨勢（Signal）與短期無效隨機波動（Noise）。關注過多 Noise 會嚴重損害決策質量。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Distinguishing underlying structural trends (signal) from short-term random fluctuations (noise).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: MICROECONOMICS -->
+            <section id="microeconomics">
+                <h2 class="section-title">5. Microeconomics (微觀經濟學模型)</h2>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⌛ Opportunity Cost (機會成本)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>做選擇時放棄嘅最高價值替代選項（Next-best alternative）。真正的成本永遠係你放棄咗嘅可能性。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> The value of the next-best alternative foregone when making a choice.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⚖️ Supply and Demand (供求關係)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>價格與數量嘅均衡點由資源稀缺性與買家需求共同決定。自由市場中最基礎嘅定價機制。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Price and quantity equilibriums determined by good scarcity relative to buyer demand.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🎯 Incentives (誘因機制)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>「給我誘因，我給你結果。」人對獎懲機制嘅反應係高度可預測的。制度設計錯誤會帶來意外後果。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Human behavior responds predictably to system rewards and punishments.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🤝 Comparative Advantage (比較優勢)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>即使某人在所有領域都具備絕對優勢，專注於「機會成本最低」嘅領域並進行分工合作，仍能實現總效益最大化。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Producing a good/service at a lower opportunity cost than others, laying the basis for trade.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🔍 Asymmetric Information (資訊不對稱)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>交易一方擁有比另一方更優越嘅資訊（檸檬市場、逆向選擇），導致市場失靈或溢價折扣。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> A situation where one party in a transaction possesses superior information compared to the other.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>👔 Principal-Agent Problem (委託人-代理人問題)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>當代理人（Agent）代表委託人（Principal）做決策時，若利益不一致，代理人會優先最大化自身私利。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Conflicts of interest arising when an agent acts on behalf of a principal with mismatched incentives.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⚓ Sunk Cost Fallacy (沉沒成本謬誤)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>因無法收回嘅過去投入（金錢、時間）而理性失效，繼續執行期望值為負嘅項目。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Irrationally continuing an endeavor due to unrecoverable past investments.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🐟 Tragedy of the Commons (公地悲劇)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>開放共享資源因個體短期理性過度開採，最終導致整體資源枯竭與系統性崩潰。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Shared, open-access resources are systematically depleted because short-term individual gains conflict with collective good.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: MILITARY AND WAR -->
+            <section id="military-war">
+                <h2 class="section-title">6. Military and War Strategy (軍事與博弈策略)</h2>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🏹 Asymmetric Warfare (非對稱戰爭)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>力量極不對等時，弱者放棄傳統正面對抗，利用非常規戰術（靈活性、速度、區域優勢）打擊強者致命弱點。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Unconventional strategies used by weaker forces to exploit specific vulnerabilities of a stronger opponent.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⚡ OODA Loop ( Observe, Orient, Decide, Act )</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>觀察→定位→決策→行動。勝利關鍵在於「決策循環速度」比對手更快，在對方反應前破壞其戰略部署。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Fast decision-making cycles created by John Boyd to out-maneuver opponents in rapidly shifting environments.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⚔️ Attrition vs. Maneuver (消耗戰 vs. 機動戰)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>消耗戰拼資源比拼；機動戰透過快速定位與切入關鍵位置，以極小代價癱瘓對手指揮能力。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Winning by wearing down enemy resources over time vs. disabling enemy capacity through strategic positioning.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🩸 Pyrrhic Victory (皮洛士式勝利)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>代價極其慘重嘅勝利，其消耗足以直接摧毀贏家本身，實質等同於失敗。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> A victory achieved at such a devastating cost that it is functionally equivalent to a defeat.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🎯 Counterforce vs. Countervalue (反軍力打擊 vs. 反價值打擊)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>Counterforce 瞄準對手打擊工具（武器/基礎設施）；Countervalue 瞄準對手核心資產與價值所在。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Targeting an enemy's operational capabilities/forces directly versus targeting their assets and valuable resources.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🚚 Fronts and Lines of Supply (前線與補給線)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>前線擴張極限受制於後勤補給能力。沒有安全、流暢嘅 Supply Line，再強嘅作戰部隊亦會崩潰。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> The operational reach of any force is strictly constrained by its ability to maintain unblocked supply chains.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: HUMAN NATURE AND JUDGMENT -->
+            <section id="human-nature">
+                <h2 class="section-title">7. Human Nature and Judgment (人性與認知偏誤)</h2>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>👁️ Confirmation Bias (確認偏誤)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>只尋找、相信並記住能印證自身既有立場嘅數據，主動忽視反面證據。反思方法：達爾文法（第一時間寫落反面證據）。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Searching for, interpreting, and remembering information that confirms pre-existing beliefs while ignoring counter-evidence.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🧠 Availability Heuristic (可得性捷思)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>根據腦海中容易浮現嘅記憶或近期生動事件（鮮明新聞、親身經歷），過度高估該類事件發生嘅真實概率。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Estimating outcome likelihood based on how easily specific instances come to mind (driven by recency or vividness).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>👥 Social Proof (社會認同 / 從眾效應)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>在不確定環境中，傾向觀察並跟隨大多數人嘅行為，作為自身決策嘅依據。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Looking to the actions and behaviors of others to guide decisions under conditions of uncertainty.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🚢 Survivorship Bias (倖存者偏誤)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>過度關注成功通過篩選機制嘅「倖存者」，忽視未被看見嘅大量失敗案例（如只研究成功企業家，忽視同等努力但破產者）。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Focusing exclusively on successful outcomes ("survivors") while ignoring failures that did not make it past selection.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>⚡ Cognitive Dissonance (認知失調)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>當新事實與自身既有信念衝突時所產生嘅強烈心理不適，人類傾向透過合理化（Rationalization）自我欺騙以消除失調。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> Mental discomfort experienced when holding conflicting beliefs, typically resolved through self-rationalization.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>📉 Loss Aversion (損失厭惡)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>失去某物帶嚟嘅痛苦感，係獲得同等價值物帶嚟快樂感嘅 2 到 2.5 倍。此偏誤導致止蝕極難。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> The psychological impact of a loss is felt roughly twice as intensely as the pleasure of an equivalent gain.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🛋️ Status Quo Bias (現狀偏誤)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>盲目偏好當前狀態，將任何對基準線（Baseline）嘅偏離自動視為潛在損失或高風險。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> A preference for the current state of affairs, treating any deviation as a potential loss.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-block">
+                    <div class="model-header">
+                        <h3>🔮 Hindsight Bias (後見之明偏誤 / 事後諸葛)</h3>
+                        <a href="https://fs.blog/mental-models/" target="_blank" class="fs-ref-link">fs.blog/mental-models</a>
+                    </div>
+                    <div class="bilingual-grid">
+                        <div class="lang-col cantonese">
+                            <h4>廣東話拆解</h4>
+                            <p>事件發生後，誤以為自己早就準確預測到結果（「我早就知道會咁啦」），從而阻礙對真正風險與不確定性嘅反思。</p>
+                        </div>
+                        <div class="lang-col english">
+                            <h4>English Concept & Insight</h4>
+                            <p><strong>Definition:</strong> The inclination to view past events as having been predictable before they happened ("I knew it all along").</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 8: MULTI-DISCIPLINARY LATTICEWORK -->
+            <section id="synthesis">
+                <h2 class="section-title">8. Latticework 綜合實戰應用 (Multi-Disciplinary Synthesis)</h2>
+                <div class="highlight-box">
+                    <p><strong>格柵思維（Latticework Approach）：</strong> 單一心智模型（Man with a Hammer）係危險嘅。要獲得真正嘅智慧，你必須將來自物理、生物、系統、經濟同心理學嘅數十個模型，交織成一個動態嘅格柵網絡。</p>
+                    <p style="margin-top: 0.5rem;">🔗 完整閱讀與持續更新請參閱官方指南：<a href="https://fs.blog/mental-models/" target="_blank" style="color: var(--accent-blue); font-weight: bold;">Farnam Street Mental Models Hub (https://fs.blog/mental-models/)</a></p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
