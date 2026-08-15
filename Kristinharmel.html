@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7 Novels by Kristin Harmel - 全景深度拆解與讀書導讀</title>
+    <style>
+        :root {
+            --primary-color: #1a3644;
+            --accent-color: #c5a059;
+            --secondary-accent: #2c5282;
+            --bg-color: #faf9f6;
+            --card-bg: #ffffff;
+            --text-color: #2c2a29;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans CJK TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Banner Header */
+        .header-banner {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 40px 30px;
+            border-bottom: 5px solid var(--accent-color);
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 30px;
+        }
+
+        .header-banner h1 {
+            font-size: 2rem;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #f4ebd9;
+        }
+
+        .header-banner .subtitle {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            margin: 0 0 15px 0;
+            font-style: italic;
+        }
+
+        .header-banner .meta-info {
+            font-size: 0.9rem;
+            color: #d1d5db;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            border-left: 5px solid var(--accent-color);
+            padding-left: 12px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        /* Book Card Block */
+        .book-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+
+        .book-card-header {
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .book-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .book-tags {
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        .book-tag-item {
+            display: inline-block;
+            background-color: #edf2f7;
+            color: #4a5568;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-right: 6px;
+            font-weight: 600;
+        }
+
+        /* Amazon Link Button Style */
+        .amazon-btn {
+            display: inline-block;
+            background-color: #232f3e;
+            color: #ff9900 !important;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 5px;
+            margin-top: 12px;
+            border: 1px solid #37475a;
+            transition: background-color 0.2s ease;
+        }
+
+        .amazon-btn:hover {
+            background-color: #37475a;
+        }
+
+        .amazon-btn span {
+            color: #ffffff;
+        }
+
+        /* Data Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            text-align: left;
+            padding: 12px 14px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+
+        td a {
+            color: var(--secondary-accent);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        /* Callout Box */
+        .callout-box {
+            background-color: #f0f4f8;
+            border-left: 4px solid var(--secondary-accent);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .callout-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        ul {
+            margin-top: 6px;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .formula-box {
+            background-color: #fefcbf;
+            border: 1px dashed #d69e2e;
+            padding: 14px 18px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            color: #744210;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-banner">
+            <h1>7 Novels by Kristin Harmel</h1>
+            <div class="subtitle">全景深度拆解、作品結構剖析與 Amazon 購書指南</div>
+            <div class="meta-info">
+                <strong>作者簡介：</strong>克莉絲汀·哈梅爾（Kristin Harmel）是國際知名暢銷歷史小說家，作品翻譯成數十種語言，在全球廣受好評。<br>
+                <strong>核心類型：</strong>歷史小說、大眾文學、二戰抵抗運動、雙時空懸疑、人性救贖
+            </div>
+        </div>
+
+        <h2>第一部分：克莉絲汀·哈梅爾的創作圖譜與核心主題分析</h2>
+        <p>克莉絲汀·哈梅爾的作品在大眾文學與歷史小說領域獨樹一幟。透過拆解本合集中收錄的 7 部代表作，我們可以歸納出其創作的四大核心支柱：</p>
+
+        <div class="callout-box">
+            <div class="callout-title">四大核心主題支柱</div>
+            <ul>
+                <li><strong>歷史的陰影與記憶的救贖：</strong> 哈梅爾擅長以二戰（特別是納粹佔領下的法國）為背景，將「記憶」視為一種力量——既是創傷，也是重生的鑰匙。</li>
+                <li><strong>女性的堅韌與日常英雄主義：</strong> 聚焦普通女性（護士、偽造者、酒莊女主人、孤兒、年輕母親、珠寶大盜），展現她們在絕境中憑藉勇氣與愛拯救無辜者。</li>
+                <li><strong>時間的流逝與生命的限度：</strong> 探討生命倒數或循環下的抉擇，凸顯愛、原諒與當下擁有的珍貴。</li>
+                <li><strong>實體物件作為歷史錨點：</strong> 古籍、密碼、鑽石手鍊、香檳酒窖、流行歌曲等實體物件，成為連結雙時空與揭開秘密的核心道具。</li>
+            </ul>
+        </div>
+
+        <h2>第二部分：7 部作品深度拆解與情節分析</h2>
+
+        <!-- Book 1 -->
+        <div class="book-card">
+            <div class="book-card-header">
+                <div class="book-title">1. 《如何拯救生命》（How to Save a Life）</div>
+                <div class="book-tags">
+                    <span class="book-tag-item">現代情感</span>
+                    <span class="book-tag-item">微奇幻</span>
+                    <span class="book-tag-item">時間循環</span>
+                </div>
+            </div>
+            <p><strong>風格標籤：</strong>《今天暫時停止》（Groundhog Day）遇上《急診室的愛》（Grey's Anatomy）</p>
+            <p><strong>情節拆解：</strong>當一名兒科腫瘤科護士收到殘酷的絕症診斷時，一位年幼的病患告訴她一個祕密：人可以在同一天裡不斷重複，直到內心感到真正圓滿。護士隨即進入了時間循環，起初利用這一天嘗試不敢做的事，隨後在重複中學會面對死亡的恐懼，真誠地去愛與原諒。最終她在擁抱了生命的完整性後，平靜地迎向命運。</p>
+            <p><strong>核心衝突：</strong>對死亡的恐懼 vs. 對生命意義的追求。</p>
+            <a href="https://www.amazon.com/dp/B01A4AFX30" class="amazon-btn" target="_blank"><span>在 Amazon 上購買：</span> How to Save a Life</a>
+        </div>
+
+        <!-- Book 2 -->
+        <div class="book-card">
+            <div class="book-card-header">
+                <div class="book-title">2. 《釀酒師的妻子》（The Winemaker's Wife）</div>
+                <div class="book-tags">
+                    <span class="book-tag-item">二戰歷史</span>
+                    <span class="book-tag-item">雙時空懸疑</span>
+                    <span class="book-tag-item">法國香檳區</span>
+                </div>
+            </div>
+            <p><strong>雙時空結構：</strong>1940年法國香檳區 &leftrightarrow; 2019年紐約與法國</p>
+            <p><strong>情節拆解：</strong>1940年，新婚的伊內絲隨丈夫入住肖沃酒莊，丈夫暗中加入抵抗組織藏匿軍火，而酒莊釀酒師的半猶太妻子塞琳面臨極大危險。塞琳的輕率與伊內絲誤信通敵者，將眾人推向毀滅。2019年，人生低谷的莉芙隨祖母來到法國酒莊，在古老的酒窖中揭開了七十年前關於背叛、犧牲與愛的殘酷真相。</p>
+            <p><strong>核心衝突：</strong>恐懼下的背叛 vs. 絕境中的道德抉擇。</p>
+            <a href="https://www.amazon.com/dp/1501189617" class="amazon-btn" target="_blank"><span>在 Amazon 上購買：</span> The Winemaker's Wife</a>
+        </div>
+
+        <!-- Book 3 -->
+        <div class="book-card">
+            <div class="book-card-header">
+                <div class="book-title">3. 《失落名字的書》（The Book of Lost Names）</div>
+                <div class="book-tags">
+                    <span class="book-tag-item">紐約時報暢銷</span>
+                    <span class="book-tag-item">偽造身份</span>
+                    <span class="book-tag-item">二戰抵抗</span>
+                </div>
+            </div>
+            <p><strong>靈感來源：</strong>改編自二戰時期地下偽造者的真實歷史。</p>
+            <p><strong>情節拆解：</strong>1942年，猶太研究生艾娃逃往山區小鎮，加入抵抗組織為猶太兒童偽造證件。為了不讓孩子們忘記自己的根，她與偽造專家雷米利用一本18世紀古籍，將孩子的真實姓名編碼寫入其中。六十五年後，已是老人的艾娃在雜誌上看到這本被展示在柏林圖書館的密碼書，決定飛往柏林解開密碼，幫倖存者找回真實身份。</p>
+            <p><strong>核心衝突：</strong>消滅身份（為了生存） vs. 抹殺記憶（精神死亡）。</p>
+            <a href="https://www.amazon.com/dp/1982131237" class="amazon-btn" target="_blank"><span>在 Amazon 上購買：</span> The Book of Lost Names</a>
+        </div>
+
+        <!-- Book 4 -->
+        <div class="book-card">
+            <div class="book-card-header">
+                <div class="book-title">4. 《消失之星的森林》（The Forest of Vanishing Stars）</div>
+                <div class="book-tags">
+                    <span class="book-tag-item">荒野求生</span>
+                    <span class="book-tag-item">成長小說</span>
+                    <span class="book-tag-item">東歐二戰</span>
+                </div>
+            </div>
+            <p><strong>情節拆解：</strong>一名從小被偷走並在東歐原始森林長大的女子，在養母去世後獨自生活。1941年，她遇到逃避納粹屠殺的猶太難民，決定用荒野求生知識幫助他們。過程中，冷漠的她從難民身上學會了愛與信任。當背叛發生、她逃入被佔領的村莊時，她的身世祕密與現狀碰撞，最終她選擇為正義而戰。</p>
+            <p><strong>核心衝突：</strong>自然的冷酷/文明的殘暴 vs. 人類的互助與愛的本能。</p>
+            <a href="https://www.amazon.com/dp/1982131261" class="amazon-btn" target="_blank"><span>在 Amazon 上購買：</span> The Forest of Vanishing Stars</a>
+        </div>
+
+        <!-- Book 5 -->
+        <div class="book-card">
+            <div class="book-card-header">
+                <div class="book-title">5. 《巴黎女兒》（The Paris Daughter）</div>
+                <div class="book-tags">
+                    <span class="book-tag-item">母性與創傷</span>
+                    <span class="book-tag-item">巴黎佔領區</span>
+                    <span class="book-tag-item">情感懸疑</span>
+                </div>
+            </div>
+            <p><strong>情節拆解：</strong>1939年巴黎，年輕母親愛麗絲與朱莉葉成為好友。當愛麗絲因抵抗運動遭到納粹追捕時，她將幼女託付給經營書店的朱莉葉。然而一場空襲將書店化為廢墟。戰後，愛麗絲重返巴黎尋找女兒，卻發現朱莉葉下落不明。愛麗絲追尋至紐約，兩人在多年後攤牌，揭開了那一夜最心碎的真相。</p>
+            <p><strong>核心衝突：</strong>母性保護欲的極限 vs. 戰亂下的無能為力與罪惡感。</p>
+            <a href="https://www.amazon.com/dp/1982191701" class="amazon-btn" target="_blank"><span>在 Amazon 上購買：</span> The Paris Daughter</a>
+        </div>
+
+        <!-- Book 6 -->
+        <div class="book-card">
+            <div class="book-card-header">
+                <div class="book-title">6. 《科萊特·馬索被偷走的人生》（The Stolen Life of Colette Marceau）</div>
+                <div class="book-tags">
+                    <span class="book-tag-item">俠盜懸疑</span>
+                    <span class="book-tag-item">珠寶大盜</span>
+                    <span class="book-tag-item">家族祕密</span>
+                </div>
+            </div>
+            <p><strong>別名：</strong>All the Diamonds in Paris</p>
+            <p><strong>情節拆解：</strong>科萊特幾十年來恪守家訓，只偷殘忍之人的珠寶來資助弱者。1942年二戰期間，母親被捕處決，妹妹失蹤，縫在妹妹睡衣上的鑽石手鍊不翼而飛。七十年後，這枚手鍊突然出現在波士頓博物館展覽中，迫使科萊特重新面對過往，揭開長達半個世紀的陰謀與背叛，為家人討回遲到的正義。</p>
+            <p><strong>核心衝突：</strong>正義與法律的衝突（俠盜道德） vs. 塵封真相的揭露。</p>
+            <a href="https://www.amazon.com/dp/1668045958" class="amazon-btn" target="_blank"><span>在 Amazon 上購買：</span> The Stolen Life of Colette Marceau</a>
+        </div>
+
+        <!-- Book 7 -->
+        <div class="book-card">
+            <div class="book-card-header">
+                <div class="book-title">7. 《在巴黎相遇》（Meet Me in Paris）</div>
+                <div class="book-tags">
+                    <span class="book-tag-item">巴黎群像</span>
+                    <span class="book-tag-item">浪漫治癒</span>
+                    <span class="book-tag-item">跨越80年</span>
+                </div>
+            </div>
+            <p><strong>風格標籤：</strong>《愛是您，愛是我》（Love Actually）遇上《手札情緣》（The Notebook）</p>
+            <p><strong>情節拆解：</strong>講述 9 位美國人在巴黎、7 段交織的愛情故事，全部濃縮在短短一週之內。包含臨終母親與女兒的最後告別之旅、過氣搖滾巨星的重拾自我、高齡音樂人飛往巴黎用音樂喚醒患失智症二戰初戀的記憶，以及遭受背叛的妻子在光之城尋找新人生的選擇。</p>
+            <p><strong>核心衝突：</strong>時間的不可逆性 vs. 愛情的永恆與修復。</p>
+            <a href="https://www.amazon.com/dp/1668045982" class="amazon-btn" target="_blank"><span>在 Amazon 上購買：</span> Meet Me in Paris</a>
+        </div>
+
+        <h2>第三部分：7 部作品橫向對比與創作公式</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>作品名稱</th>
+                        <th>主要時間線</th>
+                        <th>核心物件 / 符號</th>
+                        <th>故事核心懸念</th>
+                        <th>Amazon 購買連結</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>《如何拯救生命》</strong></td>
+                        <td>現代（重複的一天）</td>
+                        <td>時間循環 / 診斷書</td>
+                        <td>能否在死亡前讓人生達到真正的圓滿？</td>
+                        <td><a href="https://www.amazon.com/dp/B01A4AFX30" target="_blank">Buy on Amazon</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>《釀酒師的妻子》</strong></td>
+                        <td>1940年 / 2019年</td>
+                        <td>香檳酒窖 / 舊相片</td>
+                        <td>戰時的輕率舉動引發了什麼悲劇？</td>
+                        <td><a href="https://www.amazon.com/dp/1501189617" target="_blank">Buy on Amazon</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>《失落名字的書》</strong></td>
+                        <td>1942年 / 現代</td>
+                        <td>古籍密碼 / 偽造證件</td>
+                        <td>藏在典籍裡的密碼能否幫倖存者找回身份？</td>
+                        <td><a href="https://www.amazon.com/dp/1982131237" target="_blank">Buy on Amazon</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>《消失之星的森林》</strong></td>
+                        <td>1941年二戰期間</td>
+                        <td>草藥 / 荒野生存工具</td>
+                        <td>與世隔絕的女子能否帶領難民度過戰亂？</td>
+                        <td><a href="https://www.amazon.com/dp/1982131261" target="_blank">Buy on Amazon</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>《巴黎女兒》</strong></td>
+                        <td>1939-1945年 / 戰後</td>
+                        <td>夢想書店廢墟 / 舊照片</td>
+                        <td>戰火轟炸那一夜，被託付的女兒究竟去了哪裡？</td>
+                        <td><a href="https://www.amazon.com/dp/1982191701" target="_blank">Buy on Amazon</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>《科萊特·馬索被偷走的人生》</strong></td>
+                        <td>1942年 / 70年後</td>
+                        <td>鑽石手鍊</td>
+                        <td>遺失七十年的手鍊重現，當年真兇是誰？</td>
+                        <td><a href="https://www.amazon.com/dp/1668045958" target="_blank">Buy on Amazon</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>《在巴黎相遇》</strong></td>
+                        <td>現代（為期一週）</td>
+                        <td>流行歌曲 / 舊信件</td>
+                        <td>九位主角能否在一週內找到愛的救贖？</td>
+                        <td><a href="https://www.amazon.com/dp/1668045982" target="_blank">Buy on Amazon</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="formula-box">
+            哈梅爾小說公式：[極限歷史/生存背景] ＋ [雙時空/雙線解密] ＋ [實體信物] ＋ [愛的犧牲] ＝ 人性救贖史詩
+        </div>
+
+        <h2>總結與讀者推薦</h2>
+        <p>這 7 部作品展現了克莉絲汀·哈梅爾作為暢銷作家極其成熟的敘事功力。無論是探索現代情感與生命的《如何拯救生命》與《在巴黎相遇》，還是深耕二戰歷史記憶與女性韌性的另外 5 部作品，她都在殘酷的命運背景下保留了愛的微光。讀者可根據上述拆解選擇最吸引您的作品，點擊相應連結即可直接至 Amazon 選購。</p>
+    </div>
+
+</body>
+</html>
