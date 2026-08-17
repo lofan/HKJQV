@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人生操作系統｜Life Operating System</title>
+
+<style>
+:root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-2: #eef1f5;
+    --text: #17202a;
+    --muted: #667085;
+    --border: #d9dee7;
+    --accent: #4f7cff;
+    --accent-2: #7c5cff;
+    --quote: #eef3ff;
+    --shadow: 0 8px 30px rgba(0,0,0,.08);
+}
+
+[data-theme="dark"] {
+    --bg: #0b0f14;
+    --surface: #121820;
+    --surface-2: #1a222d;
+    --text: #edf2f7;
+    --muted: #9aa7b5;
+    --border: #293442;
+    --accent: #78a2ff;
+    --accent-2: #a78bfa;
+    --quote: #17233a;
+    --shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans TC",
+        "Microsoft JhengHei",
+        sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+}
+
+/* =========================
+   Layout
+========================= */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    position: fixed;
+    width: 280px;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 28px 20px;
+}
+
+.main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: 1100px;
+    padding: 50px 55px 100px;
+}
+
+/* =========================
+   Sidebar
+========================= */
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.logo-sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 28px;
+}
+
+.nav-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin: 20px 0 8px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 8px 11px;
+    margin: 3px 0;
+    border-radius: 7px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.sidebar a:hover {
+    background: var(--surface-2);
+    color: var(--text);
+}
+
+.theme-toggle {
+    width: 100%;
+    margin-top: 30px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-2);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* =========================
+   Hero
+========================= */
+
+.hero {
+    padding: 50px 0 45px;
+    border-bottom: 1px solid var(--border);
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.hero h1 {
+    font-size: clamp(36px, 5vw, 62px);
+    line-height: 1.12;
+    margin: 0 0 18px;
+    letter-spacing: -1.5px;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 18px;
+    max-width: 780px;
+}
+
+/* =========================
+   Sections
+========================= */
+
+section {
+    padding: 55px 0 20px;
+    scroll-margin-top: 30px;
+}
+
+h2 {
+    font-size: 30px;
+    line-height: 1.3;
+    margin-bottom: 25px;
+}
+
+h3 {
+    font-size: 21px;
+    margin-top: 30px;
+}
+
+strong {
+    color: var(--accent);
+}
+
+/* =========================
+   Cards
+========================= */
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.mechanism {
+    border-left: 4px solid var(--accent);
+    padding-left: 18px;
+}
+
+.action {
+    border-left: 4px solid var(--accent-2);
+    padding-left: 18px;
+}
+
+/* =========================
+   Grid
+========================= */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 20px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+}
+
+.mini-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.mini-card h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+/* =========================
+   Tables
+========================= */
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: var(--surface-2);
+    font-weight: 700;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================
+   Blockquote
+========================= */
+
+blockquote {
+    margin: 25px 0;
+    padding: 25px 28px;
+    background: var(--quote);
+    border-left: 5px solid var(--accent);
+    border-radius: 8px;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+/* =========================
+   Mental Model
+========================= */
+
+.flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 30px 0;
+}
+
+.flow-item {
+    width: min(680px, 100%);
+    padding: 18px 25px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.flow-item span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.arrow {
+    color: var(--accent);
+    font-size: 22px;
+}
+
+/* =========================
+   Principle Cards
+========================= */
+
+.principle {
+    position: relative;
+    padding-left: 60px;
+}
+
+.number {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: white;
+    font-weight: 800;
+}
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+    margin-top: 70px;
+    padding-top: 25px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* =========================
+   Mobile
+========================= */
+
+.mobile-header {
+    display: none;
+}
+
+@media (max-width: 850px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .mobile-header {
+        display: flex;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 12px 16px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 25px 20px 70px;
+    }
+
+    .grid,
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding-top: 30px;
+    }
+
+    h2 {
+        font-size: 26px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="mobile-header">
+    <strong>人生操作系統</strong>
+    <button class="theme-toggle" style="width:auto;margin:0"
+            onclick="toggleTheme()">◐ Dark</button>
+</div>
+
+<div class="layout">
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">人生操作系統</div>
+    <div class="logo-sub">Life Operating System</div>
+
+    <div class="nav-title">Overview</div>
+    <a href="#overview">Executive Overview</a>
+    <a href="#mental-model">Mental Model</a>
+
+    <div class="nav-title">Core Pillars</div>
+    <a href="#pillar-1">01 · 修身</a>
+    <a href="#pillar-2">02 · 認知</a>
+    <a href="#pillar-3">03 · 識人</a>
+    <a href="#pillar-4">04 · 戰略</a>
+    <a href="#pillar-5">05 · 權力與制度</a>
+
+    <div class="nav-title">Analysis</div>
+    <a href="#books">閱讀地圖</a>
+    <a href="#tradeoffs">Trade-offs</a>
+    <a href="#principles">7 大人生原則</a>
+
+    <div class="nav-title">Final</div>
+    <a href="#summary">Summary</a>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        ◐ Toggle Dark Mode
+    </button>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+<!-- HERO -->
+
+<div class="hero">
+
+    <div class="badge">LIFE OPERATING SYSTEM · v1.0</div>
+
+    <h1>
+        人生操作系統
+    </h1>
+
+    <p>
+        由修身、認知、識人、識勢、戰略、權力、制度到聚焦，
+        將《沉思錄》、《窮查理年鑑》、《孫子兵法》、
+        《君主論》、《韓非子》、Robert Greene、
+        Ray Dalio、Essentialism 等思想整合成一套可執行 Mental Model。
+    </p>
+
+</div>
+
+
+<!-- =========================
+     EXECUTIVE OVERVIEW
+========================= -->
+
+<section id="overview">
+
+<h2>Executive Overview</h2>
+
+<div class="card">
+
+<p>
+你提供嘅書單其實可以整合成一套完整嘅
+<strong>Life Operating System（人生操作系統）</strong>：
+先管理自己，再理解思維、人性、權力、制度與「勢」，
+最後將注意力集中喺真正重要嘅事情。
+</p>
+
+<blockquote>
+真正強大唔係控制別人，而係：
+<strong>控制自己 → 看清現實 → 理解人性 → 判斷形勢
+→ 選擇戰場 → 集中資源 → 按自己價值行動。</strong>
+</blockquote>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     MENTAL MODEL
+========================= -->
+
+<section id="mental-model">
+
+<h2>人生操作系統：總體架構</h2>
+
+<div class="flow">
+
+    <div class="flow-item">
+        <strong>01 · 修身</strong>
+        <span>Self-Mastery · 《沉思錄》 · 孔子 · Tony Robbins</span>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="flow-item">
+        <strong>02 · 認知</strong>
+        <span>Mental Models · Munger · Dalio · Dobelli</span>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="flow-item">
+        <strong>03 · 識人</strong>
+        <span>Human Nature · Greene · EQ · 厚黑學</span>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="flow-item">
+        <strong>04 · 識勢與戰略</strong>
+        <span>Strategy · 《孫子兵法》 · 《漁樵問對》</span>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="flow-item">
+        <strong>05 · 權力與制度</strong>
+        <span>Power · Incentives · 《君主論》 · 韓非子 · 商君書</span>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="flow-item">
+        <strong>06 · 價值與方向</strong>
+        <span>Ethics · 《理想國》 · 孔子</span>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="flow-item">
+        <strong>07 · 聚焦與執行</strong>
+        <span>Essentialism · Focus · Execution</span>
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PILLAR 1
+========================= -->
+
+<section id="pillar-1">
+
+<h2>01 · 修身：先建立「內在控制系統」</h2>
+
+<div class="card">
+
+<h3>《沉思錄》＋孔子＋Tony Robbins</h3>
+
+<div class="mechanism">
+
+<strong>Mechanism</strong>
+
+<ul>
+<li>《沉思錄》：區分 <strong>可控 vs 不可控</strong>。</li>
+<li>孔子：建立 <strong>仁、義、禮、智、信</strong> 等 character foundation。</li>
+<li>Tony Robbins：透過 <strong>State → Belief → Action</strong> 提升行動能力。</li>
+<li>核心係建立穩定嘅「內在 Operating System」。</li>
+</ul>
+
+</div>
+
+<div class="action">
+
+<strong>Actionable Rule</strong>
+
+<ul>
+<li><strong>情緒係訊號，不係命令。</strong></li>
+<li>重大決定前先問：「我可以控制咩？」</li>
+<li>再問：「如果情緒消失，我會點決定？」</li>
+<li>永遠先管理自己，再管理事情。</li>
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PILLAR 2
+========================= -->
+
+<section id="pillar-2">
+
+<h2>02 · 認知：建立「思考防火牆」</h2>
+
+<div class="card">
+
+<h3>《窮查理年鑑》＋Principles＋The Art of Thinking Clearly</h3>
+
+<div class="mechanism">
+
+<strong>Mechanism</strong>
+
+<ul>
+<li>Munger：使用 <strong>Mental Models</strong>。</li>
+<li>Dalio：將經驗轉化成 <strong>Principles</strong>。</li>
+<li>Dobelli：識別 <strong>Cognitive Biases</strong>。</li>
+</ul>
+
+<p>
+三者結合：
+<strong>Mental Models → Principles → Bias Check → Decision</strong>
+</p>
+
+</div>
+
+<div class="action">
+
+<strong>Actionable Rule</strong>
+
+<ul>
+<li>有咩證據支持？</li>
+<li>有咩證據反對？</li>
+<li>我係咪只睇自己想睇嘅資料？</li>
+<li>如果我錯，最可能錯喺邊？</li>
+<li>最壞情況係乜？</li>
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PILLAR 3
+========================= -->
+
+<section id="pillar-3">
+
+<h2>03 · 識人：建立 Human Intelligence</h2>
+
+<div class="card">
+
+<h3>Robert Greene＋厚黑學＋Emotional Intelligence</h3>
+
+<div class="mechanism">
+
+<strong>Mechanism</strong>
+
+<ul>
+<li>Greene：權力、慾望、地位、恐懼。</li>
+<li>EQ：理解自己同其他人嘅情緒。</li>
+<li>厚黑學：觀察利益衝突下嘅自利行為。</li>
+</ul>
+
+<p>
+<strong>人講嘅理由，未必等於真正嘅動機。</strong>
+</p>
+
+</div>
+
+<div class="action">
+
+<strong>Actionable Rule</strong>
+
+<p>遇到重要人物，分三層觀察：</p>
+
+<ol>
+<li><strong>表面：</strong>佢講咩？</li>
+<li><strong>利益：</strong>佢想得到咩？</li>
+<li><strong>恐懼：</strong>佢最怕失去咩？</li>
+</ol>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PILLAR 4
+========================= -->
+
+<section id="pillar-4">
+
+<h2>04 · 戰略：由「努力」升級為「選擇」</h2>
+
+<div class="card">
+
+<h3>《孫子兵法》＋《漁樵問對》</h3>
+
+<div class="mechanism">
+
+<strong>Mechanism</strong>
+
+<p>
+《孫子兵法》提醒：
+<strong>勝負好多時喺真正交手之前已經決定。</strong>
+</p>
+
+<p>
+《漁樵問對》則提供「<strong>勢</strong>」嘅思考：
+唔只問「而家發生咩」，而係問
+<strong>「邊股力量正在將事情推向邊？」</strong>
+</p>
+
+</div>
+
+<div class="action">
+
+<strong>Actionable Rule</strong>
+
+<ol>
+<li>呢場仗值得打嗎？</li>
+<li>可以唔可以改變遊戲規則？</li>
+<li>我有冇結構性優勢？</li>
+<li>對手有咩優勢？</li>
+<li>時間係幫我定幫對手？</li>
+<li>等多三個月，局勢會變成點？</li>
+</ol>
+
+<blockquote>
+唔好問「點樣打贏？」先。
+先問：<strong>「可唔可以避免打？」</strong>
+</blockquote>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PILLAR 5
+========================= -->
+
+<section id="pillar-5">
+
+<h2>05 · 權力＋制度＋焦點</h2>
+
+<div class="card">
+
+<h3>《君主論》＋《韓非子》＋《商君書》＋《理想國》＋Essentialism</h3>
+
+<div class="grid">
+
+<div class="mini-card">
+<h3>《君主論》</h3>
+<p><strong>Power Reality</strong></p>
+<p>理解世界實際點運作，而唔只係世界應該點運作。</p>
+</div>
+
+<div class="mini-card">
+<h3>《韓非子》</h3>
+<p><strong>Incentives</strong></p>
+<p>唔好假設人永遠善良，要理解利益同制度。</p>
+</div>
+
+<div class="mini-card">
+<h3>《商君書》</h3>
+<p><strong>Institutional Design</strong></p>
+<p>制度、獎懲如何塑造群體行為。</p>
+</div>
+
+<div class="mini-card">
+<h3>《理想國》</h3>
+<p><strong>Ethics & Justice</strong></p>
+<p>一個公平、合理嘅社會應該點樣運作？</p>
+</div>
+
+<div class="mini-card">
+<h3>Essentialism</h3>
+<p><strong>Focus</strong></p>
+<p>資源有限，所以必須選擇。</p>
+</div>
+
+</div>
+
+<div class="action">
+
+<strong>Actionable Rule</strong>
+
+<p>任何組織問題都可以問：</p>
+
+<p>
+<strong>
+People → Incentives → Rules → Power → Information
+</strong>
+</p>
+
+<p>
+然後問：
+<strong>「如果我要改變結果，究竟應該改變邊一個槓桿？」</strong>
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     BOOK MAP
+========================= -->
+
+<section id="books">
+
+<h2>閱讀地圖：每本書負責邊一個能力？</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>思想來源</th>
+<th>核心問題</th>
+<th>主要能力</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>《沉思錄》</td>
+<td>我可以控制咩？</td>
+<td>Self-Mastery</td>
+</tr>
+
+<tr>
+<td>孔子</td>
+<td>我應該成為一個點樣嘅人？</td>
+<td>Character</td>
+</tr>
+
+<tr>
+<td>Tony Robbins</td>
+<td>點樣由狀態轉化成行動？</td>
+<td>Action</td>
+</tr>
+
+<tr>
+<td>《窮查理年鑑》</td>
+<td>世界可以用幾多個模型理解？</td>
+<td>Mental Models</td>
+</tr>
+
+<tr>
+<td>Principles</td>
+<td>點樣建立可重複決策系統？</td>
+<td>Decision Making</td>
+</tr>
+
+<tr>
+<td>The Art of Thinking Clearly</td>
+<td>我個腦點樣欺騙我？</td>
+<td>Cognitive Defense</td>
+</tr>
+
+<tr>
+<td>Robert Greene</td>
+<td>人真正想要乜？</td>
+<td>Human Nature / Power</td>
+</tr>
+
+<tr>
+<td>Emotional Intelligence</td>
+<td>點樣理解情緒？</td>
+<td>Social Awareness</td>
+</tr>
+
+<tr>
+<td>《厚黑學》</td>
+<td>利益衝突下人會點行動？</td>
+<td>Human Shadow</td>
+</tr>
+
+<tr>
+<td>《孫子兵法》</td>
+<td>邊場仗值得打？</td>
+<td>Strategy</td>
+</tr>
+
+<tr>
+<td>《漁樵問對》</td>
+<td>邊股力量正在改變局勢？</td>
+<td>Momentum / 趨勢</td>
+</tr>
+
+<tr>
+<td>《君主論》</td>
+<td>權力實際點運作？</td>
+<td>Power Reality</td>
+</tr>
+
+<tr>
+<td>《韓非子》</td>
+<td>制度如何控制行為？</td>
+<td>Incentives</td>
+</tr>
+
+<tr>
+<td>《商君書》</td>
+<td>如何設計制度？</td>
+<td>Institutional Design</td>
+</tr>
+
+<tr>
+<td>《理想國》</td>
+<td>什麼係正義？</td>
+<td>Ethics / Justice</td>
+</tr>
+
+<tr>
+<td>Essentialism</td>
+<td>什麼值得做？</td>
+<td>Focus</td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     TRADE-OFFS
+========================= -->
+
+<section id="tradeoffs">
+
+<h2>Key Trade-offs & Edge Cases</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>Scenario / Constraint</th>
+<th>Potential Risk</th>
+<th>Recommended Countermeasure</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>太沉迷 Greene／厚黑／君主論</td>
+<td>變成過度犬儒，覺得所有人都有陰謀</td>
+<td>用孔子＋《理想國》平衡「現實」與「價值」</td>
+</tr>
+
+<tr>
+<td>太相信自己嘅 Principles</td>
+<td>原則變成僵化規則，忽略新資訊</td>
+<td>保留 Bayesian Updating：新證據出現就修正</td>
+</tr>
+
+<tr>
+<td>過度追求 Essentialism</td>
+<td>可能刪走重要但短期冇回報嘅事情</td>
+<td>保留長期投資：健康、關係、學習、聲譽</td>
+</tr>
+
+<tr>
+<td>過度強調戰略與權力</td>
+<td>容易將人生變成零和遊戲</td>
+<td>區分競爭、合作、共贏三種情境</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     7 PRINCIPLES
+========================= -->
+
+<section id="principles">
+
+<h2>7 大人生原則</h2>
+
+<div class="card principle">
+<div class="number">1</div>
+<h3>《沉思錄》</h3>
+<p><strong>控制你可以控制嘅事。</strong></p>
+</div>
+
+<div class="card principle">
+<div class="number">2</div>
+<h3>《窮查理年鑑》</h3>
+<p><strong>唔好只用一個模型理解世界。</strong></p>
+</div>
+
+<div class="card principle">
+<div class="number">3</div>
+<h3>《孫子兵法》</h3>
+<p><strong>唔好為證明自己而戰；選擇值得打嘅戰。</strong></p>
+</div>
+
+<div class="card principle">
+<div class="number">4</div>
+<h3>Greene＋韓非子</h3>
+<p><strong>理解人性、利益、權力，但唔好成為權力嘅奴隸。</strong></p>
+</div>
+
+<div class="card principle">
+<div class="number">5</div>
+<h3>Dalio＋Dobelli</h3>
+<p><strong>建立原則，同時懷疑自己。</strong></p>
+</div>
+
+<div class="card principle">
+<div class="number">6</div>
+<h3>Essentialism</h3>
+<p><strong>人生最重要嘅能力之一係拒絕。</strong></p>
+</div>
+
+<div class="card principle">
+<div class="number">7</div>
+<h3>孔子＋柏拉圖</h3>
+<p>
+<strong>
+最後問題唔係「我可以變得幾強」，
+而係「我變強之後，成為一個點樣嘅人？」
+</strong>
+</p>
+</div>
+
+</section>
+
+
+<!-- =========================
+     FINAL SUMMARY
+========================= -->
+
+<section id="summary">
+
+<h2>Summary & Mental Model</h2>
+
+<div class="card">
+
+<blockquote>
+
+人生操作系統 =
+<strong>
+修身 × 認知 × 識人 × 識勢 × 戰略 × 制度 × 聚焦
+</strong>
+</blockquote>
+
+<p>
+先控制自己，再看清世界；
+先理解人性，再理解權力；
+先判斷「勢」，再選擇戰場；
+最後用 Essentialism 將有限嘅時間、注意力、金錢同精力，
+押注喺真正重要嘅事情上。
+</p>
+
+<blockquote>
+
+最高境界唔係成為最識玩遊戲嘅人，
+而係有能力選擇：
+
+<br><br>
+
+<strong>
+玩唔玩 → 玩邊個遊戲 → 點樣玩 → 點解要玩
+</strong>
+
+</blockquote>
+
+</div>
+
+</section>
+
+
+<footer>
+    人生操作系統 · Life Operating System<br>
+    Self-Mastery → Clear Thinking → Human Nature →
+    Strategy → Power → Ethics → Focus
+</footer>
+
+</main>
+</div>
+
+
+<script>
+
+/* =========================
+   Dark Mode
+========================= */
+
+function setTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("life-os-theme", theme);
+}
+
+function toggleTheme() {
+    const current =
+        document.documentElement.getAttribute("data-theme");
+
+    setTheme(current === "dark" ? "light" : "dark");
+}
+
+const savedTheme =
+    localStorage.getItem("life-os-theme");
+
+if (savedTheme) {
+    setTheme(savedTheme);
+} else if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+) {
+    setTheme("dark");
+}
+
+
+/* =========================
+   Active Navigation
+========================= */
+
+const sections =
+    document.querySelectorAll("section[id]");
+
+const navLinks =
+    document.querySelectorAll(".sidebar a");
+
+window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const sectionTop =
+            section.offsetTop - 150;
+
+        if (window.scrollY >= sectionTop) {
+            current = section.getAttribute("id");
+        }
+
+    });
+
+    navLinks.forEach(link => {
+
+        link.style.background = "";
+        link.style.color = "";
+
+        if (
+            link.getAttribute("href") === "#" + current
+        ) {
+            link.style.background =
+                "var(--surface-2)";
+
+            link.style.color =
+                "var(--text)";
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
