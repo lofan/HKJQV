@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ray Dalio 六本核心著作｜廣東話深度拆解</title>
+<style>
+:root{
+  --bg:#f5f7fa; --card:#fff; --text:#172033; --muted:#667085;
+  --accent:#4f8cff; --accent2:#7c5cff; --border:#e5e7eb;
+  --code:#eef2ff; --shadow:0 10px 30px rgba(0,0,0,.08);
+}
+[data-theme="dark"]{
+  --bg:#0b1020; --card:#121a2b; --text:#edf2ff; --muted:#aab4c8;
+  --accent:#70a7ff; --accent2:#a78bfa; --border:#26334d;
+  --code:#18233a; --shadow:0 12px 35px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",
+  "PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.8;
+}
+header{
+  padding:56px 24px 44px;
+  background:linear-gradient(135deg,var(--card),var(--code));
+  border-bottom:1px solid var(--border);
+}
+.container{max-width:1120px;margin:auto}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.2;margin:0 0 16px}
+h2{font-size:1.8rem;margin-top:48px;border-left:5px solid var(--accent);padding-left:14px}
+h3{font-size:1.3rem;margin-top:30px;color:var(--accent)}
+p{margin:12px 0}
+.lead{font-size:1.15rem;color:var(--muted);max-width:900px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.badge{padding:5px 10px;border:1px solid var(--border);border-radius:999px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:30px;max-width:1400px;margin:auto;padding:30px 24px}
+nav{
+  position:sticky;top:20px;height:max-content;background:var(--card);
+  border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)
+}
+nav strong{display:block;margin-bottom:10px}
+nav a{display:block;color:var(--muted);text-decoration:none;padding:7px 8px;border-radius:8px}
+nav a:hover{background:var(--code);color:var(--text)}
+main{min-width:0}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:28px;margin:22px 0;box-shadow:var(--shadow)
+}
+.quote{
+  border-left:4px solid var(--accent2);padding:14px 18px;
+  margin:20px 0;background:var(--code);border-radius:0 10px 10px 0;
+  font-weight:600
+}
+.flow{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:18px 0;
+}
+.flow span{
+  background:var(--code);border:1px solid var(--border);padding:9px 13px;
+  border-radius:10px;font-weight:600
+}
+.arrow{color:var(--accent);font-weight:bold}
+table{width:100%;border-collapse:collapse;margin:18px 0}
+th,td{padding:12px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:var(--code)}
+ul,ol{padding-left:1.4rem}
+li{margin:7px 0}
+.callout{
+  padding:20px;border:1px solid var(--accent);border-radius:14px;
+  background:linear-gradient(135deg,var(--code),transparent)
+}
+.toolbar{display:flex;justify-content:flex-end;gap:10px;margin-bottom:10px}
+button{
+  cursor:pointer;border:1px solid var(--border);background:var(--card);
+  color:var(--text);padding:9px 14px;border-radius:10px;font-weight:600
+}
+button:hover{border-color:var(--accent)}
+footer{padding:40px 24px;text-align:center;color:var(--muted)}
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr;padding:20px 14px}
+  nav{position:relative;top:0}
+  .card{padding:20px}
+  table{font-size:.92rem}
+}
+</style>
+</head>
+<body>
+
+<header id="top">
+  <div class="container">
+    <div class="toolbar">
+      <button id="themeBtn" onclick="toggleTheme()">🌙 Dark Mode</button>
+      <button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+    </div>
+    <h1>Ray Dalio 六本核心著作</h1>
+    <p class="lead">由「人生原則」到「債務週期」，再到「國家興衰與世界秩序」——一套完整嘅 Dalio 世界觀。</p>
+    <div class="badges">
+      <span class="badge">廣東話深度拆解</span>
+      <span class="badge">Principles</span>
+      <span class="badge">Debt Cycles</span>
+      <span class="badge">Big Cycle</span>
+      <span class="badge">Investment Framework</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+<nav>
+  <strong>📚 內容導航</strong>
+  <a href="#overview">總世界觀</a>
+  <a href="#principles-life">1. Principles: Life and Work</a>
+  <a href="#success">2. Principles for Success</a>
+  <a href="#debt">3. Big Debt Crises</a>
+  <a href="#navigate">4. Navigating Big Debt Crises</a>
+  <a href="#countries">5. How Countries Go Broke</a>
+  <a href="#order">6. Changing World Order</a>
+  <a href="#synthesis">七層世界地圖</a>
+  <a href="#investment">投資應用</a>
+  <a href="#life">人生應用</a>
+  <a href="#critique">限制與批判</a>
+  <a href="#lessons">20 個核心 Lessons</a>
+  <a href="#conclusion">最終總結</a>
+</nav>
+
+<main>
+
+<section id="overview" class="card">
+<h2>總世界觀：六本書其實係一套系統</h2>
+<p>如果將六本書放埋一齊睇，你會發現佢哋唔係六個獨立主題，而係由個人一路放大到全球嘅同一套思維框架。</p>
+<div class="flow">
+<span>個人</span><b class="arrow">→</b><span>原則</span><b class="arrow">→</b>
+<span>決策</span><b class="arrow">→</b><span>經濟</span><b class="arrow">→</b>
+<span>債務</span><b class="arrow">→</b><span>國家</span><b class="arrow">→</b>
+<span>世界秩序</span>
+</div>
+<div class="quote">「唔好問世界應該點樣運作；先理解世界實際點樣運作，再建立一套可以令自己適應現實嘅原則、系統同決策機制。」</div>
+</section>
+
+<section id="principles-life" class="card">
+<h2>1. Principles: Life and Work</h2>
+<h3>Pain + Reflection = Progress</h3>
+<p>失敗本身冇價值。真正有價值嘅係：痛苦 → 反思 → 找出原因 → 建立原則 → 下一次避免同一錯誤。</p>
+<p>例如投資輸錢，唔好停留喺「隻股票衰」或者「我睇錯」；要追問「我點解會睇錯？」、「下一次遇到同類情況，我應該設定咩規則？」</p>
+
+<h3>Radical Truth：面對現實，而唔係保護自尊</h3>
+<p>人最常見嘅問題係 Ego 同 Blind Spots。成熟嘅問題唔係「我點證明自己啱」，而係「如果我錯，我最可能錯喺邊？」</p>
+
+<h3>Idea Meritocracy</h3>
+<p>最好嘅想法唔應該因為講嗰個人係老闆而勝出。應該用證據、過往準確度、邏輯同結果去衡量。</p>
+
+<h3>核心思想</h3>
+<div class="callout"><strong>唔好追求「永遠正確」；建立一個「可以快速發現錯誤並修正」嘅系統。</strong></div>
+</section>
+
+<section id="success" class="card">
+<h2>2. Principles for Success</h2>
+<p>呢本書將複雜人生濃縮成一套操作流程：<strong>Goals → Problems → Diagnosis → Design → Execution → Learning</strong>。</p>
+<h3>目標先於方法</h3>
+<p>如果你唔知道自己真正想要乜，就無法判斷自己係成功定失敗。願望要變成 Goals，再由 Goals 變成 Systems。</p>
+<h3>認識弱點</h3>
+<p>唔需要消滅所有弱點，而係知道邊啲弱點最致命，然後用流程、工具、習慣或者其他人去補足。</p>
+<h3>由靠自己轉向建立系統</h3>
+<p>例如知道自己容易衝動投資，就唔好單靠意志力；可以設定倉位上限、投資 checklist、等待期、投資 thesis 同反證條件。</p>
+</section>
+
+<section id="debt" class="card">
+<h2>3. Big Debt Crises</h2>
+<p>呢本書由人生層面進入宏觀經濟：點解經濟會由繁榮走向金融危機？</p>
+<h3>債務週期</h3>
+<div class="flow">
+<span>收入增加</span><b class="arrow">→</b><span>借貸增加</span><b class="arrow">→</b>
+<span>資產價格上升</span><b class="arrow">→</b><span>更多抵押品</span><b class="arrow">→</b>
+<span>更多借貸</span><b class="arrow">→</b><span>債務過重</span><b class="arrow">→</b>
+<span>去槓桿</span>
+</div>
+<p>繁榮本身可以製造下一次危機，因為繁榮會令人相信收入同資產價格會永遠上升。</p>
+<h3>短期 vs 長期債務週期</h3>
+<ul>
+<li><strong>短期週期：</strong>信用、利率、經濟增長、通脹與央行政策。</li>
+<li><strong>長期週期：</strong>當債務長期增長快過收入，最終會進入不可持續階段。</li>
+</ul>
+<h3>Beautiful Deleveraging</h3>
+<p>理想去槓桿化係債務下降、收入增加、經濟保持增長、通脹可控，同時避免金融體系崩潰。</p>
+</section>
+
+<section id="navigate" class="card">
+<h2>4. Principles for Navigating Big Debt Crises</h2>
+<p>可以視為債務危機嘅「導航系統」。重點唔係單睇一個指標，而係觀察整個資產負債表與政策反應。</p>
+<h3>值得追蹤嘅指標</h3>
+<ul>
+<li>Debt / Income</li>
+<li>Debt Service Ratio</li>
+<li>Interest Rates</li>
+<li>Credit Growth</li>
+<li>Asset Prices</li>
+<li>Bank Balance Sheets</li>
+<li>Central Bank Policy</li>
+<li>Government Fiscal Position</li>
+<li>Capital Flows</li>
+</ul>
+<div class="quote">唔好只問「GDP 增長幾多」，要問「債務增長係咪長期快過收入增長？」</div>
+</section>
+
+<section id="countries" class="card">
+<h2>5. How Countries Go Broke</h2>
+<p>國家通常唔似公司咁直接「破產」。真正關鍵係市場仲願唔願意以合理成本借錢畀政府。</p>
+<h3>Debt Spiral</h3>
+<div class="flow">
+<span>Debt ↑</span><b class="arrow">→</b><span>Interest ↑</span><b class="arrow">→</b>
+<span>Deficit ↑</span><b class="arrow">→</b><span>More Debt ↑</span><b class="arrow">→</b>
+<span>Interest ↑</span>
+</div>
+<p>當債務、利率同財政赤字互相強化，政府可能需要借新錢去還舊債及支付利息。</p>
+<h3>央行印錢唔係免費</h3>
+<p>如果貨幣供應增長遠超商品、服務及生產力增長，可能出現通脹及貨幣購買力下降。所以債務危機最後往往會變成「邊個承擔損失」嘅政治問題。</p>
+</section>
+
+<section id="order" class="card">
+<h2>6. Principles for Dealing with the Changing World Order</h2>
+<p>呢本書將視野推到大國興衰。Dalio 研究荷蘭、英國、美國等歷史強國，提出 Big Cycle。</p>
+<h3>Big Cycle</h3>
+<div class="flow">
+<span>生產力</span><b class="arrow">→</b><span>教育</span><b class="arrow">→</b>
+<span>創新</span><b class="arrow">→</b><span>經濟增長</span><b class="arrow">→</b>
+<span>貿易</span><b class="arrow">→</b><span>金融中心</span><b class="arrow">→</b>
+<span>軍事力量</span><b class="arrow">→</b><span>儲備貨幣</span>
+</div>
+<p>當財富增加後，亦可能出現貧富差距、債務、政治兩極化及外部競爭，最終令世界秩序出現轉移。</p>
+<h3>八個重要力量</h3>
+<ol>
+<li>教育</li><li>創新</li><li>經濟產出</li><li>國際貿易</li>
+<li>軍事力量</li><li>金融中心</li><li>儲備貨幣地位</li><li>內部凝聚力</li>
+</ol>
+<div class="quote">歷史唔係一份 deterministic script，而係一個 pattern library。理解週期，係為咗提高準備能力，而唔係預言必然發生嘅未來。</div>
+</section>
+
+<section id="synthesis" class="card">
+<h2>七層世界地圖</h2>
+<table>
+<thead><tr><th>層次</th><th>核心問題</th><th>代表作品</th></tr></thead>
+<tbody>
+<tr><td>1. 個人</td><td>我點樣建立成功人生？</td><td>Principles for Success</td></tr>
+<tr><td>2. 決策</td><td>我點樣建立可靠決策系統？</td><td>Principles: Life and Work</td></tr>
+<tr><td>3. 經濟</td><td>經濟週期點樣運作？</td><td>Big Debt Crises</td></tr>
+<tr><td>4. 危機</td><td>債務危機時點樣應對？</td><td>Navigating Big Debt Crises</td></tr>
+<tr><td>5. 國家</td><td>國家點樣陷入債務困局？</td><td>How Countries Go Broke</td></tr>
+<tr><td>6. 世界</td><td>大國點樣興衰？</td><td>Changing World Order</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="investment" class="card">
+<h2>投資應用：由「預測」轉向「準備」</h2>
+<p>Dalio 式投資唔係追求永遠預測正確，而係建立一個即使預測錯都唔容易被淘汰嘅 portfolio。</p>
+<h3>一套實用流程</h3>
+<ol>
+<li>判斷經濟環境：增長、通脹、利率、信貸。</li>
+<li>判斷債務週期：Debt、Debt Service、財政赤字、金融體系。</li>
+<li>判斷 Big Cycle：相對生產力、科技、美元、地緣政治。</li>
+<li>建立 Scenario：Soft Landing、Inflation、Recession、Debt Crisis。</li>
+<li>問 downside：如果我錯，portfolio 會發生咩事？</li>
+<li>分散於不同經濟環境，而唔係單純買好多不同股票。</li>
+</ol>
+<div class="callout"><strong>投資能力 ≠ 預測能力。真正投資能力 = 理解週期 + 情境分析 + 風險控制 + 長期生存。</strong></div>
+</section>
+
+<section id="life" class="card">
+<h2>人生應用：建立 Personal Operating System</h2>
+<div class="flow">
+<span>Goals</span><b class="arrow">→</b><span>Reality</span><b class="arrow">→</b>
+<span>Problems</span><b class="arrow">→</b><span>Diagnosis</span><b class="arrow">→</b>
+<span>Design</span><b class="arrow">→</b><span>Execution</span><b class="arrow">→</b>
+<span>Feedback</span><b class="arrow">→</b><span>Adaptation</span>
+</div>
+<p>核心係由「靠意志力」轉向「靠系統」。知道自己容易犯咩錯，就預先設計機制降低犯錯概率。</p>
+</section>
+
+<section id="critique" class="card">
+<h2>限制與批判</h2>
+<h3>1. 歷史模式唔等於未來必然重演</h3>
+<p>科技、人口、制度、全球化、核武器、AI 等因素，都可能改變歷史週期嘅速度與形態。</p>
+<h3>2. 世界唔完全係一部機器</h3>
+<p>政治、文化、身份、信念、情緒與領袖性格都可能令結果偏離模型。</p>
+<h3>3. 模型係地圖，不係土地</h3>
+<div class="quote">如果模型同現實衝突：改模型，唔好改現實去遷就模型。</div>
+</section>
+
+<section id="lessons" class="card">
+<h2>20 個最重要 Lessons</h2>
+<ol>
+<li><strong>Reality &gt; Ego</strong></li>
+<li>痛苦本身冇價值，從痛苦中學習先有價值。</li>
+<li>建立尋找答案嘅流程，而唔係只尋找答案。</li>
+<li>知道自己嘅 blind spots。</li>
+<li>唔好害怕承認「我錯」。</li>
+<li>將失敗轉化成 principle。</li>
+<li>建立 system，而唔係依賴意志力。</li>
+<li>Think in probabilities。</li>
+<li>永遠考慮 downside。</li>
+<li>唔好讓一次錯誤淘汰你。</li>
+<li>債務增長唔可以永遠快過收入。</li>
+<li>信用週期係經濟週期核心。</li>
+<li>金融危機通常係多年失衡累積嘅結果。</li>
+<li>去槓桿化有多種方式。</li>
+<li>貨幣政策唔係萬能。</li>
+<li>國家財政最終會受到債務約束。</li>
+<li>儲備貨幣地位亦有週期。</li>
+<li>大國興衰通常係多種力量共同作用。</li>
+<li>國內矛盾同國際競爭可以互相強化。</li>
+<li>建立一個可以持續學習、修正、適應嘅系統。</li>
+</ol>
+</section>
+
+<section id="conclusion" class="card">
+<h2>最終總結：Dalio 真正想教你嘅唔係投資</h2>
+<p>表面睇，Dalio 寫人生、管理、投資、債務、國家同世界秩序；但最底層其實全部係同一個問題：</p>
+<div class="quote">「當世界唔受你控制，你應該點樣生存、決策、適應同進化？」</div>
+<p>答案可以濃縮成：</p>
+<div class="flow">
+<span>Understand Reality</span><b class="arrow">→</b>
+<span>找因果關係</span><b class="arrow">→</b>
+<span>建立 Principles</span><b class="arrow">→</b>
+<span>建立 Systems</span><b class="arrow">→</b>
+<span>做 Decisions</span><b class="arrow">→</b>
+<span>接受 Feedback</span><b class="arrow">→</b>
+<span>修正</span>
+</div>
+<p>最深層嘅哲學唔係「我要成為一個永遠正確嘅人」，而係：</p>
+<div class="callout"><strong>「我要成為一個可以比其他人更快發現自己錯誤、從錯誤中學習、再建立更好系統嘅人。」</strong></div>
+<p>由《Principles》一路去到《Big Debt Crises》、再去到《Changing World Order》，主線其實係：</p>
+<div class="quote">由「管理自己」開始，理解「經濟機器」，最後理解「世界機器」。</div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  Ray Dalio 六本核心著作｜廣東話深度拆解 · Responsive HTML · Dark Mode
+</footer>
+
+<script>
+function setTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  document.getElementById('themeBtn').textContent =
+    theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+}
+function toggleTheme(){
+  const current=document.documentElement.getAttribute('data-theme') || 'light';
+  setTheme(current==='dark'?'light':'dark');
+}
+(function(){
+  const saved=localStorage.getItem('theme');
+  const prefers=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  setTheme(saved || (prefers?'dark':'light'));
+})();
+</script>
+</body>
+</html>
