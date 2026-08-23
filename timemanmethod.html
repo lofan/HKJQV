@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人生時間操作系統：5大層次效率拆解</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        /* 側邊導覽列 */
+        nav.sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #1e293b;
+            color: #f8fafc;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+            z-index: 1000;
+        }
+
+        nav.sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #38bdf8;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        nav.sidebar ul {
+            list-style: none;
+        }
+
+        nav.sidebar li {
+            margin-bottom: 0.5rem;
+        }
+
+        nav.sidebar a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: block;
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        nav.sidebar a:hover, nav.sidebar a.active {
+            background-color: #334155;
+            color: #ffffff;
+        }
+
+        /* 主要內容區 */
+        main.content {
+            margin-left: var(--sidebar-width);
+            padding: 3rem 4rem;
+            width: calc(100% - var(--sidebar-width));
+            max-width: 1200px;
+        }
+
+        header.header-title {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        header.header-title h1 {
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.8rem;
+        }
+
+        header.header-title p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        section {
+            margin-bottom: 3.5rem;
+            scroll-margin-top: 2rem;
+        }
+
+        h2.section-title {
+            font-size: 1.6rem;
+            color: #1e293b;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* 表格樣式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* 書籍連結區塊 */
+        .book-link-box {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.2rem;
+            margin-top: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .book-link-box a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .book-link-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* 公式與強調框 */
+        .formula-box {
+            background-color: #fef3c7;
+            border: 1px solid #fde047;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #78350f;
+            margin: 1.5rem 0;
+        }
+
+        .quote-box {
+            background: #f1f5f9;
+            border-left: 4px solid #64748b;
+            padding: 1rem 1.2rem;
+            font-style: italic;
+            color: #334155;
+            margin-top: 1rem;
+        }
+
+        ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* 響應式調整 */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            nav.sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            main.content {
+                margin-left: 0;
+                width: 100%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>時間管理操作系統</h2>
+        <ul>
+            <li><a href="#overview">五層效率總覽</a></li>
+            <li><a href="#layer1">1. 心理層面 (用時智慧)</a></li>
+            <li><a href="#layer2">2. 戰略層面 (最高效益)</a></li>
+            <li><a href="#layer3">3. 執行層面 (番茄工作法)</a></li>
+            <li><a href="#layer4">4. 排程層面 (箱型時間)</a></li>
+            <li><a href="#layer5">5. 習慣層面 (偷懶聖經)</a></li>
+            <li><a href="#system">落地執行操作系統</a></li>
+            <li><a href="#summary">一句話總結與心法</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <header class="header-title">
+            <h1>人生時間操作系統</h1>
+            <p>別再說「沒時間」！深入拆解 5 本經典時間管理書籍，構建完整個人效率架構。</p>
+        </header>
+
+        <!-- 總覽 -->
+        <section id="overview">
+            <h2 class="section-title">五層效率架構總覽</h2>
+            <div class="card">
+                <p>時間管理的真正重點不是「塞更多事情入一日」，而是建立一套運作順暢的人生時間操作系統。這 5 本書表面上都講時間管理，實際上分別處理了 5 個不同層次的效率問題：</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>層次</th>
+                            <th>核心問題</th>
+                            <th>對應方法</th>
+                            <th>對應書籍</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1. 心理</strong></td>
+                            <td>點解總係覺得冇時間？</td>
+                            <td>重估時間與精力管理</td>
+                            <td>《成功人士的用時智慧》</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. 戰略</strong></td>
+                            <td>乜嘢值得做？</td>
+                            <td>高價值任務與 Big 3</td>
+                            <td>《最高效益的時間管理》</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3. 執行</strong></td>
+                            <td>點樣專心做？</td>
+                            <td>降低啟動門檻與番茄鐘</td>
+                            <td>《間歇高效率的番茄工作法》</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4. 排程</strong></td>
+                            <td>點樣安排一日？</td>
+                            <td>箱型時間與注意力保護</td>
+                            <td>《箱型時間》</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5. 習慣</strong></td>
+                            <td>點樣長期維持？</td>
+                            <td>每日15分鐘回顧與微行動</td>
+                            <td>《為什麼他看起來那麼閒，進度卻總是能超前？》</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 第一層 -->
+        <section id="layer1">
+            <h2 class="section-title">第一層：心理《成功人士的用時智慧》</h2>
+            <div class="card">
+                <h3>核心觀念：時間管理其實係心理學</h3>
+                <p>我們不是沒有時間，而是錯估時間。大腦天生存在 <strong>Planning Fallacy（計劃謬誤）</strong>，傾向只計算理想狀況，導致極度高估每日可完成的工作。</p>
+                
+                <h4 style="margin-top:1rem;">扣除雜務後的真實可用時間：</h4>
+                <ul>
+                    <li>假設工作 8 小時：扣除 Email (45m)、開會 (1.5h)、用餐 (45m)、回答問題 (30m)、行政雜物 (30m)。</li>
+                    <li><strong>實際深度工作時間僅剩約 4 小時。</strong></li>
+                    <li>接受現實後，應思考：「如果今日只能做好兩件事，係邊兩件？」</li>
+                </ul>
+
+                <h4 style="margin-top:1rem;">精力比時間重要：</h4>
+                <p>時間固定，精力變動。將最重要、最難的深度工作擺在個人的「黃金時段」（如早晨），行政與開會擺在次要時段，效果遠高於平均分配。</p>
+
+                <div class="book-link-box">
+                    📖 <strong>相關書籍資訊：</strong><br>
+                    《成功人士的用時智慧：向世界百位高成就人士取經，學習事半功倍的時間運用智慧，讓你不再身心俱疲、收穫更大快樂》<br>
+                    英文原名：<em>Time Wise: Powerful Habits, More Time, Greater Joy</em><br>
+                    👉 <a href="https://www.books.com.tw/products/0010973907" target="_blank" rel="noopener noreferrer">前往博客來查看書籍</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第二層 -->
+        <section id="layer2">
+            <h2 class="section-title">第二層：戰略《最高效益的時間管理》</h2>
+            <div class="card">
+                <h3>核心觀念：忙碌唔等於有效</h3>
+                <p>職場最常見的陷阱是「非常勤力，但完全冇進步」。回覆 30 封 Email、開 5 個 Meeting 覺得很忙，但距離年度長期目標距離可能依然為零。</p>
+
+                <h4 style="margin-top:1rem;">高價值 vs 低價值（重要與緊急）：</h4>
+                <p>真正拉開人生差距的是<strong>「重要但不緊急」</strong>的事（如：學習新技能、投資研究、建立系統、運動閱讀）。這類事情因為沒有 Deadline，最容易被無限拖延。</p>
+
+                <h4 style="margin-top:1rem;">實行策略：每日 Big 3</h4>
+                <p>每天只設定 3 件最重要的事情，其餘雜務後排，確保每天都能朝向長期目標邁進。</p>
+
+                <div class="book-link-box">
+                    📖 <strong>相關書籍資訊：</strong><br>
+                    《最高效益的時間管理：用目標管理時間，打造爆發性成長的一年》<br>
+                    👉 <a href="https://www.books.com.tw/products/0010978270" target="_blank" rel="noopener noreferrer">前往博客來查看書籍</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第三層 -->
+        <section id="layer3">
+            <h2 class="section-title">第三層：執行《間歇高效率的番茄工作法》</h2>
+            <div class="card">
+                <h3>核心觀念：降低啟動阻力，克服拖延</h3>
+                <p>番茄工作法的最大價值不是「25 分鐘」，而是<strong>降低開始的心理阻力</strong>。人怕的不是工作，而是怕「事情太大」。承諾「只做 25 分鐘」能有效騙過大腦抗拒感。</p>
+
+                <h4 style="margin-top:1rem;">番茄循環與好處：</h4>
+                <ul>
+                    <li><strong>機制：</strong> 25 分鐘專注 + 5 分鐘休息（每 4 輪後大休息）。</li>
+                    <li><strong>降低啟動成本：</strong> 不需承諾做完，只需承諾開始。</li>
+                    <li><strong>建立精準時間感：</strong> 清楚掌握任務耗時（例如：一篇文章 = 3 個番茄）。</li>
+                    <li><strong>減少分心抗性：</strong> 雜念或通知來時上記低，下個番茄鐘休息時再處理。</li>
+                </ul>
+
+                <div class="book-link-box">
+                    📖 <strong>相關書籍資訊：</strong><br>
+                    《間歇高效率的番茄工作法：25分鐘，打造成功的最小單位，幫你杜絕分心、提升拚勁【風靡30年的時間管理經典】》<br>
+                    英文原名：<em>The Pomodoro Technique: The Acclaimed Time-Management System That Has Transformed How We Work</em><br>
+                    👉 <a href="https://www.books.com.tw/products/0010844785" target="_blank" rel="noopener noreferrer">前往博客來查看書籍</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第四層 -->
+        <section id="layer4">
+            <h2 class="section-title">第四層：排程《箱型時間》</h2>
+            <div class="card">
+                <h3>核心觀念：保護注意力，保護專注</h3>
+                <p>頻繁在 Email、Slack、Teams、WhatsApp 之間切換會產生巨大的「認知切換成本」（Task Switching Cost）。箱型時間（Timeboxing）將一日切割成明確的區塊。</p>
+
+                <h4 style="margin-top:1rem;">排程範例：</h4>
+                <ul>
+                    <li><code>08:30–10:00</code> 深度工作 (黃金時段)</li>
+                    <li><code>10:00–10:30</code> 集中處理 Email / 訊息</li>
+                    <li><code>10:30–12:00</code> 專案推進</li>
+                    <li><code>13:00–14:00</code> 會議安排</li>
+                    <li><code>14:00–15:30</code> 深度工作</li>
+                    <li><code>15:30–16:00</code> 行政雜務</li>
+                </ul>
+                <p><strong>原則：</strong> 一個時間箱只做一種類型的任務，用 Calendar 直接將「意圖」鎖定為「承諾」。</p>
+
+                <div class="book-link-box">
+                    📖 <strong>相關書籍資訊：</strong><br>
+                    《箱型時間：高速時代的15分鐘深度專注力》<br>
+                    英文原名：<em>Timeboxing: The Power of Doing One Thing at a Time</em><br>
+                    👉 <a href="https://www.books.com.tw/products/E050247932" target="_blank" rel="noopener noreferrer">前往博客來查看書籍</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第五層 -->
+        <section id="layer5">
+            <h2 class="section-title">第五層：習慣《為什麼他看起來那麼閒，進度卻總是能超前？》</h2>
+            <div class="card">
+                <h3>核心觀念：高效率唔係爆發，而係穩定</h3>
+                <p>真正的高效人士不會經歷「星期一拼命、星期三疲憊、星期五放棄」的循環。他們靠的是毎日 15 分鐘的回顧與微調整，獲取複利效益。</p>
+
+                <h4 style="margin-top:1rem;">每日 15 分鐘收工回顧（三問）：</h4>
+                <ol>
+                    <li><strong>今天：</strong> 今日最重要成果係乜？</li>
+                    <li><strong>優化：</strong> 邊度浪費咗時間？有咩可以刪走？</li>
+                    <li><strong>明天：</strong> 明日最重要一件事 (Big 1 / Big 3) 係乜？</li>
+                </ol>
+
+                <div class="book-link-box">
+                    📖 <strong>相關書籍資訊：</strong><br>
+                    《為什麼他看起來那麼閒，進度卻總是能超前？：第一本「偷懶聖經」，顛覆職場傳統思維，把你的人生變長一倍！ (電子書)》<br>
+                    日文原名：<em>なぜ、サボる人ほど成果があがるのか？</em><br>
+                    👉 <a href="https://www.books.com.tw/products/E050232669" target="_blank" rel="noopener noreferrer">前往博客來查看書籍</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 落地系統 -->
+        <section id="system">
+            <h2 class="section-title">即日開始嘅「效率操作系統」</h2>
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>時段</th>
+                            <th>動作規範</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>每星期 (30分鐘)</strong></td>
+                            <td>列出本週最重要的 3 件大事；審視並刪除無關緊要的低價值工作。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>每日朝早 (5分鐘)</strong></td>
+                            <td>確定並寫下「今日 Big 3」，只挑選三件核心任務。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>上午黃金時間</strong></td>
+                            <td>執行最難、最重要、最需思考的工作。開啟 2–4 個番茄鐘，手機靜音。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>下午時段</strong></td>
+                            <td>集中處理 Meeting、Email、行政溝通與雜務（Batch Processing）。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>收工前 (15分鐘)</strong></td>
+                            <td>覆盤今日完成度、檢討時間浪費點，並確定明日第一優先事項。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 總結 -->
+        <section id="summary">
+            <h2 class="section-title">核心總結與心法</h2>
+            <div class="formula-box">
+                效率 = 正確方向 × 專注程度 × 持續時間
+            </div>
+            
+            <div class="card">
+                <h3>五本書精髓一句話：</h3>
+                <ul>
+                    <li><strong>《成功人士的用時智慧》：</strong> 唔好高估你一日可以做到幾多。</li>
+                    <li><strong>《最高效益的時間管理》：</strong> 忙唔代表有成果。</li>
+                    <li><strong>《間歇高效率的番茄工作法》：</strong> 先開始25分鐘，再講完成。</li>
+                    <li><strong>《箱型時間》：</strong> 專注需要被時間表保護。</li>
+                    <li><strong>《為什麼他看起來那麼閒》：</strong> 每日小幅進步，比偶爾拼命更強。</li>
+                </ul>
+
+                <div class="quote-box">
+                    <strong>反直覺的最終結論：</strong><br>
+                    真正高效率的人，通常不是將每一分鐘塞滿；相反地，他們會刻意留白、減少承諾、拒絕低價值工作，然後將最好的精力集中在最少數重要的核心事物上。這才是「看起來很閒，進度卻永遠超前」背後的真正秘密。
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 自動針對捲動高亮側邊欄選單
+        window.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const menuLink = document.querySelector(`nav.sidebar a[href="#${id}"]`);
+                    if (entry.isIntersecting && menuLink) {
+                        document.querySelectorAll('nav.sidebar a').forEach(a => a.classList.remove('active'));
+                        menuLink.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
