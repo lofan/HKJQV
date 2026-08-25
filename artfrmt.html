@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Formatter & Cleaner</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --border: #334155;
+            --success: #4ade80;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--accent), #818cf8);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0f172a;
+            font-size: 1.2rem;
+        }
+
+        main {
+            flex: 1;
+            padding: 1.5rem;
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .controls-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .options-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #0f172a;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            flex: 1;
+            min-height: 500px;
+        }
+
+        .panel {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 0.75rem 1.25rem;
+            background-color: rgba(15, 23, 42, 0.4);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .panel-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .stats-badge {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .stats-badge span {
+            color: var(--accent);
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            background-color: transparent;
+            color: var(--text-primary);
+            border: none;
+            padding: 1.25rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-icon">¶</div>
+        <div>
+            <h1>CleanType Multilingual</h1>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Article Formatter & Return Cleaner</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="controls-card">
+            <div class="options-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="opt-soft-returns" checked>
+                    Remove Soft Returns (Single Line Breaks)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="opt-hard-returns">
+                    Remove Hard Returns (Paragraph Breaks)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="opt-extra-spaces" checked>
+                    Collapse Whitespace
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="opt-smart-quotes" checked>
+                    Smart Quotes & Em-Dashes
+                </label>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="btn-clear">Clear</button>
+                <button class="btn btn-primary" id="btn-copy">Copy Formatted Text</button>
+            </div>
+        </div>
+
+        <div class="editor-container">
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Raw Input</span>
+                    <div class="stats-badge">Words: <span id="input-words">0</span> | Chars: <span id="input-chars">0</span></div>
+                </div>
+                <textarea id="input-text" placeholder="Paste your article here..."></textarea>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Cleaned Output</span>
+                    <div class="stats-badge">Words: <span id="output-words">0</span> | Chars: <span id="output-chars">0</span></div>
+                </div>
+                <textarea id="output-text" readonly placeholder="Formatted text appears automatically..."></textarea>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const inputText = document.getElementById('input-text');
+        const outputText = document.getElementById('output-text');
+        const inputWords = document.getElementById('input-words');
+        const inputChars = document.getElementById('input-chars');
+        const outputWords = document.getElementById('output-words');
+        const outputChars = document.getElementById('output-chars');
+
+        const optSoftReturns = document.getElementById('opt-soft-returns');
+        const optHardReturns = document.getElementById('opt-hard-returns');
+        const optExtraSpaces = document.getElementById('opt-extra-spaces');
+        const optSmartQuotes = document.getElementById('opt-smart-quotes');
+
+        function processText() {
+            let text = inputText.value;
+
+            // Normalize line endings
+            text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+            // 1. Remove Hard Returns (Double line breaks / paragraphs)
+            if (optHardReturns.checked) {
+                text = text.replace(/([\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f])\n{2,}([\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f])/g, '$1$2');
+                text = text.replace(/\n{2,}/g, ' ');
+            }
+
+            // 2. Remove Soft Returns (Single line breaks)
+            if (optSoftReturns.checked) {
+                text = text.replace(/([\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f])\n([\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f])/g, '$1$2');
+                text = text.replace(/(?<!\n)\n(?!\n)/g, ' ');
+            }
+
+            // 3. Collapse extra spaces
+            if (optExtraSpaces.checked) {
+                text = text.replace(/[ \t]+/g, ' ');
+                text = text.replace(/ +\n/g, '\n').replace(/\n +/g, '\n');
+            }
+
+            // 4. Smart Quotes & Em-Dashes
+            if (optSmartQuotes.checked) {
+                text = text
+                    .replace(/---/g, '—')
+                    .replace(/--/g, '—')
+                    .replace(/(^|[\s(\["])'/g, "$1‘")
+                    .replace(/'/g, "’")
+                    .replace(/(^|[\s(\[])"/g, "$1“")
+                    .replace(/"/g, "”");
+            }
+
+            outputText.value = text.trim();
+            updateStats();
+        }
+
+        function countWords(str) {
+            if (!str || !str.trim()) return 0;
+            const cjkMatches = str.match(/[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/g);
+            const cjkCount = cjkMatches ? cjkMatches.length : 0;
+            const nonCjkStr = str.replace(/[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/g, ' ');
+            const spaceWords = nonCjkStr.trim().split(/\s+/).filter(w => w.length > 0);
+            return cjkCount + spaceWords.length;
+        }
+
+        function updateStats() {
+            inputWords.innerText = countWords(inputText.value);
+            inputChars.innerText = [...inputText.value].length;
+            outputWords.innerText = countWords(outputText.value);
+            outputChars.innerText = [...outputText.value].length;
+        }
+
+        inputText.addEventListener('input', processText);
+        [optSoftReturns, optHardReturns, optExtraSpaces, optSmartQuotes].forEach(cb => {
+            cb.addEventListener('change', processText);
+        });
+
+        document.getElementById('btn-clear').addEventListener('click', () => {
+            inputText.value = '';
+            outputText.value = '';
+            updateStats();
+            inputText.focus();
+        });
+
+        document.getElementById('btn-copy').addEventListener('click', () => {
+            if (!outputText.value) return;
+            navigator.clipboard.writeText(outputText.value);
+        });
+
+        processText();
+    </script>
+</body>
+</html>
