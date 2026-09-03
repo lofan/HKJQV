@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>加拿大十大世界級自然奇觀指南 (Canada 10 Natural Wonders Guide)</title>
+<style>
+    :root {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-card: #182234;
+        --accent-cyan: #38bdf8;
+        --accent-emerald: #34d399;
+        --accent-amber: #fbbf24;
+        --accent-rose: #f43f5e;
+        --accent-purple: #c084fc;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --border-color: #334155;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.7;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    header {
+        text-align: center;
+        padding: 50px 20px 40px 20px;
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 30px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+        color: var(--text-primary);
+        margin-bottom: 15px;
+        letter-spacing: -0.5px;
+    }
+
+    header p.subtitle {
+        font-size: 1.1rem;
+        color: var(--accent-cyan);
+        max-width: 800px;
+        margin: 0 auto 20px auto;
+        font-weight: 500;
+    }
+
+    .quote-box {
+        background-color: rgba(56, 189, 248, 0.08);
+        border-left: 4px solid var(--accent-cyan);
+        padding: 15px 20px;
+        border-radius: 0 8px 8px 0;
+        margin: 20px auto 0 auto;
+        max-width: 850px;
+        text-align: left;
+        color: #cbd5e1;
+        font-style: italic;
+    }
+
+    /* Nav bar / Quick Index */
+    .toc-container {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 35px;
+    }
+
+    .toc-title {
+        font-size: 1.2rem;
+        color: var(--accent-amber);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .toc-grid {
+        display: table;
+        width: 100%;
+    }
+
+    .toc-row {
+        display: table-row;
+    }
+
+    .toc-cell {
+        display: table-cell;
+        padding: 8px 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .toc-cell a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+
+    .toc-cell a:hover {
+        color: #7dd3fc;
+        text-decoration: underline;
+    }
+
+    /* Section Styling */
+    section {
+        margin-bottom: 45px;
+    }
+
+    h2.section-header {
+        font-size: 1.6rem;
+        color: var(--text-primary);
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Cards Layout */
+    .wonder-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        overflow: hidden;
+        margin-bottom: 35px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .wonder-hero {
+        position: relative;
+        width: 100%;
+        height: 380px;
+        overflow: hidden;
+        background-color: #020617;
+    }
+
+    .wonder-hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .wonder-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--border-color);
+        color: var(--accent-amber);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    .wonder-content {
+        padding: 28px;
+    }
+
+    .wonder-title-area {
+        display: table;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .wonder-title {
+        font-size: 1.7rem;
+        color: var(--text-primary);
+        font-weight: 700;
+    }
+
+    .wonder-location {
+        color: var(--accent-cyan);
+        font-size: 0.95rem;
+        margin-top: 4px;
+    }
+
+    /* Grid info table alternative */
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background-color: var(--bg-secondary);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .info-table th, .info-table td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .info-table th {
+        background-color: #334155;
+        color: var(--text-primary);
+        font-weight: 600;
+        width: 25%;
+    }
+
+    .info-table td {
+        color: #cbd5e1;
+    }
+
+    /* Buttons */
+    .map-btn {
+        display: inline-block;
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        color: #ffffff !important;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-top: 15px;
+        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+
+    .map-btn:hover {
+        background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+    }
+
+    /* Class Table */
+    .summary-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background-color: var(--bg-card);
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+
+    .summary-table th {
+        background-color: var(--bg-secondary);
+        color: var(--accent-cyan);
+        padding: 14px;
+        text-align: left;
+        font-size: 0.95rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .summary-table td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--border-color);
+        color: #cbd5e1;
+        font-size: 0.9rem;
+    }
+
+    .summary-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .summary-table tr:nth-child(even) {
+        background-color: rgba(255,255,255,0.02);
+    }
+
+    /* Map diagram visual */
+    .system-diagram {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 25px;
+        margin: 25px 0;
+        font-family: monospace;
+        color: var(--accent-emerald);
+        line-height: 1.5;
+        white-space: pre-wrap;
+        overflow-x: auto;
+    }
+
+    /* Classification tags */
+    .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-right: 6px;
+    }
+    .tag-unesco { background-color: rgba(52, 211, 153, 0.2); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); }
+    .tag-a { background-color: rgba(251, 191, 36, 0.2); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
+    .tag-b { background-color: rgba(56, 189, 248, 0.2); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+    .tag-c { background-color: rgba(192, 132, 252, 0.2); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
+
+    /* Route Box */
+    .route-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-left: 5px solid var(--accent-cyan);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .route-card h3 {
+        color: var(--accent-cyan);
+        margin-bottom: 10px;
+    }
+
+    .route-steps {
+        margin: 12px 0;
+        padding-left: 20px;
+        color: #cbd5e1;
+    }
+
+    .route-steps li {
+        margin-bottom: 6px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 30px;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        border-top: 1px solid var(--border-color);
+        margin-top: 50px;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🇨🇦 加拿大十大世界級自然奇觀完整拆解</h1>
+    <p class="subtitle">從冰川、極光、冰山、潮汐、雨林，到 7,500 萬年前的恐龍世界</p>
+    <div class="quote-box">
+        「加拿大真正厲害的地方，不是『10 個景點全部全球獨有』，而是由 Rocky Mountains、冰川、極光、潮汐、雨林、Badlands、恐龍化石、冰山等完全不同的地球系統，集中在同一個國家。」
+    </div>
+</header>
+
+<div class="toc-container">
+    <div class="toc-title">📍 快速導覽目錄 (Quick Navigation Index)</div>
+    <div class="toc-grid">
+        <div class="toc-row">
+            <div class="toc-cell"><a href="#summary-table">1. 10大景點總覽表</a></div>
+            <div class="toc-cell"><a href="#map-mindset">2. 自然系統地圖思維</a></div>
+            <div class="toc-cell"><a href="#wonders-detail">3. 10大奇觀深度解析</a></div>
+        </div>
+        <div class="toc-row">
+            <div class="toc-cell"><a href="#uniqueness-analysis">4. 獨特性與全球級別分類</a></div>
+            <div class="toc-cell"><a href="#rankings">5. 綜合推薦排名</a></div>
+            <div class="toc-cell"><a href="#roadtrips">6. 4條自駕大環線規劃</a></div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 1: Summary Table -->
+<section id="summary-table">
+    <h2 class="section-header">📊 一、10 個景點分類總覽</h2>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>奇景</th>
+                <th>真正定位</th>
+                <th>最佳季節</th>
+                <th>UNESCO</th>
+                <th>推薦指數</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td><strong>💎 Moraine Lake 夢蓮湖</strong></td>
+                <td>🇨🇦 加拿大最強代表</td>
+                <td>6–9月</td>
+                <td><span class="tag tag-unesco">✅ 屬於 Rocky Mountain WHS</span></td>
+                <td>⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><strong>🌊 Bay of Fundy 芬迪灣</strong></td>
+                <td>🌍 世界級／全球最高潮汐</td>
+                <td>6–9月</td>
+                <td>部分地區有 Geopark</td>
+                <td>⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><strong>🌈 Spotted Lake 斑點湖</strong></td>
+                <td>🇨🇦 極罕見加拿大奇景</td>
+                <td>6–8月</td>
+                <td>❌</td>
+                <td>⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><strong>🧊 Iceberg Alley 冰山大道</strong></td>
+                <td>🌍 全球著名冰山帶</td>
+                <td>4–7月</td>
+                <td>❌</td>
+                <td>⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td><strong>🪨 Drumheller Hoodoos 奇岩</strong></td>
+                <td>🇨🇦 加拿大 Badlands 代表</td>
+                <td>5–10月</td>
+                <td>❌</td>
+                <td>⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td><strong>🌌 Yellowknife Aurora 耶洛奈夫極光</strong></td>
+                <td>🌍 世界頂級極光地</td>
+                <td>8–4月</td>
+                <td>❌</td>
+                <td>⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td><strong>🌲 Great Bear Rainforest 大熊雨林</strong></td>
+                <td>🌍 世界級溫帶雨林</td>
+                <td>5–9月</td>
+                <td>❌</td>
+                <td>⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td><strong>❄️ Athabasca Glacier 阿薩巴斯卡冰川</strong></td>
+                <td>🇨🇦 最易接近大型冰川之一</td>
+                <td>6–9月</td>
+                <td><span class="tag tag-unesco">✅ 屬 Rocky Mountain WHS</span></td>
+                <td>⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td><strong>💙 Peyto Lake 佩托湖</strong></td>
+                <td>🇨🇦 加拿大 Rockies Icon</td>
+                <td>6–9月</td>
+                <td><span class="tag tag-unesco">✅ 屬 Rocky Mountain WHS</span></td>
+                <td>⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td><strong>🦕 Dinosaur Provincial Park 恐龍省立公園</strong></td>
+                <td>🌍 全球頂級恐龍化石地</td>
+                <td>5–9月</td>
+                <td><span class="tag tag-unesco">🏆 UNESCO 獨立遺產</span></td>
+                <td>⭐⭐⭐⭐⭐</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- SECTION 2: Map System -->
+<section id="map-mindset">
+    <h2 class="section-header">🗺️ 二、加拿大自然奇觀「地圖思維」</h2>
+    <p>加拿大自然景觀不是一種風格，而是地球自然環境的大型 Sample Pack。可以將加拿大拆解為 6 個自然系統：</p>
+    
+    <div class="system-diagram">
+                               🇨🇦 CANADA
+                                   │
+       ┌───────────────────────────┼───────────────────────────┐
+       │                           │                           │
+  🧊 ARCTIC                   🏔 ROCKIES                  🌊 ATLANTIC
+       │                           │                           │
+ Yellowknife Aurora          Moraine Lake                Bay of Fundy
+                             Peyto Lake                  Iceberg Alley
+                             Athabasca Glacier
+                             Drumheller Hoodoos
+                             Dinosaur Provincial Park
+       │
+       │
+  🌲 PACIFIC
+       │
+ Great Bear Rainforest
+       │
+  ☀️ OKANAGAN
+       │
+  Spotted Lake
+    </div>
+</section>
+
+<!-- SECTION 3: Wonders Detail -->
+<section id="wonders-detail">
+    <h2 class="section-header">🔍 三、10 大自然奇觀深度解析</h2>
+
+    <!-- Wonder 1 -->
+    <div class="wonder-card" id="wonder-1">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80" alt="Moraine Lake">
+            <div class="wonder-badge">10/10 必去</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">① 💎 Moraine Lake｜夢蓮湖</div>
+            <div class="wonder-location">📍 Alberta — Banff National Park</div>
+            <p>Moraine Lake 最出名的不只是「藍」，而是光學與地質的結合：<strong>冰川 → 岩石粉 (Glacial Flour) → 水 → 光線散射 → 寶石藍綠色</strong>。屬於 Canadian Rocky Mountain Parks UNESCO 世界遺產的一部分。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>6月底–9月（7–8月湖水顏色最穩定飽和）</td>
+                </tr>
+                <tr>
+                    <th>🚗 交通策略</th>
+                    <td>Moraine Lake Road 禁止一般私人車輛進入。建議：Calgary → Banff 入住 2–3 晚 → 搭乘 Parks Canada Shuttle 或商業巴士前往。</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>10/10（第一次去加拿大 Rockies 的必修課）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Moraine+Lake+Banff+Alberta" target="_blank" class="map-btn">📍 開啟 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <!-- Wonder 2 -->
+    <div class="wonder-card" id="wonder-2">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80" alt="Bay of Fundy">
+            <div class="wonder-badge">9.5/10 必去</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">② 🌊 Bay of Fundy｜芬迪灣</div>
+            <div class="wonder-location">📍 New Brunswick / Nova Scotia</div>
+            <p>這是一個地球物理現象！Bay of Fundy 的漏斗狀地形、深度與大西洋潮汐週期產生<strong>共振效應 (Resonance effect)</strong>，創造出全球最高潮汐，潮差高達 16 公尺。幾個小時內能目睹海景變成泥灘。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>6–9月（最核心的是配合每天的潮汐時間表）</td>
+                </tr>
+                <tr>
+                    <th>🧠 推薦玩法</th>
+                    <td>算準低潮時間親自行走於海床（Hopewell Rocks），數小時後觀看高潮海水吞沒海床。</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>9.5/10（喜愛自然科學與地質者首選）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Hopewell+Rocks+Bay+of+Fundy" target="_blank" class="map-btn">📍 開啟 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <!-- Wonder 3 -->
+    <div class="wonder-card" id="wonder-3">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Spotted Lake">
+            <div class="wonder-badge">8/10 奇觀</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">③ 🌈 Spotted Lake｜斑點湖</div>
+            <div class="wonder-location">📍 Osoyoos, British Columbia (kłlilx’w)</div>
+            <p>富含鈣、鎂、鈉等硫酸鹽礦物質。夏季高溫蒸發時，湖水下降、礦物質濃縮結晶，形成彩色圓斑。此地對 Syilx / Okanagan First Nations 而言是具療癒功效的聖地，僅能於觀景台遠眺。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>7–8月（天氣越熱、蒸發量越大，斑點越明顯）</td>
+                </tr>
+                <tr>
+                    <th>🚗 交通自駕</th>
+                    <td>Vancouver → Hope → Osoyoos → Highway 3。距離 Osoyoos 鎮中心約 10 km。</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>8/10（適合定位為公路旅行中的短停留奇景）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Spotted+Lake+Osoyoos+BC" target="_blank" class="map-btn">📍 開啟 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <!-- Wonder 4 -->
+    <div class="wonder-card" id="wonder-4">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?auto=format&fit=crop&w=1200&q=80" alt="Iceberg Alley">
+            <div class="wonder-badge">10/10 必去</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">④ 🧊 Iceberg Alley｜冰山大道</div>
+            <div class="wonder-location">📍 Newfoundland & Labrador</div>
+            <p>一條龐大的天然冰山漂流帶。數萬年前形成的冰川從格陵蘭脫落，順著拉布拉多洋流向南漂移。親眼看著數層樓高的萬年藍色巨冰漂過海岸，是洛磯山脈無法替代的震撼。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>Newfoundland 5月底–6月初；Labrador 約 3–7月。</td>
+                </tr>
+                <tr>
+                    <th>📍 核心觀賞點</th>
+                    <td>Twillingate, Bonavista, Cape Spear, St. Anthony, Fogo Island.</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>10/10（全球極少數可從岸邊或快艇近距離觀冰山之地）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Twillingate+Newfoundland" target="_blank" class="map-btn">📍 開啟 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <!-- Wonder 5 -->
+    <div class="wonder-card" id="wonder-5">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80" alt="Drumheller Hoodoos">
+            <div class="wonder-badge">8.5/10 奇觀</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">⑤ 🪨 Drumheller Hoodoos｜德拉姆黑勒奇岩</div>
+            <div class="wonder-location">📍 Alberta Badlands</div>
+            <p>顛覆你對加拿大只有雪山森林的印象！由軟岩與砂岩經千萬年風化侵蝕，上方較硬的岩石保護下方岩柱，形成宛如外星地貌的 Hoodoos 柱狀地質與半乾旱 Badlands 峽谷。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>5–10月</td>
+                </tr>
+                <tr>
+                    <th>🚗 路線建議</th>
+                    <td>Calgary → Drumheller (約 1.5 小時)。可串聯 Horseshoe Canyon 與 Royal Tyrrell 博物館。</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>8.5/10（攝影、地質與恐龍迷必訪）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Drumheller+Hoodoos+Alberta" target="_blank" class="map-btn">📍 開啟 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <!-- Wonder 6 -->
+    <div class="wonder-card" id="wonder-6">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80" alt="Yellowknife Aurora">
+            <div class="wonder-badge">10/10 必去</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">⑥ 🌌 Yellowknife｜耶洛奈夫極光</div>
+            <div class="wonder-location">📍 Northwest Territories</div>
+            <p>地位於極光橢圓帶 (Auroral Oval) 正下方，加上平坦地形與高晴朗率，使其成為全球極光觀賞成功率最高的頂級聖地之一。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>秋極光：8月底–10月（氣溫舒適、未結冰湖面有倒影）；冬極光：12–3月（雪景相伴）。</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>10/10（人生清單級別的體驗）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Yellowknife+Northwest+Territories" target="_blank" class="map-btn">📍 開啟 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <!-- Wonder 7 -->
+    <div class="wonder-card" id="wonder-7">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80" alt="Great Bear Rainforest">
+            <div class="wonder-badge">10/10 頂級探險</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">⑦ 🌲 Great Bear Rainforest｜大熊雨林</div>
+            <div class="wonder-location">📍 British Columbia Coast</div>
+            <p>全球面積最大的未破壞溫帶雨林。這裡擁有千年古木、大量降雨與峽灣生態，更是全球唯一的靈熊 (Spirit Bear / Kermode Bear，黑熊的罕見白色基因型態) 棲息地。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>6–9月（若以賞熊/野生動物為主，8–10月鮭魚洄游季最佳）</td>
+                </tr>
+                <tr>
+                    <th>⚠️ 旅遊難度</th>
+                    <td>難度 8/10。無法普通自駕，需預訂 Vancouver 出發的船宿導覽或嚮導包機 (Guided Expedition)。</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>10/10（高級自然生態探險）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Bella+Coola+BC" target="_blank" class="map-btn">📍 開啟 Google Maps 導航 (Bella Coola 入口)</a>
+        </div>
+    </div>
+
+    <!-- Wonder 8 -->
+    <div class="wonder-card" id="wonder-8">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" alt="Athabasca Glacier">
+            <div class="wonder-badge">10/10 必去</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">⑧ ❄️ Athabasca Glacier｜阿薩巴斯卡冰川</div>
+            <div class="wonder-location">📍 Icefields Parkway (Banff / Jasper)</div>
+            <p>北美地區最容易接近的大型冰川遺跡之一，屬於面積超過 300 平方公里的哥倫比亞冰原 (Columbia Icefield)。在這裡可以直觀感受冰河時代的殘留與氣候變遷痕跡。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>6月底–9月</td>
+                </tr>
+                <tr>
+                    <th>🚗 綁定路線</th>
+                    <td>必須串聯 Icefields Parkway (HWY 93)：Lake Louise → Bow Lake → Peyto Lake → Columbia Icefield → Jasper。</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>10/10（活生生的冰河地質教室）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Columbia+Icefield+Skywalk" target="_blank" class="map-btn">📍 開啟 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <!-- Wonder 9 -->
+    <div class="wonder-card" id="wonder-9">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Peyto Lake">
+            <div class="wonder-badge">9.5/10 必去</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">⑨ 💙 Peyto Lake｜佩托湖</div>
+            <div class="wonder-location">📍 Banff National Park (Icefields Parkway)</div>
+            <p>如果 Moraine Lake 是璀璨的寶石，Peyto Lake 的湖岸線形狀就像一隻藍色的狼躺在森林中。同樣由高濃度的冰川岩石粉 (Glacial Flour) 在陽光照射下展現極度飽和的奇幻藍綠色。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>6–9月（6月中下旬湖面徹底解凍）</td>
+                </tr>
+                <tr>
+                    <th>📍 觀景點</th>
+                    <td>Bow Summit 觀景台（設有完善步道與無障礙設施）。</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>9.5/10（加拿大 Rockies 最具代表性的名片）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Peyto+Lake+Upper+Viewpoint" target="_blank" class="map-btn">📍 開啟 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <!-- Wonder 10 -->
+    <div class="wonder-card" id="wonder-10">
+        <div class="wonder-hero">
+            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80" alt="Dinosaur Provincial Park">
+            <div class="wonder-badge">10/10 頂級遺產</div>
+        </div>
+        <div class="wonder-content">
+            <div class="wonder-title">⑩ 🦕 Dinosaur Provincial Park｜恐龍省立公園</div>
+            <div class="wonder-location">📍 Brooks, Alberta</div>
+            <p>榜單中最被低估的寶藏！1979 年入選 UNESCO 世界自然遺產。這裡是全球白堊紀晚期（7,500 萬年前）恐龍化石產量最高、種類最豐富的地層，已發現超過 44 種恐龍化石。</p>
+            
+            <table class="info-table">
+                <tr>
+                    <th>🗓️ 最佳季節</th>
+                    <td>5–9月</td>
+                </tr>
+                <tr>
+                    <th>🧠 核心特色</th>
+                    <td>Badlands 侵蝕地貌 ＋ 晚白堊紀生態系 ＋ 現場挖掘導覽。</td>
+                </tr>
+                <tr>
+                    <th>⭐ 值得程度</th>
+                    <td>10/10（古生物、地質與演化史愛好者的天堂）</td>
+                </tr>
+            </table>
+            <a href="https://maps.google.com/?q=Dinosaur+Provincial+Park+Alberta" target="_blank" class="map-btn">📍 開啟 Google Maps 導航</a>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 4: Uniqueness Analysis -->
+<section id="uniqueness-analysis">
+    <h2 class="section-header">🏆 四、究竟哪些真正「加拿大獨有」？</h2>
+    <p style="margin-bottom:20px;">客觀分析自然現象的稀有度與加拿大版本的國際定位：</p>
+
+    <div class="wonder-card" style="padding:20px;">
+        <h3 style="color:var(--accent-amber); margin-bottom:10px;"><span class="tag tag-a">🟢 A級</span> 真正具有高度「加拿大獨特性」</h3>
+        <p><strong>🌈 Spotted Lake：</strong>極特殊的鹽礦結晶湖地貌。雖然世界其他地方有彩色鹽湖，但此處的結晶圓斑結構與 First Nations 聖地文化高度結合，屬加拿大最罕見自然奇觀之一。</p>
+    </div>
+
+    <div class="wonder-card" style="padding:20px;">
+        <h3 style="color:var(--accent-cyan); margin-bottom:10px;"><span class="tag tag-b">🔵 B級</span> 世界其他地方有，但加拿大版本屬全球頂級代表</h3>
+        <p><strong>💎 Moraine Lake / 💙 Peyto Lake / 🌌 Yellowknife / 🧊 Iceberg Alley / 🌲 Great Bear / ❄️ Athabasca：</strong>例如極光在挪威、冰島也有；冰山在格陵蘭也有。但加拿大的交通可達性、景觀壯麗度與生態完整度均達全球頂尖。</p>
+    </div>
+
+    <div class="wonder-card" style="padding:20px;">
+        <h3 style="color:var(--accent-purple); margin-bottom:10px;"><span class="tag tag-c">🟣 C級</span> 世界皆有，但「加拿大組合」極具震撼力</h3>
+        <p><strong>🌊 Bay of Fundy：</strong>潮汐到處有，但 Fundy 擁有全球官方紀錄最高潮差 (16m)。<br>
+        <strong>🪨 Drumheller：</strong>Badlands 全球皆有 (如美國 Utah)，但「Badlands + Hoodoos + 頂級恐龍化石」的 Combination 極具加拿大特色。</p>
+    </div>
+</section>
+
+<!-- SECTION 5: Rankings -->
+<section id="rankings">
+    <h2 class="section-header">🎖️ 五、重新排名（綜合 vs 視覺首遊）</h2>
+
+    <div style="display:table; width:100%; margin-bottom:20px;">
+        <div style="display:table-cell; width:50%; padding-right:15px; vertical-align:top;">
+            <div class="wonder-card" style="padding:20px; height:100%;">
+                <h3 style="color:var(--accent-emerald); margin-bottom:15px;">🔬 綜合指標排名<br><span style="font-size:0.8rem; font-weight:normal; color:var(--text-secondary);">(自然奇觀 × 稀有度 × 科學價值 × 旅行體驗)</span></h3>
+                <ol style="padding-left:20px; color:#cbd5e1; line-height:1.9;">
+                    <li><strong>🥇 Dinosaur Provincial Park</strong> (9.8/10)</li>
+                    <li><strong>🥈 Moraine Lake</strong> (9.7/10)</li>
+                    <li><strong>🥉 Bay of Fundy</strong> (9.7/10)</li>
+                    <li>Iceberg Alley (9.6/10)</li>
+                    <li>Yellowknife Aurora (9.6/10)</li>
+                    <li>Great Bear Rainforest (9.5/10)</li>
+                    <li>Athabasca Glacier (9.4/10)</li>
+                    <li>Peyto Lake (9.3/10)</li>
+                    <li>Spotted Lake (8.5/10)</li>
+                    <li>Drumheller Hoodoos (8.4/10)</li>
+                </ol>
+            </div>
+        </div>
+
+        <div style="display:table-cell; width:50%; padding-left:15px; vertical-align:top;">
+            <div class="wonder-card" style="padding:20px; height:100%;">
+                <h3 style="color:var(--accent-cyan); margin-bottom:15px;">📸 第一次去加拿大視覺震撼排名<br><span style="font-size:0.8rem; font-weight:normal; color:var(--text-secondary);">(攝影導向 / Bucket List First)</span></h3>
+                <ol style="padding-left:20px; color:#cbd5e1; line-height:1.9;">
+                    <li><strong>🥇 Moraine Lake</strong></li>
+                    <li><strong>🥈 Peyto Lake</strong></li>
+                    <li><strong>🥉 Iceberg Alley</strong></li>
+                    <li>Yellowknife Aurora</li>
+                    <li>Athabasca Glacier</li>
+                    <li>Great Bear Rainforest</li>
+                    <li>Bay of Fundy</li>
+                    <li>Dinosaur Provincial Park</li>
+                    <li>Drumheller Hoodoos</li>
+                    <li>Spotted Lake</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 6: Road Trips -->
+<section id="roadtrips">
+    <h2 class="section-header">🚗 六、4 條自駕大環線規劃 (Road Trip Routes)</h2>
+
+    <div class="route-card">
+        <h3>🏔️ Route A：Alberta Rockies 經典冰川湖泊線</h3>
+        <p><strong>建議天數：</strong>5–7 日｜<strong>定位：</strong>第一次去加拿大的必修課</p>
+        <ul class="route-steps">
+            <li>Calgary → Banff 鎮 (住宿 2-3 晚)</li>
+            <li>Moraine Lake 夢蓮湖 ＆ Lake Louise 露易絲湖</li>
+            <li>Icefields Parkway 冰原大道 (HWY 93) → Peyto Lake 佩托湖</li>
+            <li>Columbia Icefield → Athabasca Glacier 阿薩巴斯卡冰川</li>
+            <li>Jasper 國家公園 → 返回 Calgary</li>
+        </ul>
+    </div>
+
+    <div class="route-card">
+        <h3>🦕 Route B：Alberta Dinosaur & Badlands 恐龍地質環線</h3>
+        <p><strong>建議天數：</strong>2–3 日｜<strong>定位：</strong>外星地貌與遠古史前探險</p>
+        <ul class="route-steps">
+            <li>Calgary → Drumheller 德拉姆黑勒</li>
+            <li>Drumheller Hoodoos 奇岩 ＆ Horseshoe Canyon</li>
+            <li>Royal Tyrrell Museum 皇家泰瑞爾恐龍博物館</li>
+            <li>Dinosaur Provincial Park 恐龍省立公園</li>
+            <li>返回 Calgary 或向東進入 Saskatchewan</li>
+        </ul>
+    </div>
+
+    <div class="route-card">
+        <h3>🌊 Route C：Atlantic Canada 潮汐冰山海洋環線</h3>
+        <p><strong>建議天數：</strong>7–14 日｜<strong>定位：</strong>最高潮汐與萬年巨型冰山漂流</p>
+        <ul class="route-steps">
+            <li>Halifax → Bay of Fundy 芬迪灣 (Hopewell Rocks 行走海床)</li>
+            <li>Fundy National Park 國家公園</li>
+            <li>飛往 Newfoundland (紐芬蘭島) St. John's</li>
+            <li>Iceberg Alley (Twillingate / Bonavista / Cape Spear 觀賞漂流冰山)</li>
+        </ul>
+    </div>
+
+    <div class="route-card">
+        <h3>🌲 Route D：British Columbia Wild Nature 內陸與雨林線</h3>
+        <p><strong>建議天數：</strong>5–8 日｜<strong>定位：</strong>陽光酒莊、礦物奇景與雨林探險</p>
+        <ul class="route-steps">
+            <li><strong>內陸酒莊線：</strong>Vancouver → Hope → Osoyoos (Spotted Lake 斑點湖)</li>
+            <li><strong>溫帶雨林線：</strong>Vancouver → 飛往 Bella Coola / 船宿 → Great Bear Rainforest (探訪 Spirit Bear 與野生動物)</li>
+        </ul>
+    </div>
+</section>
+
+<footer>
+    <p>🇨🇦 加拿大十大世界級自然奇觀指南 | Generated for Knowledge Base & Easy Navigation</p>
+</footer>
+
+</body>
+</html>
