@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canadian Natural Wonders</title>
+    <style>
+        :root {
+            --primary: #1d3557;
+            --accent: #457b9d;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2b2d42;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+
+        .card-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-top: 1px solid #e9ecef;
+            padding-top: 0.75rem;
+        }
+
+        .card-links a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .card-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Canadian Natural Wonders</h1>
+    <div class="grid">
+
+        <!-- Moraine Lake -->
+        <div class="card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/ thumb/c/c5/Moraine_Lake_17092005.jpg/800px-Moraine_Lake_17092005.jpg" alt="Moraine Lake">
+            <div class="card-content">
+                <h2 class="card-title">Moraine Lake</h2>
+                <p class="card-description">Glacially-fed lake in Banff National Park, famous for its vivid turquoise waters and surrounding Valley of the Ten Peaks.</p>
+                <div class="card-links">
+                    <a href="https://whc.unesco.org/en/list/304" target="_blank" rel="noopener">UNESCO World Heritage Site</a>
+                    <a href="https://commons.wikimedia.org/wiki/File:Moraine_Lake_17092005.jpg" target="_blank" rel="noopener">View Image Source (Wikimedia)</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bay of Fundy -->
+        <div class="card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Bay_of_Fundy_low_tide.jpg/800px-Bay_of_Fundy_low_tide.jpg" alt="Bay of Fundy">
+            <div class="card-content">
+                <h2 class="card-title">Bay of Fundy</h2>
+                <p class="card-description">Known for having the highest tidal range in the world, dramatic coastal rock formations, and rich marine biodiversity.</p>
+                <div class="card-links">
+                    <a href="https://whc.unesco.org/en/list/1285" target="_blank" rel="noopener">UNESCO: Joggins Fossil Cliffs</a>
+                    <a href="https://en.unesco.org/biosphere/eu-na/fundy" target="_blank" rel="noopener">UNESCO Biosphere Reserve</a>
+                    <a href="https://commons.wikimedia.org/wiki/File:Bay_of_Fundy_low_tide.jpg" target="_blank" rel="noopener">View Image Source (Wikimedia)</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spotted Lake -->
+        <div class="card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Spotted_Lake.jpg/800px-Spotted_Lake.jpg" alt="Spotted Lake">
+            <div class="card-content">
+                <h2 class="card-title">Spotted Lake</h2>
+                <p class="card-description">A endorheic alkali lake in Osoyoos, British Columbia, known for its rich mineral deposits that form distinct colorful spots in summer.</p>
+                <div class="card-links">
+                    <span style="font-size: 0.875rem; color: #6c757d;">Not a UNESCO Site (Culturally protected by Syilx Nation)</span>
+                    <a href="https://commons.wikimedia.org/wiki/File:Spotted_Lake.jpg" target="_blank" rel="noopener">View Image Source (Wikimedia)</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Iceberg Alley -->
+        <div class="card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Iceberg_Alley%2C_Labrador.jpg/800px-Iceberg_Alley%2C_Labrador.jpg" alt="Iceberg Alley">
+            <div class="card-content">
+                <h2 class="card-title">Iceberg Alley</h2>
+                <p class="card-description">An area off the coast of Newfoundland & Labrador where massive icebergs drift down from the Arctic each spring and summer.</p>
+                <div class="card-links">
+                    <a href="https://whc.unesco.org/en/list/419" target="_blank" rel="noopener">UNESCO: Gros Morne National Park</a>
+                    <a href="https://commons.wikimedia.org/wiki/File:Iceberg_Alley,_Labrador.jpg" target="_blank" rel="noopener">View Image Source (Wikimedia)</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
