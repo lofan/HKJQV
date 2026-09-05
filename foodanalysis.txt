@@ -1,0 +1,68 @@
+Absolutely. You can save this as your Food Nutrition & Glycemic Impact Analysis Prompt and reuse it whenever you photograph a food label.
+
+📸 Copy & paste template
+
+Please analyze this food product from the nutrition label in the attached photo.
+
+1. Serving calculation
+
+* Identify the serving size.
+* Calculate the nutrition for the entire package/can/container.
+* Show calories, protein, total carbohydrates, fibre, sugar, fat, saturated fat, sodium, potassium and other important nutrients.
+
+2. Glycemic Impact
+Analyze the likely blood-glucose impact:
+
+* Estimate available/net carbohydrates.
+* Explain the likely GI range, if a reliable estimate is possible.
+* Estimate Glycemic Load (GL) per serving and for the whole package.
+* Classify the impact as 🟢 Low / 🟡 Moderate / 🔴 High.
+* Explain how fibre, protein, fat, resistant starch and added sugar affect the result.
+* Clearly distinguish known label data from estimates.
+
+3. Ingredients
+
+* Analyze the ingredient list.
+* Identify added sugar, refined carbohydrates, sweeteners and highly processed ingredients.
+* Identify potentially beneficial ingredients such as legumes, whole grains, nuts, seeds or vegetables.
+* Highlight anything I should be cautious about.
+
+4. Health assessment
+Rate the product from 1–10 for:
+
+* 🩸 Blood-glucose friendliness
+* 🌾 Fibre
+* 💪 Protein
+    🔥 Calorie efficiency
+    🧂 Sodium
+* 🥗 Overall nutritional quality
+
+5. Portion recommendation
+Tell me what portion would be reasonable if my goal is:
+
+* maintaining stable blood sugar
+* weight management
+* getting enough protein and fibre
+
+6. Food pairing
+Suggest the best foods to eat with it to reduce the glucose spike and improve satiety.
+
+7. Bottom line
+Give me a simple verdict:
+🟢 Eat regularly / 🟡 Eat in moderation / 🔴 Better alternatives available
+
+If the label information is unclear or the product weight is missing, tell me exactly what information you need rather than guessing.
+
+⭐ Even shorter version for everyday use
+
+If you want something you can use quickly with every food photo:
+
+Analyze this food label. Calculate nutrition for the whole package, estimate available carbs and GI/GL, assess likely blood-glucose impact, fibre/protein/sugar/sodium, analyze ingredients, recommend an appropriate portion and food pairings, and give me a 🟢🟡🔴 overall health verdict. Clearly separate actual label data from estimates.
+
+📊 For comparing several foods
+
+You can also say:
+
+Compare these food products for blood-sugar control and overall nutrition. Normalize the comparison by 100g and by a realistic serving. Compare calories, protein, fibre, total carbs, available carbs, sugar, sodium, estimated GI/GL and nutrient density. Rank them from best to worst and explain which one you would choose and why.
+
+This template will work particularly well for canned beans, bread, cereal, oatmeal, rice, pasta, yogurt, breakfast foods, snacks and canned foods.
