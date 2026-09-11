@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球財經大師與投資經典導航</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent-color: #3b82f6;
+            --accent-hover: #60a5fa;
+            --border-color: #2d2d2d;
+            --tag-bg: #27272a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* 導航選單列 */
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+            position: sticky;
+            top: 10px;
+            background: rgba(18, 18, 18, 0.9);
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-bar a {
+            color: var(--text-main);
+            background-color: var(--tag-bg);
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-bar a:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+        }
+
+        /* 主要內容容器 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        section h2 {
+            font-size: 1.5rem;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 12px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        /* 卡片網格 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-color);
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .info-block {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .info-block strong {
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        ul.book-list {
+            list-style-type: disc;
+            padding-left: 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .links a {
+            font-size: 0.8rem;
+            color: #60a5fa;
+            text-decoration: none;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .links a:hover {
+            background: rgba(59, 130, 246, 0.2);
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>全球財經大師與投資經典導航</h1>
+        <p>收錄數據理財、行為金融、宏觀大鱷之核心書單與官方社群平台（暗黑模式版）</p>
+    </header>
+
+    <!-- 快速導航列 -->
+    <nav class="nav-bar">
+        <a href="#core">核心三巨頭</a>
+        <a href="#data">數據與量化派</a>
+        <a href="#behavior">市場評論與行為金融</a>
+        <a href="#macro">宏觀與商品大師</a>
+        <a href="#expansion">➕ 擴充指引 (How to Add)</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- 核心三巨頭 -->
+        <section id="core">
+            <h2>核心三巨頭 (Core Trio)</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Nick Magiulli</h3>
+                    <p>代表作：Of Dollars and Data 創辦人</p>
+                    <div class="info-block">
+                        <strong>代表書籍：</strong>
+                        <ul class="book-list">
+                            <li>Just Keep Buying</li>
+                        </ul>
+                    </div>
+                    <div class="links">
+                        <a href="https://ofdollarsanddata.com/" target="_blank">官方網站</a>
+                        <a href="https://x.com/dollarsanddata" target="_blank">X (Twitter)</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Barry Ritholtz</h3>
+                    <p>代表作：The Big Picture 版主、資深評論家</p>
+                    <div class="info-block">
+                        <strong>代表書籍：</strong>
+                        <ul class="book-list">
+                            <li>Bailout Nation</li>
+                        </ul>
+                    </div>
+                    <div class="links">
+                        <a href="https://ritholtz.com/" target="_blank">官方網站</a>
+                        <a href="https://x.com/ritholtz" target="_blank">X (Twitter)</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Jim Rogers</h3>
+                    <p>代表作：傳奇宏觀對沖基金經理、商品大好友</p>
+                    <div class="info-block">
+                        <strong>代表書籍：</strong>
+                        <ul class="book-list">
+                            <li>Investment Biker (投資騎士)</li>
+                            <li>Adventure Capitalist (冒險資本家)</li>
+                            <li>Hot Commodities (熱門商品)</li>
+                        </ul>
+                    </div>
+                    <div class="links">
+                        <a href="https://www.jimrogers.com/" target="_blank">官方網站</a>
+                        <a href="https://x.com/JimRogers" target="_blank">X (Twitter)</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 數據與量化派 -->
+        <section id="data">
+            <h2>第一類：數據理財與量化實證派 (Data & Quant)</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Morgan Housel</h3>
+                    <p>致富心態作者、知名財經作家</p>
+                    <div class="info-block">
+                        <strong>代表書籍：</strong>
+                        <ul class="book-list">
+                            <li>The Psychology of Money (致富心態)</li>
+                            <li>Same as Ever</li>
+                        </ul>
+                    </div>
+                    <div class="links">
+                        <a href="https://www.morganhousel.com/" target="_blank">官方網站</a>
+                        <a href="https://x.com/morganhousel" target="_blank">X (Twitter)</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>JL Collins</h3>
+                    <p>指數基金與長線投資教父</p>
+                    <div class="info-block">
+                        <strong>代表書籍：</strong>
+                        <ul class="book-list">
+                            <li>The Simple Path to Wealth</li>
+                            <li>Pathfinders</li>
+                        </ul>
+                    </div>
+                    <div class="links">
+                        <a href="https://jlcollinsnh.com/" target="_blank">官方網站</a>
+                        <a href="https://x.com/JLCollinsNH" target="_blank">X (Twitter)</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 行為金融與評論派 -->
+        <section id="behavior">
+            <h2>第二類：市場評論與行為金融派 (Behavioral & Media)</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Howard Marks</h3>
+                    <p>Oaktree Capital 創辦人、週期天王</p>
+                    <div class="info-block">
+                        <strong>代表書籍：</strong>
+                        <ul class="book-list">
+                            <li>The Most Important Thing (投資最重要的事)</li>
+                            <li>Mastering the Market Cycle (掌握市場週期)</li>
+                        </ul>
+                    </div>
+                    <div class="links">
+                        <a href="https://www.oaktreecapital.com/insights" target="_blank">投資備忘錄</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Nassim Nicholas Taleb</h3>
+                    <p>黑天鵝與反脆弱之父</p>
+                    <div class="info-block">
+                        <strong>代表書籍：</strong>
+                        <ul class="book-list">
+                            <li>The Black Swan (黑天鵝)</li>
+                            <li>Antifragile (反脆弱)</li>
+                        </ul>
+                    </div>
+                    <div class="links">
+                        <a href="https://nassimtaleb.org/" target="_blank">官方網站</a>
+                        <a href="https://x.com/nntaleb" target="_blank">X (Twitter)</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 宏觀與商品大師 -->
+        <section id="macro">
+            <h2>第三類：環球宏觀與商品大師 (Macro & Commodities)</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Ray Dalio</h3>
+                    <p>橋水基金創辦人、經濟機器論提出者</p>
+                    <div class="info-block">
+                        <strong>代表書籍：</strong>
+                        <ul class="book-list">
+                            <li>Principles: Life & Work (原則)</li>
+                            <li>Principles for Dealing with the Changing World Order</li>
+                        </ul>
+                    </div>
+                    <div class="links">
+                        <a href="https://www.economicprinciples.org/" target="_blank">官方網站</a>
+                        <a href="https://x.com/RayDalio" target="_blank">X (Twitter)</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 擴充教學區 -->
+        <section id="expansion">
+            <h2>➕ 如何進一步擴充 (Easy Expansion Guide)</h2>
+            <div class="card" style="background: rgba(59, 130, 246, 0.05); border-color: var(--accent-color);">
+                <h3 style="color: var(--accent-hover);">想加新人物或新書籍？</h3>
+                <p>只需在對應的區塊（`&lt;section&gt;`）入面，複製以下 HTML 結構貼上即可自動對齊網格排版：</p>
+                <pre style="background: #111; padding: 12px; border-radius: 6px; overflow-x: auto; color: #34d399; font-size: 0.8rem; margin-top: 10px;">
+&lt;div class="card"&gt;
+    &lt;h3&gt;人物姓名&lt;/h3&gt;
+    &lt;p&gt;身份或簡介&lt;/p&gt;
+    &lt;div class="info-block"&gt;
+        &lt;strong&gt;代表書籍：&lt;/strong&gt;
+        &lt;ul class="book-list"&gt;
+            &lt;li&gt;書名 1&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class="links"&gt;
+        &lt;a href="網址" target="_blank"&gt;官方網站&lt;/a&gt;
+        &lt;a href="X網址" target="_blank"&gt;X (Twitter)&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Financial Masters Navigation. Designed with Dark Mode & Clean UI.</p>
+    </footer>
+
+</body>
+</html>
