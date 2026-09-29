@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>財經 YT 頻道分級導航地圖 | 30個精選頻道</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        beginner: {
+                            light: '#10b981',
+                            DEFAULT: '#059669',
+                            dark: '#047857',
+                            bg: 'rgba(16, 185, 129, 0.1)'
+                        },
+                        intermediate: {
+                            light: '#f59e0b',
+                            DEFAULT: '#d97706',
+                            dark: '#b45309',
+                            bg: 'rgba(245, 158, 11, 0.1)'
+                        },
+                        advanced: {
+                            light: '#ef4444',
+                            DEFAULT: '#dc2626',
+                            dark: '#b91c1c',
+                            bg: 'rgba(239, 68, 68, 0.1)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .light .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .card-hover {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(100, 116, 139, 0.5);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen transition-colors duration-300 pb-12">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 bg-red-600/20 text-red-500 rounded-xl border border-red-500/30">
+                        <i data-lucide="youtube" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-amber-400 to-red-400">
+                            財經 YT 頻道學習地圖
+                        </h1>
+                        <p class="text-xs sm:text-sm text-slate-400">分級精選 30 個高質量投資理財 YouTube 頻道導航</p>
+                    </div>
+                </div>
+
+                <!-- Global Stats & Theme Toggle -->
+                <div class="flex items-center space-x-3 self-end md:self-auto">
+                    <div class="bg-slate-800/80 border border-slate-700/60 rounded-lg px-3 py-1.5 text-xs text-slate-300 flex items-center gap-2">
+                        <span>已收錄 <strong id="total-count" class="text-emerald-400 font-semibold">30</strong> 個頻道</span>
+                    </div>
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700 transition" title="切換主題">
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+
+        <!-- Controls & Filters Section -->
+        <section class="mb-8 space-y-4">
+            <!-- Search & Tags Bar -->
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+                    <input type="text" id="search-input" placeholder="搜尋頻道名稱、關鍵字、標籤 (如：美股, 籌碼, ETF)..." 
+                        class="w-full pl-11 pr-10 py-3 bg-slate-900/90 border border-slate-800 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 text-slate-100 placeholder-slate-500 outline-none transition shadow-inner">
+                    <button id="clear-search" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+                        <i data-lucide="x-circle" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Category Tab Filters -->
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                <div class="flex flex-wrap gap-2" id="category-tabs">
+                    <button data-cat="all" class="tab-btn active px-4 py-2 rounded-lg text-sm font-medium bg-slate-800 text-white border border-slate-700 shadow-sm transition flex items-center gap-1.5">
+                        <i data-lucide="layers" class="w-4 h-4"></i> 全部頻道
+                    </button>
+                    <button data-cat="beginner" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent transition flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 🟢 初學者 (<span id="count-beginner">9</span>)
+                    </button>
+                    <button data-cat="intermediate" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent transition flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> 🟡 中階 (<span id="count-intermediate">11</span>)
+                    </button>
+                    <button data-cat="advanced" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent transition flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> 🔴 進階 (<span id="count-advanced">10</span>)
+                    </button>
+                </div>
+
+                <!-- Favorites Toggle Button -->
+                <button id="favorites-toggle-btn" class="px-4 py-2 rounded-lg text-sm font-medium bg-rose-950/40 border border-rose-800/40 text-rose-400 hover:bg-rose-900/40 transition flex items-center gap-2">
+                    <i data-lucide="heart" class="w-4 h-4 text-rose-500"></i>
+                    <span>我的收藏</span>
+                    <span id="fav-count" class="bg-rose-500/20 text-rose-300 text-xs px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+
+            <!-- Popular Tag Pills -->
+            <div id="tag-pills" class="flex flex-wrap items-center gap-2 text-xs">
+                <span class="text-slate-400 flex items-center gap-1"><i data-lucide="tag" class="w-3.5 h-3.5"></i> 熱門標籤:</span>
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- Channel Cards Grid -->
+        <section id="channel-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Cards rendered dynamically via JS -->
+        </section>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-16 glass-panel rounded-2xl border border-dashed border-slate-800">
+            <div class="inline-flex p-4 rounded-full bg-slate-800/60 text-slate-500 mb-4">
+                <i data-lucide="search-x" class="w-10 h-10"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-300">未找到符合條件的頻道</h3>
+            <p class="text-sm text-slate-500 mt-1">請嘗試修改搜尋關鍵字，或切換上方分類標籤</p>
+            <button id="reset-filters" class="mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium rounded-lg transition border border-slate-700">
+                重設篩選條件
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Disclaimer Footer -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-slate-800/60 text-center text-xs text-slate-500">
+        <p class="mb-2">📌 以上整理為 YouTube 頻道內容定位與風格分享，並非任何形式之投資建議、推薦或評比排名。</p>
+        <p>點擊頻道卡片可直接前往 YouTube 進行搜尋與訂閱。</p>
+    </footer>
+
+    <script>
+        const channelsData = [
+            // 🟢 初學者 (9)
+            {
+                id: 'tvbs-finance',
+                name: 'TVBS財經',
+                category: 'beginner',
+                categoryName: '初學者',
+                desc: '即時財經新聞與市場資訊，適合每日快速掌握全球與在地市場發生的重點大事。',
+                tags: ['即時新聞', '市場資訊', '台股', '總經'],
+                searchQuery: 'TVBS財經 YouTube'
+            },
+            {
+                id: 'financial-master-show',
+                name: '理財達人秀',
+                category: 'beginner',
+                categoryName: '初學者',
+                desc: '涵蓋台股、ETF、總體經濟與多元投資話題，極適合初學者建立多元完整的財經資訊來源。',
+                tags: ['台股', 'ETF', '總經', '入門指南'],
+                searchQuery: '理財達人秀 YouTube'
+            },
+            {
+                id: 'tinghao-horn',
+                name: '游庭皓的財經皓角',
+                category: 'beginner',
+                categoryName: '初學者',
+                desc: '早晨總經晨報，將枯燥無味的經濟數據講得生動且充滿幽默感，適合培養宏觀經濟感覺。',
+                tags: ['總經晨報', '經濟數據', '總體經濟', '市場解析'],
+                searchQuery: '游庭皓的財經皓角 YouTube'
+            },
+            {
+                id: 'jane-financial',
+                name: '財女珍妮',
+                category: 'beginner',
+                categoryName: '初學者',
+                desc: '深入淺出地分享美股趨勢與正確投資觀念，適合想一步步踏入美股市場的新手。',
+                tags: ['美股', '投資觀念', '財報概念', '新手必看'],
+                searchQuery: '財女珍妮 YouTube'
+            },
+            {
+                id: 'stayrich-blueprint',
+                name: 'StayRich小資理財藍圖',
+                category: 'beginner',
+                categoryName: '初學者',
+                desc: '聚焦小資族理財規劃、ETF 配置與資產累積，對剛開始理財投資的人極易入門。',
+                tags: ['小資理財', 'ETF', '資產累積', '儲蓄觀念'],
+                searchQuery: 'StayRich小資理財藍圖 YouTube'
+            },
+            {
+                id: 'smart-magazine',
+                name: 'Smart智富月刊',
+                category: 'beginner',
+                categoryName: '初學者',
+                desc: '傳統理財雜誌轉型，內容平易近人、扎實，非常適合打好基礎與了解基本投資邏輯。',
+                tags: ['理財雜誌', '基礎打底', '觀念建立', '穩健投資'],
+                searchQuery: 'Smart智富月刊 YouTube'
+            },
+            {
+                id: 'ye-zhijuan',
+                name: '葉芷娟',
+                category: 'beginner',
+                categoryName: '初學者',
+                desc: '專業財經主播出身，將複雜難懂的專業財經議題拆解成一般大眾輕鬆理解的知識。',
+                tags: ['財經知識', '議題拆解', '理財工具', '白話解析'],
+                searchQuery: '葉芷娟 YouTube'
+            },
+            {
+                id: 'invest-what',
+                name: '投資嗨什麼',
+                category: 'beginner',
+                categoryName: '初學者',
+                desc: '針對熱門 ETF、理財商品與新聞議題進行白話剖析，新手入門學習毫無壓力。',
+                tags: ['ETF', '理財商品', '新聞解析', '小白推薦'],
+                searchQuery: '投資嗨什麼 YouTube'
+            },
+            {
+                id: 'big-bang-universe',
+                name: '小宇宙大爆發',
+                category: 'beginner',
+                categoryName: '初學者',
+                desc: '訪談各領域投資達人與專家，內容極具生活化，廣泛涵蓋多樣化的理財與投資主題。',
+                tags: ['達人訪談', '生活理財', '多元投資', '經驗分享'],
+                searchQuery: '小宇宙大爆發 YouTube'
+            },
+
+            // 🟡 中階 (11)
+            {
+                id: 'm-view',
+                name: 'M觀點',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '深耕總經、產業、投資與商業趨勢，適合想將財經新聞背後商業邏輯串聯起來的人。',
+                tags: ['總經', '商業邏輯', '產業趨勢', '科技脈動'],
+                searchQuery: 'M觀點 YouTube'
+            },
+            {
+                id: 'money-deploy',
+                name: '鈔錢部署',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '深度訪談權威分析師與專家，拆解台股產業鏈、個股真實價值與 ETF 佈局策略。',
+                tags: ['台股產業鏈', '個股價值', '專家訪談', 'ETF佈局'],
+                searchQuery: '鈔錢部署 YouTube'
+            },
+            {
+                id: 'us-stock-news-talk',
+                name: '美投侃新聞',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '主要聚焦美股即時新聞與重大市場動向，適合每日想追蹤美股發生什麼事的人。',
+                tags: ['美股即時', '市場動態', '美股新聞', '財報季'],
+                searchQuery: '美投侃新聞 YouTube'
+            },
+            {
+                id: 'd-wealth-chain',
+                name: 'D的財富鏈',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '專注美股個股深度財報拆解、美股產業鏈脈絡與科技供應鏈數據分析。',
+                tags: ['美股財報', '供應鏈數據', '科技股', '個股拆解'],
+                searchQuery: 'D的財富鏈 YouTube'
+            },
+            {
+                id: 'grandpa-stock',
+                name: '宏爺講股',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '台股每日盤勢、個股與技術面實戰分析，偏向市場實戰派的細緻觀察。',
+                tags: ['台股盤勢', '技術面', '實戰觀察', '個股分析'],
+                searchQuery: '宏爺講股 YouTube'
+            },
+            {
+                id: 'good-stock-morning',
+                name: '好股之計在於晨',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '從公司與產業故事切入台股題材，內容同時涵蓋價值投資與總體經濟趨勢。',
+                tags: ['產業故事', '價值投資', '台股題材', '總經'],
+                searchQuery: '好股之計在於晨 YouTube'
+            },
+            {
+                id: 'zhaohua-allen',
+                name: '兆華艾綸說',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '融合台股、產業、總經與市場觀察，適合有基礎後拿來進行不同觀點交叉驗證。',
+                tags: ['台股', '產業分析', '交叉驗證', '觀點比對'],
+                searchQuery: '兆華艾綸說 YouTube'
+            },
+            {
+                id: 'river-li',
+                name: '李兆華 River',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '觀點客觀中立且極廣泛，經常邀請業界重量級專家（如鍾總）分享第一手市場觀察。',
+                tags: ['第一手觀察', '中立觀點', '業界名家', '市場脈動'],
+                searchQuery: '李兆華 River YouTube'
+            },
+            {
+                id: 'zhen-han-bullet',
+                name: '財經震翰彈',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '深入追蹤台股盤勢、重點個股與總體產業趨勢，非常適合中階投資人追蹤市場。',
+                tags: ['台股盤勢', '產業趨勢', '個股追蹤', '市場變化'],
+                searchQuery: '財經震翰彈 YouTube'
+            },
+            {
+                id: 'gutianle-stock',
+                name: '股添樂｜股市新觀點',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '幽默風趣解析台股個股與熱門題材，適合已經有一些實際投資經驗的投資人。',
+                tags: ['台股題材', '個股解析', '幽默風趣', '實戰經驗'],
+                searchQuery: '股添樂 股市新觀點 YouTube'
+            },
+            {
+                id: 'mirror-finance',
+                name: '鏡發財',
+                category: 'intermediate',
+                categoryName: '中階',
+                desc: '嚴選財經新聞、產業動態與熱門市場議題，適合進一步深入追蹤關鍵財經資訊。',
+                tags: ['財經新聞', '產業議題', '市場焦點', '趨勢追蹤'],
+                searchQuery: '鏡發財 YouTube'
+            },
+
+            // 🔴 進階 (10)
+            {
+                id: 'wang-talk',
+                name: '老王愛說笑',
+                category: 'advanced',
+                categoryName: '進階',
+                desc: '個人風格極強烈，主打技術分析、籌碼面觀察與極為明確的短線進出交易節奏。',
+                tags: ['技術分析', '籌碼觀察', '短線進出', '交易節奏'],
+                searchQuery: '老王愛說笑 YouTube'
+            },
+            {
+                id: 'analyst-ye',
+                name: '葉俊敏分析師',
+                category: 'advanced',
+                categoryName: '進階',
+                desc: '資深實戰派分析師，擅長從總體經濟與資金流向，帶出個股技術與籌碼面的深層解讀。',
+                tags: ['資金流向', '籌碼解讀', '實戰分析', '總經帶個股'],
+                searchQuery: '葉俊敏分析師 YouTube'
+            },
+            {
+                id: 'wantgoo-chu',
+                name: '玩股網楚狂人',
+                category: 'advanced',
+                categoryName: '進階',
+                desc: '強調交易心法、資產配置與風險控管，極度適合想建構個人完整交易系統的人。',
+                tags: ['交易心法', '資產配置', '風險控管', '交易系統'],
+                searchQuery: '玩股網楚狂人 YouTube'
+            },
+            {
+                id: 'fast-speed-wind',
+                name: '疾速飆風',
+                category: 'advanced',
+                categoryName: '進階',
+                desc: '聚焦盤面強勢股、短線技術分析與波段節奏控管，適合偏好短線操作與波段的交易者。',
+                tags: ['強勢股', '短線波段', '技術分析', '節奏控管'],
+                searchQuery: '疾速飆風 YouTube'
+            },
+            {
+                id: 'old-jian-stock',
+                name: '老簡講股｜簡之隊',
+                category: 'advanced',
+                categoryName: '進階',
+                desc: '專精籌碼面、主力動向與產業深水區研究，語調沉穩平靜但觀點極為辛辣精準。',
+                tags: ['籌碼面', '主力動向', '產業深水區', '深度研究'],
+                searchQuery: '老簡講股 簡之隊 YouTube'
+            },
+            {
+                id: 'ruan-muhua',
+                name: '阮慕驊',
+                category: 'advanced',
+                categoryName: '進階',
+                desc: '提供宏觀市場視野與長線資產配置思維，適合有經驗者拿來理解大局市場脈絡。',
+                tags: ['宏觀市場', '資產配置', '大局思維', '市場脈絡'],
+                searchQuery: '阮慕驊 YouTube'
+            },
+            {
+                id: 'us-stock-talk',
+                name: '美投講美股',
+                category: 'advanced',
+                categoryName: '進階',
+                desc: '深耕美股宏觀趨勢、產業結構與重大市場事件，適合已高度熟悉美股邏輯的投資人。',
+                tags: ['美股深度', '產業結構', '宏觀趨勢', '進階研究'],
+                searchQuery: '美投講美股 YouTube'
+            },
+            {
+                id: 'president-securities',
+                name: '統一投顧',
+                category: 'advanced',
+                categoryName: '進階',
+                desc: '提供機構法人級的投顧研究報告精華，適合想學會用法人思維剖析市場的投資人。',
+                tags: ['機構法人', '研報精華', '法人思維', '權威研究'],
+                searchQuery: '統一投顧 YouTube'
+            },
+            {
+                id: 'analyst-li',
+                name: '辣個分析師－黎志建',
+                category: 'advanced',
+                categoryName: '進階',
+                desc: '科技產業實務背景出身，擅長極度深度的產業研究、供應鏈拆解與個股評價。',
+                tags: ['產業供應鏈', '個股評價', '深度研究', '產業專家'],
+                searchQuery: '辣個分析師 黎志建 YouTube'
+            }
+        ];
+
+        let activeCategory = 'all';
+        let searchQuery = '';
+        let activeTag = null;
+        let showFavoritesOnly = false;
+        let favorites = JSON.parse(localStorage.getItem('fin_yt_favs') || '[]');
+
+        // DOM elements
+        const channelGrid = document.getElementById('channel-grid');
+        const emptyState = document.getElementById('empty-state');
+        const searchInput = document.getElementById('search-input');
+        const clearSearchBtn = document.getElementById('clear-search');
+        const categoryTabs = document.getElementById('category-tabs');
+        const tagPillsContainer = document.getElementById('tag-pills');
+        const favCountBadge = document.getElementById('fav-count');
+        const favoritesToggleBtn = document.getElementById('favorites-toggle-btn');
+        const totalCountEl = document.getElementById('total-count');
+
+        // Utility to extract all tags and render popular tag choices
+        function renderPopularTags() {
+            const tagCounts = {};
+            channelsData.forEach(c => {
+                c.tags.forEach(t => {
+                    tagCounts[t] = (tagCounts[t] || 0) + 1;
+                });
+            });
+
+            // Sort tags by frequency
+            const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]).slice(0, 10);
+
+            let html = '<span class="text-slate-400 flex items-center gap-1"><i data-lucide="tag" class="w-3.5 h-3.5"></i> 熱門標籤:</span>';
+            sortedTags.forEach(tag => {
+                const isActive = activeTag === tag;
+                html += `
+                    <button data-tag="${tag}" class="tag-pill px-2.5 py-1 rounded-md text-xs border transition ${
+                        isActive 
+                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/50' 
+                        : 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200'
+                    }">
+                        #${tag}
+                    </button>
+                `;
+            });
+
+            if (activeTag) {
+                html += `
+                    <button id="clear-tag" class="text-xs text-rose-400 hover:underline flex items-center gap-1 ml-1">
+                        清除標籤 <i data-lucide="x" class="w-3 h-3"></i>
+                    </button>
+                `;
+            }
+
+            tagPillsContainer.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // Render channel cards
+        function renderChannels() {
+            const filtered = channelsData.filter(item => {
+                // Category filter
+                if (activeCategory !== 'all' && item.category !== activeCategory) return false;
+
+                // Favorites filter
+                if (showFavoritesOnly && !favorites.includes(item.id)) return false;
+
+                // Tag filter
+                if (activeTag && !item.tags.includes(activeTag)) return false;
+
+                // Search query filter
+                if (searchQuery) {
+                    const q = searchQuery.toLowerCase().trim();
+                    const matchName = item.name.toLowerCase().includes(q);
+                    const matchDesc = item.desc.toLowerCase().includes(q);
+                    const matchTags = item.tags.some(t => t.toLowerCase().includes(q));
+                    const matchCat = item.categoryName.includes(q);
+                    return matchName || matchDesc || matchTags || matchCat;
+                }
+
+                return true;
+            });
+
+            totalCountEl.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                channelGrid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            channelGrid.innerHTML = filtered.map(item => {
+                const isFav = favorites.includes(item.id);
+                
+                // Styling theme map
+                let badgeStyle = '';
+                let borderHoverStyle = '';
+                let dotColor = '';
+
+                if (item.category === 'beginner') {
+                    badgeStyle = 'bg-emerald-950/80 text-emerald-400 border-emerald-800/50';
+                    borderHoverStyle = 'hover:border-emerald-500/50';
+                    dotColor = 'bg-emerald-500';
+                } else if (item.category === 'intermediate') {
+                    badgeStyle = 'bg-amber-950/80 text-amber-400 border-amber-800/50';
+                    borderHoverStyle = 'hover:border-amber-500/50';
+                    dotColor = 'bg-amber-500';
+                } else {
+                    badgeStyle = 'bg-red-950/80 text-red-400 border-red-800/50';
+                    borderHoverStyle = 'hover:border-red-500/50';
+                    dotColor = 'bg-red-500';
+                }
+
+                const tagsHtml = item.tags.map(t => `
+                    <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700/60">
+                        #${t}
+                    </span>
+                `).join('');
+
+                const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(item.searchQuery)}`;
+
+                return `
+                    <div class="glass-panel rounded-2xl p-5 flex flex-col justify-between card-hover border border-slate-800 ${borderHoverStyle} relative group">
+                        <div>
+                            <!-- Card Header -->
+                            <div class="flex items-start justify-between gap-2 mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${badgeStyle}">
+                                        <span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>
+                                        ${item.categoryName}
+                                    </span>
+                                </div>
+                                <button data-fav-id="${item.id}" class="fav-btn p-2 rounded-lg text-slate-500 hover:text-rose-500 hover:bg-slate-800/60 transition" title="${isFav ? '取消收藏' : '加入收藏'}">
+                                    <i data-lucide="heart" class="w-5 h-5 ${isFav ? 'fill-rose-500 text-rose-500' : ''}"></i>
+                                </button>
+                            </div>
+
+                            <!-- Channel Name -->
+                            <h3 class="text-lg font-bold text-slate-100 group-hover:text-amber-400 transition flex items-center gap-2">
+                                ${item.name}
+                            </h3>
+
+                            <!-- Description -->
+                            <p class="text-xs sm:text-sm text-slate-400 my-3 leading-relaxed">
+                                ${item.desc}
+                            </p>
+                        </div>
+
+                        <div>
+                            <!-- Tags -->
+                            <div class="flex flex-wrap gap-1.5 my-3">
+                                ${tagsHtml}
+                            </div>
+
+                            <!-- YouTube Link Action -->
+                            <a href="${ytUrl}" target="_blank" rel="noopener noreferrer" 
+                                class="mt-2 w-full py-2.5 px-4 rounded-xl bg-slate-800/90 hover:bg-red-600 text-slate-200 hover:text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 transition duration-200 border border-slate-700 hover:border-red-500 shadow-sm">
+                                <i data-lucide="youtube" class="w-4 h-4 text-red-500 group-hover:text-white transition"></i>
+                                <span>開啟 YouTube 頻道</span>
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-60"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+            attachCardEvents();
+        }
+
+        function attachCardEvents() {
+            // Favorite buttons
+            document.querySelectorAll('.fav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = btn.getAttribute('data-fav-id');
+                    if (favorites.includes(id)) {
+                        favorites = favorites.filter(f => f !== id);
+                    } else {
+                        favorites.push(id);
+                    }
+                    localStorage.setItem('fin_yt_favs', JSON.stringify(favorites));
+                    updateFavBadge();
+                    renderChannels();
+                });
+            });
+        }
+
+        function updateFavBadge() {
+            favCountBadge.textContent = favorites.length;
+        }
+
+        // Search input handling
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            clearSearchBtn.classList.toggle('hidden', !searchQuery);
+            renderChannels();
+        });
+
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            searchQuery = '';
+            clearSearchBtn.classList.add('hidden');
+            renderChannels();
+        });
+
+        // Category Tab switching
+        categoryTabs.addEventListener('click', (e) => {
+            const btn = e.target.closest('.tab-btn');
+            if (!btn) return;
+
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active', 'bg-slate-800', 'text-white', 'border-slate-700');
+                b.classList.add('text-slate-400', 'border-transparent');
+            });
+
+            btn.classList.add('active', 'bg-slate-800', 'text-white', 'border-slate-700');
+            btn.classList.remove('text-slate-400', 'border-transparent');
+
+            activeCategory = btn.getAttribute('data-cat');
+            renderChannels();
+        });
+
+        // Tag Pills click handling
+        tagPillsContainer.addEventListener('click', (e) => {
+            const tagBtn = e.target.closest('.tag-pill');
+            const clearBtn = e.target.closest('#clear-tag');
+
+            if (tagBtn) {
+                const tag = tagBtn.getAttribute('data-tag');
+                activeTag = activeTag === tag ? null : tag;
+                renderPopularTags();
+                renderChannels();
+            } else if (clearBtn) {
+                activeTag = null;
+                renderPopularTags();
+                renderChannels();
+            }
+        });
+
+        // Toggle Favorites mode
+        favoritesToggleBtn.addEventListener('click', () => {
+            showFavoritesOnly = !showFavoritesOnly;
+            if (showFavoritesOnly) {
+                favoritesToggleBtn.classList.remove('bg-rose-950/40', 'border-rose-800/40', 'text-rose-400');
+                favoritesToggleBtn.classList.add('bg-rose-600', 'text-white', 'border-rose-500');
+            } else {
+                favoritesToggleBtn.classList.add('bg-rose-950/40', 'border-rose-800/40', 'text-rose-400');
+                favoritesToggleBtn.classList.remove('bg-rose-600', 'text-white', 'border-rose-500');
+            }
+            renderChannels();
+        });
+
+        // Reset filters
+        document.getElementById('reset-filters').addEventListener('click', () => {
+            searchInput.value = '';
+            searchQuery = '';
+            activeCategory = 'all';
+            activeTag = null;
+            showFavoritesOnly = false;
+            clearSearchBtn.classList.add('hidden');
+
+            favoritesToggleBtn.classList.add('bg-rose-950/40', 'border-rose-800/40', 'text-rose-400');
+            favoritesToggleBtn.classList.remove('bg-rose-600', 'text-white', 'border-rose-500');
+
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active', 'bg-slate-800', 'text-white', 'border-slate-700');
+                b.classList.add('text-slate-400', 'border-transparent');
+                if (b.getAttribute('data-cat') === 'all') {
+                    b.classList.add('active', 'bg-slate-800', 'text-white', 'border-slate-700');
+                }
+            });
+
+            renderPopularTags();
+            renderChannels();
+        });
+
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            if (!isDark) {
+                document.body.classList.remove('bg-slate-950', 'text-slate-100');
+                document.body.classList.add('bg-slate-100', 'text-slate-900');
+            } else {
+                document.body.classList.remove('bg-slate-100', 'text-slate-900');
+                document.body.classList.add('bg-slate-950', 'text-slate-100');
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateFavBadge();
+            renderPopularTags();
+            renderChannels();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
