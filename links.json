@@ -40,7 +40,7 @@
     { "name": "Silicon Valley Girl", "url": "https://lofan.github.io/HKJQV/siliconvalleygirl.html", "cat": "科技知識" },
     { "name": "Kelly Tsai", "url": "https://lofan.github.io/HKJQV/kellytsaii.html", "cat": "科技知識" },
     { "name": "The Tech Girl", "url": "https://lofan.github.io/HKJQV/techgirl.html", "cat": "科技知識" },
-    { name:"AI 核心人物活名單（2026 最新版）", url:"https://lofan.github.io/HKJQV/AIppl.html", cat:"科技知識" },
+    { "name":"AI 核心人物活名單（2026 最新版）", "url":"https://lofan.github.io/HKJQV/AIppl.html", "cat":"科技知識" },
 
     { "name": "👍 JapPod101", "url": "https://lofan.github.io/HKJQV/japanesePod101.html", "cat": "語言學習" },
     { "name": "👍 FrenchPod101", "url": "https://lofan.github.io/HKJQV/frenchPod101.html", "cat": "語言學習" },
