@@ -5,7 +5,7 @@
     { "name": "👍 Home2", "url": "https://lofan.github.io/HKJQV/1.html", "cat": "置頂" },
     { "name": "Bookmark marker", "url": "https://lofan.github.io/HKJQV/bookmark_snippet_generator.html", "cat": "置頂" },
     { "name": "Bookmarks Gen v2", "url": "https://lofan.github.io/HKJQV/bookmakrsgenv2.html", "cat": "置頂" },
-    { name:"YouTube Info Fetcher", url:"https://lofan.github.io/HKJQV/ytinfo.html", cat:"置頂" },
+    { "name": "YouTube Info Fetcher", "url": "https://lofan.github.io/HKJQV/ytinfo.html", "cat": "置頂" },
 
     { "name": "短炒啟航", "url": "https://lofan.github.io/HKJQV/shortfry.html", "cat": "財經投資" },
     { "name": "我要炒期貨", "url": "https://lofan.github.io/HKJQV/Alvin.html", "cat": "財經投資" },
