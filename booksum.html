@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的Book Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12151c;
+    --bg-alt:#181c25;
+    --card:#1c212c;
+    --card-hover:#232936;
+    --line:#2a3141;
+    --ink:#e8e6df;
+    --ink-dim:#9aa2b1;
+    --gold:#c9a35c;
+    --gold-dim:#8a7448;
+    --teal:#5fa3a8;
+    --shadow:0 8px 24px -8px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 500px at 12% -10%, rgba(201,163,92,.07), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(95,163,168,.06), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans TC', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,21,28,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:16px 20px 14px;
+  }
+  .header-row{
+    max-width:1120px; margin:0 auto;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .brand{
+    font-family:'Noto Serif TC', serif;
+    font-weight:900; font-size:22px; letter-spacing:.02em;
+    display:flex; align-items:baseline; gap:8px; margin-right:auto;
+  }
+  .brand small{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:500; font-size:11px; color:var(--ink-dim);
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+  .search-wrap{
+    position:relative; flex:1 1 260px; max-width:360px;
+  }
+  #search{
+    width:100%; padding:10px 36px 10px 14px;
+    background:var(--bg-alt); border:1px solid var(--line);
+    border-radius:8px; color:var(--ink); font-size:14px;
+    font-family:'Noto Sans TC', sans-serif;
+    outline:none; transition:border-color .15s;
+  }
+  #search:focus{border-color:var(--gold-dim);}
+  .search-wrap kbd{
+    position:absolute; right:8px; top:50%; transform:translateY(-50%);
+    font-family:'JetBrains Mono', monospace; font-size:10px;
+    color:var(--ink-dim); background:var(--card);
+    border:1px solid var(--line); border-radius:4px; padding:2px 5px;
+    pointer-events:none;
+  }
+  #count-badge{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:var(--gold); white-space:nowrap;
+  }
+
+  .pillbar{
+    max-width:1120px; margin:12px auto 0;
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .pill{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    padding:6px 12px; border-radius:20px;
+    background:var(--bg-alt); border:1px solid var(--line);
+    color:var(--ink-dim); cursor:pointer; user-select:none;
+    transition:all .15s;
+  }
+  .pill:hover{border-color:var(--gold-dim); color:var(--ink);}
+  .pill.active{
+    background:linear-gradient(135deg, var(--gold), var(--gold-dim));
+    color:#161310; border-color:transparent; font-weight:600;
+  }
+
+  /* ---------- main ---------- */
+  main{max-width:1120px; margin:0 auto; padding:28px 20px 80px;}
+
+  section.cat{margin-top:44px;}
+  section.cat:first-of-type{margin-top:24px;}
+  .cat-head{
+    display:flex; align-items:baseline; gap:12px;
+    border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:16px;
+  }
+  .cat-tag{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:var(--gold); border:1px solid var(--gold-dim);
+    border-radius:4px; padding:2px 7px; letter-spacing:.05em;
+  }
+  .cat-title{
+    font-family:'Noto Serif TC', serif; font-weight:700; font-size:19px;
+  }
+  .cat-count{
+    margin-left:auto; font-family:'JetBrains Mono', monospace;
+    font-size:11px; color:var(--ink-dim);
+  }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:12px;
+  }
+  .card{
+    position:relative;
+    display:flex; flex-direction:column; gap:6px;
+    background:var(--card); border:1px solid var(--line);
+    border-radius:10px; padding:14px 14px 12px;
+    box-shadow:var(--shadow);
+    transition:transform .15s, border-color .15s, background .15s;
+  }
+  .card::before{
+    content:""; position:absolute; left:0; top:10px; bottom:10px; width:3px;
+    background:var(--gold-dim); border-radius:0 3px 3px 0; opacity:.6;
+    transition:opacity .15s, background .15s;
+  }
+  .card:hover{
+    transform:translateY(-2px);
+    border-color:var(--gold-dim); background:var(--card-hover);
+  }
+  .card:hover::before{opacity:1; background:var(--gold);}
+  .card-top{
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .card-idx{
+    font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--ink-dim);
+  }
+  .card-clicks{
+    font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--ink-dim);
+    display:flex; align-items:center; gap:3px;
+    padding:1px 6px; border-radius:10px; background:var(--bg-alt);
+    border:1px solid var(--line);
+    transition:color .15s, border-color .15s;
+  }
+  .card-clicks.has-clicks{color:var(--gold); border-color:var(--gold-dim);}
+  .card-title{
+    font-size:14.5px; font-weight:600; line-height:1.4;
+    word-break:break-word;
+  }
+  .card.hidden{display:none;}
+  section.cat.hidden{display:none;}
+
+  .pinned .card::before{background:var(--teal);}
+  .pinned .card-title{font-family:'Noto Serif TC', serif; font-size:16px;}
+
+  #empty-state, #status{
+    display:none; text-align:center; padding:60px 20px; color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:13px; line-height:1.8;
+  }
+  #status.error{color:#e08a8a;}
+  #status button{
+    margin-top:14px; font-family:'JetBrains Mono', monospace; font-size:12px;
+    padding:6px 14px; border-radius:20px; cursor:pointer;
+    background:var(--bg-alt); border:1px solid var(--gold-dim); color:var(--gold);
+  }
+
+  /* ---------- expansion guide ---------- */
+  .howto{
+    margin-top:56px; border:1px dashed var(--line); border-radius:10px;
+    background:var(--bg-alt); padding:18px 20px;
+  }
+  .howto summary{
+    cursor:pointer; font-family:'Noto Serif TC', serif; font-weight:700;
+    font-size:15px; color:var(--gold);
+  }
+  .howto pre{
+    margin:14px 0 0; padding:14px; background:#0e1117; border-radius:8px;
+    overflow-x:auto; font-family:'JetBrains Mono', monospace; font-size:12.5px;
+    line-height:1.6; color:#cfd6e0; border:1px solid var(--line);
+  }
+  .howto p{font-size:13.5px; color:var(--ink-dim); line-height:1.7;}
+  .howto code{
+    font-family:'JetBrains Mono', monospace; background:#0e1117;
+    padding:1px 5px; border-radius:4px; font-size:12px; color:var(--gold);
+  }
+
+  footer{
+    text-align:center; padding:24px; color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:520px){
+    .grid{grid-template-columns:1fr 1fr;}
+    .brand{font-size:19px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="brand">📚 我的連結庫 <small>Link Library</small></div>
+    <div class="search-wrap">
+      <input id="search" type="text" placeholder="搜尋連結 / Search links…" autocomplete="off">
+      <kbd>/</kbd>
+    </div>
+    <div id="count-badge"></div>
+    <span class="pill reset-pill" id="reset-clicks" title="清空所有連結嘅點擊統計">🔄 重設統計</span>
+  </div>
+  <nav class="pillbar" id="pillbar"></nav>
+</header>
+
+<main>
+  <div id="status"></div>
+  <div id="sections"></div>
+  <div id="empty-state">— 沒有符合的連結 No matching links —</div>
+
+  <details class="howto">
+    <summary>➕ 如何新增連結 How to add new links</summary>
+    <p>所有連結都存放喺同目錄嘅 <code>links.json</code>，頁面載入時會用 <code>fetch()</code> 讀入。想加新連結，淨係要喺 <code>links</code> 陣列度加一個 object，畫面會自動生成卡片、自動歸入分類、自動可以搜尋 — 唔使再改呢個 HTML。</p>
+    <pre>{ "name": "新連結名稱", "url": "https://lofan.github.io/HKJQV/xxx.html", "cat": "財經投資" }</pre>
+    <p>如果 <code>cat</code> 打一個未出現過嘅新分類名，個新分類版塊會自動出現喺頁面度。想令個分類固定排喺前面，可以喺 <code>links.json</code> 嘅 <code>catOrder</code> 陣列度加返個名。</p>
+    <p>注意：JSON 唔准有尾隨逗號（trailing comma）同註解，格式出錯會顯示錯誤訊息。另外直接雙擊開本機 <code>file://</code> 檔案時瀏覽器會擋住 <code>fetch()</code>，要用 GitHub Pages 或者本機伺服器（例如 <code>python -m http.server</code>）先睇到。</p>
+  </details>
+</main>
+
+<footer>lofan.github.io/HKJQV/ · 自建連結庫 · 純靜態 HTML + links.json，無外部依賴（字型除外）</footer>
+
+<script>
+/* ============================================================
+   DATA — loaded from links.json at startup.
+   links.json shape:
+     { "catOrder": ["置頂", ...], "links": [ { name, url, cat }, ... ] }
+   (a bare array of link objects is also accepted)
+   ============================================================ */
+const DATA_URL = 'mybooksum.json';
+
+let CAT_ORDER = [];
+let LINKS = [];
+
+async function loadLinks(){
+  const res = await fetch(DATA_URL, { cache: 'no-cache' });
+  if(!res.ok) throw new Error('HTTP ' + res.status + ' — ' + DATA_URL);
+  const data = await res.json();
+
+  const list = Array.isArray(data) ? data : data.links;
+  if(!Array.isArray(list)) throw new Error('links.json 格式錯誤：找不到 "links" 陣列');
+
+  LINKS = list.filter(l => l && l.name && l.url && l.cat);
+  CAT_ORDER = Array.isArray(data.catOrder) ? data.catOrder : [];
+}
+
+function showStatus(msg, isError, withRetry){
+  const el = document.getElementById('status');
+  el.className = isError ? 'error' : '';
+  el.style.display = msg ? 'block' : 'none';
+  el.innerHTML = msg || '';
+  if(withRetry){
+    const btn = document.createElement('button');
+    btn.textContent = '↻ 重試 Retry';
+    btn.onclick = init;
+    el.appendChild(document.createElement('br'));
+    el.appendChild(btn);
+  }
+}
+
+/* ============================================================
+   Render
+   ============================================================ */
+function groupByCat(links){
+  const map = new Map();
+  links.forEach(l=>{
+    if(!map.has(l.cat)) map.set(l.cat, []);
+    map.get(l.cat).push(l);
+  });
+  // order: CAT_ORDER first, then any unknown categories appended alphabetically
+  const known = CAT_ORDER.filter(c=>map.has(c));
+  const unknown = [...map.keys()].filter(c=>!CAT_ORDER.includes(c)).sort();
+  return [...known, ...unknown].map(cat=>({cat, items:map.get(cat)}));
+}
+
+function slug(s){ return s.replace(/[^\w\u4e00-\u9fff]+/g,'-'); }
+
+function render(){
+  const groups = groupByCat(LINKS);
+  const sectionsEl = document.getElementById('sections');
+  const pillbar = document.getElementById('pillbar');
+  document.getElementById('count-badge').textContent = LINKS.length + ' 個連結';
+
+  pillbar.innerHTML = '<span class="pill active" data-cat="__all__">全部 · ' + LINKS.length + '</span>' +
+    groups.map(g=>`<span class="pill" data-cat="${g.cat}">${g.cat} · ${g.items.length}</span>`).join('');
+
+  sectionsEl.innerHTML = groups.map(g=>`
+    <section class="cat ${g.cat==='置頂'?'pinned':''}" id="cat-${slug(g.cat)}" data-cat="${g.cat}">
+      <div class="cat-head">
+        <span class="cat-tag">${g.cat==='置頂' ? 'PIN' : slug(g.cat).slice(0,4).toUpperCase()}</span>
+        <span class="cat-title">${g.cat}</span>
+        <span class="cat-count">${g.items.length} 項</span>
+      </div>
+      <div class="grid">
+        ${g.items.map((l,i)=>`
+          <a class="card" href="${l.url}" target="_blank" rel="noopener" data-name="${l.name.toLowerCase()}" data-url="${l.url}">
+            <span class="card-top">
+              <span class="card-idx">${String(i+1).padStart(2,'0')}</span>
+              <span class="card-clicks" data-clicks-for="${l.url}">👆 0</span>
+            </span>
+            <span class="card-title">${l.name}</span>
+          </a>`).join('')}
+      </div>
+    </section>
+  `).join('');
+}
+
+/* ============================================================
+   Click counter — persisted in localStorage (per browser/device).
+   Key: "linkClickCounts" -> { [url]: count }
+   ============================================================ */
+const CLICKS_KEY = 'linkClickCounts';
+
+function loadClicks(){
+  try{
+    return JSON.parse(localStorage.getItem(CLICKS_KEY)) || {};
+  }catch(e){
+    return {};
+  }
+}
+
+function saveClicks(data){
+  try{
+    localStorage.setItem(CLICKS_KEY, JSON.stringify(data));
+  }catch(e){ /* storage unavailable — fail silently */ }
+}
+
+function refreshClickBadges(){
+  const clicks = loadClicks();
+  document.querySelectorAll('[data-clicks-for]').forEach(el=>{
+    const n = clicks[el.dataset.clicksFor] || 0;
+    el.textContent = '👆 ' + n;
+    el.classList.toggle('has-clicks', n > 0);
+  });
+}
+
+document.getElementById('sections').addEventListener('click', e=>{
+  const card = e.target.closest('.card');
+  if(!card) return;
+  const url = card.dataset.url;
+  const clicks = loadClicks();
+  clicks[url] = (clicks[url] || 0) + 1;
+  saveClicks(clicks);
+  const badge = card.querySelector('[data-clicks-for]');
+  if(badge){
+    badge.textContent = '👆 ' + clicks[url];
+    badge.classList.add('has-clicks');
+  }
+});
+
+document.getElementById('reset-clicks').addEventListener('click', ()=>{
+  if(confirm('確定要清空所有連結嘅點擊統計？呢個動作冇得復原。')){
+    saveClicks({});
+    refreshClickBadges();
+  }
+});
+
+/* ============================================================
+   Search + category filter
+   ============================================================ */
+let activeCat = '__all__';
+
+function applyFilters(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  let anyVisible = false;
+
+  document.querySelectorAll('section.cat').forEach(sec=>{
+    const catMatch = activeCat === '__all__' || sec.dataset.cat === activeCat;
+    let sectionHasVisible = false;
+
+    sec.querySelectorAll('.card').forEach(card=>{
+      const textMatch = !q || card.dataset.name.includes(q);
+      const show = catMatch && textMatch;
+      card.classList.toggle('hidden', !show);
+      if(show) sectionHasVisible = true;
+    });
+
+    sec.classList.toggle('hidden', !sectionHasVisible);
+    if(sectionHasVisible) anyVisible = true;
+  });
+
+  // only show "no results" once links have actually loaded
+  document.getElementById('empty-state').style.display =
+    (LINKS.length && !anyVisible) ? 'block' : 'none';
+}
+
+document.getElementById('search').addEventListener('input', applyFilters);
+
+document.addEventListener('click', e=>{
+  const pill = e.target.closest('.pill');
+  if(!pill || pill.classList.contains('reset-pill')) return;
+  activeCat = pill.dataset.cat;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active', p===pill));
+  applyFilters();
+  if(activeCat !== '__all__'){
+    document.getElementById('cat-' + slug(activeCat))?.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key === '/' && document.activeElement !== document.getElementById('search')){
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+});
+
+/* ============================================================
+   Init
+   ============================================================ */
+async function init(){
+  activeCat = '__all__';
+  showStatus('載入連結中… Loading links…', false, false);
+  try{
+    await loadLinks();
+    showStatus('');
+    render();
+    applyFilters();
+    refreshClickBadges();
+  }catch(err){
+    console.error(err);
+    const hint = location.protocol === 'file:'
+      ? '<br>（file:// 開啟會被瀏覽器擋住 fetch，請用 GitHub Pages 或本機伺服器）'
+      : '';
+    showStatus('⚠️ 無法載入 ' + DATA_URL + '<br>' + String(err.message || err) + hint, true, true);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
