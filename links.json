@@ -3,6 +3,7 @@
   "links": [
     { "name": "🔥 Home", "url": "https://lofan.github.io/HKJQV/", "cat": "置頂" },
     { "name": "👍 Home2", "url": "https://lofan.github.io/HKJQV/1.html", "cat": "置頂" },
+    { "name": "My Book Summary", "url": "https://lofan.github.io/HKJQV/booksum.html", "cat": "置頂" },
     { "name": "Bookmark marker", "url": "https://lofan.github.io/HKJQV/bookmark_snippet_generator.html", "cat": "置頂" },
     { "name": "Bookmarks Gen v2", "url": "https://lofan.github.io/HKJQV/bookmakrsgenv2.html", "cat": "置頂" },
     { "name": "YouTube Info Fetcher", "url": "https://lofan.github.io/HKJQV/ytinfo.html", "cat": "置頂" },
