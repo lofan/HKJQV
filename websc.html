@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Text Scraper & Extractor</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- Header -->
+        <header class="text-center space-y-2">
+            <h1 class="text-3xl font-bold text-white tracking-wide">Web Page Text Extractor</h1>
+            <p class="text-slate-400 text-sm">Extract raw text, headers, and links from any webpage using a CORS proxy.</p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <input 
+                    type="url" 
+                    id="urlInput" 
+                    placeholder="https://example.com" 
+                    class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required
+                >
+                <button 
+                    id="scrapeBtn" 
+                    onclick="scrapeURL()" 
+                    class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                >
+                    <span>Extract Text</span>
+                </button>
+            </div>
+
+            <!-- Proxy Selector -->
+            <div class="flex items-center gap-3 text-xs text-slate-400">
+                <label for="proxySelect">CORS Proxy Provider:</label>
+                <select id="proxySelect" class="bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-300">
+                    <option value="allorigins">AllOrigins (JSON/HTML)</option>
+                    <option value="corsproxy">CorsProxy.io</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Status / Error Banner -->
+        <div id="status" class="hidden p-4 rounded-lg text-sm font-medium"></div>
+
+        <!-- Output Section -->
+        <div id="outputContainer" class="hidden space-y-4">
+            
+            <!-- Controls Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-800 p-4 rounded-xl border border-slate-700">
+                <div class="flex items-center gap-2 text-sm text-slate-300">
+                    <span class="font-semibold text-indigo-400" id="wordCount">0</span> words | 
+                    <span class="font-semibold text-indigo-400" id="charCount">0</span> characters
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="copyOutput()" class="bg-slate-700 hover:bg-slate-600 text-xs px-3 py-2 rounded-lg transition">
+                        📋 Copy Text
+                    </button>
+                    <button onclick="downloadText()" class="bg-slate-700 hover:bg-slate-600 text-xs px-3 py-2 rounded-lg transition">
+                        💾 Download .txt
+                    </button>
+                </div>
+            </div>
+
+            <!-- Text Content Container -->
+            <div class="bg-slate-800 rounded-xl border border-slate-700 p-6 shadow-inner">
+                <pre id="outputText" class="whitespace-pre-wrap font-sans text-slate-300 text-sm leading-relaxed max-h-[600px] overflow-y-auto pr-2 select-text"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function scrapeURL() {
+            const urlInput = document.getElementById('urlInput').value.trim();
+            const statusDiv = document.getElementById('status');
+            const outputContainer = document.getElementById('outputContainer');
+            const outputText = document.getElementById('outputText');
+            const scrapeBtn = document.getElementById('scrapeBtn');
+            const proxyChoice = document.getElementById('proxySelect').value;
+
+            if (!urlInput) {
+                showStatus('Please enter a valid URL.', 'bg-red-900/50 text-red-200 border border-red-700');
+                return;
+            }
+
+            // UI Reset
+            showStatus('Fetching webpage content through proxy...', 'bg-indigo-900/50 text-indigo-200 border border-indigo-700');
+            scrapeBtn.disabled = true;
+            scrapeBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            outputContainer.classList.add('hidden');
+
+            let proxyUrl = '';
+            if (proxyChoice === 'allorigins') {
+                proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(urlInput)}`;
+            } else {
+                proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlInput)}`;
+            }
+
+            try {
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error(`HTTP Error Status: ${response.status}`);
+
+                let htmlContent = '';
+                if (proxyChoice === 'allorigins') {
+                    const data = await response.json();
+                    htmlContent = data.contents;
+                } else {
+                    htmlContent = await response.text();
+                }
+
+                if (!htmlContent) {
+                    throw new Error('Received empty response from page.');
+                }
+
+                // Parse HTML string into DOM
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+
+                // Remove non-visible content elements
+                const elementsToRemove = doc.querySelectorAll('script, style, noscript, iframe, svg, header, footer, nav');
+                elementsToRemove.forEach(el => el.remove());
+
+                // Extract text content from main body or container
+                const rawText = doc.body ? doc.body.innerText || doc.body.textContent : doc.textContent;
+
+                // Clean up whitespace (remove excessive line breaks and blank lines)
+                const cleanedText = rawText
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0)
+                    .join('\n\n');
+
+                if (!cleanedText.trim()) {
+                    showStatus('Page fetched, but no readable text was found (page might rely on dynamic Client-Side JavaScript).', 'bg-yellow-900/50 text-yellow-200 border border-yellow-700');
+                } else {
+                    statusDiv.classList.add('hidden');
+                    outputText.textContent = cleanedText;
+                    updateStats(cleanedText);
+                    outputContainer.classList.remove('hidden');
+                }
+
+            } catch (err) {
+                showStatus(`Failed to scrape page: ${err.message}. Note: Some websites actively block proxy scrapers or require Cloudflare verification.`, 'bg-red-900/50 text-red-200 border border-red-700');
+            } finally {
+                scrapeBtn.disabled = false;
+                scrapeBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function showStatus(message, classes) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `p-4 rounded-lg text-sm font-medium ${classes}`;
+            statusDiv.textContent = message;
+            statusDiv.classList.remove('hidden');
+        }
+
+        function updateStats(text) {
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+            const chars = text.length;
+            document.getElementById('wordCount').textContent = words.toLocaleString();
+            document.getElementById('charCount').textContent = chars.toLocaleString();
+        }
+
+        function copyOutput() {
+            const text = document.getElementById('outputText').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Extracted text copied to clipboard!');
+            });
+        }
+
+        function downloadText() {
+            const text = document.getElementById('outputText').textContent;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'scraped-content.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
