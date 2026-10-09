@@ -306,7 +306,7 @@ function render(){
   sectionsEl.innerHTML = groups.map(g=>`
     <section class="cat ${g.cat==='置頂'?'pinned':''}" id="cat-${slug(g.cat)}" data-cat="${g.cat}">
       <div class="cat-head">
-        <span class="cat-tag">${g.cat==='置頂' ? 'PIN' : slug(g.cat).slice(0,4).toUpperCase()}</span>
+        <span class="cat-tag">${g.cat==='自我成長' ? 'PIN' : slug(g.cat).slice(0,4).toUpperCase()}</span>
         <span class="cat-title">${g.cat}</span>
         <span class="cat-count">${g.items.length} 項</span>
       </div>
