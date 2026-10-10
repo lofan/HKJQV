@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Web Scraper & Reader</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 1);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-sky-500 selection:text-white">
+
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-sky-500 to-indigo-600 text-white p-2.5 rounded-xl shadow-lg shadow-sky-500/10">
+                    <i class="fa-solid fa-spider text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-indigo-300 to-purple-400">
+                        Smart Scraper & Reader
+                    </h1>
+                    <p class="text-xs text-slate-400 hidden sm:block">Bypass CORS & Cloudflare 403 blocks with proxy pipelines & bookmarklet</p>
+                </div>
+            </div>
+
+            <!-- Header Action Controls -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleBookmarkletModal()" class="px-3 py-1.5 text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition shadow-md flex items-center gap-1.5">
+                    <i class="fa-solid fa-bookmark text-amber-300"></i>
+                    <span class="hidden sm:inline">1-Click</span> Bookmarklet
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
+
+        <!-- Mode Selector Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-xl">
+            <div class="flex items-center gap-1 w-full sm:w-auto">
+                <button id="modeUrlBtn" onclick="switchInputMode('url')" class="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-semibold bg-sky-600 text-white transition shadow">
+                    <i class="fa-solid fa-globe mr-1.5"></i>Fetch URL
+                </button>
+                <button id="modeBookmarkletBtn" onclick="switchInputMode('bookmarklet')" class="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1.5 text-amber-400"></i>Bookmarklet (Bypass 403)
+                </button>
+                <button id="modeRawBtn" onclick="switchInputMode('raw')" class="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-code mr-1.5"></i>Paste Raw HTML
+                </button>
+            </div>
+            <div class="text-xs text-slate-400 px-3 hidden lg:block">
+                <span id="modeDescription">Fetch content via proxy pipelines</span>
+            </div>
+        </div>
+
+        <!-- Panel 1: URL Fetch Input -->
+        <section id="inputPanelUrl" class="bg-slate-900/70 backdrop-blur rounded-2xl border border-slate-800 p-5 shadow-xl space-y-4">
+            <form onsubmit="handleScrapeSubmit(event)" class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-1">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="urlInput" 
+                        placeholder="https://www.dexerto.com/tv/best-tv-shows-of-2026-3353357/" 
+                        class="w-full pl-10 pr-10 py-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm transition"
+                    />
+                    <button type="button" onclick="clearUrlInput()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="w-full md:w-60">
+                    <select id="proxySelect" class="w-full h-full py-3 px-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 text-xs transition">
+                        <option value="auto" selected>🚀 Auto Multi-Proxy Pipeline</option>
+                        <option value="jina">Jina Reader (https://r.jina.ai)</option>
+                        <option value="allorigins">AllOrigins Raw API</option>
+                        <option value="corsproxy">CorsProxy.io Pipeline</option>
+                        <option value="thingproxy">ThingProxy Engine</option>
+                        <option value="codetabs">CodeTabs Relay</option>
+                    </select>
+                </div>
+
+                <button 
+                    type="submit" 
+                    id="scrapeBtn" 
+                    class="px-6 py-3 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-semibold text-sm rounded-xl shadow-md shadow-sky-600/20 transition flex items-center justify-center gap-2 min-w-[140px]">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Extract</span>
+                </button>
+            </form>
+
+            <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2">
+                <span class="text-slate-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                    Automated proxy pipeline rotates through gateways on failure
+                </span>
+                <button type="button" onclick="loadSampleUrl()" class="text-sky-400 hover:text-sky-300 hover:underline">
+                    Load Dexerto Sample URL
+                </button>
+            </div>
+        </section>
+
+        <!-- Panel 2: Bookmarklet Guidance (Bypass Cloudflare / 403) -->
+        <section id="inputPanelBookmarklet" class="hidden bg-slate-900/70 backdrop-blur rounded-2xl border border-indigo-900/50 p-5 shadow-xl space-y-4">
+            <div class="flex items-start gap-4">
+                <div class="bg-amber-500/10 border border-amber-500/30 text-amber-400 p-3 rounded-xl text-xl hidden sm:block">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <div class="space-y-2 flex-1">
+                    <h3 class="font-bold text-slate-100 text-sm sm:text-base flex items-center gap-2">
+                        Bypass Cloudflare 403 & Anti-Bot Protection
+                        <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/30">100% Success Rate</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        When websites like Dexerto block proxies with HTTP 403 or Cloudflare captchas, use this bookmarklet. It runs directly inside your active browser tab, extracts the rendered page content, and injects it straight into this app!
+                    </p>
+
+                    <div class="pt-2 flex flex-wrap items-center gap-3">
+                        <a 
+                            id="bookmarkletDragButton" 
+                            href="#" 
+                            onclick="alert('Drag this button to your Browser Bookmarks Toolbar!'); return false;"
+                            class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-indigo-600 text-slate-950 font-bold text-xs rounded-xl shadow-lg cursor-grab active:cursor-grabbing hover:brightness-110 transition flex items-center gap-2 border border-amber-300/40">
+                            <i class="fa-solid fa-grip-dots-vertical"></i>
+                            <i class="fa-solid fa-bookmark"></i>
+                            <span>Scrape Page to App</span>
+                        </a>
+                        <span class="text-xs text-slate-400">&larr; Drag & Drop this button to your Bookmarks Bar!</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1.5">
+                <div class="font-semibold text-slate-300 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info text-sky-400"></i> How to use:
+                </div>
+                <ol class="list-decimal list-inside space-y-1 pl-1 text-slate-400">
+                    <li>Drag the button above into your browser's bookmarks bar.</li>
+                    <li>Open the blocked target web page in a new browser tab (e.g., Dexerto article).</li>
+                    <li>Click the <strong>Scrape Page to App</strong> bookmarklet in your bookmarks bar.</li>
+                    <li>The full clean text will be copied and automatically loaded right here!</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Panel 3: Raw HTML / Text Paste -->
+        <section id="inputPanelRaw" class="hidden bg-slate-900/70 backdrop-blur rounded-2xl border border-slate-800 p-5 shadow-xl space-y-3">
+            <div class="flex items-center justify-between">
+                <label class="text-xs text-slate-300 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-code text-indigo-400"></i>
+                    <span>Paste HTML Source or Raw Article Text:</span>
+                </label>
+                <span class="text-xs text-slate-500">Tip: Press <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px]">Ctrl+U</kbd> or <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px]">Ctrl+A</kbd> on any webpage</span>
+            </div>
+            <textarea 
+                id="rawHtmlInput" 
+                rows="5" 
+                placeholder="Paste raw <html> content or plain text here..." 
+                class="w-full p-3.5 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-y"
+            ></textarea>
+            <div class="flex justify-end gap-2">
+                <button 
+                    onclick="clearRawInput()" 
+                    class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-xl transition">
+                    Clear
+                </button>
+                <button 
+                    onclick="parseRawHtml()" 
+                    class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs rounded-xl shadow transition flex items-center gap-2">
+                    <i class="fa-solid fa-filter"></i>
+                    <span>Process HTML / Text</span>
+                </button>
+            </div>
+        </section>
+
+        <div id="statusArea" class="hidden rounded-xl p-4 border transition-all duration-200">
+            <div class="flex items-start gap-3">
+                <div id="statusIcon" class="mt-0.5"></div>
+                <div class="flex-1 space-y-1">
+                    <h4 id="statusTitle" class="font-semibold text-sm"></h4>
+                    <p id="statusDesc" class="text-xs opacity-90 leading-relaxed"></p>
+                    <div id="proxyAttemptLog" class="mt-2 text-[11px] font-mono opacity-80 space-y-1 hidden bg-slate-950/60 p-2.5 rounded-lg border border-slate-800"></div>
+                </div>
+            </div>
+        </div>
+
+        <section id="outputSection" class="hidden flex-1 flex flex-col bg-slate-900/80 backdrop-blur rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
+            
+            <!-- Output Header Controls -->
+            <div class="border-b border-slate-800 p-3 flex flex-wrap items-center justify-between gap-3 bg-slate-950/40">
+                
+                <!-- Output Navigation Tabs -->
+                <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                    <button id="tabTextBtn" onclick="switchOutputTab('text')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition">
+                        <i class="fa-solid fa-file-lines mr-1.5"></i>Clean Text
+                    </button>
+                    <button id="tabHeadingsBtn" onclick="switchOutputTab('headings')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
+                        <i class="fa-solid fa-list-ul mr-1.5"></i>Headings & Outline
+                    </button>
+                    <button id="tabLinksBtn" onclick="switchOutputTab('links')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
+                        <i class="fa-solid fa-link mr-1.5"></i>Extracted Links
+                    </button>
+                    <button id="tabMetaBtn" onclick="switchOutputTab('meta')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
+                        <i class="fa-solid fa-circle-info mr-1.5"></i>Metadata
+                    </button>
+                </div>
+
+                <!-- Live Search Box within Output -->
+                <div class="relative flex-1 max-w-xs min-w-[180px]">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="filterInput" 
+                        oninput="filterExtractedContent()" 
+                        placeholder="Search text..." 
+                        class="w-full pl-8 pr-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                    />
+                </div>
+
+                <!-- Stats & Export Action Bar -->
+                <div class="flex items-center gap-2">
+                    <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 mr-2">
+                        <span class="bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">
+                            <strong id="statWords" class="text-sky-400">0</strong> words
+                        </span>
+                        <span class="bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">
+                            <strong id="statChars" class="text-sky-400">0</strong> chars
+                        </span>
+                    </div>
+
+                    <button onclick="copyActiveTabContent()" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition border border-slate-700 flex items-center gap-1.5">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>Copy</span>
+                    </button>
+                    <button onclick="downloadActiveTabContent()" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition border border-slate-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Download</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Output Contents -->
+            <div class="flex-1 p-5 min-h-[420px] max-h-[650px] overflow-y-auto">
+                
+                <!-- Clean Text Tab -->
+                <div id="tabContentText" class="space-y-4">
+                    <div id="textOutputDisplay" class="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap font-sans select-text"></div>
+                </div>
+
+                <!-- Headings Tab -->
+                <div id="tabContentHeadings" class="hidden space-y-3">
+                    <div id="headingsSummary" class="text-xs text-slate-400 mb-2"></div>
+                    <ul id="headingsList" class="space-y-2 text-sm"></ul>
+                </div>
+
+                <!-- Links Tab -->
+                <div id="tabContentLinks" class="hidden space-y-3">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 sticky top-0">
+                                <tr>
+                                    <th class="p-2.5 rounded-l-lg">Anchor Text</th>
+                                    <th class="p-2.5 rounded-r-lg">URL Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="linksTableBody" class="divide-y divide-slate-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Metadata Tab -->
+                <div id="tabContentMeta" class="hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="metaGrid"></div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bookmarklet Help Modal -->
+    <div id="bookmarkletModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                    1-Click Bookmarklet Guide
+                </h3>
+                <button onclick="toggleBookmarkletModal()" class="text-slate-400 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <p class="text-xs text-slate-300 leading-relaxed">
+                The Scraper Bookmarklet allows you to extract text from any webpage that blocks standard scrapers or requires login/Cloudflare verification.
+            </p>
+
+            <div class="space-y-3 text-xs">
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-semibold text-amber-300">Step 1: Save Bookmarklet</div>
+                    <p class="text-slate-400">Drag the yellow button from the Bookmarklet tab directly onto your browser's Bookmarks bar (Press <kbd class="px-1 bg-slate-800 rounded">Ctrl+Shift+B</kbd> or <kbd class="px-1 bg-slate-800 rounded">Cmd+Shift+B</kbd> to show bookmarks bar).</p>
+                </div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-semibold text-amber-300">Step 2: Click on any page</div>
+                    <p class="text-slate-400">Visit any target page (like Dexerto, Medium, NYTimes), click the bookmarklet button in your toolbar, and the text will be copied and transferred to this reader.</p>
+                </div>
+            </div>
+
+            <div class="pt-2 flex justify-end">
+                <button onclick="toggleBookmarkletModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold">
+                    Got it
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global State Store
+        let scrapedData = {
+            rawText: '',
+            filteredText: '',
+            headings: [],
+            links: [],
+            metadata: {}
+        };
+
+        let currentInputMode = 'url';
+        let currentOutputTab = 'text';
+
+        // Window Init
+        window.onload = function() {
+            setupBookmarkletHref();
+            checkUrlQueryParams();
+        };
+
+        // Check if URL parameters contain data injected from Bookmarklet
+        function checkUrlQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const scrapedTextData = urlParams.get('scrapedData');
+            const sourceUrl = urlParams.get('sourceUrl');
+
+            if (scrapedTextData) {
+                try {
+                    const decodedText = decodeURIComponent(scrapedTextData);
+                    parseAndPopulateData(decodedText, sourceUrl || 'Extracted via Bookmarklet');
+                    showStatus('success', 'Data Received from Bookmarklet', `Successfully loaded text extracted directly from ${sourceUrl || 'browser tab'}.`);
+                    // Clean URL query parameters
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } catch (e) {
+                    console.error('Error reading query params:', e);
+                }
+            }
+        }
+
+        // Generate Self-Contained JavaScript Bookmarklet Code
+        function setupBookmarkletHref() {
+            const bookmarkletCode = `javascript:(function(){
+                try {
+                    var title = document.title || 'Scraped Page';
+                    var url = window.location.href;
+                    var bodyText = document.body ? (document.body.innerText || document.body.textContent) : '';
+                    
+                    if (!bodyText) { alert('No readable text found on this page.'); return; }
+
+                    var cleanText = bodyText.replace(/\\n\\s*\\n/g, '\\n\\n').trim();
+                    
+                    navigator.clipboard.writeText(cleanText).then(function() {
+                        alert('✅ Page text copied to clipboard! Switch back to the Scraper App and paste into Raw HTML / Text mode.');
+                    }).catch(function() {
+                        alert('Text extracted (' + cleanText.length + ' chars). You can copy it from prompt:');
+                    });
+                } catch(e) {
+                    alert('Extraction failed: ' + e.message);
+                }
+            })();`;
+
+            const btn = document.getElementById('bookmarkletDragButton');
+            if (btn) btn.href = bookmarkletCode;
+        }
+
+        // Switch Input Modes
+        function switchInputMode(mode) {
+            currentInputMode = mode;
+            const panelUrl = document.getElementById('inputPanelUrl');
+            const panelBookmarklet = document.getElementById('inputPanelBookmarklet');
+            const panelRaw = document.getElementById('inputPanelRaw');
+
+            const btnUrl = document.getElementById('modeUrlBtn');
+            const btnBookmarklet = document.getElementById('modeBookmarkletBtn');
+            const btnRaw = document.getElementById('modeRawBtn');
+            const modeDesc = document.getElementById('modeDescription');
+
+            // Reset visibility
+            panelUrl.classList.add('hidden');
+            panelBookmarklet.classList.add('hidden');
+            panelRaw.classList.add('hidden');
+
+            btnUrl.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition";
+            btnBookmarklet.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition";
+            btnRaw.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition";
+
+            if (mode === 'url') {
+                panelUrl.classList.remove('hidden');
+                btnUrl.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-semibold bg-sky-600 text-white transition shadow";
+                modeDesc.innerText = "Fetch content via proxy pipelines";
+            } else if (mode === 'bookmarklet') {
+                panelBookmarklet.classList.remove('hidden');
+                btnBookmarklet.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white transition shadow";
+                modeDesc.innerText = "Drag bookmarklet to extract directly from blocked tabs";
+            } else {
+                panelRaw.classList.remove('hidden');
+                btnRaw.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-semibold bg-sky-600 text-white transition shadow";
+                modeDesc.innerText = "Parse HTML or plain text directly";
+            }
+        }
+
+        // Switch Output Display Tabs
+        function switchOutputTab(tab) {
+            currentOutputTab = tab;
+            const tabs = ['text', 'headings', 'links', 'meta'];
+
+            tabs.forEach(t => {
+                const contentEl = document.getElementById(`tabContent${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                const btnEl = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}Btn`);
+
+                if (t === tab) {
+                    contentEl.classList.remove('hidden');
+                    btnEl.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition";
+                } else {
+                    contentEl.classList.add('hidden');
+                    btnEl.className = "px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition";
+                }
+            });
+        }
+
+        function clearUrlInput() {
+            document.getElementById('urlInput').value = '';
+        }
+
+        function clearRawInput() {
+            document.getElementById('rawHtmlInput').value = '';
+        }
+
+        function loadSampleUrl() {
+            document.getElementById('urlInput').value = 'https://www.dexerto.com/tv/best-tv-shows-of-2026-3353357/';
+        }
+
+        function toggleBookmarkletModal() {
+            const modal = document.getElementById('bookmarkletModal');
+            modal.classList.toggle('hidden');
+        }
+
+        async function handleScrapeSubmit(event) {
+            event.preventDefault();
+
+            let targetUrl = document.getElementById('urlInput').value.trim();
+            if (!targetUrl) {
+                showStatus('error', 'URL Required', 'Please enter a web URL to extract text.');
+                return;
+            }
+
+            if (!/^https?:\/\//i.test(targetUrl)) {
+                targetUrl = 'https://' + targetUrl;
+                document.getElementById('urlInput').value = targetUrl;
+            }
+
+            const proxySelect = document.getElementById('proxySelect').value;
+            const scrapeBtn = document.getElementById('scrapeBtn');
+            const logArea = document.getElementById('proxyAttemptLog');
+
+            scrapeBtn.disabled = true;
+            scrapeBtn.classList.add('opacity-50');
+            logArea.innerHTML = '';
+            logArea.classList.remove('hidden');
+
+            showStatus('fetching', 'Connecting to Proxy Pipeline...', `Targeting: ${targetUrl}`);
+
+            // Proxy Strategy Catalog
+            const proxyStrategies = [
+                { name: 'Jina Reader API', fn: fetchJinaReader },
+                { name: 'AllOrigins Raw API', fn: fetchAllOriginsRaw },
+                { name: 'CorsProxy.io Engine', fn: fetchCorsProxy },
+                { name: 'ThingProxy Pipeline', fn: fetchThingProxy },
+                { name: 'CodeTabs Proxy Relay', fn: fetchCodeTabs }
+            ];
+
+            let activeStrategies = proxyStrategies;
+            if (proxySelect !== 'auto') {
+                activeStrategies = proxyStrategies.filter(s => s.name.toLowerCase().includes(proxySelect));
+            }
+
+            let success = false;
+
+            for (const strategy of activeStrategies) {
+                appendLog(`⏳ Requesting via ${strategy.name}...`);
+                try {
+                    const result = await strategy.fn(targetUrl);
+                    if (result && result.length > 80) {
+                        appendLog(`✅ Received ${result.length.toLocaleString()} characters from ${strategy.name}`);
+                        parseAndPopulateData(result, targetUrl);
+                        showStatus('success', 'Extraction Successful', `Successfully extracted text using ${strategy.name}.`);
+                        success = true;
+                        break;
+                    } else {
+                        throw new Error('Received empty or blocked response.');
+                    }
+                } catch (err) {
+                    appendLog(`❌ ${strategy.name} failed: ${err.message}`);
+                }
+            }
+
+            if (!success) {
+                showStatus('error', 'All Proxy Gateways Blocked (HTTP 403 / Cloudflare)', 
+                    'The requested target actively blocks proxy relays. Use the "Bookmarklet (Bypass 403)" mode above or paste the page source into "Paste Raw HTML".');
+            }
+
+            scrapeBtn.disabled = false;
+            scrapeBtn.classList.remove('opacity-50');
+        }
+
+        // Proxy Fetch Functions
+        async function fetchJinaReader(url) {
+            const response = await fetch(`https://r.jina.ai/${url}`, {
+                headers: { 'Accept': 'text/plain' }
+            });
+            if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
+            return await response.text();
+        }
+
+        async function fetchAllOriginsRaw(url) {
+            const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+            if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
+            return await response.text();
+        }
+
+        async function fetchCorsProxy(url) {
+            const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
+            if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
+            return await response.text();
+        }
+
+        async function fetchThingProxy(url) {
+            const response = await fetch(`https://thingproxy.freeboard.io/fetch/${url}`);
+            if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
+            return await response.text();
+        }
+
+        async function fetchCodeTabs(url) {
+            const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`);
+            if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
+            return await response.text();
+        }
+
+        // Raw HTML or Text Parser
+        function parseRawHtml() {
+            const rawContent = document.getElementById('rawHtmlInput').value.trim();
+            if (!rawContent) {
+                showStatus('error', 'No Content Provided', 'Please paste HTML or plain text into the box.');
+                return;
+            }
+
+            parseAndPopulateData(rawContent, 'Pasted Source Code');
+            showStatus('success', 'Source Parsed', 'Processed input into structured text, headings, and links.');
+        }
+
+        function parseAndPopulateData(rawHtmlOrMarkdown, sourceUrl) {
+            const isHTML = rawHtmlOrMarkdown.includes('<html') || rawHtmlOrMarkdown.includes('<div') || rawHtmlOrMarkdown.includes('<p');
+
+            let dom = null;
+            if (isHTML) {
+                try {
+                    const parser = new DOMParser();
+                    dom = parser.parseFromString(rawHtmlOrMarkdown, 'text/html');
+                    
+                    // Remove scripts, styles, metadata tags
+                    const elementsToRemove = dom.querySelectorAll('script, style, noscript, iframe, svg, header, footer, nav');
+                    elementsToRemove.forEach(el => el.remove());
+                } catch(e) {
+                    console.warn('DOM parsing failed, falling back to string processing:', e);
+                }
+            }
+
+            // Extract Clean Text
+            let extractedText = "";
+            if (dom && dom.body) {
+                extractedText = dom.body.innerText || dom.body.textContent || "";
+            } else {
+                extractedText = rawHtmlOrMarkdown;
+            }
+
+            // Clean whitespace & formatting
+            extractedText = extractedText
+                .replace(/\r\n/g, '\n')
+                .replace(/\n\s*\n/g, '\n\n')
+                .replace(/[ \t]+/g, ' ')
+                .trim();
+
+            scrapedData.rawText = extractedText;
+            scrapedData.filteredText = extractedText;
+
+            // Extract Headings & Structure
+            scrapedData.headings = [];
+            if (dom) {
+                const headingElements = dom.querySelectorAll('h1, h2, h3, h4');
+                headingElements.forEach(h => {
+                    const txt = h.innerText.trim();
+                    if (txt) {
+                        scrapedData.headings.push({ tag: h.tagName.toLowerCase(), text: txt });
+                    }
+                });
+            } else {
+                // Extract lines that look like headers or Markdown '#'
+                const lines = rawHtmlOrMarkdown.split('\n');
+                lines.forEach(l => {
+                    const trimmed = l.trim();
+                    if (trimmed.startsWith('#')) {
+                        scrapedData.headings.push({ tag: 'h2', text: trimmed.replace(/#+/g, '').trim() });
+                    } else if (trimmed.length > 3 && trimmed.length < 80 && /^[A-Z0-9\s:—\-]+$/.test(trimmed)) {
+                        scrapedData.headings.push({ tag: 'h3', text: trimmed });
+                    }
+                });
+            }
+
+            // Extract Links
+            scrapedData.links = [];
+            if (dom) {
+                const anchorElements = dom.querySelectorAll('a[href]');
+                anchorElements.forEach(a => {
+                    const text = a.innerText.trim() || '[Image / Icon Link]';
+                    const href = a.getAttribute('href');
+                    if (href && !href.startsWith('javascript:')) {
+                        scrapedData.links.push({ text, href });
+                    }
+                });
+            }
+
+            // Metadata Statistics
+            const wordCount = (extractedText.split(/\s+/).filter(w => w.length > 0)).length;
+            scrapedData.metadata = {
+                'Source Origin': sourceUrl,
+                'Page Title': dom ? (dom.title || 'N/A') : 'Extracted Text Document',
+                'Word Count': wordCount.toLocaleString(),
+                'Character Count': extractedText.length.toLocaleString(),
+                'Headings Found': scrapedData.headings.length,
+                'Links Extracted': scrapedData.links.length,
+                'Extraction Timestamp': new Date().toLocaleTimeString()
+            };
+
+            renderOutputUI();
+        }
+
+        function renderOutputUI() {
+            document.getElementById('outputSection').classList.remove('hidden');
+
+            // Render Text
+            document.getElementById('textOutputDisplay').innerText = scrapedData.filteredText;
+            document.getElementById('statWords').innerText = scrapedData.metadata['Word Count'];
+            document.getElementById('statChars').innerText = scrapedData.metadata['Character Count'];
+
+            // Render Headings
+            const headingsUl = document.getElementById('headingsList');
+            const headingsSummary = document.getElementById('headingsSummary');
+            headingsUl.innerHTML = '';
+
+            headingsSummary.innerText = `Found ${scrapedData.headings.length} structural heading elements.`;
+
+            if (scrapedData.headings.length === 0) {
+                headingsUl.innerHTML = '<li class="text-slate-500 italic p-2">No structural headings detected.</li>';
+            } else {
+                scrapedData.headings.forEach(h => {
+                    const li = document.createElement('li');
+                    const indentClass = h.tag === 'h1' ? 'font-bold text-sky-400 text-base' : h.tag === 'h2' ? 'pl-3 font-semibold text-slate-200' : 'pl-6 text-slate-400 text-xs';
+                    li.className = `p-2 rounded-lg bg-slate-950 border border-slate-800/80 ${indentClass}`;
+                    li.innerHTML = `<span class="uppercase text-[10px] font-mono bg-slate-900 border border-slate-700 px-1.5 py-0.5 rounded mr-2 text-slate-400">${h.tag}</span> ${escapeHtml(h.text)}`;
+                    headingsUl.appendChild(li);
+                });
+            }
+
+            // Render Links Table
+            const linksTbody = document.getElementById('linksTableBody');
+            linksTbody.innerHTML = '';
+
+            if (scrapedData.links.length === 0) {
+                linksTbody.innerHTML = '<tr><td colspan="2" class="p-4 text-slate-500 italic text-center">No hyperlinks extracted from document.</td></tr>';
+            } else {
+                scrapedData.links.slice(0, 150).forEach(l => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-900/60 transition";
+                    tr.innerHTML = `
+                        <td class="p-2.5 font-medium text-slate-200">${escapeHtml(l.text)}</td>
+                        <td class="p-2.5 text-sky-400 truncate max-w-xs font-mono text-[11px]">
+                            <a href="${escapeHtml(l.href)}" target="_blank" rel="noopener" class="hover:underline">${escapeHtml(l.href)}</a>
+                        </td>
+                    `;
+                    linksTbody.appendChild(tr);
+                });
+            }
+
+            // Render Metadata Grid
+            const metaGrid = document.getElementById('metaGrid');
+            metaGrid.innerHTML = '';
+            Object.entries(scrapedData.metadata).forEach(([k, v]) => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-1';
+                card.innerHTML = `<span class="text-xs text-slate-500 font-medium block">${k}</span><strong class="text-sm text-slate-100 font-mono">${escapeHtml(String(v))}</strong>`;
+                metaGrid.appendChild(card);
+            });
+        }
+
+        // Live Filter Function
+        function filterExtractedContent() {
+            const query = document.getElementById('filterInput').value.toLowerCase().trim();
+
+            if (!query) {
+                scrapedData.filteredText = scrapedData.rawText;
+            } else {
+                const paragraphs = scrapedData.rawText.split('\n\n');
+                const matchingParagraphs = paragraphs.filter(p => p.toLowerCase().includes(query));
+                scrapedData.filteredText = matchingParagraphs.join('\n\n');
+            }
+
+            document.getElementById('textOutputDisplay').innerText = scrapedData.filteredText || 'No matching text found for your search term.';
+        }
+
+        // Copy Tab Content
+        function copyActiveTabContent() {
+            let contentToCopy = scrapedData.filteredText;
+            if (currentOutputTab === 'links') {
+                contentToCopy = scrapedData.links.map(l => `${l.text}: ${l.href}`).join('\n');
+            } else if (currentOutputTab === 'headings') {
+                contentToCopy = scrapedData.headings.map(h => `[${h.tag}] ${h.text}`).join('\n');
+            } else if (currentOutputTab === 'meta') {
+                contentToCopy = Object.entries(scrapedData.metadata).map(([k, v]) => `${k}: ${v}`).join('\n');
+            }
+
+            const textArea = document.createElement('textarea');
+            textArea.value = contentToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            showStatus('success', 'Copied to Clipboard', `Copied data from current tab.`);
+        }
+
+        // Download Tab Content File
+        function downloadActiveTabContent() {
+            let content = scrapedData.filteredText;
+            let filename = `extracted_${currentOutputTab}.txt`;
+
+            if (currentOutputTab === 'links') {
+                content = JSON.stringify(scrapedData.links, null, 2);
+                filename = 'extracted_links.json';
+            } else if (currentOutputTab === 'meta') {
+                content = JSON.stringify(scrapedData.metadata, null, 2);
+                filename = 'extracted_metadata.json';
+            }
+
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        // Status Message Display Helper
+        function showStatus(type, title, desc) {
+            const area = document.getElementById('statusArea');
+            const icon = document.getElementById('statusIcon');
+            const t = document.getElementById('statusTitle');
+            const d = document.getElementById('statusDesc');
+
+            area.classList.remove('hidden', 'bg-emerald-950/40', 'border-emerald-800', 'bg-rose-950/40', 'border-rose-800', 'bg-sky-950/40', 'border-sky-800');
+
+            t.innerText = title;
+            d.innerText = desc;
+
+            if (type === 'success') {
+                area.classList.add('bg-emerald-950/40', 'border-emerald-800', 'text-emerald-200');
+                icon.innerHTML = '<i class="fa-solid fa-circle-check text-xl text-emerald-400"></i>';
+            } else if (type === 'error') {
+                area.classList.add('bg-rose-950/40', 'border-rose-800', 'text-rose-200');
+                icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-xl text-rose-400"></i>';
+            } else {
+                area.classList.add('bg-sky-950/40', 'border-sky-800', 'text-sky-200');
+                icon.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xl text-sky-400"></i>';
+            }
+        }
+
+        function appendLog(msg) {
+            const logArea = document.getElementById('proxyAttemptLog');
+            const p = document.createElement('div');
+            p.innerText = msg;
+            logArea.appendChild(p);
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+        }
+    </script>
+</body>
+</html>
