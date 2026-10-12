@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>零極限 Zero Limits｜荷歐波諾波諾（Ho'oponopono）導覽</title>
+<meta name="description" content="零極限（Zero Limits）與夏威夷療法荷歐波諾波諾：書籍介紹、四句真言與第五真言、相關影片、六大基本原則及英文摘要，整合於單一頁面方便瀏覽。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=zodiak@400,500,700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- Tokens ---------- */
+:root, [data-theme="light"] {
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+  --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+  --text-hero: clamp(3rem, 0.5rem + 7vw, 6.5rem);
+
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+  --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+
+  /* Sand + lagoon palette */
+  --color-bg: #f6f3ec;
+  --color-surface: #fbf9f4;
+  --color-surface-offset: #efeae0;
+  --color-border: #ddd6c8;
+  --color-divider: #e4ded2;
+  --color-text: #232a29;
+  --color-text-muted: #5d6664;
+  --color-text-faint: #9aa3a0;
+  --color-primary: #0b6b6e;
+  --color-primary-hover: #084e51;
+  --color-primary-highlight: #d3e5e2;
+  --color-text-inverse: #f6f3ec;
+
+  --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px oklch(0.2 0.02 190 / 0.06);
+  --shadow-md: 0 6px 18px oklch(0.2 0.02 190 / 0.09);
+  --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-display: 'Zodiak', 'Noto Serif TC', 'Songti TC', serif;
+  --font-body: 'Work Sans', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --nav-h: 3.5rem;
+}
+[data-theme="dark"] {
+  --color-bg: #0f1716;
+  --color-surface: #151f1e;
+  --color-surface-offset: #1a2625;
+  --color-border: #2a3a38;
+  --color-divider: #223130;
+  --color-text: #dbe3e1;
+  --color-text-muted: #98a6a3;
+  --color-text-faint: #667572;
+  --color-primary: #5fb7b8;
+  --color-primary-hover: #86cecf;
+  --color-primary-highlight: #1d3a3a;
+  --color-text-inverse: #0f1716;
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.3);
+  --shadow-md: 0 6px 18px oklch(0 0 0 / 0.35);
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  -webkit-text-size-adjust: none; text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+body {
+  min-height: 100dvh;
+  line-height: 1.75;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--color-primary); text-underline-offset: 3px; transition: color var(--transition-interactive); }
+a:hover { color: var(--color-primary-hover); }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+h1, h2, h3 { line-height: 1.25; text-wrap: balance; font-weight: 700; }
+p { text-wrap: pretty; }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+section[id], header[id] { scroll-margin-top: calc(var(--nav-h) + var(--space-4)); }
+.wrap { width: min(100% - 2.5rem, 1120px); margin-inline: auto; }
+.prose { max-width: 68ch; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- Sticky nav ---------- */
+.site-nav {
+  position: sticky; top: 0; z-index: 50;
+  height: var(--nav-h);
+  background: color-mix(in oklab, var(--color-bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-divider);
+}
+.site-nav .wrap { height: 100%; display: flex; align-items: center; gap: var(--space-3); }
+.brand {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-display); font-weight: 700; font-size: var(--text-lg);
+  color: var(--color-text); text-decoration: none; flex-shrink: 0;
+}
+.brand svg { width: 28px; height: 28px; color: var(--color-primary); }
+.brand:hover { color: var(--color-text); }
+.nav-links { display: flex; gap: var(--space-1); margin-left: auto; list-style: none; }
+.nav-links a {
+  display: block; padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm); font-weight: 500; white-space: nowrap;
+  color: var(--color-text-muted); text-decoration: none; border-radius: var(--radius-full);
+  transition: color var(--transition-interactive), background var(--transition-interactive);
+}
+.nav-links a:hover { color: var(--color-text); background: var(--color-surface-offset); }
+.nav-links a[aria-current="true"] { color: var(--color-primary); background: var(--color-primary-highlight); }
+.theme-toggle {
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-full);
+  color: var(--color-text-muted); flex-shrink: 0;
+}
+.theme-toggle:hover { background: var(--color-surface-offset); color: var(--color-text); }
+
+/* Mobile: brand text hides, links share one row */
+@media (max-width: 760px) {
+  .brand span { display: none; }
+  .site-nav .wrap { width: min(100% - 1rem, 1120px); gap: var(--space-1); }
+  .nav-links { margin-left: 0; flex: 1; justify-content: space-between; min-width: 0; }
+  .nav-links li { min-width: 0; }
+  .nav-links a { padding: var(--space-2) var(--space-1); font-size: var(--text-xs); }
+}
+
+/* ---------- Hero ---------- */
+.hero { padding-block: clamp(var(--space-16), 10vw, var(--space-24)) clamp(var(--space-12), 7vw, var(--space-20)); position: relative; overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; inset: auto -10% -40% auto; width: min(70vw, 640px); aspect-ratio: 1;
+  border-radius: 50%; border: 1px solid var(--color-border);
+  box-shadow: 0 0 0 40px color-mix(in oklab, var(--color-primary) 4%, transparent),
+              0 0 0 90px color-mix(in oklab, var(--color-primary) 3%, transparent);
+  pointer-events: none;
+}
+.eyebrow { font-size: var(--text-xs); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-4); }
+.hero h1 { font-family: var(--font-display); font-size: var(--text-hero); font-weight: 700; letter-spacing: -.01em; }
+.hero h1 small { display: block; font-size: var(--text-lg); font-weight: 500; color: var(--color-text-muted); margin-top: var(--space-3); letter-spacing: 0; }
+.hero .lead { font-size: var(--text-lg); color: var(--color-text-muted); margin-top: var(--space-6); max-width: 36em; position: relative; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-8); position: relative; }
+.btn {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-5); border-radius: var(--radius-full);
+  font-size: var(--text-sm); font-weight: 600; text-decoration: none;
+  transition: background var(--transition-interactive), color var(--transition-interactive), border-color var(--transition-interactive);
+}
+.btn-primary { background: var(--color-primary); color: var(--color-text-inverse); }
+.btn-primary:hover { background: var(--color-primary-hover); color: var(--color-text-inverse); }
+.btn-ghost { border: 1px solid var(--color-border); color: var(--color-text); }
+.btn-ghost:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+/* ---------- Sections ---------- */
+.section { padding-block: clamp(var(--space-12), 8vw, var(--space-20)); border-top: 1px solid var(--color-divider); }
+.section-head { margin-bottom: var(--space-10); }
+.section-head .eyebrow { margin-bottom: var(--space-2); }
+.section-head h2 { font-family: var(--font-display); font-size: var(--text-xl); }
+.section-head p { color: var(--color-text-muted); margin-top: var(--space-3); max-width: 60ch; }
+.alt { background: var(--color-surface-offset); }
+
+/* Books */
+.books { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+.book {
+  display: flex; gap: var(--space-5); padding: var(--space-5);
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl); box-shadow: var(--shadow-sm);
+}
+.book img { width: 100px; height: 150px; object-fit: cover; border-radius: var(--radius-sm); flex-shrink: 0; box-shadow: var(--shadow-md); background: var(--color-surface-offset); }
+.book h3 { font-family: var(--font-display); font-size: var(--text-lg); margin-bottom: var(--space-1); }
+.book h3 a { color: var(--color-text); text-decoration: none; }
+.book h3 a:hover { color: var(--color-primary); }
+.book .by { font-size: var(--text-sm); color: var(--color-text-muted); font-weight: 500; margin-bottom: var(--space-3); }
+.book p.blurb { font-size: var(--text-sm); color: var(--color-text); line-height: 1.7; }
+.book p.blurb + p.blurb { margin-top: var(--space-3); }
+.book .tag { display: inline-block; font-size: var(--text-xs); font-weight: 600; color: var(--color-primary); background: var(--color-primary-highlight); padding: 2px var(--space-3); border-radius: var(--radius-full); margin-bottom: var(--space-3); }
+.book .more { display: inline-block; margin-top: var(--space-3); font-size: var(--text-sm); font-weight: 600; }
+
+.about-hoop { margin-top: var(--space-10); padding: var(--space-6); border-left: 3px solid var(--color-primary); background: var(--color-surface); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+.about-hoop p + p { margin-top: var(--space-3); }
+.about-hoop a { overflow-wrap: anywhere; word-break: break-all; }
+
+/* Phrases */
+.phrases { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); list-style: none; }
+.phrase { padding: var(--space-6) var(--space-5); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+.phrase .zh { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 700; line-height: 1.2; }
+.phrase .en { margin-top: var(--space-2); color: var(--color-text-muted); font-size: var(--text-sm); font-family: var(--font-body); }
+.phrase .n { display: block; font-size: var(--text-xs); letter-spacing: .12em; font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-3); }
+.phrase-adv { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-6); background: var(--color-primary); border-color: var(--color-primary); color: var(--color-text-inverse); }
+.phrase-adv .n, .phrase-adv .en { color: color-mix(in oklab, var(--color-text-inverse) 78%, transparent); margin: 0; }
+.phrase-adv .zh { font-size: var(--text-xl); }
+.phrase-adv .lbl { margin-left: auto; font-size: var(--text-xs); font-weight: 600; letter-spacing: .1em; border: 1px solid color-mix(in oklab, var(--color-text-inverse) 50%, transparent); border-radius: var(--radius-full); padding: 2px var(--space-3); }
+
+/* Videos */
+.videos { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+.video { display: flex; flex-direction: column; gap: var(--space-3); }
+.video .frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden; background: #000; box-shadow: var(--shadow-md); }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video h3 { font-size: var(--text-sm); font-weight: 600; line-height: 1.5; }
+.video a { font-size: var(--text-sm); font-weight: 500; }
+
+/* Principles */
+.principles { list-style: none; display: grid; gap: 0; counter-reset: p; }
+.principle { display: grid; grid-template-columns: clamp(3.5rem, 8vw, 6rem) 1fr; gap: var(--space-4) var(--space-6); padding-block: var(--space-8); border-top: 1px solid var(--color-divider); }
+.principle:first-child { border-top: 0; padding-top: 0; }
+.principle .num { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 500; line-height: 1; color: var(--color-primary); }
+.principle h3 { font-family: var(--font-display); font-size: var(--text-lg); margin-bottom: var(--space-3); }
+.principle p { max-width: 62ch; color: var(--color-text); }
+.sign-off { margin-top: var(--space-8); padding: var(--space-5) var(--space-6); background: var(--color-primary-highlight); border-radius: var(--radius-lg); font-weight: 500; }
+
+/* Summary (English) */
+.summary { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(var(--space-8), 5vw, var(--space-16)); align-items: start; }
+.summary .lede p + p { margin-top: var(--space-4); }
+.summary .lede { font-size: var(--text-base); }
+.summary .toc-title { font-family: var(--font-display); font-size: var(--text-lg); margin-bottom: var(--space-4); }
+.concepts { list-style: none; display: grid; gap: var(--space-3); }
+.concept { padding: var(--space-5); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+.concept h4 { font-size: var(--text-base); font-weight: 600; margin-bottom: var(--space-2); }
+.concept h4 span { color: var(--color-primary); margin-right: var(--space-2); font-family: var(--font-display); }
+.concept p { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.7; }
+
+.note { margin-top: var(--space-10); font-size: var(--text-xs); color: var(--color-text-muted); max-width: 70ch; }
+
+/* Footer + back to top */
+footer { padding-block: var(--space-10); border-top: 1px solid var(--color-divider); font-size: var(--text-sm); color: var(--color-text-muted); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3); }
+.to-top {
+  position: fixed; right: var(--space-4); bottom: var(--space-4); z-index: 40;
+  width: 44px; height: 44px; display: grid; place-items: center; border-radius: var(--radius-full);
+  background: var(--color-primary); color: var(--color-text-inverse); box-shadow: var(--shadow-md);
+  opacity: 0; pointer-events: none; transform: translateY(8px);
+  transition: opacity .25s, transform .25s, background var(--transition-interactive);
+}
+.to-top.show { opacity: 1; pointer-events: auto; transform: none; }
+.to-top:hover { background: var(--color-primary-hover); color: var(--color-text-inverse); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .phrases { grid-template-columns: repeat(2, 1fr); }
+  .videos { grid-template-columns: 1fr; max-width: 640px; }
+  .summary { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .books { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .book { flex-direction: column; align-items: flex-start; }
+  .phrases { grid-template-columns: 1fr; }
+  .principle { grid-template-columns: 1fr; gap: var(--space-2); }
+  .phrase-adv .lbl { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<a class="sr-only" href="#main" style="position:absolute;left:-999px">跳至主要內容</a>
+
+<nav class="site-nav" aria-label="頁面導覽">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="零極限 回到頂部">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="5"/></svg>
+      <span>零極限</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#books">書籍介紹</a></li>
+      <li><a href="#phrases">真言練習</a></li>
+      <li><a href="#videos">相關影片</a></li>
+      <li><a href="#principles">六大原則</a></li>
+      <li><a href="#summary">英文摘要</a></li>
+    </ul>
+    <button class="theme-toggle" data-theme-toggle aria-label="切換深色模式" type="button"></button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Ho'oponopono · 夏威夷療法</p>
+    <h1>零極限<small>Zero Limits — 創造健康、平靜與財富的夏威夷療法</small></h1>
+    <p class="lead">零極限・夏威夷療法的正確名稱叫作「荷歐波諾波諾」（Ho’oponopono），它能有效幫助我們清除潛意識裡的障礙，釋放負面思想能量，讓我們回到歸零狀態。</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#phrases">開始四句真言</a>
+      <a class="btn btn-ghost" href="#videos">觀看影片</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= BOOKS ================= -->
+<section class="section" id="books" aria-labelledby="h-books">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">01</p>
+      <h2 id="h-books">書籍介紹</h2>
+      <p>英文原著與繁體中文版，點擊書名可前往 Amazon 頁面。</p>
+    </div>
+
+    <div class="books">
+      <article class="book" lang="en">
+        <img src="https://images-na.ssl-images-amazon.com/images/P/0470402563.01.LZZZZZZZ.jpg" alt="Zero Limits: The Secret Hawaiian System for Wealth, Health, Peace, and More 書籍封面" width="100" height="150" loading="lazy">
+        <div>
+          <span class="tag" lang="zh-Hant">英文原著</span>
+          <h3><a href="https://www.amazon.com/dp/0470402563" target="_blank" rel="noopener">Zero Limits: The Secret Hawaiian System for Wealth, Health, Peace, and More</a></h3>
+          <p class="by">by Joe Vitale &amp; Ihaleakala Hew Len</p>
+          <p class="blurb">"This riveting book can awaken humanity. It reveals the simple power of four phrases to transform your life. It's all based in love by an author spreading love. You should get ten copies of it—one for you and nine to give away. It's that good."</p>
+          <p class="blurb">— Debbie Ford, New York Times bestselling author of <em>The Dark Side of the Light Chasers</em>.</p>
+        </div>
+      </article>
+
+      <article class="book" lang="zh-Hant">
+        <img src="https://images-na.ssl-images-amazon.com/images/P/B07JN8FGTW.01.LZZZZZZZ.jpg" alt="零極限：創造健康、平靜與財富的夏威夷療法 書籍封面" width="100" height="150" loading="lazy">
+        <div>
+          <span class="tag">繁體中文版</span>
+          <h3><a href="https://www.amazon.com/dp/B07JN8FGTW" target="_blank" rel="noopener">零極限: 創造健康、平靜與財富的夏威夷療法</a></h3>
+          <p class="by">by 喬．維泰利</p>
+          <p class="blurb">四句話，就能解決所有問題？讓心處於「零」的狀態，一切就會順利？</p>
+          <p class="blurb">這聽起來很不可思議，卻有效得驚人！</p>
+          <p class="blurb">原在夏威夷島上的一位神奇治療師，卻轟動全美和日本，因為他運用的「零極限」法，宛如吸引力法則的終極版本，創造了不可思議的奇蹟！</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="about-hoop">
+      <p>零極限．夏威夷療法的正確名稱叫作「荷歐波諾波諾」（Ho’oponopono），它能有效幫助我們清除潛意識裡的障礙，釋放負面思想能量，讓我們回到歸零狀態。而此療法也有許多相關著作有興趣可以去閱讀。</p>
+      <p>延伸閱讀：<a href="https://vocus.cc/article/61e95809fd89780001a6730a" target="_blank" rel="noopener">https://vocus.cc/article/61e95809fd89780001a6730a</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHRASES ================= -->
+<section class="section alt" id="phrases" aria-labelledby="h-phrases">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">02</p>
+      <h2 id="h-phrases">四字真言與第五真言</h2>
+      <p>零極限療法由基礎的四字真言，再加上進階的第五真言組成。</p>
+    </div>
+
+    <ol class="phrases">
+      <li class="phrase"><span class="n">基礎 1</span><p class="zh">對不起</p><p class="en" lang="en">Sorry</p></li>
+      <li class="phrase"><span class="n">基礎 2</span><p class="zh">請原諒我</p><p class="en" lang="en">Please forgive me</p></li>
+      <li class="phrase"><span class="n">基礎 3</span><p class="zh">謝謝你</p><p class="en" lang="en">Thank you</p></li>
+      <li class="phrase"><span class="n">基礎 4</span><p class="zh">我愛你</p><p class="en" lang="en">I Love you</p></li>
+      <li class="phrase phrase-adv"><span class="n">第五真言</span><p class="zh">我原諒我自己</p><p class="en" lang="en">I forgive Myself</p><span class="lbl">進階</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= VIDEOS ================= -->
+<section class="section" id="videos" aria-labelledby="h-videos">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">03</p>
+      <h2 id="h-videos">相關影片</h2>
+      <p>三段與零極限、荷歐波諾波諾相關的 YouTube 影片。若無法內嵌播放，可點擊下方連結到 YouTube 觀看。</p>
+    </div>
+
+    <div class="videos">
+      <figure class="video">
+        <div class="frame">
+          <iframe src="https://www.youtube.com/embed/Uv9Ee_JNDz8" title="Ep321.什麼是荷歐波諾波諾？零極限夏威夷療法（廣東話）" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <h3>Ep321.什麼是荷歐波諾波諾？丨藍色太陽水可以喝嗎？丨Ho'oponopono丨零極限夏威夷療法（暴走的陳老C·廣東話）</h3>
+        <a href="https://www.youtube.com/watch?v=Uv9Ee_JNDz8" target="_blank" rel="noopener">在 YouTube 觀看</a>
+      </figure>
+
+      <figure class="video">
+        <div class="frame">
+          <iframe src="https://www.youtube.com/embed/mSRE-fE5BbM" title="【靈性筆記】「零極限 夏威夷療法」只要簡單五句話，讓你快速清理內在潛意識負能量！" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <h3>【靈性筆記】「零極限 夏威夷療法」只要簡單五句話，讓你快速清理內在潛意識負能量！</h3>
+        <a href="https://www.youtube.com/watch?v=mSRE-fE5BbM" target="_blank" rel="noopener">在 YouTube 觀看</a>
+      </figure>
+
+      <figure class="video">
+        <div class="frame">
+          <iframe src="https://www.youtube.com/embed/k6xgERXiE6w" title="終生受用！世上最治癒歌曲《零極限》廣東話版（Bobtivation 林盛斌）" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <h3>終生受用！世上最治癒歌曲《零極限》廣東話版｜每日8分鐘 撼動心靈 清除所有負能量｜夏威夷療法 Ho'oponopono（Bobtivation 林盛斌）</h3>
+        <a href="https://www.youtube.com/watch?v=k6xgERXiE6w" target="_blank" rel="noopener">在 YouTube 觀看</a>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRINCIPLES ================= -->
+<section class="section alt" id="principles" aria-labelledby="h-principles">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">04</p>
+      <h2 id="h-principles">零極限基本原則</h2>
+    </div>
+
+    <ol class="principles">
+      <li class="principle">
+        <span class="num" aria-hidden="true">1</span>
+        <div>
+          <h3>你對正在發生的事一點頭緒也沒有</h3>
+          <p>不論有意識或無意識，要知道在你身上和你周圍正在發生的每一件事是不可能的。就是現在，在你沒有察覺的情況下，你的身體和大腦正在自我調整。無數不可見的信號在空中傳遞，從無線電波到思想形態，而這一切你完全無法有意識地感應到。你的確正在共同創造你自己的實相，但這一切都是無意識地發生，你的意識並不知道，也無法控制。這就是為什麼你可以一直正面思考，卻依然窮困潦倒。你的意識並不是真正的創造者。</p>
+        </div>
+      </li>
+      <li class="principle">
+        <span class="num" aria-hidden="true">2</span>
+        <div>
+          <h3>你無法控制每一件事</h3>
+          <p>很顯然地，如果你不知道正在發生的每一件事，你當然也無法控制一切。認為你可以讓這世界遵照你的命令，只是一種滿足小我的追求。既然你的小我無法完全看透這個世界正在發生些什麼，那麼讓小我來決定什麼對你最好顯然是不智的。你可以選擇，但是你無法控制。你可以用你的意識開始去選擇你想經歷的事，但是你必須放下，不去管它是否會實現，或怎麼實現、何時實現。臣服才是關鍵。</p>
+        </div>
+      </li>
+      <li class="principle">
+        <span class="num" aria-hidden="true">3</span>
+        <div>
+          <h3>你可以療癒發生的一切</h3>
+          <p>無論你的生命中出現了什麼，無論它是怎麼來的，都需要你去療癒，只因為它現在出現在你的感知範圍內。也就是說，如果你感覺得到，你就能治癒它；如果你在別人身上看到它，而這讓你困擾，那你就要療癒它。或者就像歐普拉曾經說過的（這是別人告訴我的）：「因為你有，所以你看得出來。」你也許不明白為什麼那會出現在你的生命裡，或那是怎麼發生的，但你現在可以放下，因為你已經覺察到了。你療癒得越多，就越能清明地去實現你的期望，因為你釋放了淤塞的能量，讓這些能量可以用來做其他的事。</p>
+        </div>
+      </li>
+      <li class="principle">
+        <span class="num" aria-hidden="true">4</span>
+        <div>
+          <h3>你要對所有你經歷到的負百分之百的責任</h3>
+          <p>發生在你生命中的事並不是你的錯，不過是你的責任。這種個人責任的觀念除了你所說、所做、和所想的之外，也包括出現在你生命裡的其他人所說、所做和所想的一切。如果你對出現在你生命中的一切負起完全責任，那麼當別人發生問題時，那也是你的問題。這和第三條原則是相連的——原則三說的就是你可以療癒發生的一切。簡言之，對於你的現狀，你不能怪罪任何人或任何事，你所能做的就是負起責任，也就是接受它、擁有它、愛它。你療癒得越多，就越能與本源調和。</p>
+        </div>
+      </li>
+      <li class="principle">
+        <span class="num" aria-hidden="true">5</span>
+        <div>
+          <h3>通往零極限的車票就是說那句「我愛你」</h3>
+          <p>讓你獲得超越一切理解的平靜、讓你從療癒到彰顯的通行證，就是那句簡單的「我愛你」。向神性說「我愛你」會清理你內在的一切，這樣你就能體驗當下的奇蹟：零極限。重點就是要愛所有事物，愛這多餘的肥肉、愛這癮頭、愛這問題兒童，或是愛鄰居、伴侶——愛這一切。愛會轉化並釋放阻塞的能量，說「我愛你」，就能經歷到神性，就像說「芝麻開門」一樣。</p>
+        </div>
+      </li>
+      <li class="principle">
+        <span class="num" aria-hidden="true">6</span>
+        <div>
+          <h3>靈感比意念更重要</h3>
+          <p>意念是心智的玩具，靈感則是來自神性的指令。從某一刻起，你會臣服，然後開始傾聽，而不是乞求與等待。意念是小我以受限的觀點，企圖去控制生命；靈感則是從神性接收到訊息，並採取行動。意念發揮作用會帶來成果，靈感發揮作用則會帶來奇蹟。你比較喜歡哪一個？</p>
+        </div>
+      </li>
+    </ol>
+
+    <p class="sign-off">歡迎分享，「我愛你」「對不起」「請原諒我」「謝謝你」</p>
+  </div>
+</section>
+
+<!-- ================= ENGLISH SUMMARY ================= -->
+<section class="section" id="summary" aria-labelledby="h-summary" lang="en">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">05</p>
+      <h2 id="h-summary">Book Summary &amp; Key Insights</h2>
+      <p>英文摘要 · English summary of the book's central ideas.</p>
+    </div>
+
+    <div class="summary">
+      <div class="lede prose">
+        <p>The book's central premise is that true change and healing—whether for wealth, health, or peace—begin not by trying to change the external world, but by cleaning and transforming oneself at a fundamental level. It challenges the conventional idea of personal responsibility, asserting that you are 100% responsible for everything that appears in your life, not in the sense of blame, but because everything you experience is a projection of your own inner world, your memories, and your beliefs.</p>
+        <p>A key element of the book is the compelling story of Dr. Ihaleakala Hew Len, a therapist who reportedly healed an entire ward of mentally ill criminals at a psychiatric hospital in Hawaii without ever seeing them in person. Instead, he would review their files and use the Ho'oponopono process on himself, taking full responsibility for the "shared memories" that were manifesting as the patients' illnesses. He would repeat four simple phrases: "I'm sorry," "Please forgive me," "Thank you," and "I love you." As he "cleaned" himself, the patients began to heal, and the entire hospital environment transformed.</p>
+        <p>The book teaches that by using these phrases, you can clear subconscious blocks and negative memories that are holding you back. This process of "cleaning" allows you to return to a "zero state"—a state of pure potential, free from limiting beliefs and memories. In this state, you can access divine inspiration and live a limitless life.</p>
+      </div>
+
+      <div>
+        <h3 class="toc-title">Key Insights and Core Concepts</h3>
+        <ul class="concepts">
+          <li class="concept">
+            <h4><span>1</span>Radical Self-Responsibility</h4>
+            <p>The most profound insight is the concept of 100% responsibility. This isn't about blaming yourself for the world's problems, but about recognizing that everything you perceive is an internal creation. By taking responsibility for what's in your reality, you gain the power to change it. Instead of asking "What's wrong with them?" you ask "What's in me that is causing this?"</p>
+          </li>
+          <li class="concept">
+            <h4><span>2</span>Ho'oponopono as an Internal Cleansing Tool</h4>
+            <p>The book presents the Ho'oponopono practice as a simple yet powerful way to release negative energies and subconscious programs. The four phrases—"I'm sorry," "Please forgive me," "Thank you," and "I love you"—are not directed at anyone else but at the Divine within yourself. It's a process of asking for forgiveness for whatever is "in you" that is creating the problem, and expressing gratitude and love to the Divine for the opportunity to cleanse it.</p>
+          </li>
+          <li class="concept">
+            <h4><span>3</span>The "Zero State" of Pure Potential</h4>
+            <p>"Zero Limits" refers to the goal of the Ho'oponopono practice. The "zero state" is a state of being free from memories and programs. It is where you can connect with your divine self and receive inspiration, which is seen as the true source of all wealth, health, and peace.</p>
+          </li>
+          <li class="concept">
+            <h4><span>4</span>The Power of Forgiveness and Love</h4>
+            <p>The practice is fundamentally based on love and forgiveness. By loving and forgiving yourself, you heal the root cause of external issues. It teaches that the external world is a mirror, and by changing the inner reflection, you change what you see in the world.</p>
+          </li>
+          <li class="concept">
+            <h4><span>5</span>Beyond the Law of Attraction</h4>
+            <p>While the book touches on concepts related to the Law of Attraction, it goes deeper by focusing on inner work rather than just outer desire. It suggests that you don't need to "attract" things but rather "clean" yourself to allow divine inspiration and the correct actions to flow to you effortlessly.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="note" lang="zh-Hant">備註：以上內容為書籍及相關文章所述的觀點與敘述，屬於靈性與自我成長範疇，並非經科學驗證的醫療建議。</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>零極限 Zero Limits · 荷歐波諾波諾導覽</span>
+    <a href="#top">回到頂部 ↑</a>
+  </div>
+</footer>
+
+<button class="to-top" type="button" aria-label="返回頂部" data-top>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+(function () {
+  /* Theme toggle (kept in memory only) */
+  var root = document.documentElement;
+  var btn = document.querySelector('[data-theme-toggle]');
+  var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var moon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  var sun = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  function apply() {
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.innerHTML = dark ? sun : moon;
+    btn.setAttribute('aria-label', dark ? '切換淺色模式' : '切換深色模式');
+  }
+  btn.addEventListener('click', function () { dark = !dark; apply(); });
+  apply();
+
+  /* Active section highlight */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var sections = Object.keys(map).map(function (id) { return document.getElementById(id); });
+  function setActive() {
+    var y = window.scrollY + 120, current = null;
+    sections.forEach(function (s) { if (s.offsetTop <= y) current = s.id; });
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) current = sections[sections.length - 1].id;
+    links.forEach(function (a) {
+      if (current && map[current] === a) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+    document.querySelector('[data-top]').classList.toggle('show', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', setActive, { passive: true });
+  window.addEventListener('resize', setActive);
+  setActive();
+
+  document.querySelector('[data-top]').addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
