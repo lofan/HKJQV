@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView Link Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .output-group {
+            margin-bottom: 15px;
+        }
+        .output-group label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        textarea {
+            width: 100%;
+            height: 60px;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        button {
+            background-color: #2962ff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        button:hover {
+            background-color: #1e4bd8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>TradingView Link Generator</h2>
+    
+    <label for="stockCode">Stock Code / Symbol:</label>
+    <input type="text" id="stockCode" value="JPM" placeholder="e.g. AAPL, TSLA, JPM" oninput="generateLinks()">
+
+    <div class="output-group">
+        <label>URL Format:</label>
+        <textarea id="outUrl" readonly></textarea>
+        <button onclick="copyText('outUrl')">Copy URL</button>
+    </div>
+
+    <div class="output-group">
+        <label>Markdown Format:</label>
+        <textarea id="outMarkdown" readonly></textarea>
+        <button onclick="copyText('outMarkdown')">Copy Markdown</button>
+    </div>
+
+    <div class="output-group">
+        <label>HTML Format:</label>
+        <textarea id="outHtml" readonly></textarea>
+        <button onclick="copyText('outHtml')">Copy HTML</button>
+    </div>
+
+    <div class="output-group">
+        <label>Simple Text:</label>
+        <textarea id="outText" readonly></textarea>
+        <button onclick="copyText('outText')">Copy Text</button>
+    </div>
+</div>
+
+<script>
+    function generateLinks() {
+        let symbol = document.getElementById('stockCode').value.trim().toUpperCase();
+        if (!symbol) symbol = "JPM";
+        
+        let url = `https://tradingview.com/chart/?symbol=${symbol}`;
+        
+        document.getElementById('outUrl').value = url;
+        document.getElementById('outMarkdown').value = `[${symbol}](${url})`;
+        document.getElementById('outHtml').value = `<a href="${url}" target="_blank"> ${symbol}</a>`;
+        document.getElementById('outText').value = ` ${symbol}: ${url}`;
+    }
+
+    function copyText(elementId) {
+        let textarea = document.getElementById(elementId);
+        textarea.select();
+        document.execCommand('copy');
+   //     alert('Copied to clipboard!');
+    }
+
+    // Run on load
+    generateLinks();
+</script>
+
+</body>
+</html>
