@@ -1,47 +1,270 @@
-<h1>Charts</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Financial Charts Dashboard</title>
+  <style>
+    /* ==========================================
+       1. CSS Variables for Light & Dark Themes
+       ========================================== */
+    :root {
+      --bg-color: #f8f9fa;
+      --text-color: #212529;
+      --heading-color: #0f172a;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --link-bg: #f1f5f9;
+      --link-hover-bg: #e2e8f0;
+      --link-text: #2563eb;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --btn-bg: #1e293b;
+      --btn-text: #ffffff;
+    }
 
+    /* Dark Mode Theme Variables */
+    [data-theme="dark"] {
+      --bg-color: #0f172a;
+      --text-color: #e2e8f0;
+      --heading-color: #f8fafc;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --link-bg: #334155;
+      --link-hover-bg: #475569;
+      --link-text: #60a5fa;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      --btn-bg: #f8fafc;
+      --btn-text: #0f172a;
+    }
 
-<h2></h2>US Bonds</h2>
-  <a href="https://www.tradingview.com/chart/?symbol=US02Y" target="_blank">US02Y</a>
-                <a href="https://www.tradingview.com/chart/?symbol=US10Y" target="_blank">US10Y</a>
-                <a href="https://www.tradingview.com/chart/?symbol=US30Y" target="_blank">US30Y</a>
-                <a href="https://www.tradingview.com/chart/?symbol=US10Y-US02M" target="_blank">US10Y-US02M</a>
-                <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank">🗠 利率期貨</a>
-                <a href="https://politicalcalculations.blogspot.com/2025/09/us-recession-probability-as-fed-finally.html" target="_blank">🔥 Ress %</a>
-<h2>FX/CRYPTO</h2>
-          <a href="https://www.tradingview.com/chart/?symbol=DXY" target="_blank"><img src="US.svg"/>DXY</a>
-                <a href="https://www.tradingview.com/chart/?symbol=XAUUSD" target="_blank">GOLD</a>
-                <a href="https://www.tradingview.com/chart/?symbol=EURUSD" target="_blank"><img src="EU.svg"/>EUR</a>
-                 <a href="https://www.tradingview.com/chart/?symbol=USDJPY" target="_blank"><img src="JP.svg"/>JPY</a>
-                 <a href="https://www.tradingview.com/chart/?symbol=GBPUSD" target="_blank"><img src="GB.svg"/>GBP</a>
-                 <a href="https://www.tradingview.com/chart/?symbol=USDCAD" target="_blank"><img src="CA.svg"/>CAD</a>
-                 <a href="https://www.tradingview.com/chart/?symbol=USDCHF" target="_blank"><img src="CH.svg"/>CHF</a>
-                 <a href="https://www.tradingview.com/chart/?symbol=AUDUSD" target="_blank"><img src="AU.svg"/>AUD</a>
-                 <a href="https://www.tradingview.com/chart/?symbol=NZDUSD" target="_blank"><img src="NZ.svg"/>NZD</a>
-<a href="https://www.tradingview.com/chart/?symbol=BTCUSD" target="_blank">BITCOIN</a>
-<a href="https://www.tradingview.com/chart/?symbol=ETHUSD" target="_blank">ETHERUM</a>
-<h2>MacroEcon</h2>
-                <a href="https://en.macromicro.me/macro/us" target="_blank">🗠 MacroMicro</a>
-<a href="https://hk.investing.com/economic-calendar" target="_blank">🛠 財經日曆</a>
-      
-<a href="https://lofan.github.io/HKJQV/finance_masters.html" target="_blank">🛠 全球財經大師與投資經典導航</a>
-<a href="https://tradingeconomics.com/united-states/non-farm-payrolls" target="_blank">🛠 大非農</a>
-                <a href="https://www.investing.com/charts/multiple-forex-streaming-charts" target="_blank">🗠 MultiFX</a>
-                <a href="https://www.cboe.com/tradable-products/vix/" target="_blank">🗠 VIX</a>
-                <a href="https://stockcharts.com/freecharts/candleglance.html?XLB,XLE,XLF,XLI,XLK,XLP,XLU,XLV,XLY,$SPX|B|null" target="_blank">🗠 US Sectors</a>
-<h2>Index</h2>
-<a href="https://www.tradingview.com/chart/?symbol=DJI" target="_blank">Dow Jones</a>
-<a href="https://www.tradingview.com/chart/?symbol=IXIC" target="_blank">IXIC</a>
-<a href="https://www.tradingview.com/chart/?symbol=SPX" target="_blank">SPX</a>
+    /* Fallback: Auto dark mode if user OS prefers dark mode and no preference is set */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg-color: #0f172a;
+        --text-color: #e2e8f0;
+        --heading-color: #f8fafc;
+        --card-bg: #1e293b;
+        --card-border: #334155;
+        --link-bg: #334155;
+        --link-hover-bg: #475569;
+        --link-text: #60a5fa;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        --btn-bg: #f8fafc;
+        --btn-text: #0f172a;
+      }
+    }
 
-<a href="https://www.tradingview.com/chart/?symbol=MMTH" target="_blank">MMTH</a>
+    /* ==========================================
+       2. Page Styling & Layout
+       ========================================== */
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-<h2>美股 7 大銀行股卻逆市調整！今日由技術層面分析</h2>
-<a href="https://tradingview.com/chart/?symbol=JPM" target="_blank">摩根大通（JPM）</a> 
-<a href="https://tradingview.com/chart/?symbol=BAC" target="_blank">美銀（BAC）</a> 
-<a href="https://tradingview.com/chart/?symbol=WFC" target="_blank">富國銀行（WFC）</a> 
-<a href="https://tradingview.com/chart/?symbol=C%20GS" target="_blank">花旗（C)</a>
-<a href="https://tradingview.com/chart/?symbol=GS" target="_blank">高盛（GS）</a>
-<a href="https://tradingview.com/chart/?symbol=MS" target="_blank">大摩（MS）</a> 
-<a href="https://tradingview.com/chart/?symbol=USB" target="_blank">合眾銀行（USB）</a>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--card-border);
+      padding-bottom: 12px;
+    }
 
+    h1 {
+      margin: 0;
+      color: var(--heading-color);
+    }
+
+    .theme-toggle-btn {
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: opacity 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      opacity: 0.9;
+    }
+
+    section {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1.25rem;
+      color: var(--heading-color);
+    }
+
+    .links-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--link-bg);
+      color: var(--link-text);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 14px;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    a:hover {
+      background-color: var(--link-hover-bg);
+      transform: translateY(-1px);
+    }
+
+    a img {
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header with Dark Mode Toggle -->
+  <header>
+    <h1>Charts</h1>
+    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+      🌙 Dark Mode
+    </button>
+  </header>
+
+  <main>
+    <!-- US Bonds -->
+    <section>
+      <h2>US Bonds</h2>
+      <div class="links-container">
+        <a href="https://www.tradingview.com/chart/?symbol=US02Y" target="_blank">US02Y</a>
+        <a href="https://www.tradingview.com/chart/?symbol=US10Y" target="_blank">US10Y</a>
+        <a href="https://www.tradingview.com/chart/?symbol=US30Y" target="_blank">US30Y</a>
+        <a href="https://www.tradingview.com/chart/?symbol=US10Y-US02M" target="_blank">US10Y-US02M</a>
+        <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank">🗠 利率期貨</a>
+        <a href="https://politicalcalculations.blogspot.com/2025/09/us-recession-probability-as-fed-finally.html" target="_blank">🔥 Ress %</a>
+      </div>
+    </section>
+
+    <!-- FX / Crypto -->
+    <section>
+      <h2>FX/CRYPTO</h2>
+      <div class="links-container">
+        <a href="https://www.tradingview.com/chart/?symbol=DXY" target="_blank"><img src="US.svg" alt="US"/>DXY</a>
+        <a href="https://www.tradingview.com/chart/?symbol=XAUUSD" target="_blank">GOLD</a>
+        <a href="https://www.tradingview.com/chart/?symbol=EURUSD" target="_blank"><img src="EU.svg" alt="EU"/>EUR</a>
+        <a href="https://www.tradingview.com/chart/?symbol=USDJPY" target="_blank"><img src="JP.svg" alt="JP"/>JPY</a>
+        <a href="https://www.tradingview.com/chart/?symbol=GBPUSD" target="_blank"><img src="GB.svg" alt="GB"/>GBP</a>
+        <a href="https://www.tradingview.com/chart/?symbol=USDCAD" target="_blank"><img src="CA.svg" alt="CA"/>CAD</a>
+        <a href="https://www.tradingview.com/chart/?symbol=USDCHF" target="_blank"><img src="CH.svg" alt="CH"/>CHF</a>
+        <a href="https://www.tradingview.com/chart/?symbol=AUDUSD" target="_blank"><img src="AU.svg" alt="AU"/>AUD</a>
+        <a href="https://www.tradingview.com/chart/?symbol=NZDUSD" target="_blank"><img src="NZ.svg" alt="NZ"/>NZD</a>
+        <a href="https://www.tradingview.com/chart/?symbol=BTCUSD" target="_blank">BITCOIN</a>
+        <a href="https://www.tradingview.com/chart/?symbol=ETHUSD" target="_blank">ETHERUM</a>
+      </div>
+    </section>
+
+    <!-- MacroEcon -->
+    <section>
+      <h2>MacroEcon</h2>
+      <div class="links-container">
+        <a href="https://en.macromicro.me/macro/us" target="_blank">🗠 MacroMicro</a>
+        <a href="https://hk.investing.com/economic-calendar" target="_blank">🛠 財經日曆</a>
+        <a href="https://lofan.github.io/HKJQV/finance_masters.html" target="_blank">🛠 全球財經大師與投資經典導航</a>
+        <a href="https://tradingeconomics.com/united-states/non-farm-payrolls" target="_blank">🛠 大非農</a>
+        <a href="https://www.investing.com/charts/multiple-forex-streaming-charts" target="_blank">🗠 MultiFX</a>
+        <a href="https://www.cboe.com/tradable-products/vix/" target="_blank">🗠 VIX</a>
+        <a href="https://stockcharts.com/freecharts/candleglance.html?XLB,XLE,XLF,XLI,XLK,XLP,XLU,XLV,XLY,$SPX|B|null" target="_blank">🗠 US Sectors</a>
+      </div>
+    </section>
+
+    <!-- Index -->
+    <section>
+      <h2>Index</h2>
+      <div class="links-container">
+        <a href="https://www.tradingview.com/chart/?symbol=DJI" target="_blank">Dow Jones</a>
+        <a href="https://www.tradingview.com/chart/?symbol=IXIC" target="_blank">IXIC</a>
+        <a href="https://www.tradingview.com/chart/?symbol=SPX" target="_blank">SPX</a>
+        <a href="https://www.tradingview.com/chart/?symbol=MMTH" target="_blank">MMTH</a>
+      </div>
+    </section>
+
+    <!-- 7 Big Banks -->
+    <section>
+      <h2>美股 7 大銀行股卻逆市調整！今日由技術層面分析</h2>
+      <div class="links-container">
+        <a href="https://tradingview.com/chart/?symbol=JPM" target="_blank">摩根大通（JPM）</a> 
+        <a href="https://tradingview.com/chart/?symbol=BAC" target="_blank">美銀（BAC）</a> 
+        <a href="https://tradingview.com/chart/?symbol=WFC" target="_blank">富國銀行（WFC）</a> 
+        <a href="https://tradingview.com/chart/?symbol=C" target="_blank">花旗（C）</a>
+        <a href="https://tradingview.com/chart/?symbol=GS" target="_blank">高盛（GS）</a>
+        <a href="https://tradingview.com/chart/?symbol=MS" target="_blank">大摩（MS）</a> 
+        <a href="https://tradingview.com/chart/?symbol=USB" target="_blank">合眾銀行（USB）</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       3. JavaScript for Dark Mode Switcher
+       ========================================== -->
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+    
+    // Check saved theme or fallback to OS setting
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Apply initial theme based on saved setting or OS preference
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      toggleBtn.textContent = '☀️ Light Mode';
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      toggleBtn.textContent = '🌙 Dark Mode';
+    }
+
+    // Toggle button handler
+    toggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      let newTheme = 'light';
+
+      if (currentTheme !== 'dark') {
+        newTheme = 'dark';
+        toggleBtn.textContent = '☀️ Light Mode';
+      } else {
+        toggleBtn.textContent = '🌙 Dark Mode';
+      }
+
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+  </script>
+</body>
+</html>
