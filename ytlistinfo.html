@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube List Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }
+        code {
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-12 transition-colors duration-300 bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-10 text-center relative">
+            <div class="absolute right-0 top-0">
+                <button onclick="toggleDarkMode()" class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-all">
+                    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+
+            <h1 class="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">YouTube List Converter</h1>
+            <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-lg">Input a list of titles and URLs to generate beautifully formatted Markdown or HTML.</p>
+            
+            <!-- Global Clear Button -->
+            <button onclick="resetAllFields()" class="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-red-600 dark:hover:text-red-400 rounded-xl text-sm font-semibold transition-all shadow-sm active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Reset All Fields
+            </button>
+        </header>
+
+        <!-- Command Generator Box -->
+        <div class="mb-8 bg-slate-800 text-slate-200 p-6 rounded-2xl shadow-lg border border-slate-700">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-blue-500 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span class="text-sm font-bold uppercase tracking-wider">Step 1: Generate Input Data</span>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between items-end mb-1">
+                        <label class="block text-xs font-semibold text-slate-400 uppercase">Playlist URL</label>
+                        <button onclick="clearPlaylistUrl()" class="text-xs text-red-400 hover:text-red-300 transition-colors flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            Clear URL
+                        </button>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="playlistUrl" 
+                        oninput="updateCommand()"
+                        placeholder="https://www.youtube.com/playlist?list=..." 
+                        class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    >
+                </div>
+                
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-500 mb-2 uppercase font-bold tracking-tight">Run this command in your terminal:</p>
+                    <div class="flex items-center justify-between gap-4">
+                        <code id="commandCode" class="text-blue-400 text-xs md:text-sm break-all bg-transparent p-0">yt-dlp --get-title --get-url --flat-playlist &lt;playlist_url&gt;</code>
+                        <button onclick="copyCommand()" class="shrink-0 text-xs bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-bold transition-all shadow-md active:scale-95">
+                            Copy Command
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Card -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-slate-200 dark:border-slate-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Step 2: Paste Terminal Output</h2>
+                    <button onclick="loadSampleText()" class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">Load Sample</button>
+                </div>
+                <textarea 
+                    id="textInput" 
+                    class="w-full h-80 p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all resize-none text-slate-800 dark:text-slate-200"
+                    placeholder="Paste terminal output here (Title \n URL format)..."
+                ></textarea>
+                
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                    <button 
+                        onclick="generateOutput('markdown')" 
+                        class="flex items-center justify-center gap-2 py-3 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-semibold rounded-xl shadow-md transition-all active:scale-95"
+                    >
+                        <span>To Markdown</span>
+                    </button>
+                    <button 
+                        onclick="generateOutput('html')" 
+                        class="flex items-center justify-center gap-2 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition-all active:scale-95"
+                    >
+                        <span>To HTML</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Output Card -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-slate-200 dark:border-slate-800 flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 id="outputLabel" class="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Step 3: Output Preview</h2>
+                    <div class="flex gap-2">
+                        <button onclick="copyOutput()" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors">
+                            Copy Result
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="displayArea" class="flex-grow w-full h-80 p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 overflow-auto custom-scrollbar text-slate-800 dark:text-slate-200">
+                    <div class="flex items-center justify-center h-full text-slate-400 italic">
+                        Generated content will appear here...
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-900/30">
+                    <p class="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
+                        <strong>Tip:</strong> The app perfectly matches the <code>yt-dlp</code> alternating output style.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-8 py-3 rounded-2xl text-sm font-semibold shadow-2xl opacity-0 transition-all pointer-events-none duration-300">
+            Copied to clipboard!
+        </div>
+    </div>
+
+    <script>
+        let rawCode = '';
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                html.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        }
+
+        function resetAllFields() {
+            document.getElementById('playlistUrl').value = '';
+            document.getElementById('textInput').value = '';
+            rawCode = '';
+            document.getElementById('displayArea').innerHTML = `
+                <div class="flex items-center justify-center h-full text-slate-400 italic">
+                    Generated content will appear here...
+                </div>`;
+            document.getElementById('outputLabel').innerText = 'Step 3: Output Preview';
+            updateCommand();
+        }
+
+        function clearPlaylistUrl() {
+            document.getElementById('playlistUrl').value = '';
+            updateCommand();
+        }
+
+        function updateCommand() {
+            const url = document.getElementById('playlistUrl').value.trim();
+            const cmdCode = document.getElementById('commandCode');
+            const placeholder = "&lt;playlist_url&gt;";
+            
+            if (url) {
+                cmdCode.innerText = `yt-dlp --get-title --get-url --flat-playlist "${url}"`;
+            } else {
+                cmdCode.innerHTML = `yt-dlp --get-title --get-url --flat-playlist ${placeholder}`;
+            }
+        }
+
+        function generateOutput(format) {
+            const input = document.getElementById('textInput').value.trim();
+            const display = document.getElementById('displayArea');
+            const label = document.getElementById('outputLabel');
+            
+            if (!input) {
+                display.innerHTML = '<div class="text-red-500 p-4 text-center">Please enter some text first!</div>';
+                return;
+            }
+
+            let items = [];
+
+            try {
+                if (input.startsWith('{')) {
+                    const data = JSON.parse(input);
+                    if (data.youtube_lists) {
+                        data.youtube_lists.forEach(cat => {
+                            cat.channels.forEach(ch => items.push({ title: ch.name || ch.title, url: ch.url }));
+                        });
+                    }
+                } else {
+                    const lines = input.split('\n').map(l => l.trim()).filter(l => l !== "");
+                    
+                    const looksLikeAlternating = lines.length >= 2 && !lines[0].includes('http') && lines[1].includes('http');
+
+                    if (looksLikeAlternating) {
+                        for (let i = 0; i < lines.length; i += 2) {
+                            if (lines[i] && lines[i+1]) {
+                                items.push({ title: lines[i], url: lines[i+1] });
+                            }
+                        }
+                    } else {
+                        lines.forEach(line => {
+                            let separator = null;
+                            if (line.includes(', http')) separator = ',';
+                            else if (line.includes(': http')) separator = ':';
+                            else if (line.includes(' - http')) separator = ' - ';
+                            else if (line.includes(':')) separator = ':';
+                            else if (line.includes(',')) separator = ',';
+
+                            if (separator) {
+                                const splitIdx = line.indexOf(separator);
+                                const title = line.substring(0, splitIdx).trim();
+                                const url = line.substring(splitIdx + separator.length).trim();
+                                if (title && url) items.push({ title, url });
+                            }
+                        });
+                    }
+                }
+            } catch (e) {
+                display.innerHTML = '<div class="text-red-500 p-4 text-center">Error parsing input. Check your format!</div>';
+                return;
+            }
+
+            if (items.length === 0) {
+                display.innerHTML = '<div class="text-amber-500 p-4 text-center">No valid title/URL pairs found.</div>';
+                return;
+            }
+
+            if (format === 'markdown') {
+                label.innerText = 'Markdown Code';
+                rawCode = items.map(i => `* [${i.title}](${i.url})`).join('\n');
+                display.innerHTML = `<pre class="text-xs font-mono whitespace-pre-wrap text-slate-800 dark:text-slate-200">${rawCode}</pre>`;
+            } else {
+                label.innerText = 'HTML Preview';
+                let htmlInner = `<div class="p-2">\n  <ul class="list-disc ml-5 space-y-2">\n`;
+                items.forEach(i => {
+                    htmlInner += `    <li><a href="${i.url}" target="_blank" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">${i.title}</a></li>\n`;
+                });
+                htmlInner += `  </ul>\n</div>`;
+                rawCode = htmlInner;
+                display.innerHTML = htmlInner;
+            }
+        }
+
+        function copyCommand() {
+            const cmd = document.getElementById('commandCode').innerText;
+            copyToClipboard(cmd);
+        }
+
+        function copyOutput() {
+            if (!rawCode) return;
+            copyToClipboard(rawCode);
+        }
+
+        function copyToClipboard(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-100', '-translate-y-2');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                toast.classList.remove('opacity-100', '-translate-y-2');
+            }, 2000);
+        }
+
+        function loadSampleText() {
+            document.getElementById('textInput').value = "Kurzgesagt\nhttps://www.youtube.com/@kurzgesagt\nVeritasium\nhttps://www.youtube.com/@veritasium\n3Blue1Brown\nhttps://www.youtube.com/@3blue1brown";
+        }
+    </script>
+</body>
+</html>
