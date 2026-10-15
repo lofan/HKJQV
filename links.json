@@ -1,5 +1,5 @@
 {
-  "catOrder": ["置頂","財經投資","語言學習","讀書會與好書","身心靈","影視娛樂","音樂","生活點滴","飲飲食食","科技知識","健康","Yoga","地"],
+  "catOrder": ["置頂","財經投資","語言學習","讀書會與好書","身心靈","影視娛樂","音樂","生活點滴","飲飲食食","科技知識","健康","Yoga","地","野外"],
   "links": [
     { "name": "🔥 Home", "url": "https://lofan.github.io/HKJQV/", "cat": "置頂" },
     { "name": "👍 Home2", "url": "https://lofan.github.io/HKJQV/1.html", "cat": "置頂" },
@@ -186,5 +186,8 @@
     { "name": "孫老師", "url": "https://lofan.github.io/HKJQV/sunlao.html", "cat": "地" },
     { "name": "九醬", "url": "https://lofan.github.io/HKJQV/jammonde.html", "cat": "地" },
     { "name": "Leonard", "url": "https://lofan.github.io/HKJQV/leonard2834.html", "cat": "地" }
+
+    { "name": "Liberty.wander", "url": "https://lofan.github.io/HKJQV/ajourneytofindmyself.html", "cat": "野外" },
+    { "name": "BINA비나", "url": "https://lofan.github.io/HKJQV/bina.html", "cat": "野外" },
   ]
 }
