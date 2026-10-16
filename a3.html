@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的連結庫 · Link Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12151c;
+    --bg-alt:#181c25;
+    --card:#1c212c;
+    --card-hover:#232936;
+    --line:#2a3141;
+    --ink:#e8e6df;
+    --ink-dim:#9aa2b1;
+    --gold:#c9a35c;
+    --gold-dim:#8a7448;
+    --teal:#5fa3a8;
+    --shadow:0 8px 24px -8px rgba(0,0,0,.5);
+    --header-h:130px; /* measured at runtime by ResizeObserver */
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 500px at 12% -10%, rgba(201,163,92,.07), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(95,163,168,.06), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans TC', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,21,28,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:16px 20px 14px;
+  }
+  .header-row{
+    max-width:1120px; margin:0 auto;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .brand{
+    font-family:'Noto Serif TC', serif;
+    font-weight:900; font-size:22px; letter-spacing:.02em;
+    display:flex; align-items:baseline; gap:8px; margin-right:auto;
+  }
+  .brand small{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:500; font-size:11px; color:var(--ink-dim);
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+  .search-wrap{
+    position:relative; flex:1 1 260px; max-width:360px;
+  }
+  #search{
+    width:100%; padding:10px 36px 10px 14px;
+    background:var(--bg-alt); border:1px solid var(--line);
+    border-radius:8px; color:var(--ink); font-size:14px;
+    font-family:'Noto Sans TC', sans-serif;
+    outline:none; transition:border-color .15s;
+  }
+  #search:focus{border-color:var(--gold-dim);}
+  .clear-btn{
+    position:absolute; right:6px; top:50%; transform:translateY(-50%);
+    width:22px; height:22px; line-height:22px; text-align:center;
+    font-size:15px; color:var(--ink-dim); cursor:pointer; user-select:none;
+    border-radius:50%;
+  }
+  .clear-btn:hover{color:var(--ink); background:var(--card);}
+  /* show × only when there is text; hide the "/" hint to avoid overlap */
+  .clear-btn{display:none;}
+  #search:not(:placeholder-shown) ~ .clear-btn{display:block;}
+  #search:not(:placeholder-shown) ~ kbd{display:none;}
+  .search-wrap kbd{
+    position:absolute; right:8px; top:50%; transform:translateY(-50%);
+    font-family:'JetBrains Mono', monospace; font-size:10px;
+    color:var(--ink-dim); background:var(--card);
+    border:1px solid var(--line); border-radius:4px; padding:2px 5px;
+    pointer-events:none;
+  }
+  #count-badge{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:var(--gold); white-space:nowrap;
+  }
+
+  .pillbar{
+    max-width:1120px; margin:12px auto 0;
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .pill{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    padding:6px 12px; border-radius:20px;
+    background:var(--bg-alt); border:1px solid var(--line);
+    color:var(--ink-dim); cursor:pointer; user-select:none;
+    transition:all .15s;
+  }
+  .pill:hover{border-color:var(--gold-dim); color:var(--ink);}
+  .pill.active{
+    background:linear-gradient(135deg, var(--gold), var(--gold-dim));
+    color:#161310; border-color:transparent; font-weight:600;
+  }
+
+  /* ---------- main ---------- */
+  main{max-width:1120px; margin:0 auto; padding:28px 20px 80px;}
+
+  section.cat{margin-top:44px; scroll-margin-top:calc(var(--header-h) + 12px);}
+  section.cat:first-of-type{margin-top:24px;}
+  .cat-head{
+    display:flex; align-items:baseline; gap:12px;
+    border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:16px;
+  }
+  .cat-tag{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:var(--gold); border:1px solid var(--gold-dim);
+    border-radius:4px; padding:2px 7px; letter-spacing:.05em;
+  }
+  .cat-title{
+    font-family:'Noto Serif TC', serif; font-weight:700; font-size:19px;
+  }
+  .cat-count{
+    margin-left:auto; font-family:'JetBrains Mono', monospace;
+    font-size:11px; color:var(--ink-dim);
+  }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:12px;
+  }
+  .card{
+    position:relative;
+    display:flex; flex-direction:column; gap:6px;
+    background:var(--card); border:1px solid var(--line);
+    border-radius:10px; padding:14px 14px 12px;
+    box-shadow:var(--shadow);
+    transition:transform .15s, border-color .15s, background .15s;
+  }
+  .card::before{
+    content:""; position:absolute; left:0; top:10px; bottom:10px; width:3px;
+    background:var(--gold-dim); border-radius:0 3px 3px 0; opacity:.6;
+    transition:opacity .15s, background .15s;
+  }
+  .card:hover{
+    transform:translateY(-2px);
+    border-color:var(--gold-dim); background:var(--card-hover);
+  }
+  .card:hover::before{opacity:1; background:var(--gold);}
+  .card-top{
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .card-idx{
+    font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--ink-dim);
+  }
+  .card-clicks{
+    font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--ink-dim);
+    display:flex; align-items:center; gap:3px;
+    padding:1px 6px; border-radius:10px; background:var(--bg-alt);
+    border:1px solid var(--line);
+    transition:color .15s, border-color .15s;
+  }
+  .card-clicks.has-clicks{color:var(--gold); border-color:var(--gold-dim);}
+  .card-title{
+    font-size:14.5px; font-weight:600; line-height:1.4;
+    word-break:break-word;
+  }
+  .card.hidden{display:none;}
+  section.cat.hidden{display:none;}
+
+  .pinned .card::before{background:var(--teal);}
+  .pinned .card-title{font-family:'Noto Serif TC', serif; font-size:16px;}
+
+  #empty-state, #status{
+    display:none; text-align:center; padding:60px 20px; color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:13px; line-height:1.8;
+    white-space:pre-line;
+  }
+  #status.error{color:#e08a8a;}
+  #status button{
+    margin-top:14px; font-family:'JetBrains Mono', monospace; font-size:12px;
+    padding:6px 14px; border-radius:20px; cursor:pointer;
+    background:var(--bg-alt); border:1px solid var(--gold-dim); color:var(--gold);
+  }
+
+  /* ---------- expansion guide ---------- */
+  .howto{
+    margin-top:56px; border:1px dashed var(--line); border-radius:10px;
+    background:var(--bg-alt); padding:18px 20px;
+  }
+  .howto summary{
+    cursor:pointer; font-family:'Noto Serif TC', serif; font-weight:700;
+    font-size:15px; color:var(--gold);
+  }
+  .howto pre{
+    margin:14px 0 0; padding:14px; background:#0e1117; border-radius:8px;
+    overflow-x:auto; font-family:'JetBrains Mono', monospace; font-size:12.5px;
+    line-height:1.6; color:#cfd6e0; border:1px solid var(--line);
+  }
+  .howto p{font-size:13.5px; color:var(--ink-dim); line-height:1.7;}
+  .howto code{
+    font-family:'JetBrains Mono', monospace; background:#0e1117;
+    padding:1px 5px; border-radius:4px; font-size:12px; color:var(--gold);
+  }
+
+  footer{
+    text-align:center; padding:24px; color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:520px){
+    .grid{grid-template-columns:1fr 1fr;}
+    .brand{font-size:19px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="brand">📚 我的連結庫 <small>Link Library</small></div>
+    <div class="search-wrap">
+      <input id="search" type="text" placeholder="搜尋連結 / Search links…" autocomplete="off">
+      <span id="clear-search" class="clear-btn" title="清除搜尋" role="button">&times;</span>
+      <kbd>/</kbd>
+    </div>
+    <div id="count-badge"></div>
+    <span class="pill reset-pill" id="reset-clicks" title="清空所有連結嘅點擊統計">🔄 重設統計</span>
+  </div>
+  <nav class="pillbar" id="pillbar"></nav>
+</header>
+
+<main>
+  <div id="status"></div>
+  <div id="sections"></div>
+  <div id="empty-state">— 沒有符合的連結 No matching links —</div>
+
+  <details class="howto">
+    <summary>➕ 如何新增連結 How to add new links</summary>
+    <p>所有連結都存放喺同目錄嘅 <code>links.json</code>，頁面載入時會用 <code>fetch()</code> 讀入。想加新連結，淨係要喺 <code>links</code> 陣列度加一個 object，畫面會自動生成卡片、自動歸入分類、自動可以搜尋 — 唔使再改呢個 HTML。</p>
+    <pre>{ "name": "新連結名稱", "url": "https://lofan.github.io/HKJQV/xxx.html", "cat": "財經投資" }</pre>
+    <p>如果 <code>cat</code> 打一個未出現過嘅新分類名，個新分類版塊會自動出現喺頁面度。想令個分類固定排喺前面，可以喺 <code>links.json</code> 嘅 <code>catOrder</code> 陣列度加返個名。</p>
+    <p>注意：JSON 唔准有尾隨逗號（trailing comma）同註解，格式出錯會顯示錯誤訊息。另外直接雙擊開本機 <code>file://</code> 檔案時瀏覽器會擋住 <code>fetch()</code>，要用 GitHub Pages 或者本機伺服器（例如 <code>python -m http.server</code>）先睇到。</p>
+  </details>
+</main>
+
+<footer>lofan.github.io/HKJQV/ · 自建連結庫 · 純靜態 HTML + links.json，無外部依賴（字型除外）</footer>
+
+<script>
+/* ============================================================
+   DATA — loaded from links.json at startup.
+   links.json shape:
+     { "catOrder": ["置頂", ...], "links": [ { name, url, cat }, ... ] }
+   (a bare array of link objects is also accepted)
+   ============================================================ */
+const DATA_URL = 'links.json';
+
+let CAT_ORDER = [];
+let LINKS = [];
+let CAT_IDS = new Map();   // cat name -> section element id (unique, collision-free)
+let loaded = false;        // true once links.json has loaded successfully
+
+function loadLinks(){
+  return fetch(DATA_URL, { cache: 'no-cache' })
+    .then(res=>{
+      if(!res.ok) throw new Error('HTTP ' + res.status + ' — ' + DATA_URL);
+      return res.json();
+    })
+    .then(data=>{
+      const list = Array.isArray(data) ? data : data.links;
+      if(!Array.isArray(list)) throw new Error('links.json 格式錯誤：找不到 "links" 陣列');
+
+      // only accept entries whose name/url/cat are non-empty strings
+      const isStr = v => typeof v === 'string' && v.trim() !== '';
+      LINKS = list.filter(l => l && isStr(l.name) && isStr(l.url) && isStr(l.cat));
+
+      // dedupe catOrder
+      CAT_ORDER = Array.isArray(data.catOrder) ? [...new Set(data.catOrder)] : [];
+    });
+}
+
+function showStatus(msg, isError, withRetry){
+  const el = document.getElementById('status');
+  el.className = isError ? 'error' : '';
+  el.style.display = msg ? 'block' : 'none';
+  el.textContent = msg || '';
+  if(withRetry){
+    const btn = document.createElement('button');
+    btn.textContent = '↻ 重試 Retry';
+    btn.onclick = init;
+    el.appendChild(document.createElement('br'));
+    el.appendChild(btn);
+  }
+}
+
+/* ============================================================
+   Render
+   ============================================================ */
+// escape a value for safe use inside HTML text or attribute values
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c=>({
+    '&':'\u0026amp;', '<':'\u0026lt;', '>':'\u0026gt;', '"':'\u0026quot;', "'":'\u0026#39;'
+  }[c]));
+}
+
+function slug(s){ return String(s).replace(/[^\w\u4e00-\u9fff]+/g,'-'); }
+
+function groupByCat(links){
+  const map = new Map();
+  links.forEach(l=>{
+    if(!map.has(l.cat)) map.set(l.cat, []);
+    map.get(l.cat).push(l);
+  });
+  // order: CAT_ORDER first, then any unknown categories appended alphabetically
+  const known = CAT_ORDER.filter(c=>map.has(c));
+  const unknown = [...map.keys()].filter(c=>!CAT_ORDER.includes(c)).sort();
+  return [...known, ...unknown].map(cat=>({cat, items:map.get(cat)}));
+}
+
+function render(){
+  const groups = groupByCat(LINKS);
+  const sectionsEl = document.getElementById('sections');
+  const pillbar = document.getElementById('pillbar');
+  document.getElementById('count-badge').textContent = LINKS.length + ' 個連結';
+
+  // unique, collision-free section ids
+  CAT_IDS = new Map(groups.map((g,i)=>[g.cat, 'cat-' + i]));
+
+  pillbar.innerHTML =
+    '<span class="pill active" data-cat="__all__">全部 · ' + LINKS.length + '</span>' +
+    groups.map(g=>`<span class="pill" data-cat="${esc(g.cat)}">${esc(g.cat)} · ${g.items.length}</span>`).join('');
+
+  sectionsEl.innerHTML = groups.map(g=>`
+    <section class="cat ${g.cat==='置頂'?'pinned':''}" id="${CAT_IDS.get(g.cat)}" data-cat="${esc(g.cat)}">
+      <div class="cat-head">
+        <span class="cat-tag">${g.cat==='置頂' ? 'PIN' : esc(slug(g.cat).slice(0,4).toUpperCase())}</span>
+        <span class="cat-title">${esc(g.cat)}</span>
+        <span class="cat-count">${g.items.length} 項</span>
+      </div>
+      <div class="grid">
+        ${g.items.map((l,i)=>`
+          <a class="card" href="${esc(l.url)}" target="_blank" rel="noopener" data-name="${esc(l.name.toLowerCase())}" data-url="${esc(l.url)}">
+            <span class="card-top">
+              <span class="card-idx">${String(i+1).padStart(2,'0')}</span>
+              <span class="card-clicks" data-clicks-for="${esc(l.url)}">👆 0</span>
+            </span>
+            <span class="card-title">${esc(l.name)}</span>
+          </a>`).join('')}
+      </div>
+    </section>
+  `).join('');
+}
+
+/* ============================================================
+   Click counter — persisted in previewStorage (per browser/device).
+   Key: "linkClickCounts" -> { [url]: count }
+   ============================================================ */
+const previewStorage = (() => { const m = {}; return { getItem: k => (k in m ? m[k] : null), setItem: (k,v)=>{ m[k] = String(v); } }; })();
+const CLICKS_KEY = 'linkClickCounts';
+
+function loadClicks(){
+  let data;
+  try{
+    data = JSON.parse(previewStorage.getItem(CLICKS_KEY));
+  }catch(e){
+    return {};
+  }
+  // normalize: must be a plain object mapping url -> non-negative integer
+  if(!data || typeof data !== 'object' || Array.isArray(data)) return {};
+  const out = {};
+  for(const [k, v] of Object.entries(data)){
+    if(typeof k === 'string' && Number.isInteger(v) && v >= 0) out[k] = v;
+  }
+  return out;
+}
+
+function saveClicks(data){
+  try{
+    previewStorage.setItem(CLICKS_KEY, JSON.stringify(data));
+  }catch(e){ /* storage unavailable — fail silently */ }
+}
+
+function refreshClickBadges(){
+  const clicks = loadClicks();
+  document.querySelectorAll('[data-clicks-for]').forEach(el=>{
+    const n = clicks[el.dataset.clicksFor] || 0;
+    el.textContent = '👆 ' + n;
+    el.classList.toggle('has-clicks', n > 0);
+  });
+}
+
+document.getElementById('sections').addEventListener('click', e=>{
+  const card = e.target.closest('.card');
+  if(!card) return;
+  const url = card.dataset.url;
+  const clicks = loadClicks();
+  clicks[url] = (clicks[url] || 0) + 1;
+  saveClicks(clicks);
+  // update every badge sharing this url (a url may appear in more than one category)
+  document.querySelectorAll('[data-clicks-for]').forEach(el=>{
+    if(el.dataset.clicksFor === url){
+      el.textContent = '👆 ' + clicks[url];
+      el.classList.add('has-clicks');
+    }
+  });
+});
+
+document.getElementById('reset-clicks').addEventListener('click', ()=>{
+  if(confirm('確定要清空所有連結嘅點擊統計？呢個動作冇得復原。')){
+    saveClicks({});
+    refreshClickBadges();
+  }
+});
+
+/* ============================================================
+   Search + category filter
+   ============================================================ */
+let activeCat = '__all__';
+
+function applyFilters(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  let anyVisible = false;
+
+  document.querySelectorAll('section.cat').forEach(sec=>{
+    const catMatch = activeCat === '__all__' || sec.dataset.cat === activeCat;
+    let sectionHasVisible = false;
+
+    sec.querySelectorAll('.card').forEach(card=>{
+      const textMatch = !q || card.dataset.name.includes(q);
+      const show = catMatch && textMatch;
+      card.classList.toggle('hidden', !show);
+      if(show) sectionHasVisible = true;
+    });
+
+    sec.classList.toggle('hidden', !sectionHasVisible);
+    if(sectionHasVisible) anyVisible = true;
+  });
+
+  // only show empty state once links have actually loaded
+  const emptyEl = document.getElementById('empty-state');
+  if(!loaded){
+    emptyEl.style.display = 'none';
+  }else if(!LINKS.length){
+    emptyEl.textContent = '— links.json 沒有任何連結 No links in links.json —';
+    emptyEl.style.display = 'block';
+  }else{
+    emptyEl.textContent = '— 沒有符合的連結 No matching links —';
+    emptyEl.style.display = anyVisible ? 'none' : 'block';
+  }
+}
+
+const searchEl = document.getElementById('search');
+searchEl.addEventListener('input', applyFilters);
+searchEl.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){
+    searchEl.value = '';
+    applyFilters();
+  }
+});
+
+document.getElementById('clear-search').addEventListener('click', ()=>{
+  searchEl.value = '';
+  searchEl.focus();
+  applyFilters();
+});
+
+document.addEventListener('click', e=>{
+  const pill = e.target.closest('.pill');
+  if(!pill || pill.classList.contains('reset-pill')) return;
+  activeCat = pill.dataset.cat;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active', p===pill));
+  applyFilters();
+  if(activeCat !== '__all__'){
+    document.getElementById(CAT_IDS.get(activeCat))?.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key === '/' && document.activeElement !== searchEl){
+    e.preventDefault();
+    searchEl.focus();
+  }
+});
+
+/* ============================================================
+   Sticky-header offset — keep section anchors below the header
+   ============================================================ */
+const headerEl = document.querySelector('header');
+function updateHeaderOffset(){
+  document.documentElement.style.setProperty('--header-h', headerEl.offsetHeight + 'px');
+}
+if(typeof ResizeObserver !== 'undefined'){
+  new ResizeObserver(updateHeaderOffset).observe(headerEl);
+}else{
+  window.addEventListener('resize', updateHeaderOffset);
+}
+updateHeaderOffset();
+
+/* ============================================================
+   Init
+   ============================================================ */
+async function init(){
+  activeCat = '__all__';
+  loaded = false;
+  showStatus('載入連結中… Loading links…', false, false);
+  try{
+    await loadLinks();
+    loaded = true;
+    showStatus('');
+    render();
+    applyFilters();
+    refreshClickBadges();
+  }catch(err){
+    console.error(err);
+    const hint = location.protocol === 'file:'
+      ? '（file:// 開啟會被瀏覽器擋住 fetch，請用 GitHub Pages 或本機伺服器）'
+      : '';
+    showStatus('⚠️ 無法載入 ' + DATA_URL + '\n' + String(err && err.message || err) + (hint ? '\n' + hint : ''), true, true);
+  }
+}
+
+init();
+</script>
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://perplexity.localhost","http://localhost:1420","http://127.0.0.1:1420","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  const DEFAULT_LINE_HEIGHT = 16;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  const PICK_CAPABILITIES = ["pick"];
+  const PICK_CHAIN_LENGTH = 4;
+  const PICK_MAX_TEXT_CHARS = 120;
+  const PICK_MAX_HTML_CHARS = 300;
+
+  function truncate(value, maxChars) {
+    return value.length > maxChars ? value.slice(0, maxChars - 1) + "…" : value;
+  }
+
+  function isPickableElement(element) {
+    return (
+      element instanceof Element &&
+      element !== document.documentElement &&
+      element !== document.body
+    );
+  }
+
+  function resolvePickTarget(x, y) {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+    const element = document.elementFromPoint(x, y);
+    return isPickableElement(element) ? element.closest("svg") || element : null;
+  }
+
+  function pickLabel(element) {
+    if (element.id) return element.localName + "#" + element.id;
+    return [element.localName].concat(Array.from(element.classList).slice(0, 2)).join(".");
+  }
+
+  // Only attributes that help find the element in source. data-* values and URL
+  // query strings or fragments can carry tokens.
+  const PICK_ATTRIBUTES = new Set([
+    "id",
+    "class",
+    "name",
+    "type",
+    "role",
+    "alt",
+    "aria-label",
+    "href",
+    "src",
+  ]);
+
+  function pickAttributeValue(attribute) {
+    return attribute.name === "href" || attribute.name === "src"
+      ? attribute.value.split(/[?#]/)[0]
+      : attribute.value;
+  }
+
+  function describePickElement(element) {
+    const chain = [];
+    for (
+      let current = element;
+      isPickableElement(current) && chain.length < PICK_CHAIN_LENGTH;
+      current = current.parentElement
+    ) {
+      chain.unshift(current);
+    }
+    const attributes = Array.from(element.attributes)
+      .filter((attribute) => PICK_ATTRIBUTES.has(attribute.name))
+      .map((attribute) => ` ${attribute.name}="${pickAttributeValue(attribute).replace(/"/g, "&quot;")}"`)
+      .join("");
+    const text = (element.innerText || element.textContent || "").replace(/\s+/g, " ").trim();
+    return {
+      chain: chain.map(pickLabel),
+      html: truncate(`<${element.localName}${attributes}>`, PICK_MAX_HTML_CHARS),
+      text: text ? truncate(text, PICK_MAX_TEXT_CHARS) : undefined,
+    };
+  }
+
+  // Hover asks once per frame, and innerText on a large section forces layout,
+  // so only the rect is re-read while the pointer stays on the same element.
+  // Clicks ask for fresh details since the page may have changed the element.
+  let lastPick = null;
+
+  function describePickTarget(element, fresh) {
+    if (fresh || lastPick?.element !== element) {
+      lastPick = { element, details: describePickElement(element) };
+    }
+    const rect = element.getBoundingClientRect();
+    return {
+      rect: { x: rect.left, y: rect.top, width: rect.width, height: rect.height },
+      ...lastPick.details,
+    };
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+      capabilities: PICK_CAPABILITIES,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_PICK") {
+      const element = resolvePickTarget(event.data.x, event.data.y);
+      postToTrustedTop({
+        type: "INLINE_EDIT_PICK_RESULT",
+        seq: event.data.seq,
+        target: element ? describePickTarget(element, event.data.fresh === true) : null,
+      });
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_BY") {
+      const { deltaX, deltaY, deltaMode } = event.data;
+      if (!scrollForwarding || !Number.isFinite(deltaX) || !Number.isFinite(deltaY)) return;
+      if (deltaMode !== 0 && deltaMode !== 1 && deltaMode !== 2) return;
+      const lineHeight =
+        parseFloat(getComputedStyle(document.documentElement).lineHeight) || DEFAULT_LINE_HEIGHT;
+      const scaleX = deltaMode === 1 ? lineHeight : deltaMode === 2 ? window.innerWidth : 1;
+      const scaleY = deltaMode === 1 ? lineHeight : deltaMode === 2 ? window.innerHeight : 1;
+      // The selection overlay receives the wheel event instead of this iframe.
+      // Instant scrolling preserves trackpad deltas even on smooth-scroll sites.
+      window.scrollBy({ left: deltaX * scaleX, top: deltaY * scaleY, behavior: "instant" });
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
+</html>
