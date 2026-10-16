@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="AI 閱讀系統與學習科學指南：七個閱讀提示詞、十個學習方法、五步閱讀流程及萬用 Prompt。">
+<title>AI 閱讀系統｜將一本書變成真正學識嘅知識</title>
+<style>
+  :root {
+    --bg: #f5f7fb; --panel: #fff; --text: #182230; --muted: #5d6878;
+    --line: #e0e6ef; --accent: #2459a9; --accent-soft: #eaf1ff;
+    --green: #176b46; --green-soft: #e5f6ec; --orange: #945018;
+    --orange-soft: #fff1df; --shadow: 0 8px 28px rgba(20,35,60,.06);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+  body { margin: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; }
+  a { color: var(--accent); }
+  .topbar { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .topbar-inner { max-width: 1180px; margin: auto; padding: 12px 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  button { border: 1px solid var(--line); border-radius: 9px; padding: 8px 12px; background: white; color: var(--text); font: inherit; font-size: .9rem; cursor: pointer; }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  .layout { max-width: 1180px; margin: 28px auto 70px; padding: 0 22px; display: grid; grid-template-columns: 245px minmax(0,1fr); gap: 26px; align-items: start; }
+  nav { position: sticky; top: 76px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); max-height: calc(100vh - 96px); overflow: auto; }
+  nav strong { display: block; margin: 0 0 10px; }
+  nav a { display: block; text-decoration: none; color: var(--muted); padding: 7px 9px; border-radius: 8px; font-size: .92rem; }
+  nav a:hover, nav a.active { background: var(--accent-soft); color: var(--accent); }
+  main { min-width: 0; }
+  .hero { padding: 34px; border-radius: 20px; background: linear-gradient(135deg,#eaf1ff,#f8fbff 62%,#e7f7ef); border: 1px solid #dce7f8; margin-bottom: 22px; }
+  .eyebrow { color: var(--accent); font-weight: 750; font-size: .82rem; text-transform: uppercase; letter-spacing: .09em; }
+  h1 { font-size: clamp(2rem,4vw,3.2rem); line-height: 1.18; letter-spacing: -.04em; margin: 10px 0 16px; }
+  h2 { font-size: clamp(1.45rem,2.6vw,2rem); line-height: 1.3; margin: 0 0 16px; letter-spacing: -.025em; }
+  h3 { font-size: 1.12rem; margin: 0 0 7px; }
+  p { margin: 8px 0 14px; }
+  .lead { font-size: 1.1rem; max-width: 780px; }
+  .callout { border-left: 4px solid var(--accent); padding: 12px 16px; background: var(--accent-soft); border-radius: 0 10px 10px 0; margin: 18px 0 0; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 28px; margin-bottom: 22px; box-shadow: var(--shadow); }
+  .section-intro { color: var(--muted); margin-top: -5px; }
+  .grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; }
+  .card { border: 1px solid var(--line); border-radius: 12px; padding: 17px; background: #fff; }
+  .card p:last-child { margin-bottom: 0; }
+  .tag { display: inline-block; font-size: .77rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--green-soft); color: var(--green); margin: 4px 0 8px; }
+  .tag.warn { background: var(--orange-soft); color: var(--orange); }
+  .num { display: inline-grid; place-items: center; width: 29px; height: 29px; border-radius: 9px; background: var(--accent-soft); color: var(--accent); font-weight: 800; margin-right: 7px; }
+  .method { padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .method:last-child { border-bottom: 0; padding-bottom: 0; }
+  .method p { margin-left: 38px; }
+  .flow { display: grid; gap: 10px; }
+  .flow-step { display: grid; grid-template-columns: 48px 1fr; gap: 14px; align-items: start; padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+  .flow-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); font-weight: 850; }
+  .flow-step p { margin-bottom: 0; }
+  .arrow { text-align: center; color: #8b96a7; line-height: 1; font-size: 1.3rem; }
+  .prompt { background: #111827; color: #e5edf8; padding: 22px; border-radius: 13px; overflow-wrap: anywhere; }
+  .prompt h3 { color: #fff; }
+  .prompt p, .prompt li { color: #e5edf8; }
+  .prompt ul { padding-left: 22px; }
+  .prompt .subhead { color: #9ec1ff; font-weight: 800; margin-top: 18px; }
+  .prompt-tools { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+  .prompt-tools button { background: #263449; border-color: #43536a; color: #fff; }
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .checklist li:last-child { border-bottom: 0; }
+  .checklist input { margin-right: 9px; accent-color: var(--accent); }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .quote { font-size: 1.18rem; font-weight: 750; padding: 18px; border-radius: 12px; background: var(--green-soft); color: #155b3c; }
+  footer { text-align: center; color: var(--muted); padding: 20px; font-size: .9rem; }
+  @media (max-width: 820px) {
+    .layout { grid-template-columns: 1fr; margin-top: 16px; }
+    nav { position: static; max-height: none; }
+    nav .navlinks { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .grid { grid-template-columns: 1fr; }
+    .hero, section { padding: 22px; }
+    .topbar-inner { align-items: flex-start; flex-direction: column; }
+  }
+  @media print {
+    .topbar, nav, .actions, .prompt-tools { display: none !important; }
+    .layout { display: block; margin: 0; max-width: none; padding: 0; }
+    body { background: white; font-size: 11pt; }
+    section, .hero { box-shadow: none; break-inside: avoid; border: 1px solid #bbb; }
+    .prompt { background: #f3f4f6; color: #111; border: 1px solid #bbb; }
+    .prompt p, .prompt li, .prompt h3, .prompt .subhead { color: #111; }
+    a { color: #111; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">📚 AI 閱讀系統</div>
+    <div class="actions">
+      <button onclick="window.print()">列印／另存 PDF</button>
+      <button onclick="document.querySelector('#prompt').scrollIntoView({behavior:'smooth'})">跳到萬用 Prompt</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav aria-label="頁面目錄">
+    <strong>快速導航</strong>
+    <div class="navlinks">
+      <a href="#overview">核心概念</a>
+      <a href="#seven-prompts">七個 AI 提示詞</a>
+      <a href="#learning-science">十個學習方法</a>
+      <a href="#workflow">五步閱讀系統</a>
+      <a href="#prompt">萬用 Prompt</a>
+      <a href="#pitfalls">三個常見陷阱</a>
+      <a href="#checklist">閱讀後自我檢查</a>
+      <a href="#takeaway">最後記住一件事</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="hero" id="overview">
+      <div class="eyebrow">AI + Learning Science</div>
+      <h1>唔好再做「買書收藏家」</h1>
+      <p class="lead">用 Claude、ChatGPT 同學習科學，將一本書變成真正理解、記得住，而且用得出嘅知識。</p>
+      <div class="callout"><strong>核心原則：</strong>AI 可以幫你快速接觸一本書嘅知識，但唔代表你已經掌握咗本書。真正學習需要主動回憶、實際應用同持續修正。</div>
+    </div>
+
+    <section id="seven-prompts">
+      <h2>一、七個 AI 閱讀提示詞：應該點樣用？</h2>
+      <p class="section-intro">唔需要每本書都用晒七個。按閱讀目的選擇，避免生成大量摘要卻無法記住。</p>
+      <div class="grid">
+        <article class="card">
+          <h3><span class="num">1</span>Core Idea Extraction</h3><span class="tag">快速入門</span>
+          <p><strong>目的：</strong>搞清楚作者最想講嘅一件事，判斷一本書值唔值得深入讀。</p>
+          <p><strong>升級方法：</strong>區分核心論點、支持證據，以及仍然存在嘅爭議，避免將一句口號當成完整理論。</p>
+        </article>
+        <article class="card">
+          <h3><span class="num">2</span>Chapter-by-Chapter Breakdown</h3><span class="tag">建立知識地圖</span>
+          <p><strong>目的：</strong>逐章整理論點、教訓同記憶句，適合結構複雜嘅書。</p>
+          <p><strong>升級方法：</strong>加入章節間嘅邏輯關係、關鍵案例及推理過程，並核對原文，避免 AI 自行補完不存在嘅內容。</p>
+        </article>
+        <article class="card">
+          <h3><span class="num">3</span>Top Lessons for Real Life</h3><span class="tag">重視應用</span>
+          <p><strong>目的：</strong>將抽象概念轉化成思考、決策同習慣。</p>
+          <p><strong>升級方法：</strong>每個教訓附上一個真實情境、一個錯誤示範，以及一個可以即日執行嘅行動。</p>
+        </article>
+        <article class="card">
+          <h3><span class="num">4</span>Action Plan Builder</h3><span class="tag">由知識變行動</span>
+          <p><strong>目的：</strong>每日完成一個細小任務，避免讀完之後束之高閣。</p>
+          <p><strong>升級方法：</strong>加入完成標準、預計時間、失敗後嘅補救方法，以及第七日嘅成效檢討。</p>
+        </article>
+        <article class="card">
+          <h3><span class="num">5</span>Memorable Quote Decoder</h3><span class="tag warn">核實原文</span>
+          <p><strong>目的：</strong>解釋重要句子嘅意思、價值同應用。</p>
+          <p><strong>升級方法：</strong>補充上下文，以及句子喺咩情況下可能被誤解。要求章節或頁碼；無法核實時，唔好將概括意思冒充作者原句。</p>
+        </article>
+        <article class="card">
+          <h3><span class="num">6</span>Knowledge Compression</h3><span class="tag">建立速查表</span>
+          <p><strong>目的：</strong>將整本書濃縮成三分鐘內可以重溫嘅知識卡。</p>
+          <p><strong>升級方法：</strong>每個概念加上定義、使用條件、常見錯誤同例子。過度濃縮可能會刪走重要前提。</p>
+        </article>
+        <article class="card">
+          <h3><span class="num">7</span>Blind Spot Finder</h3><span class="tag">深度學習</span>
+          <p><strong>目的：</strong>找出理論嘅限制、反例、隱藏假設，以及作者未充分處理嘅問題。</p>
+          <p><strong>升級方法：</strong>分開有研究支持嘅批評、合理推論及尚待驗證嘅猜測，避免將反對而反對當成批判思考。</p>
+        </article>
+      </div>
+      <div class="callout"><strong>最大不足：</strong>七個提示詞大多數都係叫 AI 輸出答案，但真正學習需要你自己提取答案。關閉摘要後，能否用自己嘅說話解釋並應用，先係關鍵測試。</div>
+    </section>
+
+    <section id="learning-science">
+      <h2>二、學習科學嘅十個方法</h2>
+      <p class="section-intro">分四個階段：了解自己、準備大腦、建立記憶、測試掌握程度。</p>
+      <div class="method">
+        <h3>第一階段：先知道自己點樣學</h3>
+        <p><strong>1. 後設認知（Metacognition）</strong>：學之前訂目標，學之後檢查自己係咪真係明白。</p>
+        <p><strong>2. 成長心態（Growth Mindset）</strong>：將錯誤視為調整策略嘅訊號，而唔係能力不足嘅定論。</p>
+      </div>
+      <div class="method">
+        <h3>第二階段：為大腦創造學習條件</h3>
+        <p><strong>3. 整理環境</strong>：減少手機通知、雜亂資訊同其他干擾。</p>
+        <p><strong>4. 單工而非多工</strong>：一次專注一項任務，減少頻繁切換帶來嘅認知成本。</p>
+        <p><strong>5. 認知休息</strong>：適時散步、休息或放空，讓大腦有時間整合資訊。預設模式網絡（Default Mode Network）與內在思考、記憶及自我相關處理有關，但放空唔代表一定會提升學習成績。</p>
+      </div>
+      <div class="method">
+        <h3>第三階段：令記憶真正建立</h3>
+        <p><strong>6. 間隔重複（Spaced Repetition）</strong>：分開幾日重溫，而唔係一口氣重複閱讀。</p>
+        <p><strong>7. 連結舊知識</strong>：將新概念連接到已經理解嘅事物。</p>
+        <p><strong>8. 使用比喻（Analogies）</strong>：用熟悉例子理解抽象理論，同時留意比喻唔完全等同原理。</p>
+      </div>
+      <div class="method">
+        <h3>第四階段：測試自己真正識唔識</h3>
+        <p><strong>9. 教返另一個人（Protégé Effect）</strong>：用自己嘅說話解釋概念，暴露理解缺口。</p>
+        <p><strong>10. 離開 AI，獨立回憶</strong>：關閉對話視窗，自己重建知識、回答問題，再用可靠資料核對。</p>
+      </div>
+      <div class="callout"><strong>優先練習三招：</strong>主動回憶、間隔重複、教學式解釋。刻意練習亦有幫助，但需要針對性任務、回饋同持續修正，而唔係單純重複。</div>
+    </section>
+
+    <section id="workflow">
+      <h2>三、將兩套方法合併：五步 AI 閱讀系統</h2>
+      <p class="section-intro">唔好每本書都逐一使用七個 Prompt。用五步流程，減少摘要堆積，增加真正掌握嘅機會。</p>
+      <div class="flow">
+        <div class="flow-step"><div class="flow-icon">01</div><div><h3>快速理解｜約 10–15 分鐘</h3><p>整理核心思想、作者背景、全書架構，以及值得深入讀嘅章節。</p></div></div>
+        <div class="arrow">↓</div>
+        <div class="flow-step"><div class="flow-icon">02</div><div><h3>選擇性深讀｜按需要投入時間</h3><p>深入閱讀關鍵章節、重要案例、原始研究及作者嘅推理。</p></div></div>
+        <div class="arrow">↓</div>
+        <div class="flow-step"><div class="flow-icon">03</div><div><h3>關閉 AI，主動回憶</h3><p>唔睇摘要，自己寫出五個重點、三個問題，以及一個未理解嘅概念。</p></div></div>
+        <div class="arrow">↓</div>
+        <div class="flow-step"><div class="flow-icon">04</div><div><h3>間隔複習</h3><p>第 1、3、7、14、30 日重溫。先測試自己，再揭開筆記核對。</p></div></div>
+        <div class="arrow">↓</div>
+        <div class="flow-step"><div class="flow-icon">05</div><div><h3>實際應用</h3><p>將書中一個原則用於真實決策，記錄結果，再檢查原則係咪適用。</p></div></div>
+      </div>
+      <p class="muted">以上時間及複習日期係實用起點，唔係適用於所有人嘅固定科學定律。按內容難度及回憶表現調整。</p>
+    </section>
+
+    <section id="prompt">
+      <h2>四、升級版萬用 Prompt</h2>
+      <p class="section-intro">複製以下內容到 Claude 或 ChatGPT。它會先建立知識地圖，再透過提問幫你練習，而唔係一次過塞晒答案畀你。</p>
+      <div class="prompt-tools"><button onclick="copyPrompt()">複製完整 Prompt</button></div>
+      <div class="prompt" id="prompt-content">
+        <h3>AI Book Intelligence Coach｜深度閱讀與主動學習教練</h3>
+        <p>你係一位結合學習科學、批判性思考、知識管理及實際應用嘅閱讀教練。</p>
+        <p>我的目標唔係盡快讀完一本書，而係理解作者嘅思想、記住重要概念、識得批判性分析，並將知識應用於真實生活。</p>
+        <p><strong>書名：</strong>[Book Title]<br><strong>作者：</strong>[Author]<br><strong>我的學習目標：</strong>[例如：投資決策、AI 趨勢、心理學、人生哲學]</p>
+        <p class="subhead">第一階段：建立知識地圖</p>
+        <ul>
+          <li>用簡單語言解釋本書最重要嘅核心思想。</li>
+          <li>列出全書主要概念、論證架構及章節之間嘅關係。</li>
+          <li>區分作者嘅主張、支持證據、個人觀點及未經充分驗證嘅假設。</li>
+          <li>說明哪些章節最值得深入閱讀，以及原因。</li>
+          <li>清楚標示能夠核實嘅內容、無法確認嘅內容，以及需要原文支持嘅部分。唔好假裝已經讀過未有提供或無法存取嘅全文。</li>
+        </ul>
+        <p class="subhead">第二階段：深入理解</p>
+        <p>對每個重要概念，提供核心原理及簡單解釋、一個日常例子、一個容易令人誤解嘅反例、一個連結既有知識嘅比喻、作者使用嘅關鍵證據及適用條件，以及概念何時有用、何時可能失效。</p>
+        <p class="subhead">第三階段：主動回憶測試</p>
+        <p>唔好立即展示全部答案。每次只問我一條問題，要求我用自己嘅說話回答。根據我嘅回答，指出理解正確嘅部分、錯誤、遺漏及模糊之處；先給提示讓我自行修正，等我再次嘗試後先提供完整解釋。問題應包括概念理解、情境應用、比較分析及反方論證。</p>
+        <p class="subhead">第四階段：實際應用</p>
+        <p>將本書最重要嘅原則轉化成七日行動計劃。每日包括一個具體行動、預計時間、完成標準、常見障礙及應對方法，以及一個評估學習成果嘅問題。避免只提供空泛建議。</p>
+        <p class="subhead">第五階段：批判性分析</p>
+        <p>列出最值得保留嘅五個觀點、最重要嘅三個限制或盲點、有力嘅反方觀點及相關證據、作者結論是否超出證據支持範圍，以及需要其他資料才能判斷嘅問題。區分已知事實、合理推論及不確定性。</p>
+        <p class="subhead">第六階段：長期記憶系統</p>
+        <p>建立十個核心概念速查表、五條主動回憶問題、五張問答式記憶卡、第 1、3、7、14、30 日複習安排，以及一份三分鐘內可以完成嘅自我測試。每次複習先要求我回憶，再顯示答案及糾正錯誤。</p>
+        <p class="subhead">最後原則</p>
+        <p>不要將摘要長度當成學習成效。優先讓我自己思考、回憶、解釋、應用及修正。當我未能解釋一個概念時，先協助我找出理解缺口，而唔係直接提供更多資訊。</p>
+      </div>
+    </section>
+
+    <section id="pitfalls">
+      <h2>五、三個最容易忽略嘅陷阱</h2>
+      <div class="method">
+        <h3>陷阱一：以為 AI 可以自動提取任何一本書嘅全部內容</h3>
+        <p>唔一定。準確度取決於 AI 實際可存取嘅資料、你有冇上載電子書，以及內容是否完整。只有書名而無全文，模型可能只掌握部分公開資料，甚至產生錯誤嘅章節摘要。</p>
+      </div>
+      <div class="method">
+        <h3>陷阱二：以為摘要愈短，學習效率就愈高</h3>
+        <p>摘要過度壓縮，可能將重要因果關係、限制條件及反例刪走。理解複雜嘅投資或經濟理論，通常仍然需要閱讀原始論證。</p>
+      </div>
+      <div class="method">
+        <h3>陷阱三：將「離開 AI」理解成唔應該使用 AI</h3>
+        <p>重點係唔好將思考完全外判畀 AI。你可以用 AI 提供解釋、反例、測驗同回饋，但最後必須自己完成回憶及判斷。涉及最新研究或投資決策時，亦要另外核實證據。</p>
+      </div>
+    </section>
+
+    <section id="checklist">
+      <h2>六、每讀完一本書，做一次自我檢查</h2>
+      <p class="section-intro">勾選你已經做到嘅項目。狀態只會留喺目前頁面；重新整理後會重設。</p>
+      <ul class="checklist">
+        <li><label><input type="checkbox">我可以用自己嘅說話清楚解釋三個重要概念。</label></li>
+        <li><label><input type="checkbox">我記得並能夠正確運用一個核心框架。</label></li>
+        <li><label><input type="checkbox">我能夠指出作者理論嘅一個限制或反例。</label></li>
+        <li><label><input type="checkbox">我已將其中一個觀點應用於真實問題。</label></li>
+        <li><label><input type="checkbox">我已安排之後嘅間隔複習。</label></li>
+      </ul>
+    </section>
+
+    <section id="takeaway">
+      <h2>最後，只需要記住一個原則</h2>
+      <div class="quote">讀書唔係收集資訊，而係改變自己理解世界、作出判斷及採取行動嘅方式。</div>
+      <p>每讀完一本書，唔需要逼自己記住所有內容。只要你能夠清楚解釋三個重要概念、記住並運用一個核心框架、指出一個限制，以及將一個觀點用於真實情境，你已經比單純讀完一本書多走一步。</p>
+      <p><strong>最好嘅學習模式：</strong>AI 幫你整理，自己負責理解，真實世界負責驗證。</p>
+      <p>最終有價值嘅，唔係你用 AI 讀過幾多本書，而係當 AI 不在場、答案唔喺眼前時，你仍然識得點樣思考。</p>
+    </section>
+    <footer>AI 閱讀系統與學習科學指南 · 可離線瀏覽 · 可列印或另存為 PDF</footer>
+  </main>
+</div>
+<script>
+function copyPrompt() {
+  const el = document.getElementById('prompt-content');
+  const text = el.innerText;
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => alert('已複製萬用 Prompt！')).catch(() => fallbackCopy(text));
+  } else { fallbackCopy(text); }
+}
+function fallbackCopy(text) {
+  const area = document.createElement('textarea');
+  area.value = text; area.style.position = 'fixed'; area.style.opacity = '0';
+  document.body.appendChild(area); area.select();
+  try { document.execCommand('copy'); alert('已複製萬用 Prompt！'); }
+  catch (e) { alert('無法自動複製，請選取 Prompt 文字後手動複製。'); }
+  area.remove();
+}
+const links = [...document.querySelectorAll('nav a')];
+const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+      }
+    });
+  }, { rootMargin: '-20% 0px -65% 0px' });
+  sections.forEach(section => observer.observe(section));
+}
+</script>
+</body>
+</html>
