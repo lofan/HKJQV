@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="《與神對話》三部曲閱讀導覽、作者介紹、核心主題與影音資源。">
+<title>《與神對話》三部曲｜閱讀導覽</title>
+<style>
+  :root {
+    --bg: #f5f3ee; --paper: #fffefa; --ink: #252a31; --muted: #626b75;
+    --accent: #79634b; --accent-light: #e9e0d4; --line: #e3ddd3;
+    --shadow: 0 10px 30px rgba(45, 38, 28, .07);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.8 system-ui, -apple-system, "Segoe UI", "Noto Sans TC", sans-serif; }
+  a { color: #76583a; text-underline-offset: 3px; }
+  a:hover { color: #3d2b19; }
+  .topbar { position: sticky; top: 0; z-index: 10; background: rgba(255,254,250,.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .nav { max-width: 1120px; margin: auto; padding: .7rem 1.2rem; display: flex; gap: 1rem; align-items: center; justify-content: space-between; }
+  .brand { font-weight: 800; letter-spacing: .03em; white-space: nowrap; }
+  .navlinks { display: flex; flex-wrap: wrap; gap: .35rem .9rem; justify-content: flex-end; }
+  .navlinks a { text-decoration: none; font-size: .92rem; color: var(--muted); }
+  .navlinks a:hover { color: var(--ink); }
+  main { max-width: 1000px; margin: auto; padding: 2rem 1.2rem 4rem; }
+  .hero { padding: clamp(2rem, 6vw, 4.5rem); border-radius: 24px; background: linear-gradient(135deg, #e8dfd2, #fbf8f1 70%); box-shadow: var(--shadow); }
+  .eyebrow { color: var(--accent); font-weight: 750; letter-spacing: .12em; font-size: .8rem; text-transform: uppercase; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.18; margin: .4rem 0 1rem; }
+  h2 { font-size: clamp(1.55rem, 3vw, 2.1rem); line-height: 1.35; margin: 0 0 1rem; }
+  h3 { margin: 0 0 .55rem; font-size: 1.2rem; }
+  p { margin: .5rem 0 1rem; }
+  .lead { font-size: 1.12rem; max-width: 68ch; color: #41464b; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.4rem; }
+  .button { display: inline-flex; align-items: center; justify-content: center; padding: .7rem 1rem; border-radius: 999px; background: var(--ink); color: white; text-decoration: none; font-weight: 700; border: 1px solid var(--ink); }
+  .button.secondary { color: var(--ink); background: transparent; }
+  section { margin-top: 3rem; }
+  .section-intro { color: var(--muted); max-width: 75ch; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 1.15rem; box-shadow: var(--shadow); min-width: 0; }
+  .part-number { display: inline-block; color: var(--accent); background: var(--accent-light); border-radius: 999px; padding: .15rem .65rem; font-size: .82rem; font-weight: 800; margin-bottom: .65rem; }
+  .meta { color: var(--muted); font-size: .92rem; }
+  .video { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px; background: #e8e2d9; margin: .9rem 0; }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .text-panel { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: clamp(1rem, 3vw, 1.6rem); }
+  .toc { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+  .toc a { border: 1px solid var(--line); background: var(--paper); border-radius: 999px; padding: .35rem .8rem; text-decoration: none; font-size: .92rem; }
+  .quote { border-left: 4px solid var(--accent); padding: .25rem 0 .25rem 1rem; color: #4c4c49; margin: 1rem 0; }
+  .questions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .7rem; }
+  .question { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: .85rem 1rem; }
+  details { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: .85rem 1rem; margin: .65rem 0; }
+  summary { cursor: pointer; font-weight: 750; }
+  .note { color: var(--muted); font-size: .9rem; }
+  footer { border-top: 1px solid var(--line); margin-top: 3rem; padding-top: 1.5rem; color: var(--muted); font-size: .9rem; }
+  @media (max-width: 760px) {
+    .nav { align-items: flex-start; flex-direction: column; gap: .35rem; }
+    .navlinks { justify-content: flex-start; }
+    .grid { grid-template-columns: 1fr; }
+    .questions { grid-template-columns: 1fr; }
+  }
+  @media print {
+    .topbar, .hero-actions { display: none; }
+    body { background: white; }
+    .hero, .card, .text-panel { box-shadow: none; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <nav class="nav" aria-label="主導覽">
+    <div class="brand">《與神對話》閱讀導覽</div>
+    <div class="navlinks">
+      <a href="#overview">系列簡介</a>
+      <a href="#trilogy">三部曲</a>
+      <a href="#themes">核心問題</a>
+      <a href="#author">作者介紹</a>
+      <a href="#reflection">閱讀反思</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="overview" style="margin-top:0">
+    <div class="eyebrow">Reading Guide · 三部曲</div>
+    <h1>與神對話</h1>
+    <p class="lead">一本由尼爾・唐納・沃許（Neale Donald Walsch）寫成、以「與神對話」形式探討生命、信念、人際關係與社會的靈性作品。你不必先接受書中的每個觀點；也可以把它當成一組引導自我反思的問題。</p>
+    <div class="hero-actions">
+      <a class="button" href="#trilogy">開始探索三部曲</a>
+      <a class="button secondary" href="#reflection">前往閱讀反思</a>
+    </div>
+    <div class="toc" aria-label="快速跳轉">
+      <a href="#part1">第一部</a><a href="#part2">第二部</a><a href="#part3">第三部</a>
+      <a href="#questions">生命提問</a>
+    </div>
+  </section>
+
+  <section id="trilogy">
+    <h2>三部曲影音與閱讀入口</h2>
+    <p class="section-intro">以下保留原始資料中的 YouTube 影片及 Amazon 書籍連結。播放影片需要連接網絡；若影片已被移除或設為私人，請到 YouTube 查看是否有更新版本。</p>
+    <div class="grid">
+      <article class="card" id="part1">
+        <span class="part-number">第一部</span>
+        <h3>《與神對話》</h3>
+        <p class="meta">原頁標示音訊長度：約 8 小時</p>
+        <div class="video">
+          <iframe src="https://www.youtube-nocookie.com/embed/2-VHdngy6YE" title="《與神對話》第一部影片" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <p>從個人生命、金錢、人際關係及苦難等問題出發，思考自己如何理解人生與神性。</p>
+        <a class="button secondary" href="https://www.amazon.com/dp/B08GPFH4XS" target="_blank" rel="noopener noreferrer">查看書籍 ↗</a>
+      </article>
+      <article class="card" id="part2">
+        <span class="part-number">第二部</span>
+        <h3>《與神對話 2》</h3>
+        <p class="meta">原頁標示音訊長度：約 9 小時</p>
+        <div class="video">
+          <iframe src="https://www.youtube-nocookie.com/embed/Tf50EO-tNC0" title="《與神對話 2》第二部影片" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <p>把視野由個人擴展至社會制度、教育、政治、經濟與人類集體選擇。</p>
+        <a class="button secondary" href="https://www.amazon.com/dp/B08GPJW9Y3" target="_blank" rel="noopener noreferrer">查看書籍 ↗</a>
+      </article>
+      <article class="card" id="part3">
+        <span class="part-number">第三部</span>
+        <h3>《與神對話 3》</h3>
+        <p class="meta">原頁標示音訊長度：約 13 小時</p>
+        <div class="video">
+          <iframe src="https://www.youtube-nocookie.com/embed/ox5Z-9iHXbo" title="《與神對話 3》第三部影片" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <p>進一步探索宇宙、生命與死亡、精神、宗教，以及人如何理解自身存在。</p>
+        <a class="button secondary" href="https://www.amazon.com/dp/B08GPRKQYW" target="_blank" rel="noopener noreferrer">查看書籍 ↗</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="themes">
+    <h2>這套書在探索甚麼？</h2>
+    <div class="text-panel">
+      <p>《與神對話》以作者與「神」的對話作為敘事形式，涵蓋個人生活、親密關係、工作與志業、罪與罰、生與死，以及教育、經濟、政治和社會等主題。作品提出不少有挑戰性的靈性觀點，讀者可以思考它們是否有助自己理解人生。</p>
+      <div class="quote">閱讀時不必急於判斷每句話是真是假；可以先問：這個觀點在說甚麼？它依據甚麼？放到真實生活中，會帶來甚麼影響？</div>
+      <p class="note">編輯提醒：書中對話屬作者呈現的靈性／哲學內容；是否真實來自超自然來源，並沒有因書中敘述而得到獨立證實。以下提問適合用作思考起點，而不是把書中主張當成已證實事實。</p>
+    </div>
+  </section>
+
+  <section id="questions">
+    <h2>生命中值得重新思考的問題</h2>
+    <p class="section-intro">可以逐條閱讀，亦可以把答案寫進自己的日記。問題沒有標準答案，重點是看清自己的信念從何而來。</p>
+    <div class="questions">
+      <div class="question">人的一生，到底是為了甚麼？</div>
+      <div class="question">我如何理解金錢、富足與安全感？</div>
+      <div class="question">面對痛苦或挫折時，我會如何理解自己的處境？</div>
+      <div class="question">如果神是全能而慈愛的，如何理解世界上的苦難？</div>
+      <div class="question">我如何看待親密關係、婚姻、性與責任？</div>
+      <div class="question">我的價值觀會如何影響工作、社會與公共生活？</div>
+    </div>
+  </section>
+
+  <section id="author">
+    <h2>作者介紹</h2>
+    <div class="text-panel">
+      <h3>尼爾・唐納・沃許（Neale Donald Walsch）</h3>
+      <p>美國作家，以《與神對話》系列聞名。這套作品採用問答式的對話寫法，將個人經歷與靈性、人生哲學等議題結合。原始介紹提到，他在個人生活與事業面對困難的時期開始寫下相關內容，並在作品出版後持續分享其中的思想。</p>
+      <p>作者網站：<a href="https://www.nealedonaldwalsch.com/" target="_blank" rel="noopener noreferrer">nealedonaldwalsch.com ↗</a></p>
+      <p class="note">原始介紹中的婚姻次數、子女人數、譯本語言數量等資料未在此頁逐項核實，因此沒有把它們當成已確認的作者資料重複呈現。</p>
+    </div>
+  </section>
+
+  <section id="reflection">
+    <h2>實用閱讀方法：由閱讀走向自我理解</h2>
+    <details open>
+      <summary>1. 先記錄作者的主張</summary>
+      <p>用一兩句話寫下這一章最重要的意思。盡量先準確轉述，再寫自己的認同或反對理由。</p>
+    </details>
+    <details>
+      <summary>2. 分清主張、證據與個人感受</summary>
+      <p>問自己：這是哲學觀點、靈性信念、個人經驗，還是可被外部驗證的事實？不同類型的說法，需要不同的判斷方法。</p>
+    </details>
+    <details>
+      <summary>3. 找一個小型生活實驗</summary>
+      <p>選一個安全、可逆、低風險的行動，例如在衝突中先聽清對方的需要，觀察自己的反應是否改變。不要單憑一本書的觀點，作出重大財務、醫療或人生決定。</p>
+    </details>
+    <details>
+      <summary>4. 每讀完一部，寫下三個答案</summary>
+      <p>我學到甚麼？我仍然質疑甚麼？我打算在生活中試行甚麼？一星期後再回顧，看看這個想法是否真的有幫助。</p>
+    </details>
+    <div class="text-panel" style="margin-top:1rem">
+      <h3>閱讀筆記模板</h3>
+      <p><strong>本章核心觀點：</strong> ______________________________</p>
+      <p><strong>作者提出的理由／例子：</strong> ______________________________</p>
+      <p><strong>我認同或質疑的地方：</strong> ______________________________</p>
+      <p><strong>我想在生活中試行的一件事：</strong> ______________________________</p>
+      <p><strong>之後需要查證的問題：</strong> ______________________________</p>
+      <button class="button" type="button" onclick="window.print()">列印／另存為 PDF</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>《與神對話》三部曲｜個人閱讀導覽頁</p>
+    <p>外部書籍連結與影片由第三方提供；其內容、可用性及版權狀態由相關平台或權利人管理。</p>
+  </footer>
+</main>
+</body>
+</html>
