@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogger to Clean HTML Converter</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 0 20px;
+            background-color: #f9f9f9;
+        }
+        .card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h1 { margin-top: 0; color: #1a73e8; }
+        .upload-box {
+            border: 2px dashed #dadce0;
+            padding: 30px;
+            text-align: center;
+            border-radius: 6px;
+            margin: 20px 0;
+            background: #f8f9fa;
+        }
+        input[type="file"] { margin: 10px 0; }
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover { background-color: #1557b0; }
+        #status { margin-top: 15px; font-weight: bold; color: #388e3c; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Blogger Export to Clean HTML</h1>
+        <p>Select your Google Blogger XML backup file. The app will extract your posts and download them as individual clean HTML files automatically.</p>
+        
+        <div class="upload-box">
+            <input type="file" id="xmlFile" accept=".xml">
+        </div>
+        
+        <button onclick="processBloggerExport()">Convert & Download Posts</button>
+        <div id="status"></div>
+    </div>
+
+    <!-- Include JSZip library to bundle files into a ZIP download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <script>
+        async function processBloggerExport() {
+            const fileInput = document.getElementById('xmlFile');
+            const statusDiv = document.getElementById('status');
+
+            if (fileInput.files.length === 0) {
+                alert('Please select a Blogger XML export file first!');
+                return;
+            }
+
+            statusDiv.textContent = 'Reading and processing file...';
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function(e) {
+                try {
+                    const text = e.target.result;
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(text, "text/xml");
+
+                    const entries = xmlDoc.getElementsByTagName('entry');
+                    let postCount = 0;
+                    const zip = new JSZip();
+
+                    for (let i = 0; i < entries.length; i++) {
+                        const entry = entries[i];
+                        
+                        // Check if it's a blog post
+                        const categories = entry.getElementsByTagName('category');
+                        let isPost = false;
+                        for (let c = 0; c < categories.length; c++) {
+                            const scheme = categories[c].getAttribute('scheme');
+                            const term = categories[c].getAttribute('term');
+                            if (scheme && scheme.includes('g/2005#kind') && term && term.includes('kind#post')) {
+                                isPost = true;
+                                break;
+                            }
+                        }
+
+                        if (!isPost) continue;
+
+                        const titleTag = entry.getElementsByTagName('title')[0];
+                        const contentTag = entry.getElementsByTagName('content')[0];
+
+                        const title = titleTag ? titleTag.textContent : "Untitled Post";
+                        const content = contentTag ? contentTag.textContent : "";
+
+                        // Create safe filename
+                        let safeTitle = title.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
+                        if (!safeTitle) safeTitle = `post_${postCount + 1}`;
+                        const filename = `${safeTitle}.html`;
+
+                        // Modern HTML template
+                        const cleanHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        h1 { border-bottom: 2px solid #eaeaea; padding-bottom: 10px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>${title}</h1>
+        <div class="content">
+            ${content}
+        </div>
+    </article>
+</body>
+</html>`;
+
+                        zip.file(filename, cleanHtml);
+                        postCount++;
+                    }
+
+                    if (postCount === 0) {
+                        statusDiv.textContent = 'No blog posts found in this XML file.';
+                        return;
+                    }
+
+                    statusDiv.textContent = `Found ${postCount} posts. Generating ZIP archive...`;
+
+                    // Generate ZIP file and trigger download
+                    const contentZip = await zip.generateAsync({ type: "blob" });
+                    saveAs(contentZip, "converted_blogger_posts.zip");
+
+                    statusDiv.textContent = `Successfully converted ${postCount} posts! Your download should start automatically.`;
+
+                } catch (error) {
+                    console.error(error);
+                    statusDiv.textContent = 'Error parsing the XML file. Make sure it is a valid Blogger export.';
+                }
+            };
+
+            reader.readAsText(file);
+        }
+    </script>
+
+</body>
+</html>
