@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On Your Way to Software Architect - Reading Guide & Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b0f19',
+                        cardBg: '#111827',
+                        cardBorder: '#1f2937',
+                        accentBlue: '#3b82f6',
+                        accentPurple: '#8b5cf6',
+                        accentEmerald: '#10b981',
+                        accentAmber: '#f59e0b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom Scrollbar for sleek dark aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+        .glass-header {
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-gray-100 font-sans min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- Sticky Navigation Header -->
+    <header class="sticky top-0 z-50 glass-header border-b border-gray-800 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <!-- Logo / Title -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilters()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid font-mono fa-cubes"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight">
+                        Software Architect Roadmap
+                    </h1>
+                    <p class="text-xs text-gray-400 hidden sm:block">廣東話深度拆解 20 本必讀神書</p>
+                </div>
+            </div>
+
+            <!-- Header Quick Actions -->
+            <div class="flex items-center space-x-3">
+                <a href="#roadmap" class="text-xs sm:text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-800">
+                    <i class="fa-solid fa-route mr-1.5 text-blue-400"></i><span class="hidden sm:inline">學習</span>路線圖
+                </a>
+                <a href="#pro-tips" class="text-xs sm:text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-800">
+                    <i class="fa-solid fa-lightbulb mr-1.5 text-yellow-400"></i>實踐心法
+                </a>
+                <a href="#books-grid" class="text-xs sm:text-sm font-medium text-gray-300 hover:text-emerald-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-800">
+                    <i class="fa-solid fa-book-open mr-1.5 text-emerald-400"></i>書單列表
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-gray-900 to-cardBg border border-gray-800 p-6 sm:p-10 shadow-2xl">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-3xl space-y-4">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold tracking-wide uppercase">
+                    <i class="fa-solid fa-compass"></i>
+                    <span>Career Advancement Guide</span>
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                    由軟件工程師進化為 <span class="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Software Architect</span> 的完整書單導航
+                </h2>
+                <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                    架構師並非單純一種職銜，而係一種思維模式嘅轉變——從「寫出能運行的 Code」過渡到「喺複雜商業、數據、團隊與維運約束下，進行權衡（Trade-off）與系統設計」。以下為你將 Part 1 與 Part 2 共 20 本經典書籍進行系統化拆解與 5 大階段劃分。
+                </p>
+                
+                <div class="pt-2 flex flex-wrap gap-4 text-xs sm:text-sm text-gray-400">
+                    <div class="flex items-center space-x-2 bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700/50">
+                        <i class="fa-solid fa-layer-group text-blue-400"></i>
+                        <span>共 20 本精選好書</span>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700/50">
+                        <i class="fa-solid fa-sitemap text-purple-400"></i>
+                        <span>5 大進階階段</span>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700/50">
+                        <i class="fa-brands fa-amazon text-amber-400"></i>
+                        <span>一鍵直達 Amazon 搜尋</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 1: Learning Roadmap (5 Phases) -->
+        <section id="roadmap" class="space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-network-wired text-blue-500"></i>
+                        5 大學習階段與職涯路線圖 (Roadmap)
+                    </h3>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-1">點擊下方任一階段即可快速篩選相關書籍</p>
+                </div>
+            </div>
+
+            <!-- Roadmap Flow Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                <!-- Phase 1 -->
+                <button onclick="filterByPhase(1)" class="phase-btn text-left p-4 rounded-2xl bg-cardBg border border-cardBorder hover:border-blue-500/50 transition-all group relative overflow-hidden focus:outline-none" id="phase-card-1">
+                    <div class="text-xs font-bold text-blue-400 mb-1 flex items-center justify-between">
+                        <span>PHASE 1</span>
+                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors">個人素養與職業基本功</h4>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">建立終身受用嘅工程師心態、責任感與捍衛估算能力。</p>
+                </button>
+
+                <!-- Phase 2 -->
+                <button onclick="filterByPhase(2)" class="phase-btn text-left p-4 rounded-2xl bg-cardBg border border-cardBorder hover:border-purple-500/50 transition-all group relative overflow-hidden focus:outline-none" id="phase-card-2">
+                    <div class="text-xs font-bold text-purple-400 mb-1 flex items-center justify-between">
+                        <span>PHASE 2</span>
+                        <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white group-hover:text-purple-300 transition-colors">設計模式與領域建模</h4>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">從寫功能跨越到設計組件，利用 DDD 解決複雜業務邏輯。</p>
+                </button>
+
+                <!-- Phase 3 -->
+                <button onclick="filterByPhase(3)" class="phase-btn text-left p-4 rounded-2xl bg-cardBg border border-cardBorder hover:border-emerald-500/50 transition-all group relative overflow-hidden focus:outline-none" id="phase-card-3">
+                    <div class="text-xs font-bold text-emerald-400 mb-1 flex items-center justify-between">
+                        <span>PHASE 3</span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white group-hover:text-emerald-300 transition-colors">分散式系統與數據架構</h4>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">理解數據流向、一致性、CAP 定理與微服務實戰。</p>
+                </button>
+
+                <!-- Phase 4 -->
+                <button onclick="filterByPhase(4)" class="phase-btn text-left p-4 rounded-2xl bg-cardBg border border-cardBorder hover:border-amber-500/50 transition-all group relative overflow-hidden focus:outline-none" id="phase-card-4">
+                    <div class="text-xs font-bold text-amber-400 mb-1 flex items-center justify-between">
+                        <span>PHASE 4</span>
+                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white group-hover:text-amber-300 transition-colors">系統拆分與架構權衡</h4>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">學習沒有標準答案時嘅權衡（Trade-off）與演進式架構。</p>
+                </button>
+
+                <!-- Phase 5 -->
+                <button onclick="filterByPhase(5)" class="phase-btn text-left p-4 rounded-2xl bg-cardBg border border-cardBorder hover:border-rose-500/50 transition-all group relative overflow-hidden focus:outline-none" id="phase-card-5">
+                    <div class="text-xs font-bold text-rose-400 mb-1 flex items-center justify-between">
+                        <span>PHASE 5</span>
+                        <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white group-hover:text-rose-300 transition-colors">企業級架構與 SRE 維運</h4>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">高可用性、風險管理，以及 Deploy 之後嘅系統維運哲學。</p>
+                </button>
+            </div>
+        </section>
+
+        <!-- Section 2: Pro Tips Section -->
+        <section id="pro-tips" class="p-6 rounded-2xl bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-blue-500/10 border border-amber-500/30 backdrop-blur-sm">
+            <div class="flex items-start space-x-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold text-amber-300 flex items-center gap-2">
+                        作者核心實踐心法 (Pro Tips from Experience)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                        <div class="bg-gray-900/80 p-3.5 rounded-xl border border-gray-800">
+                            <span class="font-bold text-yellow-400 block mb-1">📌 Tip 1: Ship 一個 Idea 勝過光讀萬卷書</span>
+                            <p class="text-gray-300">每讀完一本書，揀選其中**一個** Concept/Pattern，並切實喺你下一個 Project 中落地 Ship 出去。光讀不練係唔會走得遠嘅。</p>
+                        </div>
+                        <div class="bg-gray-900/80 p-3.5 rounded-xl border border-gray-800">
+                            <span class="font-bold text-yellow-400 block mb-1">📌 Tip 2: 帶住真實痛點去尋求解答</span>
+                            <p class="text-gray-300">喺你閱讀某個 Pattern 之前，先喺你現有嘅 Project 中搵出邊度需要佢。只有當你帶住真實問題（Real Problem）去讀書，知識先會深刻。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Interactive Search and Filter Bar -->
+        <section id="books-grid" class="space-y-6">
+            <!-- Filter Controls Container -->
+            <div class="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between bg-cardBg p-4 rounded-2xl border border-cardBorder shadow-lg">
+                
+                <!-- Search Box -->
+                <div class="relative flex-grow max-w-md">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="搜尋書名、作者、關鍵字或廣東話分析..." class="w-full pl-10 pr-10 py-2.5 bg-gray-900 text-white placeholder-gray-500 rounded-xl border border-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm transition-all">
+                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Part Tabs & Reset Button -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="filterByPart('all')" id="btn-part-all" class="part-btn active-tab px-3.5 py-2 rounded-xl text-xs font-semibold transition-all">
+                        全部 (20)
+                    </button>
+                    <button onclick="filterByPart('part1')" id="btn-part-part1" class="part-btn inactive-tab px-3.5 py-2 rounded-xl text-xs font-semibold transition-all">
+                        Part 1 (10)
+                    </button>
+                    <button onclick="filterByPart('part2')" id="btn-part-part2" class="part-btn inactive-tab px-3.5 py-2 rounded-xl text-xs font-semibold transition-all">
+                        Part 2 (10)
+                    </button>
+                    <button onclick="resetFilters()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-gray-800 text-gray-300 hover:text-white hover:bg-gray-700 border border-gray-700 transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-left"></i> 重置篩選
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Filter Badge Indicator -->
+            <div id="activeFilterBadge" class="hidden flex items-center gap-2 text-xs text-gray-400">
+                <span>目前篩選條目：</span>
+                <span id="filterLabel" class="bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-md border border-blue-500/30 font-medium"></span>
+            </div>
+
+            <!-- Books Cards Grid -->
+            <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                <!-- Dynamically Rendered Books Cards will go here -->
+            </div>
+
+            <!-- Empty State Message -->
+            <div id="emptyState" class="hidden text-center py-16 space-y-4 bg-cardBg/50 rounded-2xl border border-dashed border-gray-800">
+                <div class="w-16 h-16 mx-auto rounded-full bg-gray-800 flex items-center justify-center text-gray-500 text-2xl">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <h4 class="text-lg font-bold text-gray-300">找不到符合條件的書籍</h4>
+                <p class="text-xs text-gray-500">請嘗試更換搜尋關鍵字或重置篩選器。</p>
+                <button onclick="resetFilters()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition-colors">
+                    重置所有條件
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 border-t border-gray-800 bg-gray-950 py-8 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>On Your Way to Software Architect — Cantonese Analysis & Interactive Roadmap</p>
+            <p class="text-gray-600">Based on recommended reading order by Anton Martyniuk • Enhanced interactive web edition</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Data & Application Logic -->
+    <script>
+        // Complete Book Database (20 Books)
+        const booksData = [
+            // PART 1
+            {
+                id: 1,
+                part: 'part1',
+                orderInPart: 1,
+                title: "The Pragmatic Programmer",
+                authors: "Andy Hunt, Dave Thomas",
+                phase: 1,
+                phaseName: "個人素養與職業基本功",
+                quote: "The habits that keep you useful at every career stage. Curiosity and the will to keep learning.",
+                cantoneseAnalysis: "建立終身受用嘅工程師心態同底層習慣。強調實用主義（Pragmatism）非盲目追求過度設計，保持好奇心，並透過自動化（DRY 原則）減少重複勞動。",
+                amazonQuery: "The Pragmatic Programmer Andy Hunt Dave Thomas"
+            },
+            {
+                id: 2,
+                part: 'part1',
+                orderInPart: 2,
+                title: "The Clean Coder",
+                authors: "Robert C. Martin",
+                phase: 1,
+                phaseName: "個人素養與職業基本功",
+                quote: "How to own a mistake and defend an estimate. The professional habits that outlast any framework.",
+                cantoneseAnalysis: "定義咩叫「專業（Professionalism）」。教你為自己嘅錯誤負責，學會向不合理嘅 Deadline 講「No」，用數據同風險評估去捍衛估算時間。",
+                amazonQuery: "The Clean Coder Robert C Martin"
+            },
+            {
+                id: 3,
+                part: 'part1',
+                orderInPart: 3,
+                title: "Head First Design Patterns",
+                authors: "Eric Freeman, Elisabeth Robson",
+                phase: 2,
+                phaseName: "設計模式與領域建模",
+                quote: "Patterns explained in an easy way. You stop memorizing names and start seeing where they fit.",
+                cantoneseAnalysis: "用直觀圖文擺脫死記硬背經典 OOP Design Patterns。重點喺理解模式背後嘅解耦（Decoupling）同抽象（Abstraction）思維。",
+                amazonQuery: "Head First Design Patterns Eric Freeman"
+            },
+            {
+                id: 4,
+                part: 'part1',
+                orderInPart: 4,
+                title: "Head First Software Architecture",
+                authors: "Raju Gandhi, Mark Richards, Neal Ford",
+                phase: 2,
+                phaseName: "設計模式與領域建模",
+                quote: "Your first step from features to systems. Made for devs moving into architecture.",
+                cantoneseAnalysis: "工程師邁向架構思維嘅第一步。視角從編寫單一 Feature 轉變為審視整個 System 嘅組件劃分、接口設計與模組邊界。",
+                amazonQuery: "Head First Software Architecture Raju Gandhi"
+            },
+            {
+                id: 5,
+                part: 'part1',
+                orderInPart: 5,
+                title: "Patterns of Enterprise Application Architecture",
+                authors: "Martin Fowler",
+                phase: 2,
+                phaseName: "設計模式與領域建模",
+                quote: "The reference for problems you hit in almost every app. After it, you'll spot these patterns in code you own.",
+                cantoneseAnalysis: "企業級應用開發嘅聖經（PoEAA）。涵蓋分層架構（Layering）、Active Record、Data Mapper 等 ORM 數據存取模式，能快速識別代碼中嘅模式與誤用。",
+                amazonQuery: "Patterns of Enterprise Application Architecture Martin Fowler"
+            },
+            {
+                id: 6,
+                part: 'part1',
+                orderInPart: 6,
+                title: "Domain-Driven Design",
+                authors: "Eric Evans",
+                phase: 2,
+                phaseName: "設計模式與領域建模",
+                quote: "How to model messy business rules without drowning. It changes how you talk to business people.",
+                cantoneseAnalysis: "解決複雜業務邏輯嘅終極武器。建立統一語言（Ubiquitous Language）打破與 Business Side 嘅溝通牆，並用界限上下文（Bounded Context）劃分微服務邊界。",
+                amazonQuery: "Domain Driven Design Eric Evans"
+            },
+            {
+                id: 7,
+                part: 'part1',
+                orderInPart: 7,
+                title: "Building Evolutionary Architectures",
+                authors: "Neal Ford, Rebecca Parsons, Patrick Kua",
+                phase: 4,
+                phaseName: "系統拆分與架構權衡",
+                quote: "Design for change. Requirements never sit still. Fitness functions keep your architecture honest as it grows.",
+                cantoneseAnalysis: "針對「需求永遠喺度變」嘅架構設計。引入適應度函數（Fitness Functions）透過自動化測試保護架構非功能性需求，確保系統長期演進唔會腐爛。",
+                amazonQuery: "Building Evolutionary Architectures Neal Ford"
+            },
+            {
+                id: 8,
+                part: 'part1',
+                orderInPart: 8,
+                title: "Designing Data-Intensive Applications",
+                authors: "Martin Kleppmann",
+                phase: 3,
+                phaseName: "分散式系統與數據架構",
+                quote: "Databases, replication, and scale in plain language. The clearest system design book I've read.",
+                cantoneseAnalysis: "分散式系統與數據架構神書（DDIA）。深挖數據存儲底層（B-Tree, LSM-Tree）、複製與分片、CAP 定理、BASE 理論同共識協議（Raft/Paxos）。",
+                amazonQuery: "Designing Data Intensive Applications Martin Kleppmann"
+            },
+            {
+                id: 9,
+                part: 'part1',
+                orderInPart: 9,
+                title: "Building Microservices",
+                authors: "Sam Newman",
+                phase: 3,
+                phaseName: "分散式系統與數據架構",
+                quote: "Read this when you're sure you actually need them. Every chapter ends in a trade-off.",
+                cantoneseAnalysis: "微服務權威指南。強調「只有確定真係需要時先用」，每章落腳於權衡（Trade-off）——雖然獲得獨立部署與擴展性，但也付出了網路延遲同分散式複雜性代價。",
+                amazonQuery: "Building Microservices Sam Newman"
+            },
+            {
+                id: 10,
+                part: 'part1',
+                orderInPart: 10,
+                title: "Enterprise Architecture Patterns",
+                authors: "Thierry Perroud, Reto Inversini",
+                phase: 5,
+                phaseName: "企業級架構與 SRE 維運",
+                quote: "Architecture solutions across a whole company. For the day your scope grows past one system.",
+                cantoneseAnalysis: "當架構師職責範圍由單一 System 擴操到整個公司嘅 IT 生態，解決跨全公司（Company-wide）嘅標準化、技術選型同跨系統整合問題。",
+                amazonQuery: "Enterprise Architecture Patterns Thierry Perroud"
+            },
+
+            // PART 2
+            {
+                id: 11,
+                part: 'part2',
+                orderInPart: 1,
+                title: "Fundamentals of Software Architecture",
+                authors: "Mark Richards, Neal Ford",
+                phase: 4,
+                phaseName: "系統拆分與架構權衡",
+                quote: "The map of architecture styles and the '-ilities' behind them. First law: everything in software architecture is a trade-off.",
+                cantoneseAnalysis: "構建架構全景地圖。指出架構第一定律：*Everything in software architecture is a trade-off.* 深入分析 Scalability, Availability, Security 等「-ilities」之間嘅平衡。",
+                amazonQuery: "Fundamentals of Software Architecture Mark Richards"
+            },
+            {
+                id: 12,
+                part: 'part2',
+                orderInPart: 2,
+                title: "Patterns of Enterprise Application Architecture",
+                authors: "Martin Fowler",
+                phase: 2,
+                phaseName: "設計模式與領域建模",
+                quote: "The reference for problems you hit in almost every app. After it, you'll spot these patterns in code you own.",
+                cantoneseAnalysis: "（重申經典）企業應用架構問題嘅必備字典，幫你喺日常維護嘅舊 Codebase 中迅速察覺設計模式嘅套用與反模式。",
+                amazonQuery: "Patterns of Enterprise Application Architecture Martin Fowler"
+            },
+            {
+                id: 13,
+                part: 'part2',
+                orderInPart: 3,
+                title: "Microservices Design Patterns in .NET",
+                authors: "Trevoir Williams",
+                phase: 3,
+                phaseName: "分散式系統與數據架構",
+                quote: "Saga, CQRS, and API Gateway in real .NET code. The new edition is updated for .NET 10 and C# 14.",
+                cantoneseAnalysis: "微服務核心模式喺特定技術棧（.NET/C#）嘅實踐落地。涵蓋 Saga 模式（分散式事務）、CQRS（讀寫分離）與 API Gateway 實操。",
+                amazonQuery: "Microservices Design Patterns in .NET Trevoir Williams"
+            },
+            {
+                id: 14,
+                part: 'part2',
+                orderInPart: 4,
+                title: "Domain-Driven Refactoring",
+                authors: "Alessandro Colla, Alberto Acerbis",
+                phase: 2,
+                phaseName: "設計模式與領域建模",
+                quote: "How to apply DDD to the legacy monolith you already have. Step by step: from a big ball of mud to modules and microservices.",
+                cantoneseAnalysis: "將 DDD 理論落地於舊有系統（Legacy Monolith）。教你如何將泥潭般的單體應用一步步安全重構成模組化（Modular Monolith）甚至微服務。",
+                amazonQuery: "Domain Driven Refactoring Alessandro Colla"
+            },
+            {
+                id: 15,
+                part: 'part2',
+                orderInPart: 5,
+                title: "Practical Event-Driven Microservices Architecture",
+                authors: "Hugo Filipe Oliveira Rocha",
+                phase: 3,
+                phaseName: "分散式系統與數據架構",
+                quote: "The real pain of events: ordering, duplicates, eventual consistency. Shows how to keep data in sync when every service owns its own.",
+                cantoneseAnalysis: "攻克事件驅動（Event-Driven）嘅實戰痛點。解決 Event 順序問題、重複消費（冪等性 Idempotency）以及在各服務獨立數據庫下嘅最終一致性。",
+                amazonQuery: "Practical Event Driven Microservices Architecture Hugo Filipe Oliveira Rocha"
+            },
+            {
+                id: 16,
+                part: 'part2',
+                orderInPart: 6,
+                title: "Software Architecture: The Hard Parts",
+                authors: "Neal Ford, Mark Richards, Pramod Sadalage, Zhamak Dehghani",
+                phase: 4,
+                phaseName: "系統拆分與架構權衡",
+                quote: "How to split a system and its data when there's no best answer. Sagas, data ownership, and service size, with clear trade-off tables.",
+                cantoneseAnalysis: "專注於「冇標準答案」時嘅系統拆分。提供結構化權衡矩陣（Trade-off Tables），比較 Saga 模式、數據所有權與服務粒度劃分。",
+                amazonQuery: "Software Architecture The Hard Parts Neal Ford"
+            },
+            {
+                id: 17,
+                part: 'part2',
+                orderInPart: 7,
+                title: "System Design Interview, Vol. 1",
+                authors: "Alex Xu",
+                phase: 4,
+                phaseName: "系統拆分與架構權衡",
+                quote: "A 4-step framework to design any system. Rate limiter, URL shortener, chat. Classic problems, clear diagrams.",
+                cantoneseAnalysis: "經典 4 步系統設計分析框架（需求範疇 -> 高層級設計 -> 深入細節 -> 瓶頸總結）。包含 Rate Limiter, URL Shortener, Chat 等高頻實戰案例。",
+                amazonQuery: "System Design Interview Volume 1 Alex Xu"
+            },
+            {
+                id: 18,
+                part: 'part2',
+                orderInPart: 8,
+                title: "System Design Interview, Vol. 2",
+                authors: "Alex Xu, Sahn Lam",
+                phase: 4,
+                phaseName: "系統拆分與架構權衡",
+                quote: "Harder cases: payment system, digital wallet, stock exchange. Worth reading even if you never plan to interview.",
+                cantoneseAnalysis: "進階高難度系統設計。涵蓋 Payment System、Digital Wallet、Stock Exchange 等高併發、高一致性要求極高嘅金融級案例。",
+                amazonQuery: "System Design Interview Volume 2 Alex Xu Sahn Lam"
+            },
+            {
+                id: 19,
+                part: 'part2',
+                orderInPart: 9,
+                title: "Architecting for Scale",
+                authors: "Lee Atchison",
+                phase: 5,
+                phaseName: "企業級架構與 SRE 維運",
+                quote: "How to keep high availability as traffic and teams grow. Teaches you to measure and manage risk, not hope it away.",
+                cantoneseAnalysis: "流量與團隊暴增下維持高可用性（HA）。教你將風險「量化與管理」，而非寄望於運氣，設計故障隔離與熔斷降級機制。",
+                amazonQuery: "Architecting for Scale Lee Atchison"
+            },
+            {
+                id: 20,
+                part: 'part2',
+                orderInPart: 10,
+                title: "Site Reliability Engineering",
+                authors: "Betsy Beyer, Chris Jones, Jennifer Petoff, Niall Richard Murphy",
+                phase: 5,
+                phaseName: "企業級架構與 SRE 維運",
+                quote: "How Google keeps huge systems running: SLOs and error budgets. Architecture doesn't end at deploy. This book starts there.",
+                cantoneseAnalysis: "Google 大規模維運哲學。指出 *Architecture doesn't end at deploy.* 透過 SLO、SLA 同 Error Budgets 用數據平衡發版速度與穩定性。",
+                amazonQuery: "Site Reliability Engineering Betsy Beyer Google"
+            }
+        ];
+
+        // Filter State
+        let currentPart = 'all'; // 'all', 'part1', 'part2'
+        let currentPhase = null; // 1, 2, 3, 4, 5 or null
+        let searchQuery = '';
+
+        // Phase Styling Config
+        const phaseStyles = {
+            1: { color: 'blue', bg: 'bg-blue-500/10', text: 'text-blue-400', border: 'border-blue-500/30' },
+            2: { color: 'purple', bg: 'bg-purple-500/10', text: 'text-purple-400', border: 'border-purple-500/30' },
+            3: { color: 'emerald', bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/30' },
+            4: { color: 'amber', bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/30' },
+            5: { color: 'rose', bg: 'bg-rose-500/10', text: 'text-rose-400', border: 'border-rose-500/30' }
+        };
+
+        // Render Cards Function
+        function renderBooks() {
+            const container = document.getElementById('booksContainer');
+            const emptyState = document.getElementById('emptyState');
+            container.innerHTML = '';
+
+            const filteredBooks = booksData.filter(book => {
+                // Part Filter
+                if (currentPart !== 'all' && book.part !== currentPart) return false;
+
+                // Phase Filter
+                if (currentPhase !== null && book.phase !== currentPhase) return false;
+
+                // Search Query Filter
+                if (searchQuery.trim() !== '') {
+                    const q = searchQuery.toLowerCase();
+                    const matchTitle = book.title.toLowerCase().includes(q);
+                    const matchAuthors = book.authors.toLowerCase().includes(q);
+                    const matchQuote = book.quote.toLowerCase().includes(q);
+                    const matchCanto = book.cantoneseAnalysis.toLowerCase().includes(q);
+                    const matchPhase = book.phaseName.toLowerCase().includes(q);
+                    return matchTitle || matchAuthors || matchQuote || matchCanto || matchPhase;
+                }
+
+                return true;
+            });
+
+            if (filteredBooks.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                filteredBooks.forEach(book => {
+                    const style = phaseStyles[book.phase];
+                    const amazonUrl = `https://www.amazon.com/s?k=${encodeURIComponent(book.amazonQuery)}`;
+
+                    const cardHTML = `
+                        <div class="bg-cardBg border border-cardBorder hover:border-gray-700 rounded-2xl p-5 shadow-xl transition-all duration-300 hover:shadow-2xl flex flex-col justify-between group relative overflow-hidden">
+                            
+                            <!-- Top Decorative Glow -->
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-${style.color}-500/5 rounded-full blur-xl group-hover:bg-${style.color}-500/10 transition-all pointer-events-none"></div>
+
+                            <div>
+                                <!-- Badges Header -->
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${book.part === 'part1' ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'bg-purple-600/20 text-purple-400 border border-purple-500/30'}">
+                                            ${book.part === 'part1' ? 'Part 1' : 'Part 2'} • #${book.orderInPart}
+                                        </span>
+                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium ${style.bg} ${style.text} ${style.border} border">
+                                            Phase ${book.phase}: ${book.phaseName}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Book Title & Author -->
+                                <h4 class="text-lg font-extrabold text-white group-hover:text-blue-300 transition-colors leading-snug">
+                                    ${book.title}
+                                </h4>
+                                <p class="text-xs font-medium text-gray-400 mt-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-user-pen text-gray-500"></i>
+                                    <span>${book.authors}</span>
+                                </p>
+
+                                <!-- Original Quote / Key Takeaway -->
+                                <div class="mt-3.5 p-3 rounded-xl bg-gray-900/90 border border-gray-800 text-xs text-gray-300 space-y-1">
+                                    <div class="font-semibold text-gray-400 text-[11px] uppercase tracking-wider flex items-center gap-1">
+                                        <i class="fa-solid fa-quote-left text-blue-400/80"></i> Key Highlights
+                                    </div>
+                                    <p class="italic text-gray-300 leading-relaxed">${book.quote}</p>
+                                </div>
+
+                                <!-- Cantonese Breakdown & Analysis -->
+                                <div class="mt-3.5 space-y-1">
+                                    <span class="text-xs font-bold text-amber-400/90 flex items-center gap-1">
+                                        <i class="fa-solid fa-comments text-amber-400"></i> 廣東話深度拆解
+                                    </span>
+                                    <p class="text-xs sm:text-sm text-gray-300 leading-relaxed bg-gray-900/50 p-3 rounded-xl border border-gray-800/80">
+                                        ${book.cantoneseAnalysis}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Card Footer Action -->
+                            <div class="mt-5 pt-3 border-t border-gray-800/80 flex items-center justify-between">
+                                <span class="text-[11px] text-gray-500">
+                                    <i class="fa-solid fa-check-circle text-emerald-500/80 mr-1"></i>經典必讀書單
+                                </span>
+                                <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-semibold transition-all hover:scale-[1.02] active:scale-95">
+                                    <i class="fa-brands fa-amazon"></i>
+                                    <span>Amazon 搜尋</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += cardHTML;
+                });
+            }
+
+            updateFilterBadge();
+        }
+
+        // Update Part Filter Buttons UI
+        function updatePartTabUI() {
+            ['all', 'part1', 'part2'].forEach(p => {
+                const btn = document.getElementById(`btn-part-${p}`);
+                if (p === currentPart) {
+                    btn.className = "part-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-lg shadow-blue-600/30 border border-blue-500 transition-all";
+                } else {
+                    btn.className = "part-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 border border-gray-700 transition-all";
+                }
+            });
+        }
+
+        // Update Phase Cards Highlight UI
+        function updatePhaseCardUI() {
+            [1, 2, 3, 4, 5].forEach(ph => {
+                const card = document.getElementById(`phase-card-${ph}`);
+                if (ph === currentPhase) {
+                    card.classList.add('ring-2', 'ring-blue-500', 'bg-gray-800');
+                } else {
+                    card.classList.remove('ring-2', 'ring-blue-500', 'bg-gray-800');
+                }
+            });
+        }
+
+        // Active Filter Label Update
+        function updateFilterBadge() {
+            const badge = document.getElementById('activeFilterBadge');
+            const label = document.getElementById('filterLabel');
+
+            let labels = [];
+            if (currentPart !== 'all') labels.push(currentPart === 'part1' ? 'Part 1' : 'Part 2');
+            if (currentPhase !== null) labels.push(`Phase ${currentPhase}`);
+            if (searchQuery.trim() !== '') labels.push(`搜尋: "${searchQuery}"`);
+
+            if (labels.length > 0) {
+                badge.classList.remove('hidden');
+                label.innerText = labels.join(' + ');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // Event Handlers
+        function filterByPart(part) {
+            currentPart = part;
+            updatePartTabUI();
+            renderBooks();
+        }
+
+        function filterByPhase(phase) {
+            if (currentPhase === phase) {
+                currentPhase = null; // Toggle off if clicked again
+            } else {
+                currentPhase = phase;
+            }
+            updatePhaseCardUI();
+            renderBooks();
+
+            // Scroll down to books smoothly if clicked on phase
+            document.getElementById('books-grid').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleSearch() {
+            const input = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            searchQuery = input.value;
+
+            if (searchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            renderBooks();
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            input.value = '';
+            searchQuery = '';
+            clearBtn.classList.add('hidden');
+            renderBooks();
+        }
+
+        function resetFilters() {
+            currentPart = 'all';
+            currentPhase = null;
+            searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            updatePartTabUI();
+            updatePhaseCardUI();
+            renderBooks();
+        }
+
+        // Initial Render on Page Load
+        window.onload = function() {
+            updatePartTabUI();
+            renderBooks();
+        }
+    </script>
+</body>
+</html>
