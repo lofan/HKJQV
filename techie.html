@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tech & AI Link Repository</title>
+  <style>
+    /* ==========================================
+        1. CSS Variables for Light & Dark Themes
+        ========================================== */
+    :root {
+      --bg-color: #f8f9fa;
+      --text-color: #212529;
+      --heading-color: #0f172a;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --link-bg: #f1f5f9;
+      --link-hover-bg: #e2e8f0;
+      --link-text: #2563eb;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --btn-bg: #1e293b;
+      --btn-text: #ffffff;
+    }
+
+    /* Dark Mode Theme Variables */
+    [data-theme="dark"] {
+      --bg-color: #0f172a;
+      --text-color: #e2e8f0;
+      --heading-color: #f8fafc;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --link-bg: #334155;
+      --link-hover-bg: #475569;
+      --link-text: #60a5fa;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      --btn-bg: #f8fafc;
+      --btn-text: #0f172a;
+    }
+
+    /* Fallback: Auto dark mode if user OS prefers dark mode and no preference is set */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg-color: #0f172a;
+        --text-color: #e2e8f0;
+        --heading-color: #f8fafc;
+        --card-bg: #1e293b;
+        --card-border: #334155;
+        --link-bg: #334155;
+        --link-hover-bg: #475569;
+        --link-text: #60a5fa;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        --btn-bg: #f8fafc;
+        --btn-text: #0f172a;
+      }
+    }
+
+    /* ==========================================
+        2. Page Styling & Layout
+        ========================================== */
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--card-border);
+      padding-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--heading-color);
+    }
+
+    .theme-toggle-btn {
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: opacity 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      opacity: 0.9;
+    }
+
+    section {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1.25rem;
+      color: var(--heading-color);
+    }
+
+    .links-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--link-bg);
+      color: var(--link-text);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 14px;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    a:hover {
+      background-color: var(--link-hover-bg);
+      transform: translateY(-1px);
+    }
+
+    a img {
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header with Dark Mode Toggle -->
+  <header>
+    <h1>⚡ Tech & AI Hub</h1>
+    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+      🌙 Dark Mode
+    </button>
+  </header>
+
+  <main>
+    <!-- AI & LLMs -->
+    <section>
+      <h2>🤖 AI & LLMs</h2>
+      <div class="links-container">
+        <a href="https://chatgpt.com/" target="_blank">ChatGPT</a>
+        <a href="https://claude.ai/" target="_blank">Claude</a>
+        <a href="https://huggingface.co/" target="_blank">🤗 Hugging Face</a>
+        <a href="https://arxiv.org/list/cs.AI/recent" target="_blank">📄 arXiv AI</a>
+        <a href="https://github.com/features/copilot" target="_blank">⚡ GitHub Copilot</a>
+        <a href="https://ollama.com/" target="_blank">🦙 Ollama</a>
+        <a href="https://www.perplexity.ai/" target="_blank">🔮 Perplexity</a>
+      </div>
+    </section>
+
+    <!-- Coding & Development -->
+    <section>
+      <h2>💻 Coding & Development</h2>
+      <div class="links-container">
+        <a href="https://github.com/" target="_blank">🐙 GitHub</a>
+        <a href="https://gitlab.com/" target="_blank">🦊 GitLab</a>
+        <a href="https://stackoverflow.com/" target="_blank">💬 Stack Overflow</a>
+        <a href="https://developer.mozilla.org/" target="_blank">📖 MDN Web Docs</a>
+        <a href="https://leetcode.com/" target="_blank">🧩 LeetCode</a>
+        <a href="https://dev.to/" target="_blank">✍️ DEV Community</a>
+        <a href="https://codepen.io/" target="_blank">✒️ CodePen</a>
+      </div>
+    </section>
+
+    <!-- IT Security & Cybersecurity -->
+    <section>
+      <h2>🛡️ IT Security & Cybersecurity</h2>
+      <div class="links-container">
+        <a href="https://owasp.org/" target="_blank">🔒 OWASP</a>
+        <a href="https://krebsonsecurity.com/" target="_blank">🚨 Krebs on Security</a>
+        <a href="https://cve.mitre.org/" target="_blank">⚠️ CVE / NIST</a>
+        <a href="https://www.shodan.io/" target="_blank">🔍 Shodan</a>
+        <a href="https://tryhackme.com/" target="_blank">🎯 TryHackMe</a>
+        <a href="https://www.hackthebox.com/" target="_blank">📦 Hack The Box</a>
+        <a href="https://www.bleepingcomputer.com/" target="_blank">📰 Bleeping Computer</a>
+      </div>
+    </section>
+
+    <!-- Cloud & DevOps -->
+    <section>
+      <h2>☁️ Cloud & DevOps</h2>
+      <div class="links-container">
+        <a href="https://aws.amazon.com/" target="_blank">☁️ AWS Console</a>
+        <a href="https://cloud.google.com/" target="_blank">☁️ Google Cloud</a>
+        <a href="https://portal.azure.com/" target="_blank">☁️ Azure Portal</a>
+        <a href="https://hub.docker.com/" target="_blank">🐳 Docker Hub</a>
+        <a href="https://kubernetes.io/" target="_blank">⛵ Kubernetes</a>
+        <a href="https://www.terraform.io/" target="_blank">🏗️ Terraform</a>
+      </div>
+    </section>
+
+    <!-- Tech News & Communities -->
+    <section>
+      <h2>📰 Tech News & Communities</h2>
+      <div class="links-container">
+        <a href="https://news.ycombinator.com/" target="_blank">📰 Hacker News</a>
+        <a href="https://www.reddit.com/r/programming/" target="_blank">💬 Reddit Programming</a>
+        <a href="https://www.reddit.com/r/netsec/" target="_blank">💬 Reddit NetSec</a>
+        <a href="https://techcrunch.com/" target="_blank">🚀 TechCrunch</a>
+        <a href="https://www.theverge.com/" target="_blank">🌐 The Verge</a>
+        <a href="https://www.producthunt.com/" target="_blank">🚀 Product Hunt</a>
+        <a href="https://lobste.rs/" target="_blank">🦞 Lobsters</a>
+      </div>
+    </section>
+
+    <!-- Developer Utilities -->
+    <section>
+      <h2>🛠️ Developer Utilities</h2>
+      <div class="links-container">
+        <a href="https://regex101.com/" target="_blank">🛠️ Regex101</a>
+        <a href="https://jsonformatter.curiousconcept.com/" target="_blank">🛠️ JSON Formatter</a>
+        <a href="https://www.postman.com/" target="_blank">📬 Postman</a>
+        <a href="https://caniuse.com/" target="_blank">📊 Can I Use</a>
+        <a href="https://carbon.now.sh/" target="_blank">🎨 Carbon Code Snippets</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+        3. JavaScript for Dark Mode Switcher
+        ========================================== -->
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+    
+    // Check saved theme or fallback to OS setting
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Apply initial theme based on saved setting or OS preference
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      toggleBtn.textContent = '☀️ Light Mode';
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      toggleBtn.textContent = '🌙 Dark Mode';
+    }
+
+    // Toggle button handler
+    toggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      let newTheme = 'light';
+
+      if (currentTheme !== 'dark') {
+        newTheme = 'dark';
+        toggleBtn.textContent = '☀️ Light Mode';
+      } else {
+        toggleBtn.textContent = '🌙 Dark Mode';
+      }
+
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+  </script>
+</body>
+</html>
