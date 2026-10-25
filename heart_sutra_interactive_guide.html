@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心經智慧導讀 | Heart Sutra Guide</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            900: '#78350f',
+                        },
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b',
+                        darkBorder: '#334155'
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d97706;
+            border-radius: 4px;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .light .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased transition-colors duration-300 light:bg-slate-50 light:text-slate-800" id="body-root">
+
+    <!-- Reading Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-slate-800 z-50">
+        <div id="progress-bar" class="h-full bg-amber-500 w-0 transition-all duration-150"></div>
+    </div>
+
+    <!-- Sticky Navigation Header -->
+    <header class="sticky top-0 z-40 w-full glass-card border-b border-slate-800 dark:border-slate-800 light:border-slate-200 light:bg-white/90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="p-2 bg-amber-500/10 text-amber-500 rounded-lg text-xl font-bold">
+                        <i class="fa-solid font-serif">般</i>
+                    </span>
+                    <span class="font-serif text-lg font-bold tracking-wide text-amber-500">心經智慧導讀</span>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden lg:flex space-x-1 font-medium text-xs xl:text-sm">
+                    <a href="#text" class="px-3 py-2 rounded-md hover:text-amber-500 transition-colors">1. 心經原文</a>
+                    <a href="#videos" class="px-3 py-2 rounded-md hover:text-amber-500 transition-colors">2. 相關影片</a>
+                    <a href="#core" class="px-3 py-2 rounded-md hover:text-amber-500 transition-colors">3. 核心義理</a>
+                    <a href="#story" class="px-3 py-2 rounded-md hover:text-amber-500 transition-colors">4. 故事啟示</a>
+                    <a href="#application" class="px-3 py-2 rounded-md hover:text-amber-500 transition-colors">5. 生活應用</a>
+                    <a href="#summary" class="px-3 py-2 rounded-md hover:text-amber-500 transition-colors">6. 結語總結</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <!-- Search Bar Toggle Button / Input -->
+                    <div class="relative hidden sm:block">
+                        <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="搜尋關鍵字..." 
+                               class="w-36 md:w-48 pl-8 pr-3 py-1.5 text-xs rounded-full bg-slate-800 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 focus:outline-none focus:border-amber-500 transition-all">
+                        <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+                    </div>
+
+                    <!-- Theme Switcher -->
+                    <button id="themeToggle" onclick="toggleTheme()" class="p-2.5 rounded-full bg-slate-800 dark:bg-slate-800 light:bg-slate-200 hover:text-amber-500 transition-colors">
+                        <i id="themeIcon" class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-md text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-800 px-4 pt-2 pb-4 space-y-2 bg-slate-900/95 light:bg-white/95">
+            <div class="mb-3 sm:hidden">
+                <input type="text" id="searchInputMobile" onkeyup="filterContentMobile()" placeholder="搜尋關鍵字..." 
+                       class="w-full pl-8 pr-3 py-2 text-sm rounded-lg bg-slate-800 light:bg-slate-100 border border-slate-700 light:border-slate-300 focus:outline-none">
+            </div>
+            <a href="#text" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-amber-500/10 hover:text-amber-500">1. 心經原文</a>
+            <a href="#videos" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-amber-500/10 hover:text-amber-500">2. 相關影片</a>
+            <a href="#core" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-amber-500/10 hover:text-amber-500">3. 核心義理與日常公式</a>
+            <a href="#story" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-amber-500/10 hover:text-amber-500">4. 幽默故事與心理暗示</a>
+            <a href="#application" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-amber-500/10 hover:text-amber-500">5. 生活應用與反思</a>
+            <a href="#summary" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-amber-500/10 hover:text-amber-500">6. 結語總結</a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <!-- Hero Section -->
+        <section class="text-center py-8 space-y-4">
+            <span class="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-500 bg-amber-500/10 rounded-full border border-amber-500/20">
+                般若波羅蜜多心經
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-slate-100 light:text-slate-900 leading-tight">
+                照見五蘊皆空，度一切苦厄
+            </h1>
+            <p class="max-w-2xl mx-auto text-slate-400 light:text-slate-600 text-sm sm:text-base">
+                將《心經》千年的古老智慧，轉化為現代人解決情緒、內耗與逆境的實用生活公式。
+            </p>
+        </section>
+
+        <!-- Section 1: 心經原文 -->
+        <section id="text" class="scroll-mt-24 searchable-item">
+            <div class="glass-card rounded-2xl p-6 sm:p-10 border border-slate-800 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-5 text-amber-500 pointer-events-none">
+                    <i class="fa-solid fa-dharmachakra text-[220px]"></i>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-slate-800 dark:border-slate-800 light:border-slate-200 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-serif font-bold text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-book-open text-xl"></i> 1. 心經原文
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">唐·三藏法師玄奘譯</p>
+                    </div>
+
+                    <!-- Text Tools -->
+                    <div class="flex items-center space-x-2 bg-slate-900/60 light:bg-slate-100 p-1.5 rounded-xl border border-slate-800 light:border-slate-200">
+                        <button onclick="adjustFontSize(-2)" class="px-2.5 py-1 text-xs rounded hover:bg-slate-700 light:hover:bg-slate-200 transition" title="縮小字型">A-</button>
+                        <button onclick="adjustFontSize(2)" class="px-2.5 py-1 text-xs rounded hover:bg-slate-700 light:hover:bg-slate-200 transition" title="放大字型">A+</button>
+                        <button onclick="copyText()" class="px-3 py-1 text-xs bg-amber-600/20 hover:bg-amber-600/40 text-amber-400 rounded transition flex items-center gap-1">
+                            <i class="fa-regular fa-copy"></i> 複製全文
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Scripture Body -->
+                <div id="sutra-content" class="font-serif leading-relaxed sm:leading-loose text-lg sm:text-2xl text-slate-200 light:text-slate-800 tracking-wider space-y-4 text-justify">
+                    <p>
+                        觀自在菩薩，行深般若波羅蜜多時，照見五蘊皆空，度一切苦厄。
+                    </p>
+                    <p>
+                        舍利子！色不異空，空不異色；色即是空，空即是色，受想行識亦復如是。
+                    </p>
+                    <p>
+                        舍利子！是諸法空相，不生不滅，不垢不淨，不增不減。是故，空中無色，無受想行識；無眼耳鼻舌身意；無色聲香味觸法；無眼界，乃至無意識界；無無明，亦無無明盡，乃至無老死，亦無老死盡；無苦集滅道；無智亦無得。
+                    </p>
+                    <p>
+                        以無所得故，菩提薩埵。依般若波羅蜜多故，心無罣礙；無罣礙故，無有恐怖，遠離顛倒夢想，究竟涅槃。
+                    </p>
+                    <p>
+                        三世諸佛，依般若波羅蜜多故，得阿耨多羅三藐三菩提。故知：般若波羅蜜多是大神咒，是大明咒，是無上咒，是無等等咒，能除一切苦，真實不虛。
+                    </p>
+                    <p class="text-amber-500 font-semibold">
+                        故說般若波羅蜜多咒，即說咒曰：揭諦揭諦，波羅揭諦，波羅僧揭諦，菩提薩婆訶。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: 相關影片 -->
+        <section id="videos" class="scroll-mt-24 space-y-6 searchable-item">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-serif font-bold text-amber-500 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-play text-xl"></i> 2. 相關影片研讀
+                </h2>
+                <span class="text-xs text-slate-400">共 5 部講座與影音影音資源</span>
+            </div>
+
+            <!-- Featured Video with highlighted link -->
+            <div class="glass-card rounded-2xl p-6 border border-amber-500/30 bg-gradient-to-br dark:from-slate-900 dark:to-amber-950/20 light:from-white light:to-amber-50">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-7 aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-700 shadow-lg">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/iLfGEOHlqeQ" title="99% 人都讀錯咗《心經》" allowfullscreen></iframe>
+                    </div>
+                    <div class="lg:col-span-5 space-y-4">
+                        <span class="px-2.5 py-1 text-xs font-semibold bg-amber-500 text-slate-950 rounded-md">推薦核心講座</span>
+                        <h3 class="text-xl font-bold leading-snug hover:text-amber-400 transition">
+                            <a href="https://www.youtube.com/watch?v=iLfGEOHlqeQ" target="_blank" class="hover:underline flex items-start gap-2">
+                                <span>99% 人都讀錯咗《心經》，260 字心經根治精神內耗！終於解開越想要越得不到嘅魔咒！</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs mt-1 shrink-0"></i>
+                            </a>
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-400 light:text-slate-600">
+                            深入淺出剖析《心經》智慧，重點講解如何將 260 字的核心教義應用於解除日常精神壓力與心靈困境。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid for other videos -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Video 1 -->
+                <div class="glass-card rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition">
+                    <div class="aspect-video bg-slate-900">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/iL_W8W2737A" title="心經導讀 1" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-3 text-xs text-slate-400 text-center font-mono">iL_W8W2737A</div>
+                </div>
+                <!-- Video 2 -->
+                <div class="glass-card rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition">
+                    <div class="aspect-video bg-slate-900">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/nbcgfh2jqus" title="心經導讀 2" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-3 text-xs text-slate-400 text-center font-mono">nbcgfh2jqus</div>
+                </div>
+                <!-- Video 3 -->
+                <div class="glass-card rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition">
+                    <div class="aspect-video bg-slate-900">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/ZHfIpxaw5Aw" title="心經導讀 3" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-3 text-xs text-slate-400 text-center font-mono">ZHfIpxaw5Aw</div>
+                </div>
+                <!-- Video 4 -->
+                <div class="glass-card rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition">
+                    <div class="aspect-video bg-slate-900">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/e4QPCb2hsI0" title="心經導讀 4" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-3 text-xs text-slate-400 text-center font-mono">e4QPCb2hsI0</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: 核心義理與日常公式 -->
+        <section id="core" class="scroll-mt-24 space-y-8 searchable-item">
+            <div class="border-b border-slate-800 dark:border-slate-800 light:border-slate-200 pb-4">
+                <h2 class="text-2xl font-serif font-bold text-amber-500 flex items-center gap-2">
+                    <i class="fa-solid fa-brain text-xl"></i> 3. 核心義理拆解：四大日常「心經公式」
+                </h2>
+                <p class="text-sm text-slate-400 mt-1">如何把《心經》的智慧落實到日常生活的苦惱、情緒和逆境中</p>
+            </div>
+
+            <!-- Header definition card -->
+            <div class="glass-card rounded-2xl p-6 border-l-4 border-amber-500 space-y-3">
+                <h3 class="text-lg font-bold text-slate-100 light:text-slate-900">《心經》的核心解碼</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="p-3 bg-slate-900/50 light:bg-slate-100 rounded-xl">
+                        <span class="text-amber-500 font-bold block mb-1">般若</span>
+                        超越文字的圓滿智慧。
+                    </div>
+                    <div class="p-3 bg-slate-900/50 light:bg-slate-100 rounded-xl">
+                        <span class="text-amber-500 font-bold block mb-1">波羅蜜多</span>
+                        運用智慧到達彼岸、解決一切問題。
+                    </div>
+                    <div class="p-3 bg-slate-900/50 light:bg-slate-100 rounded-xl">
+                        <span class="text-amber-500 font-bold block mb-1">心經定位</span>
+                        整個大般若經的心臟，所有佛法的核心精華。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subsection: 萬事萬物的三大特徵 -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-shapes"></i> 萬事萬物的三大特徵（「空」的白話演繹）
+                </h3>
+                <p class="text-xs text-slate-400">《心經》講「色即是空」，拆解為現代人能深刻記住的三大規律：</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="glass-card rounded-xl p-5 border border-slate-800 hover:border-amber-500/40 transition">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold mb-3 text-lg">1</div>
+                        <h4 class="font-bold text-lg mb-2">無獨立性<span class="text-xs block text-slate-400 font-normal">（諸法無我）</span></h4>
+                        <p class="text-xs sm:text-sm text-slate-300 light:text-slate-600 leading-relaxed">
+                            世間沒有一樣東西是可以完全單獨、獨立存在的。任何事物（包括一張桌子、一個組織、甚至一個人的性格）都是由無數條件與因素組合而成。
+                        </p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="glass-card rounded-xl p-5 border border-slate-800 hover:border-amber-500/40 transition">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold mb-3 text-lg">2</div>
+                        <h4 class="font-bold text-lg mb-2">不停在變<span class="text-xs block text-slate-400 font-normal">（諸行無常）</span></h4>
+                        <p class="text-xs sm:text-sm text-slate-300 light:text-slate-600 leading-relaxed">
+                            世事無常，沒有一樣東西是一成不變的，它每分每秒都在流轉、變化與轉化。
+                        </p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="glass-card rounded-xl p-5 border border-slate-800 hover:border-amber-500/40 transition">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold mb-3 text-lg">3</div>
+                        <h4 class="font-bold text-lg mb-2">冇主宰性<span class="text-xs block text-slate-400 font-normal">（不受控制）</span></h4>
+                        <p class="text-xs sm:text-sm text-slate-300 light:text-slate-600 leading-relaxed">
+                            不是你想怎樣就怎樣，不是「一就是一、二就是二」，事情的發展往往不以個人的主觀意志為轉移。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subsection: 五蘊解密 -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group"></i> 「五蘊」解密：人生痛苦的心理組成部分
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="glass-card p-4 rounded-xl border border-slate-800">
+                        <span class="text-xs font-bold text-amber-500 uppercase tracking-wider block mb-1">色 (Form)</span>
+                        <h4 class="font-bold mb-1">物質 / 身體</h4>
+                        <p class="text-xs text-slate-400">你看得到的、看不到的、佔據空間的實物（如紫色布、紅色花，或我們自己的身體）。</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-slate-800">
+                        <span class="text-xs font-bold text-amber-500 uppercase tracking-wider block mb-1">受 (Sensation)</span>
+                        <h4 class="font-bold mb-1">直觀感受</h4>
+                        <p class="text-xs text-slate-400">我們對事物的直接生理與心理反應——開不開心、累不累、痛不痛。</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-slate-800">
+                        <span class="text-xs font-bold text-amber-500 uppercase tracking-wider block mb-1">想 (Perception)</span>
+                        <h4 class="font-bold mb-1">概念 / 心象</h4>
+                        <p class="text-xs text-slate-400">大腦中的畫面與概念（例如一提到紫色布紅花，腦海中浮現的畫面）。</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-slate-800">
+                        <span class="text-xs font-bold text-amber-500 uppercase tracking-wider block mb-1">行 (Mental Formations)</span>
+                        <h4 class="font-bold mb-1">實際意志與行為</h4>
+                        <p class="text-xs text-slate-400">我們的實際心理衝動與行動（例如去吃飯、罵小孩、去聽講座）。</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-slate-800">
+                        <span class="text-xs font-bold text-amber-500 uppercase tracking-wider block mb-1">識 (Consciousness)</span>
+                        <h4 class="font-bold mb-1">認知 / 判斷</h4>
+                        <p class="text-xs text-slate-400">最終的結論與主觀識別（例如「今天聽這場講座沒有來錯」、「這個人很難相處」）。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subsection: 因緣生，因緣滅 -->
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-center gap-6">
+                <div class="p-4 rounded-full bg-amber-500/10 text-amber-500 text-3xl shrink-0">
+                    <i class="fa-solid fa-infinity"></i>
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-lg font-bold text-slate-100 light:text-slate-900">「因緣生，因緣滅」：萬物皆有期</h3>
+                    <p class="text-xs sm:text-sm text-slate-300 light:text-slate-600 leading-relaxed">
+                        世事萬物、人際關係、甚至我們的心情與性格，全都是由無數因緣（條件、時機）聚合而成。<br>
+                        <strong class="text-amber-500">因緣聚則生，因緣散則滅。</strong>明白這一點，當面對失去、離別或逆境時，就不會盲目執著與自責。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: 幽默故事與心理暗示 -->
+        <section id="story" class="scroll-mt-24 space-y-6 searchable-item">
+            <div class="border-b border-slate-800 dark:border-slate-800 light:border-slate-200 pb-4">
+                <h2 class="text-2xl font-serif font-bold text-amber-500 flex items-center gap-2">
+                    <i class="fa-solid fa-masks-theater text-xl"></i> 4. 幽默故事與心理暗示
+                </h2>
+                <p class="text-sm text-slate-400 mt-1">諸葛亮與算命先生的啟示</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 sm:p-8 border border-slate-800 space-y-6">
+                <div class="flex items-center space-x-3 text-amber-400 font-bold">
+                    <i class="fa-solid fa-quote-left text-2xl"></i>
+                    <span class="text-lg">算命的故事與心靈轉化</span>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-slate-300 light:text-slate-700 leading-relaxed">
+                    <p class="p-4 bg-slate-900/60 light:bg-slate-100 rounded-xl border border-slate-800 light:border-slate-200 italic">
+                        一個年輕人運程低迷、失意、失眠、股票跌、生意差，去求助一位算命先生。<br><br>
+                        算命先生並未用神秘主義恐嚇他，反而笑著對他說：<strong class="text-amber-400">「你前一世是諸葛亮，身上流淌著智慧的血液！」</strong><br><br>
+                        年輕人信以為真，從此以「諸葛亮有智慧」來要求自己，做事變得極度謹慎、精進、講信用、懂謀略。十年間，他在商場上翻身，賺取了龐大財富。<br><br>
+                        當他回頭報答算命先生時，卻聽到算命先生對另一個失意客人說同樣的話：<strong class="text-amber-400">「你前生是慈禧後人／諸葛亮...」</strong>
+                    </p>
+                </div>
+
+                <div class="bg-amber-500/10 border border-amber-500/30 p-5 rounded-xl space-y-2">
+                    <h4 class="font-bold text-amber-500 flex items-center gap-2 text-sm sm:text-base">
+                        <i class="fa-solid fa-lightbulb"></i> 核心啟示
+                    </h4>
+                    <p class="text-xs sm:text-sm text-slate-200 light:text-slate-800 leading-relaxed">
+                        甚麼前世今生並不重要，重要的是<strong>「心理暗示」與「思維轉化」</strong>。當你懂得利用積極的規律去看待自己，不再自我否定，在逆境中就能「捐條生路出嚟」。人的痛苦往往來自固執的框架與錯誤的執著。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: 生活應用與反思 -->
+        <section id="application" class="scroll-mt-24 space-y-6 searchable-item">
+            <div class="border-b border-slate-800 dark:border-slate-800 light:border-slate-200 pb-4">
+                <h2 class="text-2xl font-serif font-bold text-amber-500 flex items-center gap-2">
+                    <i class="fa-solid fa-compass text-xl"></i> 5. 生活中的應用與反思
+                </h2>
+                <p class="text-sm text-slate-400 mt-1">點樣面對世間的「苦厄」？透過生活實例（搭巴士爭執、買股票跌市、社會新聞）帶出深刻反思</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- App Card 1 -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="text-amber-500 text-2xl"><i class="fa-solid fa-display"></i></div>
+                        <h3 class="font-bold text-lg">唔好活在「網上想像」與不切實際的期望中</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 light:text-slate-600 leading-relaxed">
+                            現代人經常在網上接收大量資訊，或對伴侶、生活抱有不切實際的幻想（「想點就點」），當現實不符合期望時，痛苦就此誕生。
+                        </p>
+                    </div>
+                    <div class="p-3 bg-slate-900/80 light:bg-slate-100 rounded-xl text-xs text-amber-400/90 border border-slate-800">
+                        💡 <strong>實例反思：</strong>想讀醫嫌自己四十歲太遲？講者笑言：「你唔讀醫四年後你又係四十歲，你讀醫四年後你都係四十歲，點解唔即刻開始？」
+                    </div>
+                </div>
+
+                <!-- App Card 2 -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="text-amber-500 text-2xl"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                        <h3 class="font-bold text-lg">「無所得故」：學懂付出與放手</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 light:text-slate-600 leading-relaxed">
+                            富豪將身家捐出做慈善，正正是看透了「識不異空，空不異識」——財富生不帶來，死不帶去。抱持「無所得」（不求回報地盡自己的責任，做好當下該做的事），反而能收穫內心的安寧。
+                        </p>
+                    </div>
+                    <div class="p-3 bg-slate-900/80 light:bg-slate-100 rounded-xl text-xs text-amber-400/90 border border-slate-800">
+                        🤝 <strong>人際關係：</strong>如果抱著「什麼都要得到回報、控制」的心態就會痛苦。放手不等於放棄責任，而是放下控制欲。
+                    </div>
+                </div>
+
+                <!-- App Card 3 -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="text-amber-500 text-2xl"><i class="fa-solid fa-hourglass-half"></i></div>
+                        <h3 class="font-bold text-lg">給靈魂「等一等」的空間</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 light:text-slate-600 leading-relaxed">
+                            非洲探險隊故事：隊員走了三日三夜後，第四日突然全部不肯起身，因為他們認為「走得太快，靈魂已經追不上來，要停低等一等靈魂」。
+                        </p>
+                    </div>
+                    <div class="p-3 bg-slate-900/80 light:bg-slate-100 rounded-xl text-xs text-amber-400/90 border border-slate-800">
+                        🌱 <strong>人生啟示：</strong>營營役役追逐名利之際，必須學懂停下來、靜思、反省，檢視自己有沒有走錯路、有沒有被心魔所迷。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: 結語總結 -->
+        <section id="summary" class="scroll-mt-24 searchable-item">
+            <div class="glass-card rounded-3xl p-8 sm:p-12 border border-amber-500/30 text-center relative overflow-hidden bg-gradient-to-b dark:from-slate-900 dark:to-slate-950 light:from-white light:to-amber-50">
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <span class="text-amber-500 text-3xl font-serif">☯</span>
+                    <h2 class="text-3xl font-serif font-bold text-slate-100 light:text-slate-900">結語總結</h2>
+                    <p class="text-xs sm:text-sm text-slate-300 light:text-slate-700 leading-relaxed">
+                        這場《可以這樣讀心經》的開示，並非叫人消極避世、遁入空門，而是透過《心經》「空性」與「無常」的智慧，作為一面心靈的鏡子：
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left py-4">
+                        <div class="p-4 rounded-xl bg-slate-900/60 light:bg-white border border-slate-800 light:border-slate-200">
+                            <span class="text-amber-500 font-bold block mb-1">1. 看透無常</span>
+                            <p class="text-xs text-slate-400">明白世事無常、一切都會過去，好景不會永恆，逆境亦會過去。</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-900/60 light:bg-white border border-slate-800 light:border-slate-200">
+                            <span class="text-amber-500 font-bold block mb-1">2. 放下執著</span>
+                            <p class="text-xs text-slate-400">不強求控制所有人事物，順應並接受因緣聚合。</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-900/60 light:bg-white border border-slate-800 light:border-slate-200">
+                            <span class="text-amber-500 font-bold block mb-1">3. 活在當下</span>
+                            <p class="text-xs text-slate-400">雖然一切皆空，但在當下要盡到作為父母、伴侶或工作者的責任。</p>
+                        </div>
+                    </div>
+
+                    <p class="text-sm sm:text-base font-serif italic text-amber-400 pt-2">
+                        「只要你真正落實這份智慧，在生活中實踐，你就能真正『照見五蘊皆空，度一切苦厄』，獲得真正的健康、快樂與自在。」
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 light:border-slate-200 py-8 mt-16 text-center text-xs text-slate-500">
+        <p>心經智慧導讀 &copy; 2026 | 般若波羅蜜多心經學習數位版</p>
+    </footer>
+
+    <!-- Back to top button -->
+    <button id="backToTop" onclick="scrollToTop()" class="fixed bottom-6 right-6 p-3 rounded-full bg-amber-500 text-slate-950 font-bold shadow-lg opacity-0 pointer-events-none transition-all duration-300 hover:bg-amber-400">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        // Progress Bar & Back to top visibility
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            // Back to top button visibility
+            let backToTopBtn = document.getElementById("backToTop");
+            if (winScroll > 300) {
+                backToTopBtn.classList.remove("opacity-0", "pointer-events-none");
+            } else {
+                backToTopBtn.classList.add("opacity-0", "pointer-events-none");
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Font Size Adjuster for Heart Sutra Text
+        let currentFontSize = 20; // Default text size in px
+        function adjustFontSize(delta) {
+            currentFontSize = Math.max(14, Math.min(32, currentFontSize + delta));
+            document.getElementById("sutra-content").style.fontSize = currentFontSize + "px";
+        }
+
+        // Copy Text
+        function copyText() {
+            const textContent = document.getElementById("sutra-content").innerText;
+            const tempInput = document.createElement("textarea");
+            tempInput.value = textContent;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            
+            // Notification toast
+            const toast = document.createElement("div");
+            toast.className = "fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-amber-500 text-slate-950 px-4 py-2 rounded-lg font-bold text-sm shadow-xl z-50 transition-opacity duration-300";
+            toast.innerText = "心經全文已複製到剪貼簿！";
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // Dark / Light Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById("themeIcon");
+            if (html.classList.contains("dark")) {
+                html.classList.remove("dark");
+                html.classList.add("light");
+                icon.classList.remove("fa-moon");
+                icon.classList.add("fa-sun");
+            } else {
+                html.classList.remove("light");
+                html.classList.add("dark");
+                icon.classList.remove("fa-sun");
+                icon.classList.add("fa-moon");
+            }
+        }
+
+        // Mobile Navigation Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobileMenu");
+            menu.classList.toggle("hidden");
+        }
+
+        // Content Filter / Search Functionality
+        function filterContent() {
+            const query = document.getElementById("searchInput").value.toLowerCase();
+            executeSearch(query);
+        }
+
+        function filterContentMobile() {
+            const query = document.getElementById("searchInputMobile").value.toLowerCase();
+            executeSearch(query);
+        }
+
+        function executeSearch(query) {
+            const sections = document.querySelectorAll(".searchable-item");
+            sections.forEach(section => {
+                const text = section.innerText.toLowerCase();
+                if (text.includes(query) || query === "") {
+                    section.style.display = "";
+                } else {
+                    section.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
