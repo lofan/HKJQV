@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Multi-Channel Feed Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom Scrollbar for smooth dark UI */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-rose-500 selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- Logo / Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-rose-400 flex items-center justify-center shadow-lg shadow-rose-950/50">
+                    <i class="fa-solid font-bold text-white text-lg fa-play"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        StreamHub <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-950/80 text-rose-400 border border-rose-800/50">Dashboard</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Track latest uploads via YouTube RSS</p>
+                </div>
+            </div>
+
+            <!-- Header Controls -->
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <button 
+                    onclick="refreshAllFeeds()" 
+                    id="refreshAllBtn"
+                    title="Refresh all channels"
+                    class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-sm font-medium transition-all flex items-center gap-2 shadow-sm active:scale-95"
+                >
+                    <i id="refreshAllIcon" class="fa-solid fa-arrows-rotate"></i>
+                    <span class="hidden sm:inline">Refresh All</span>
+                </button>
+                <button 
+                    onclick="openAddModal()" 
+                    class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-rose-950/40 flex items-center gap-2 active:scale-95"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Add Channel</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Status & Stats Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 bg-slate-900/50 border border-slate-800/80 rounded-2xl p-4">
+            <div class="flex items-center gap-3 text-sm text-slate-400">
+                <span>Total Tracked Channels: <strong id="channelCount" class="text-white">0</strong></span>
+                <span class="text-slate-700">•</span>
+                <span id="lastUpdatedText">Last updated: Just now</span>
+            </div>
+            
+            <!-- Quick Search / Filter Cards -->
+            <div class="relative w-full sm:w-64">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                <input 
+                    type="text" 
+                    id="filterInput" 
+                    oninput="filterCards()" 
+                    placeholder="Filter feeds..." 
+                    class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-rose-500 transition-colors"
+                >
+            </div>
+        </div>
+
+        <!-- Video Cards Grid -->
+        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Feed cards will be rendered dynamically here -->
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-center">
+            <div class="w-16 h-16 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-600 mb-4 text-2xl">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h3 class="text-lg font-medium text-slate-200 mb-1">No YouTube Channels Added</h3>
+            <p class="text-slate-400 text-sm max-w-md mb-6">Start tracking your favorite creators by adding their Channel ID or handle to your personalized feed.</p>
+            <button 
+                onclick="openAddModal()" 
+                class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-rose-950/50"
+            >
+                Add Your First Channel
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950/80 py-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Powered by YouTube Public RSS Feeds &amp; AllOrigins CORS Proxy. No API Key required.</p>
+        </div>
+    </footer>
+
+    <!-- ADD CHANNEL MODAL -->
+    <div id="addModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-fade-in">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative transform transition-all">
+            <!-- Close Button -->
+            <button 
+                onclick="closeAddModal()" 
+                class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors w-8 h-8 rounded-lg flex items-center justify-center hover:bg-slate-800"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="mb-5">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-brands fa-youtube text-rose-500"></i> Add YouTube Channel
+                </h3>
+                <p class="text-slate-400 text-xs mt-1">Provide a YouTube Channel ID to track its latest upload.</p>
+            </div>
+
+            <!-- Modal Form -->
+            <form id="addChannelForm" onsubmit="handleAddChannel(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Channel Title / Label</label>
+                    <input 
+                        type="text" 
+                        id="channelNameInput" 
+                        placeholder="e.g. Marques Brownlee" 
+                        required 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-rose-500 transition-colors"
+                    >
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Channel ID (UC...)</label>
+                    <input 
+                        type="text" 
+                        id="channelIdInput" 
+                        placeholder="e.g. UCHnyfMqiRRG1u-2MsSQLbXA" 
+                        required 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-rose-500 transition-colors"
+                    >
+                    <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
+                        Tip: You can find a channel ID starting with <code class="text-rose-400">UC</code> in YouTube channel URL pages or page source.
+                    </p>
+                </div>
+
+                <div id="modalError" class="hidden text-xs text-rose-400 bg-rose-950/30 border border-rose-900/50 rounded-lg p-2.5"></div>
+
+                <!-- Modal Actions -->
+                <div class="flex items-center justify-end gap-3 pt-2">
+                    <button 
+                        type="button" 
+                        onclick="closeAddModal()" 
+                        class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-medium transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button 
+                        type="submit" 
+                        id="submitModalBtn"
+                        class="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-sm font-medium transition-all shadow-md shadow-rose-950/40 flex items-center gap-2"
+                    >
+                        <span>Add Feed</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIDEO EMBED PLAYBACK MODAL -->
+    <div id="playerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-4xl overflow-hidden shadow-2xl relative">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-slate-800">
+                <h4 id="playerModalTitle" class="text-sm font-semibold text-white truncate max-w-2xl">Playing Video</h4>
+                <button 
+                    onclick="closePlayerModal()" 
+                    class="text-slate-400 hover:text-white transition-colors w-8 h-8 rounded-lg flex items-center justify-center hover:bg-slate-800"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Video Container -->
+            <div class="relative w-full aspect-video bg-black">
+                <iframe 
+                    id="playerIframe" 
+                    class="absolute top-0 left-0 w-full h-full border-0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic Script -->
+    <script>
+        // Default Channels initialized if user has no stored channels
+        const DEFAULT_CHANNELS = [
+            { id: "UCHnyfMqiRRG1u-2MsSQLbXA", name: "Veritasium" },
+            { id: "UCX6OQ3DkcsbYNE6H8uQQuVA", name: "MrBeast" },
+            { id: "UCsXVk37bltHxD1rDPwtNM8Q", name: "Kurzgesagt" }
+        ];
+
+        const STORAGE_KEY = 'yt_dashboard_channels_v1';
+        let channels = [];
+        let videoDataMap = {}; // Maps channel ID to latest fetched video object
+
+        // Initialize App on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadChannelsFromStorage();
+            renderDashboard();
+            refreshAllFeeds();
+        });
+
+        // Load persisted channels from localStorage
+        function loadChannelsFromStorage() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    channels = JSON.parse(stored);
+                } catch (e) {
+                    console.error("Failed to parse stored channels", e);
+                    channels = [...DEFAULT_CHANNELS];
+                }
+            } else {
+                channels = [...DEFAULT_CHANNELS];
+                saveChannelsToStorage();
+            }
+        }
+
+        // Save current channels list to localStorage
+        function saveChannelsToStorage() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(channels));
+            document.getElementById('channelCount').textContent = channels.length;
+        }
+
+        // Render Cards Grid Shell
+        function renderDashboard() {
+            const grid = document.getElementById('cardsGrid');
+            const emptyState = document.getElementById('emptyState');
+            document.getElementById('channelCount').textContent = channels.length;
+
+            if (channels.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            emptyState.classList.remove('flex');
+
+            grid.innerHTML = channels.map(ch => createCardSkeleton(ch)).join('');
+        }
+
+        // Create HTML skeleton for a channel card
+        function createCardSkeleton(channel) {
+            const data = videoDataMap[channel.id];
+
+            return `
+                <div id="card-${channel.id}" class="channel-card bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between transition-all duration-300 hover:border-slate-700 hover:shadow-2xl hover:-translate-y-1">
+                    <div>
+                        <!-- Header / Channel Title -->
+                        <div class="p-4 border-b border-slate-800/60 flex items-center justify-between gap-2 bg-slate-900/50">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <div class="w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></div>
+                                <h3 class="font-bold text-slate-200 text-sm truncate" title="${channel.name}">
+                                    ${escapeHtml(channel.name)}
+                                </h3>
+                            </div>
+                            <div class="flex items-center gap-1 flex-shrink-0">
+                                <button 
+                                    onclick="refreshSingleFeed('${channel.id}')" 
+                                    title="Refresh Feed"
+                                    class="text-slate-400 hover:text-rose-400 w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-800 transition-colors"
+                                >
+                                    <i id="sync-icon-${channel.id}" class="fa-solid fa-rotate text-xs"></i>
+                                </button>
+                                <button 
+                                    onclick="removeChannel('${channel.id}')" 
+                                    title="Remove Channel"
+                                    class="text-slate-400 hover:text-rose-400 w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-800 transition-colors"
+                                >
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Video Preview/Thumbnail Area -->
+                        <div id="media-container-${channel.id}" class="relative w-full aspect-video bg-slate-950 flex items-center justify-center border-b border-slate-800/80 group overflow-hidden">
+                            ${data ? renderCardMedia(data) : `
+                                <div class="flex flex-col items-center gap-2 text-slate-600">
+                                    <i class="fa-solid fa-spinner fa-spin text-xl text-rose-500"></i>
+                                    <span class="text-xs">Fetching upload...</span>
+                                </div>
+                            `}
+                        </div>
+
+                        <!-- Video Info -->
+                        <div class="p-4">
+                            <h4 id="title-${channel.id}" class="text-sm font-semibold text-slate-100 line-clamp-2 leading-snug min-h-[2.5rem] mb-2">
+                                ${data ? escapeHtml(data.title) : '<span class="inline-block w-3/4 h-4 bg-slate-800 rounded animate-pulse"></span>'}
+                            </h4>
+                            <div class="flex items-center justify-between text-xs text-slate-400 mt-3">
+                                <span id="date-${channel.id}">
+                                    ${data ? `<i class="fa-regular fa-clock mr-1 text-slate-500"></i> ${data.publishedDate}` : ''}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Actions -->
+                    <div class="p-4 pt-0 mt-auto flex items-center justify-between gap-2 border-t border-slate-800/40 pt-3">
+                        <a 
+                            id="yt-link-${channel.id}"
+                            href="${data ? data.videoUrl : '#'}" 
+                            target="_blank" 
+                            class="${data ? '' : 'pointer-events-none opacity-50'} text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors"
+                        >
+                            <i class="fa-brands fa-youtube text-rose-500 text-sm"></i>
+                            <span>Watch on YouTube</span>
+                        </a>
+                        ${data ? `
+                            <button 
+                                onclick="openPlayerModal('${data.videoId}', '${escapeHtml(data.title)}')" 
+                                class="px-3 py-1.5 bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-500/20 hover:border-transparent rounded-lg text-xs font-medium transition-all flex items-center gap-1.5"
+                            >
+                                <i class="fa-solid fa-play text-[10px]"></i> Play
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render card video thumbnail media element
+        function renderCardMedia(data) {
+            return `
+                <img 
+                    src="${data.thumbnailUrl}" 
+                    alt="${escapeHtml(data.title)}" 
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onerror="this.onerror=null; this.src='https://placehold.co/640x360/0f172a/94a3b8?text=No+Thumbnail';"
+                >
+                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button 
+                        onclick="openPlayerModal('${data.videoId}', '${escapeHtml(data.title)}')" 
+                        class="w-12 h-12 rounded-full bg-rose-600 text-white flex items-center justify-center shadow-xl transform scale-90 group-hover:scale-100 transition-transform"
+                    >
+                        <i class="fa-solid fa-play text-base ml-0.5"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        // Fetch RSS feed for a single channel
+        async function fetchChannelFeed(channelId) {
+            const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error("Network error fetching feed");
+
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+
+            if (xmlDoc.querySelector("parsererror")) {
+                throw new Error("Invalid RSS response");
+            }
+
+            const latestEntry = xmlDoc.querySelector("entry");
+            if (!latestEntry) {
+                throw new Error("No uploads found in RSS feed");
+            }
+
+            const title = latestEntry.querySelector("title")?.textContent || "Untitled Video";
+            const videoId = latestEntry.querySelector("videoId")?.textContent || 
+                            latestEntry.querySelector("id")?.textContent.replace("yt:video:", "") || "";
+            const rawDate = latestEntry.querySelector("published")?.textContent;
+            
+            const publishedDate = rawDate 
+                ? new Date(rawDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
+                : "Recent";
+
+            const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+            const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
+            return {
+                videoId,
+                title,
+                publishedDate,
+                videoUrl,
+                thumbnailUrl
+            };
+        }
+
+        // Refresh a single card feed
+        async function refreshSingleFeed(channelId) {
+            const syncIcon = document.getElementById(`sync-icon-${channelId}`);
+            if (syncIcon) syncIcon.classList.add('fa-spin');
+
+            try {
+                const videoData = await fetchChannelFeed(channelId);
+                videoDataMap[channelId] = videoData;
+                updateCardUI(channelId, videoData);
+            } catch (err) {
+                console.error(`Failed to refresh channel ${channelId}`, err);
+                const container = document.getElementById(`media-container-${channelId}`);
+                if (container) {
+                    container.innerHTML = `
+                        <div class="p-4 text-center text-rose-400 text-xs">
+                            <i class="fa-solid fa-triangle-exclamation mb-1 text-base"></i>
+                            <p>Unable to load RSS feed.</p>
+                        </div>
+                    `;
+                }
+            } finally {
+                if (syncIcon) syncIcon.classList.remove('fa-spin');
+            }
+        }
+
+        // Update card DOM with freshly loaded data
+        function updateCardUI(channelId, data) {
+            const container = document.getElementById(`media-container-${channelId}`);
+            const titleEl = document.getElementById(`title-${channelId}`);
+            const dateEl = document.getElementById(`date-${channelId}`);
+            const ytLink = document.getElementById(`yt-link-${channelId}`);
+
+            if (container) container.innerHTML = renderCardMedia(data);
+            if (titleEl) titleEl.textContent = data.title;
+            if (dateEl) dateEl.innerHTML = `<i class="fa-regular fa-clock mr-1 text-slate-500"></i> ${data.publishedDate}`;
+            if (ytLink) {
+                ytLink.href = data.videoUrl;
+                ytLink.classList.remove('pointer-events-none', 'opacity-50');
+            }
+
+            // Re-render whole card dynamically to inject correct play action button
+            const ch = channels.find(c => c.id === channelId);
+            if (ch) {
+                const cardEl = document.getElementById(`card-${channelId}`);
+                if (cardEl) {
+                    const temp = document.createElement('div');
+                    temp.innerHTML = createCardSkeleton(ch);
+                    cardEl.replaceWith(temp.firstElementChild);
+                }
+            }
+        }
+
+        // Batch refresh all tracked feeds
+        async function refreshAllFeeds() {
+            const refreshBtnIcon = document.getElementById('refreshAllIcon');
+            if (refreshBtnIcon) refreshBtnIcon.classList.add('fa-spin');
+
+            const promises = channels.map(ch => refreshSingleFeed(ch.id));
+            await Promise.allSettled(promises);
+
+            if (refreshBtnIcon) refreshBtnIcon.classList.remove('fa-spin');
+            document.getElementById('lastUpdatedText').textContent = `Last updated: ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        }
+
+        // Handle Add Channel Form Submit
+        async function handleAddChannel(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('channelNameInput');
+            const idInput = document.getElementById('channelIdInput');
+            const errorEl = document.getElementById('modalError');
+            const submitBtn = document.getElementById('submitModalBtn');
+
+            const name = nameInput.value.trim();
+            let channelId = idInput.value.trim();
+
+            errorEl.classList.add('hidden');
+
+            // Quick validation
+            if (!name || !channelId) {
+                showModalError("Please complete all required fields.");
+                return;
+            }
+
+            // If user enters full feed URL instead of ID, extract ID
+            if (channelId.includes('channel_id=')) {
+                const urlParams = new URLSearchParams(channelId.split('?')[1]);
+                if (urlParams.has('channel_id')) {
+                    channelId = urlParams.get('channel_id');
+                }
+            }
+
+            // Check duplicate
+            if (channels.some(c => c.id === channelId)) {
+                showModalError("This channel is already added to your dashboard.");
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Testing Feed...`;
+
+            try {
+                // Test feed validity first
+                const videoData = await fetchChannelFeed(channelId);
+                
+                // Add channel
+                const newChannel = { id: channelId, name: name };
+                channels.push(newChannel);
+                videoDataMap[channelId] = videoData;
+                saveChannelsToStorage();
+
+                renderDashboard();
+                updateCardUI(channelId, videoData);
+
+                closeAddModal();
+                nameInput.value = '';
+                idInput.value = '';
+            } catch (err) {
+                console.error(err);
+                showModalError("Could not fetch RSS feed for this Channel ID. Verify the ID is correct.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span>Add Feed</span>`;
+            }
+        }
+
+        function showModalError(msg) {
+            const errorEl = document.getElementById('modalError');
+            errorEl.textContent = msg;
+            errorEl.classList.remove('hidden');
+        }
+
+        // Remove a channel from storage
+        function removeChannel(channelId) {
+            channels = channels.filter(c => c.id !== channelId);
+            delete videoDataMap[channelId];
+            saveChannelsToStorage();
+            renderDashboard();
+        }
+
+        // Search Filter cards logic
+        function filterCards() {
+            const query = document.getElementById('filterInput').value.toLowerCase();
+            const cardElements = document.querySelectorAll('.channel-card');
+
+            cardElements.forEach(card => {
+                const channelId = card.id.replace('card-', '');
+                const channel = channels.find(c => c.id === channelId);
+                const videoData = videoDataMap[channelId];
+
+                const nameMatch = channel && channel.name.toLowerCase().includes(query);
+                const titleMatch = videoData && videoData.title.toLowerCase().includes(query);
+
+                if (nameMatch || titleMatch) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Modal Controls
+        function openAddModal() {
+            document.getElementById('modalError').classList.add('hidden');
+            document.getElementById('addModal').classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.add('hidden');
+        }
+
+        function openPlayerModal(videoId, title) {
+            document.getElementById('playerModalTitle').textContent = title || "YouTube Video Player";
+            document.getElementById('playerIframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            document.getElementById('playerModal').classList.remove('hidden');
+        }
+
+        function closePlayerModal() {
+            document.getElementById('playerIframe').src = '';
+            document.getElementById('playerModal').classList.add('hidden');
+        }
+
+        // Helper: Escape HTML string to prevent XSS
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }[m];
+            });
+        }
+    </script>
+</body>
+</html>
