@@ -30,6 +30,9 @@
     { "name": "財經 YT 頻道學習地圖", "url": "https://lofan.github.io/HKJQV/financial_youtube_directory.html", "cat": "財經投資" },
     { "name": "富翁電視MTTV", "url": "https://lofan.github.io/HKJQV/mttv.html", "cat": "財經投資" },
     { "name": "Mila Yuen 投資日常", "url": "https://lofan.github.io/HKJQV/milayuen.html", "cat": "財經投資" },
+    { "name": "茄利略・CUP", "url": "https://lofan.github.io/HKJQV/kelileocup.html", "cat": "財經投資" },
+
+    
 
     { "name": "Yolo街", "url": "https://lofan.github.io/HKJQV/yologuy.html", "cat": "科技知識" },
     { "name": "Software Architecture", "url": "https://lofan.github.io/HKJQV/software_architecture_reading_roadmap.html", "cat": "科技知識" },
@@ -139,6 +142,7 @@
     { "name": "WELLNESS BY MIRI", "url": "https://lofan.github.io/HKJQV/wellnessbymiri.html", "cat": "健康" },
     { "name": "24 式 太極 拳", "url": "https://lofan.github.io/HKJQV/24taichidemo.html", "cat": "健康" },
     { "name": "池谷敏郎", "url": "https://lofan.github.io/HKJQV/iketani.html", "cat": "健康" },
+    { "name": "健康旦 HiEggo", "url": "https://lofan.github.io/HKJQV/hieggo.html", "cat": "健康" },
     { "name": "Doctor Janine", "url": "https://lofan.github.io/HKJQV/doctorjanine.html", "cat": "健康" },
     { "name": "MIZI", "url": "https://lofan.github.io/HKJQV/mizilee.html", "cat": "健康" },
     { "name": "Medical Inspire 醫・思維", "url": "https://lofan.github.io/HKJQV/medicalinspire.html", "cat": "健康" },
