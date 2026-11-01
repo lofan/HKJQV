@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>Tech & AI Hub V2</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f4f6fb;--panel:#fff;--panel2:#f8fafc;--text:#172033;--muted:#64748b;
+  --line:#e2e8f0;--accent:#4f7cff;--accent2:#eaf0ff;--chip:#eef2f7;
+  --shadow:0 8px 28px rgba(15,23,42,.06);--danger:#e05252;
+}
+[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b1220;--panel:#121d2e;--panel2:#172438;--text:#e6edf7;--muted:#9aabc2;
+  --line:#26364c;--accent:#83a7ff;--accent2:#1c3155;--chip:#1c2b40;
+  --shadow:0 8px 28px rgba(0,0,0,.22);--danger:#ff7777;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;transition:background .2s,color .2s}
+button,input{font:inherit}
+a{color:inherit;text-decoration:none}
+.shell{max-width:1440px;margin:auto;padding:28px 30px 60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}
+.brand{display:flex;align-items:center;gap:13px}
+.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#4779ff,#8c5cf6);color:white;font-size:23px;box-shadow:var(--shadow)}
+h1{font-size:clamp(22px,3vw,30px);line-height:1.15;margin:0;letter-spacing:-.7px}
+.subtitle{color:var(--muted);font-size:13px;margin-top:4px}
+.actions{display:flex;gap:9px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:9px 13px;border-radius:11px;cursor:pointer;font-weight:650}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.hero{background:linear-gradient(115deg,#172b4d,#263f72 55%,#6046a8);color:white;border-radius:20px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.hero h2{font-size:22px;margin:0 0 5px}.hero p{margin:0;color:#d7e3ff;max-width:760px}
+.stats{display:flex;gap:24px;margin-top:17px;flex-wrap:wrap}.stat strong{font-size:20px;display:block}.stat span{font-size:12px;color:#c4d4f5}
+.toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;margin:18px 0}
+.search-wrap{position:relative}.search-wrap input{width:100%;padding:13px 15px 13px 42px;border:1px solid var(--line);border-radius:13px;background:var(--panel);color:var(--text);outline:none}
+.search-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent2)}
+.search-icon{position:absolute;left:15px;top:10px;font-size:18px;color:var(--muted)}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}
+.filter{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:7px 12px;border-radius:999px;cursor:pointer;font-size:13px}
+.filter.active{background:var(--accent2);border-color:var(--accent);color:var(--accent);font-weight:700}
+.section{margin:25px 0 30px;scroll-margin-top:15px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.section-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:750;letter-spacing:-.3px}
+.section-count{font-size:12px;color:var(--muted);background:var(--chip);padding:3px 8px;border-radius:99px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:12px}
+.card{position:relative;display:flex;flex-direction:column;min-height:132px;padding:15px 15px 13px;background:var(--panel);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);transition:transform .16s,border-color .16s}
+.card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.site-name{font-weight:750;font-size:15px;line-height:1.35}
+.site-url{font-size:11px;color:var(--muted);overflow-wrap:anywhere;margin-top:4px}
+.description{font-size:12.5px;color:var(--muted);margin:10px 0 12px;flex:1}
+.card-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.visit{font-size:12px;color:var(--accent);font-weight:750}
+.tag{font-size:10px;color:var(--muted);background:var(--chip);padding:3px 7px;border-radius:6px}
+.star{border:0;background:transparent;color:#9aa8bc;font-size:21px;line-height:1;cursor:pointer;padding:0 1px}
+.star.saved{color:#f4b740}
+.empty{padding:35px 20px;text-align:center;background:var(--panel);border:1px dashed var(--line);border-radius:15px;color:var(--muted)}
+.footer{border-top:1px solid var(--line);padding-top:18px;margin-top:40px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hidden{display:none!important}
+@media(max-width:720px){
+ .shell{padding:18px 14px 40px}.topbar{align-items:flex-start}.subtitle{max-width:230px}
+ .toolbar{grid-template-columns:1fr}.actions .btn{padding:8px 10px;font-size:12px}
+ .hero{padding:20px;border-radius:16px}.stats{gap:18px}.grid{grid-template-columns:1fr}
+ .card{min-height:120px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+  <div class="brand"><div class="logo">⚡</div><div><h1>Tech & AI Hub <span style="color:var(--accent)">V2</span></h1><div class="subtitle">你的 AI、科技、開發與網絡安全入口資料庫</div></div></div>
+  <div class="actions"><button class="btn" id="favoritesOnly" aria-pressed="false">★ 收藏</button><button class="btn" id="themeToggle">🌙 深色</button></div>
+</header>
+<section class="hero">
+  <h2>Explore. Learn. Build.</h2>
+  <p>集中管理常用 AI 工具、開發平台、網絡安全資源及科技資訊。可即時搜尋、分類篩選及收藏；所有功能均在本機瀏覽器運作。</p>
+  <div class="stats">
+    <div class="stat"><strong id="totalCount">0</strong><span>個網站資源</span></div>
+    <div class="stat"><strong id="categoryCount">0</strong><span>個分類</span></div>
+    <div class="stat"><strong id="savedCount">0</strong><span>已收藏</span></div>
+  </div>
+</section>
+<div class="toolbar">
+  <div class="search-wrap"><span class="search-icon">⌕</span><input id="search" type="search" placeholder="搜尋網站名稱、網址或用途…（例如 Claude、security、cloud）" autocomplete="off"></div>
+  <button class="btn" id="clearSearch">清除搜尋 ×</button>
+</div>
+<nav class="filters" id="filters" aria-label="網站分類"></nav>
+<main id="content"></main>
+<div id="empty" class="empty hidden">搵唔到符合條件嘅網站。試下其他關鍵字或分類。</div>
+<footer class="footer"><span>Tech & AI Hub V2 · Single-file offline portal</span><span>收藏及主題設定只儲存在此瀏覽器（localStorage）</span></footer>
+</div>
+<script>
+const resources = [
+{cat:"AI & LLMs",icon:"🤖",items:[
+["ChatGPT","https://chatgpt.com/","通用 AI 助理：寫作、分析、研究及多模態工作。"],
+["Claude","https://claude.ai/","AI 助理，適合長文分析、寫作、程式及文件工作。"],
+["Hugging Face","https://huggingface.co/","開源模型、資料集、Demo 與 AI 社群平台。"],
+["arXiv AI","https://arxiv.org/list/cs.AI/recent","人工智能最新學術論文及研究預印本。"],
+["GitHub Copilot","https://github.com/features/copilot","AI 程式碼補全、解釋及開發協作工具。"],
+["Ollama","https://ollama.com/","在本機下載及執行大型語言模型。"],
+["Perplexity","https://www.perplexity.ai/","以搜尋及來源引用為核心的 AI 答案引擎。"],
+["Grok","https://www.grok.com/","Grok AI 助理及即時資訊探索入口。"],
+["ElevenLabs","https://elevenlabs.io/app/studio","AI 語音生成、配音及音訊創作工具。"],
+["1minAI","https://app.1min.ai/","集合多種生成式 AI 功能的工具平台。"],
+["DeepSeek","https://www.deepssek.com/","原始清單提供的 DeepSeek 網址；使用前請自行核實網域。"],
+["RTCROS","https://lofan.github.io/HKJQV/R35.html","個人收錄的 RTCROS 資源頁。"]
+]},
+{cat:"Coding & Development",icon:"💻",items:[
+["GitHub","https://github.com/","程式碼版本控制、開源專案及協作平台。"],
+["GitLab","https://gitlab.com/","Git 儲存庫、CI/CD 及 DevSecOps 平台。"],
+["Stack Overflow","https://stackoverflow.com/","程式開發問答及技術問題社群。"],
+["MDN Web Docs","https://developer.mozilla.org/","HTML、CSS、JavaScript 等 Web 技術文件。"],
+["LeetCode","https://leetcode.com/","演算法練習及程式面試準備。"],
+["DEV Community","https://dev.to/","開發者文章、教學及技術交流社群。"],
+["CodePen","https://codepen.io/","線上編寫及展示 HTML、CSS、JavaScript。"]
+]},
+{cat:"IT Security & Cybersecurity",icon:"🛡️",items:[
+["OWASP","https://owasp.org/","Web 應用程式安全標準、指南及風險資料。"],
+["Krebs on Security","https://krebsonsecurity.com/","深入調查網絡犯罪及資訊安全新聞。"],
+["CVE / NIST","https://cve.mitre.org/","常見漏洞與暴露（CVE）資料入口；亦可配合 NIST NVD 查詢。"],
+["Shodan","https://www.shodan.io/","搜尋連接互聯網的設備及公開服務。"],
+["TryHackMe","https://tryhackme.com/","循序漸進的網絡安全實戰學習平台。"],
+["Hack The Box","https://www.hackthebox.com/","滲透測試及網絡安全實驗環境。"],
+["BleepingComputer","https://www.bleepingcomputer.com/","網絡安全、惡意軟件及科技故障新聞。"],
+["Cyber","https://start.me/p/nR1dLL/cyber","原始清單收錄的網絡安全書籤頁。"],
+["MITRE ATT&CK","https://attack.mitre.org/","網絡攻擊者戰術、技術及知識框架。"],
+["CyberChef","https://gchq.github.io/CyberChef/","瀏覽器內進行編碼、解碼及資料轉換。"],
+["Avax","https://xsava.xyz/","原始清單收錄的網站；內容及安全性請自行核實。"]
+]},
+{cat:"Cloud & DevOps",icon:"☁️",items:[
+["AWS","https://aws.amazon.com/","Amazon Web Services 雲端服務及管理入口。"],
+["Google Cloud","https://cloud.google.com/","Google 雲端運算、資料及 AI 平台。"],
+["Azure Portal","https://portal.azure.com/","Microsoft Azure 雲端資源管理入口。"],
+["Docker Hub","https://hub.docker.com/","容器映像檔及 Docker 社群資源。"],
+["Kubernetes","https://kubernetes.io/","容器化應用程式編排平台及官方文件。"],
+["Terraform","https://www.terraform.io/","以程式碼管理雲端及基礎設施。"]
+]},
+{cat:"Tech News & Communities",icon:"📰",items:[
+["The Hacker News","https://thehackernews.com/","網絡安全新聞及威脅情報。"],
+["SANS Internet Storm Center","https://isc.sans.edu/index.html","全球網絡威脅觀察及安全分析。"],
+["Reddit Programming","https://www.reddit.com/r/programming/","程式設計新聞及社群討論。"],
+["Reddit NetSec","https://www.reddit.com/r/netsec/","網絡安全研究及技術討論。"],
+["TechCrunch","https://techcrunch.com/","科技公司、初創企業及投資新聞。"],
+["Neowin","https://www.neowin.net/","科技產品、軟件及產業新聞。"],
+["科技新報","https://technews.tw/","繁體中文科技、半導體及產業新聞。"],
+["Mobile01","https://www.mobile01.com/","繁體中文科技產品及生活討論區。"],
+["The Verge","https://www.theverge.com/","科技、產品、文化及媒體報道。"],
+["T3","https://www.t3.com/","消費科技、產品評測及購買指南。"],
+["Product Hunt","https://www.producthunt.com/","發掘新推出的科技產品及工具。"],
+["alltoc","https://alltoc.com/tech","原始清單收錄的科技資訊頁。"],
+["Lobsters","https://lobste.rs/","以技術文章及討論為主的社群。"],
+["Futurism","https://futurism.com/","科學、未來科技及新興研究報道。"],
+["9to5Mac","https://9to5mac.com/","Apple 生態系統及產品新聞。"],
+["AppleInsider","https://appleinsider.com/","Apple 產品、供應鏈及產業消息。"],
+["Torrent","https://start.me/p/KMkAxO/anyfind","原始清單提供的 Anyfind 書籤頁；請留意連結內容及下載安全。"]
+]},
+{cat:"Developer Utilities",icon:"🛠️",items:[
+["Regex101","https://regex101.com/","建立、測試及解釋正規表達式。"],
+["JSON Formatter","https://jsonformatter.curiousconcept.com/","格式化及檢查 JSON 資料。"],
+["Postman","https://www.postman.com/","建立、測試及管理 API。"],
+["Can I Use","https://caniuse.com/","查閱瀏覽器對 Web 功能的支援程度。"],
+["Carbon","https://carbon.now.sh/","將程式碼製作成美觀圖片。"],
+["HTML Cheatsheet","https://htmlcheatsheet.com/","HTML 標籤及常用語法速查。"],
+["Google Admin Toolbox","https://toolbox.googleapps.com/","Google 網域、郵件及網絡診斷工具。"],
+["iFixit","https://www.ifixit.com/","電子產品維修指南、拆解及工具資料。"]
+]}
+];
+const all = resources.flatMap(group=>group.items.map((x,i)=>({name:x[0],url:x[1],desc:x[2],cat:group.cat,icon:group.icon,id:group.cat+"::"+x[0]})));
+const $ = s=>document.querySelector(s);
+const saved = new Set(JSON.parse(localStorage.getItem("techhub-favs")||"[]"));
+let activeCat="全部", favoritesMode=false, query="";
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function updateStats(){ $("#totalCount").textContent=all.length;$("#categoryCount").textContent=resources.length;$("#savedCount").textContent=saved.size; }
+function renderFilters(){
+ const cats=["全部","★ 已收藏",...resources.map(r=>r.cat)];
+ $("#filters").innerHTML=cats.map(c=>`<button class="filter ${c===activeCat?"active":""}" data-cat="${esc(c)}">${c==="全部"?"全部資源":c==="★ 已收藏"?"★ 已收藏":esc(resources.find(r=>r.cat===c).icon+" "+c)}</button>`).join("");
+}
+function matches(item){
+ const hay=(item.name+" "+item.url+" "+item.desc+" "+item.cat).toLowerCase();
+ return (!query||hay.includes(query))&&(activeCat==="全部"|| (activeCat==="★ 已收藏"?saved.has(item.id):item.cat===activeCat));
+}
+function render(){
+ const filtered=all.filter(matches);let out="";
+ resources.forEach(group=>{
+  const items=filtered.filter(x=>x.cat===group.cat);if(!items.length)return;
+  out+=`<section class="section"><div class="section-head"><div class="section-title">${group.icon} ${esc(group.cat)} <span class="section-count">${items.length}</span></div></div><div class="grid">`;
+  items.forEach(item=>{
+   const safeUrl=esc(item.url);
+   out+=`<article class="card"><div class="card-top"><div><div class="site-name">${esc(item.name)}</div><div class="site-url">${safeUrl}</div></div><button class="star ${saved.has(item.id)?"saved":""}" data-star="${esc(item.id)}" aria-label="${saved.has(item.id)?"取消收藏":"加入收藏"}" title="${saved.has(item.id)?"取消收藏":"加入收藏"}">${saved.has(item.id)?"★":"☆"}</button></div><p class="description">${esc(item.desc)}</p><div class="card-bottom"><a class="visit" href="${safeUrl}" target="_blank" rel="noopener noreferrer">開啟網站 ↗</a><span class="tag">${esc(group.cat)}</span></div></article>`;
+  });
+  out+="</div></section>";
+ });
+ $("#content").innerHTML=out;
+ $("#empty").classList.toggle("hidden",filtered.length!==0);
+ $("#content").classList.toggle("hidden",filtered.length===0);
+ updateStats();
+}
+$("#filters").addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(!b)return;activeCat=b.dataset.cat;favoritesMode=activeCat==="★ 已收藏";$("#favoritesOnly").setAttribute("aria-pressed",favoritesMode);renderFilters();render();});
+$("#content").addEventListener("click",e=>{const b=e.target.closest("[data-star]");if(!b)return;const id=b.dataset.star;saved.has(id)?saved.delete(id):saved.add(id);localStorage.setItem("techhub-favs",JSON.stringify([...saved]));renderFilters();render();});
+$("#search").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();render();});
+$("#clearSearch").addEventListener("click",()=>{$("#search").value="";query="";render();});
+$("#favoritesOnly").addEventListener("click",()=>{activeCat=activeCat==="★ 已收藏"?"全部":"★ 已收藏";favoritesMode=activeCat==="★ 已收藏";$("#favoritesOnly").setAttribute("aria-pressed",favoritesMode);renderFilters();render();});
+function setTheme(t){document.documentElement.dataset.theme=t;localStorage.setItem("techhub-theme",t);$("#themeToggle").textContent=t==="dark"?"☀️ 淺色":"🌙 深色";}
+const initialTheme=localStorage.getItem("techhub-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+setTheme(initialTheme);
+$("#themeToggle").addEventListener("click",()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"));
+renderFilters();render();
+</script>
+</body>
+</html>
