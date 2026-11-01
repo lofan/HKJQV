@@ -153,9 +153,12 @@ const TODAY_STRING = getTodayDateString();
         const CONFIG = {
             // We make the API url dynamic based on idx (offset) and market (mkt)
             getBingUrl: (idx = 0, mkt = 'en-CA') => `https://www.bing.com/HPImageArchive.aspx?format=js&idx=${idx}&n=8&mkt=${mkt}`,
-            corsProxies: [
-                "https://api.allorigins.win/raw?url=",
-                "https://corsproxy.io/?"
+         corsProxies: [
+  'https://api.allorigins.win/raw?url=',
+  'https://api.codetabs.com/v1/proxy?quest=',
+  'https://corsproxy.io/?url=',
+  'https://thingproxy.freeboard.io/fetch/'
+],
             ]
         };
 
@@ -489,80 +492,196 @@ const TODAY_STRING = getTodayDateString();
             }, duration);
         }
 
+
+        
         // Try Loading Wallpaper from Bing API via proxies with optional index offset
-        async function tryFetchBingWallpaper(idx = 0) {
-            triggerToast(`Reaching out to Bing image archives (offset: ${idx})...`, "fa-solid fa-cloud-arrow-down animate-bounce");
+        // Try Loading Wallpaper from Bing API via proxies with optional index offset
+async function tryFetchBingWallpaper(idx = 0) {
+    triggerToast(
+        `Reaching out to Bing image archives (offset: ${idx})...`,
+        "fa-solid fa-cloud-arrow-down animate-bounce"
+    );
+
+    let success = false;
+    const apiUrl = CONFIG.getBingUrl(idx, state.market);
+
+    // Iterate over fallback CORS proxies
+    for (const proxy of CONFIG.corsProxies) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+            const response = await fetch(`${proxy}${encodeURIComponent(apiUrl)}`, {
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if (!response.ok) continue;
+
+            const data = await response.json();
+
+            if (data && data.images && data.images.length > 0) {
+                // Extract images & map to app data structure
+                const parsedImages = data.images.map(img => {
+                    // High resolution format parsing
+                    const imgUrl = `https://www.bing.com${img.urlbase}_1920x1080.jpg`;
+
+                    // Splitting title and copyright cleanly from response
+                    const copyrightString = img.copyright || "© Bing Image Archive";
+                    let cleanTitle = img.title || "Daily Discovery";
+                    let cleanCopyright = copyrightString;
+
+                    const match = copyrightString.match(/(.*)\s\((©.*)\)/);
+                    if (match) {
+                        cleanTitle = img.title || match[1].trim();
+                        cleanCopyright = match[2].trim();
+                    }
+
+                    return {
+                        url: imgUrl,
+                        title: cleanTitle,
+                        copyright: cleanCopyright,
+                        date: img.startdate
+                            ? `${img.startdate.substring(0, 4)}-${img.startdate.substring(4, 6)}-${img.startdate.substring(6, 8)}`
+                            : new Date().toISOString().split('T')[0],
+                        description: img.desc ||
+                            "A magnificent perspective captured and preserved by contributors around the globe for today's Daily Exploration.",
+                        location: img.location || "Earth Science & Wonder",
+                        searchQuery: img.copyrightlink
+                            ? decodeURIComponent(
+                                  img.copyrightlink.split('q=')[1]?.split('&')[0] || cleanTitle
+                              )
+                            : cleanTitle
+                    };
+                });
+
+                // Merge retrieved wallpapers with curated archive,
+                // avoiding duplicate image URLs
+                const existingUrls = new Set(CURATED_ARCHIVE.map(w => w.url));
+                const uniqueFetched = parsedImages.filter(img => !existingUrls.has(img.url));
+
+                state.wallpapers = [...uniqueFetched, ...CURATED_ARCHIVE];
+                state.sourceMode = "bing";
+                state.currentIdx = 0;
+
+                success = true;
+
+                const badge = document.getElementById("data-source-badge");
+                badge.textContent = `Live Bing Feed ${state.market.toUpperCase()}`;
+                badge.className =
+                    "text-10px bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 px-2 py-0.5 rounded";
+
+                triggerToast(
+                    `Synchronized today's Bing images for market ${state.market.toUpperCase()}!`,
+                    "fa-solid fa-circle-check text-emerald-400"
+                );
+
+                break;
+            }
+        } catch (e) {
+            console.warn("Proxy failed:", proxy, e);
+        }
+    }
+
+    if (!success) {
+        triggerToast(
+            "CORS blocked or error. Loaded offline-resilient high-res nature archive.",
+            "fa-solid fa-triangle-exclamation text-amber-400"
+        );
+
+        state.wallpapers = [...CURATED_ARCHIVE];
+        state.sourceMode = "curated";
+        state.currentIdx = 0;
+
+        const badge = document.getElementById("data-source-badge");
+        badge.textContent = "Offline Curated";
+        badge.className =
+            "text-10px bg-amber-500/20 border border-amber-500/40 text-amber-300 px-2 py-0.5 rounded";
+    }
+
+    updateInterface();
+    renderCarousel();
+}
+        
+        
+//        async function tryFetchBingWallpaper(idx = 0) {
+//           triggerToast(`Reaching out to Bing image archives (offset: ${idx})...`, "fa-solid fa-cloud-arrow-down animate-bounce");
             
-            let success = false;
-            const apiUrl = CONFIG.getBingUrl(idx, state.market);
+//            let success = false;
+//            const apiUrl = CONFIG.getBingUrl(idx, state.market);
 
             // Iterate over fallback cors proxies
-            for (let proxy of CONFIG.corsProxies) {
-                try {
-                    const response = await fetch(`${proxy}${encodeURIComponent(apiUrl)}`);
-                    if (!response.ok) continue;
+
+
+
+            
+//          for (let proxy of CONFIG.corsProxies) {
+//               try {
+//                  const response = await fetch(`${proxy}${encodeURIComponent(apiUrl)}`);
+//                 if (!response.ok) continue;
                     
-                    const data = await response.json();
-                    if (data && data.images && data.images.length > 0) {
+//                 const data = await response.json();
+//                   if (data && data.images && data.images.length > 0) {
                         // Extract images & map to app data structure
-                        const parsedImages = data.images.map(img => {
+//                        const parsedImages = data.images.map(img => {
                             // High resolution format parsing
-                            const imgUrl = `https://www.bing.com${img.urlbase}_1920x1080.jpg`;
+//                            const imgUrl = `https://www.bing.com${img.urlbase}_1920x1080.jpg`;
                             
                             // Splitting title and copyright cleanly from response
-                            const copyrightString = img.copyright || "© Bing Image Archive";
-                            let cleanTitle = img.title || "Daily Discovery";
-                            let cleanCopyright = copyrightString;
+//                            const copyrightString = img.copyright || "© Bing Image Archive";
+//                            let cleanTitle = img.title || "Daily Discovery";
+//                            let cleanCopyright = copyrightString;
                             
-                            const match = copyrightString.match(/(.*)\s\((©.*)\)/);
-                            if (match) {
-                                cleanTitle = img.title || match[1].trim();
-                                cleanCopyright = match[2].trim();
-                            }
+//                            const match = copyrightString.match(/(.*)\s\((©.*)\)/);
+//                            if (match) {
+//                                cleanTitle = img.title || match[1].trim();
+//                                cleanCopyright = match[2].trim();
+//                            }
 
-                            return {
-                                url: imgUrl,
-                                title: cleanTitle,
-                                copyright: cleanCopyright,
-                                date: img.startdate ? `${img.startdate.substring(0,4)}-${img.startdate.substring(4,6)}-${img.startdate.substring(6,8)}` : new Date().toISOString().split('T')[0],
-                                description: img.desc || "A magnificent perspective captured and preserved by contributors around the globe for today's Daily Exploration.",
-                                location: img.location || "Earth Science & Wonder",
-                                searchQuery: img.copyrightlink ? decodeURIComponent(img.copyrightlink.split('q=')[1]?.split('&')[0] || cleanTitle) : cleanTitle
-                            };
-                        });
+//                            return {
+//                                url: imgUrl,
+//                                title: cleanTitle,
+//                                copyright: cleanCopyright,
+//                                date: img.startdate ? `${img.startdate.substring(0,4)}-${img.startdate.substring(4,6)}-${img.startdate.substring(6,8)}` : new Date().toISOString().split('T')[0],
+//                                description: img.desc || "A magnificent perspective captured and preserved by contributors around the globe for today's Daily Exploration.",
+//                                location: img.location || "Earth Science & Wonder",
+//                                searchQuery: img.copyrightlink ? decodeURIComponent(img.copyrightlink.split('q=')[1]?.split('&')[0] || cleanTitle) : cleanTitle
+//                            };
+//                        });
 
                         // Merge retrieved wallpapers with our premium preset ones
                         // Avoid direct duplicate URLs
-                        const existingUrls = new Set(CURATED_ARCHIVE.map(w => w.url));
-                        const uniqueFetched = parsedImages.filter(img => !existingUrls.has(img.url));
+ //                       const existingUrls = new Set(CURATED_ARCHIVE.map(w => w.url));
+ //                       const uniqueFetched = parsedImages.filter(img => !existingUrls.has(img.url));
                         
-                        state.wallpapers = [...uniqueFetched, ...CURATED_ARCHIVE];
-                        state.sourceMode = 'bing';
-                        success = true;
+ //                       state.wallpapers = [...uniqueFetched, ...CURATED_ARCHIVE];
+//                        state.sourceMode = 'bing';
+  //                      success = true;
                         
-                        document.getElementById('data-source-badge').textContent = `Live Bing Feed (${state.market.toUpperCase()})`;
-                        document.getElementById('data-source-badge').className = "text-[10px] bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 px-2 py-0.5 rounded";
+//                     document.getElementById('data-source-badge').textContent = `Live Bing Feed (${state.market.toUpperCase()})`;
+ //                       document.getElementById('data-source-badge').className = "text-[10px] bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 px-2 py-0.5 rounded";
                         
-                        triggerToast(`Synchronized today's Bing images for market: ${state.market.toUpperCase()}!`, "fa-solid fa-circle-check text-emerald-400");
-                        break;
-                    }
-                } catch (e) {
-                    console.warn(`Proxy failed: ${proxy}`, e);
-                }
-            }
+              //          triggerToast(`Synchronized today's Bing images for market: ${state.market.toUpperCase()}!`, "fa-solid fa-circle-check text-emerald-400");
+            //            break;
+          //          }
+        //        } catch (e) {
+      //              console.warn(`Proxy failed: ${proxy}`, e);
+    //            }
+  //          }
 
-            if (!success) {
-                triggerToast("CORS blocked or error. Loaded offline-resilient high-res nature archive.", "fa-solid fa-triangle-exclamation text-amber-400");
-                state.wallpapers = [...CURATED_ARCHIVE];
-                state.sourceMode = 'curated';
-                document.getElementById('data-source-badge').textContent = "Offline Curated";
-                document.getElementById('data-source-badge').className = "text-[10px] bg-amber-500/20 border border-amber-500/40 text-amber-300 px-2 py-0.5 rounded";
-            }
+//            if (!success) {
+          //      triggerToast("CORS blocked or error. Loaded offline-resilient high-res nature archive.", "fa-solid fa-triangle-exclamation text-amber-400");
+        //        state.wallpapers = [...CURATED_ARCHIVE];
+      //          state.sourceMode = 'curated';
+    //            document.getElementById('data-source-badge').textContent = "Offline Curated";
+   //             document.getElementById('data-source-badge').className = "text-[10px] bg-amber-500/20 border border-amber-500/40 text-amber-300 px-2 py-0.5 rounded";
+   //         }
 
-            state.currentIdx = 0;
-            updateInterface();
-            renderCarousel();
-        }
+ //           state.currentIdx = 0;
+ //           updateInterface();
+//            renderCarousel();
+//        }
 
         function handleRegionChange(newMarket) {
             state.market = newMarket;
