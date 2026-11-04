@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>茶餐廳地雷！10大爆脂碟頭飯排行榜</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Font: Noto Sans TC -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#ef4444',
+              orange: '#f97316',
+              yellow: '#eab308',
+              dark: '#0f172a',
+              card: '#1e293b',
+              sidebar: '#0b1329'
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar for Smooth UX */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    
+    .aspect-video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+      overflow: hidden;
+    }
+    
+    .aspect-video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col md:flex-row overflow-x-hidden">
+
+  <!-- Mobile Top Bar Header -->
+  <header class="md:hidden bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center space-x-2">
+      <i class="fa-solid font-black text-red-500 text-xl fa-fire"></i>
+      <span class="font-bold text-lg text-white">茶餐廳爆脂排行榜</span>
+    </div>
+    <button id="mobile-menu-btn" class="text-slate-300 hover:text-white p-2 rounded-lg bg-slate-800 focus:outline-none">
+      <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+    </button>
+  </header>
+
+  <!-- Sidebar Navigation -->
+  <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-80 lg:w-96 bg-slate-900 border-r border-slate-800 h-auto md:h-screen sticky top-0 z-40 transition-all duration-300">
+    <!-- Sidebar Header -->
+    <div class="p-5 border-b border-slate-800 flex flex-col gap-1 bg-slate-950/50">
+      <div class="flex items-center gap-2">
+        <span class="bg-red-500/20 text-red-400 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-red-500/30">減肥必睇地雷</span>
+        <span class="text-xs text-slate-400">香港健身教練 Fred</span>
+      </div>
+      <h1 class="text-xl font-black text-white mt-1 leading-tight flex items-center gap-2">
+        <i class="fa-solid fa-utensils text-orange-500"></i>
+        10大爆脂碟頭飯解密
+      </h1>
+    </div>
+
+    <!-- Navigation List Section -->
+    <div class="flex-1 overflow-y-auto p-3 space-y-1">
+      
+      <!-- General Overview Link -->
+      <button onclick="switchTab('overview')" id="nav-overview" class="nav-btn active-nav w-full text-left p-3 rounded-xl flex items-center justify-between transition-all duration-200 text-slate-300 hover:bg-slate-800 hover:text-white">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+          <div>
+            <div class="font-bold text-sm">影片簡介與總覽</div>
+            <div class="text-xs text-slate-400">Fred 健身教練獨家分析</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
+      </button>
+
+      <div class="pt-3 pb-1 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">
+        🔥 10大爆脂排行榜 (第10位 ➔ 第1位)
+      </div>
+
+      <!-- Dish Navigation Items -->
+      <div id="dishes-nav-list" class="space-y-1">
+        <!-- Javascript dynamically injects buttons here -->
+      </div>
+
+      <div class="pt-3 pb-1 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">
+        💡 飲食指南
+      </div>
+
+      <!-- Summary & Tips Link -->
+      <button onclick="switchTab('tips')" id="nav-tips" class="nav-btn w-full text-left p-3 rounded-xl flex items-center justify-between transition-all duration-200 text-slate-300 hover:bg-slate-800 hover:text-white">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <div>
+            <div class="font-bold text-sm">減肥自救三大貼士</div>
+            <div class="text-xs text-slate-400">避坑指引 & 替代建議</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
+      </button>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between bg-slate-950">
+      <span><i class="fa-brands fa-youtube text-red-500 mr-1"></i> 原片連結</span>
+      <a href="http://www.youtube.com/watch?v=LssN6Qe11Qk" target="_blank" class="text-red-400 hover:underline flex items-center gap-1">
+        前往 YouTube <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content View Area -->
+  <main class="flex-1 overflow-y-auto min-h-screen bg-slate-950 flex flex-col">
+    
+    <!-- Video Player Banner Container -->
+    <div class="bg-slate-900 border-b border-slate-800 p-4 md:p-6 shadow-xl">
+      <div class="max-w-4xl mx-auto">
+        <div class="aspect-video-container rounded-2xl overflow-hidden shadow-2xl bg-black border border-slate-800">
+          <iframe 
+            id="youtube-player"
+            src="https://www.youtube.com/embed/LssN6Qe11Qk?enablejsapi=1&rel=0" 
+            title="【茶餐廳地雷】10大爆脂碟頭飯排行榜"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Content Area -->
+    <div class="flex-1 p-4 md:p-8 max-w-4xl mx-auto w-full">
+      <div id="content-display" class="transition-all duration-300">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // Database of dishes and video breakdown content
+    const videoData = {
+      channel: "Fred | 香港健身教練 | 女士減肥專家",
+      publishDate: "2026年9月22日",
+      url: "http://www.youtube.com/watch?v=LssN6Qe11Qk",
+      overview: {
+        title: "【茶餐廳地雷】10大爆脂碟頭飯排行榜！某款蒸飯居然肥過炸雞？第1名食完要踩3個鐘單車！",
+        summary: `好多人以為去茶餐廳食「碟頭飯」只要避開炸物（例如炸雞髀飯、炸豬扒飯）就夠健康，甚至覺得蒸飯、蔬菜肉類配搭的款式一定可以幫手減肥。但係，香港健身教練 Fred 喺影片入面踢爆咗一個驚人真相：好多茶餐廳嘅「蒸飯」同「特色碟頭飯」由於烹調手法、隱藏醬汁、生粉打芡以及高脂肉類部位嘅配合，其實際熱量同脂肪含量分分鐘比想像中恐怖好多，甚至有啲款式食完要瘋狂踩幾個鐘單車先消耗得晒！`
+      },
+      dishes: [
+        {
+          rank: 10,
+          id: "dish-10",
+          name: "鮮茄牛肉飯 / 蒸飯陷阱",
+          calories: "~940 kcal",
+          fat: "~25g",
+          carbs: "~160g (約20g糖)",
+          exerciseNeeded: "慢跑 1.8 小時",
+          dangerLevel: 2,
+          badge: "隱形高糖芡汁",
+          traps: [
+            "<strong>假健康蒸飯/茄汁飯陷阱</strong>：好多人以為蕃茄同蒸煮手法低脂，但茶餐廳嘅鮮茄汁加咗大量罐頭蕃茄醬同純白糖提味（糖分高達20g）。",
+            "<strong>生粉厚芡與肥牛</strong>：廚房落大量生粉打芡鎖汁，配搭嘅牛肉亦常用嫩肉粉同肥牛片，熱量瞬間逼近 1000 大卡！"
+          ]
+        },
+        {
+          rank: 9,
+          id: "dish-9",
+          name: "燒味飯（燒鵝飯 / 燒鴨飯）",
+          calories: "~970 kcal",
+          fat: "~35g",
+          carbs: "~130g (約3碗白飯)",
+          exerciseNeeded: "快步行 2 小時",
+          dangerLevel: 3,
+          badge: "鵝油純油脂撈飯",
+          traps: [
+            "<strong>高脂肉質皮層</strong>：燒鴨同燒鵝嘅皮下脂肪層極厚，肉質本身啖啖都係純油脂。",
+            "<strong>麥芽糖刷皮</strong>：製作過程中會反覆掃上高糖蜜糖與麥芽糖進行脆皮烘烤。",
+            "<strong>邪惡精華鵝油</strong>：淋喺飯上嘅燒味汁其實就係滴出嚟嘅純油脂，用油撈飯令卡路里直線飆升。"
+          ]
+        },
+        {
+          rank: 8,
+          id: "dish-8",
+          name: "蘿蔔牛腩飯",
+          calories: "~980 kcal",
+          fat: "~45g",
+          carbs: "~125g",
+          exerciseNeeded: "踩單車 1.9 小時",
+          dangerLevel: 3,
+          badge: "蘿蔔吸油海綿",
+          traps: [
+            "<strong>極肥牛腩部位</strong>：茶餐廳多採用「坑腩」或帶厚脂肪嘅牛腩部位，脂肪佔成塊肉一半以上。",
+            "<strong>海綿特徵白蘿蔔</strong>：白蘿蔔纖維結構好似海綿，煮嘅過程中會將牛腩煮出嚟嘅所有牛油脂肪無聲吸盡。",
+            "<strong>濃汁高鈉</strong>：配合大量柱侯醬、豆瓣醬同濃芡，成碟飯又油又鹹！"
+          ]
+        },
+        {
+          rank: 7,
+          id: "dish-7",
+          name: "粟米肉粒飯",
+          calories: ">900 kcal",
+          fat: "~32g",
+          carbs: "~140g",
+          exerciseNeeded: "慢跑 1.7 小時",
+          dangerLevel: 3,
+          badge: "雙重澱粉炸彈",
+          traps: [
+            "<strong>雙重碳水化合物</strong>：粟米在營養學上屬於「澱粉類」，食粟米肉粒飯等於同時食緊「白飯 + 粟米」雙重碳水。",
+            "<strong>厚芡與花奶添加</strong>：為了做到濃稠香滑口感，廚房加入大量生粉打芡、白糖、油同全脂花奶，令血糖瞬間飆升。"
+          ]
+        },
+        {
+          rank: 6,
+          id: "dish-6",
+          name: "半肥瘦叉燒飯",
+          calories: "~1050 kcal",
+          fat: "~40g",
+          carbs: "~135g",
+          exerciseNeeded: "踩單車 2.1 小時",
+          dangerLevel: 4,
+          badge: "飽和脂肪+蜜糖雙重傷害",
+          traps: [
+            "<strong>飽和脂肪極高</strong>：茶餐廳叉燒要軟貐，必須挑選肥瘦相間甚至肥肉比例高的梅頭肉。",
+            "<strong>糖分高達 6-7 湯匙</strong>：高脂肥肉 + 反覆刷上的高糖蜜糖外層 + 淋飯叉燒汁，大量飽和脂肪與糖分同時吞下肚。",
+            "<strong>💡 教練貼士</strong>：下次去食燒味，記得改叫「瘦叉燒、少汁、加多菜」。"
+          ]
+        },
+        {
+          rank: 5,
+          id: "dish-5",
+          name: "魚香茄子飯",
+          calories: ">1000 kcal",
+          fat: "50g - 60g",
+          carbs: "~120g",
+          exerciseNeeded: "游泳 2 小時",
+          dangerLevel: 4,
+          badge: "吞咗半碗純油落肚",
+          traps: [
+            "<strong>大火過油吸油茄子</strong>：茄子海綿狀結構極易吸油，炒前必須經過「過油炸」，將極多食油吸入茄子肉內。",
+            "<strong>肥肉碎與重口醬</strong>：加入大量肥豬肉碎同鹹香豆瓣醬炒香，再打厚芡。食完極肥且容易引致嚴重水腫！"
+          ]
+        },
+        {
+          rank: 4,
+          id: "dish-4",
+          name: "鹹魚肉餅飯",
+          calories: "~1150 kcal",
+          fat: "~55g",
+          carbs: "~120g",
+          exerciseNeeded: "踩單車 2.3 小時",
+          dangerLevel: 4,
+          badge: "肥肉鎖水豬油飯",
+          traps: [
+            "<strong>極高肥肉比例</strong>：為了保持肉餅鬆軟多汁不嚡烚烚，廚房必須用高比例肥豬肉碎打製。",
+            "<strong>生粉與食油鎖水</strong>：醃製時加入生粉、糖同食油，蒸煮後產生的精華汁液全是融化豬油，配飯等於直接飲油。"
+          ]
+        },
+        {
+          rank: 3,
+          id: "dish-3",
+          name: "鮮焗豬扒飯",
+          calories: ">1300 kcal",
+          fat: "~60g",
+          carbs: "~140g",
+          exerciseNeeded: "慢跑 2.5 小時",
+          dangerLevel: 5,
+          badge: "邪惡王牌三重炸彈",
+          traps: [
+            "<strong>炸彈一：炒飯底</strong>：飯底唔會用白飯，焗之前先用大量食油將白飯炒香。",
+            "<strong>炸彈二：過油炸豬扒</strong>：厚切豬扒先落鑊大火炸熟鎖汁，吸入大量炸油。",
+            "<strong>炸彈三：高糖汁與芝士</strong>：茄汁底加入大量牛油、白糖、茄膏，面層再鋪滿高脂芝士焗至融化。"
+          ]
+        },
+        {
+          rank: 2,
+          id: "dish-2",
+          name: "咖喱牛腩飯",
+          calories: "1300 - 1400 kcal",
+          fat: "高達 70g",
+          carbs: "~130g",
+          exerciseNeeded: "踩單車 2.8 小時",
+          dangerLevel: 5,
+          badge: "70g超高油脂霸王",
+          traps: [
+            "<strong>牛腩厚脂肪</strong>：牛腩肉塊夾雜極厚脂肪層。",
+            "<strong>椰漿與花生醬咖喱汁</strong>：港式茶餐廳咖喱汁並非純咖喱粉，而是加入大量全脂椰漿、食油、花生醬同牛油熬製。",
+            "<strong>吸油薯仔</strong>：同煮嘅薯仔塊大量吸收椰漿與牛汁油脂，每啖都係熱量。"
+          ]
+        },
+        {
+          rank: 1,
+          id: "dish-1",
+          name: "枝竹火腩飯 / 啫啫滑雞煲飯",
+          calories: "1400 - 1500 kcal",
+          fat: ">75g",
+          carbs: "~150g",
+          exerciseNeeded: "瘋狂踩單車 3 小時",
+          dangerLevel: 5,
+          badge: "🏆 終極爆脂之王",
+          traps: [
+            "<strong>極肥五花腩/帶皮雞肉</strong>：「火腩」即係燒五花肉，飽和脂肪極高；滑雞則連皮帶肥膏。",
+            "<strong>高溫啫啫油與油炸枝竹</strong>：枝竹經過大火炸過，吸油力強；砂煲製作時會加入大量起鍋油與惹味濃醬，高溫將油脂鎖死喺飯粒入面！",
+            "<strong>要踩3個鐘單車</strong>：食完一碟要連續不停瘋狂踩單車 3 個小時才能徹底消耗掉！"
+          ]
+        }
+      ],
+      tips: [
+        {
+          title: "聰明選擇肉類部位",
+          icon: "fa-drumstick-bite",
+          color: "text-amber-400 bg-amber-500/20",
+          desc: "避開帶皮雞肉、牛腩、五花肉（火腩）及肉餅。選擇瘦肉款式，例如瘦叉燒、去皮白切雞或鮮牛肉。"
+        },
+        {
+          title: "主動要求「少汁」或「走汁」",
+          icon: "fa-ban-smoke",
+          color: "text-blue-400 bg-blue-500/20",
+          desc: "茶餐廳醬汁往往含有大量生粉打芡、白糖與純油（如鵝油、咖喱汁、叉燒汁）。避免用精華汁液撈飯。"
+        },
+        {
+          title: "加多一碟全走白灼菜",
+          icon: "fa-leaf",
+          color: "text-emerald-400 bg-emerald-500/20",
+          desc: "點餐時加一碟白灼菜（切記要求「走油」）。先食蔬菜增加膳食纖維同肚飽感，從而減少精製白飯攝取量。"
+        }
+      ]
+    };
+
+    // Global state
+    let currentTab = 'overview';
+
+    // Build sidebar dishes list dynamically
+    function initSidebar() {
+      const listContainer = document.getElementById('dishes-nav-list');
+      listContainer.innerHTML = '';
+
+      videoData.dishes.forEach((dish) => {
+        const btn = document.createElement('button');
+        btn.id = `nav-${dish.id}`;
+        btn.onclick = () => switchTab(dish.id);
+        btn.className = `nav-btn w-full text-left p-2.5 rounded-xl flex items-center justify-between transition-all duration-200 text-slate-300 hover:bg-slate-800 hover:text-white`;
+        
+        // Color scale according to rank danger
+        let badgeBg = dish.rank <= 3 ? 'bg-red-500/20 text-red-400 border border-red-500/30' : (dish.rank <= 6 ? 'bg-orange-500/20 text-orange-400' : 'bg-slate-800 text-slate-300');
+        
+        btn.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-md font-black text-xs flex items-center justify-center ${badgeBg}">
+              ${dish.rank}
+            </span>
+            <span class="font-medium text-sm truncate max-w-[170px]">${dish.name}</span>
+          </div>
+          <span class="text-[11px] font-bold text-slate-400 bg-slate-950 px-2 py-0.5 rounded">${dish.calories}</span>
+        `;
+        listContainer.appendChild(btn);
+      });
+    }
+
+    // Switch view content dynamically
+    function switchTab(tabId) {
+      currentTab = tabId;
+
+      // Update navbar button states
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-slate-800', 'text-white', 'border-l-4', 'border-red-500', 'font-bold');
+        btn.classList.add('text-slate-300');
+      });
+
+      const activeBtn = document.getElementById(`nav-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-slate-800', 'text-white', 'border-l-4', 'border-red-500', 'font-bold');
+      }
+
+      // Close mobile menu after clicking
+      const sidebar = document.getElementById('sidebar');
+      if (window.innerWidth < 768) {
+        sidebar.classList.add('hidden');
+        document.getElementById('menu-icon').className = 'fa-solid fa-bars text-xl';
+      }
+
+      // Render content
+      const displayArea = document.getElementById('content-display');
+      
+      if (tabId === 'overview') {
+        renderOverview(displayArea);
+      } else if (tabId === 'tips') {
+        renderTips(displayArea);
+      } else {
+        const dish = videoData.dishes.find(d => d.id === tabId);
+        if (dish) renderDishDetail(displayArea, dish);
+      }
+    }
+
+    // Render Overview Section
+    function renderOverview(container) {
+      container.innerHTML = `
+        <div class="space-y-6 animate-fadeIn">
+          <!-- Title Banner -->
+          <div class="bg-gradient-to-r from-red-950/40 via-slate-900 to-slate-900 border border-red-500/20 rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 text-red-500/5 text-9xl font-black">
+              <i class="fa-solid fa-fire-flame-curved"></i>
+            </div>
+            <div class="flex items-center gap-2 text-red-400 font-bold text-sm mb-2">
+              <i class="fa-solid fa-triangle-exclamation"></i> 熱門減肥影片拆解
+            </div>
+            <h2 class="text-2xl md:text-3xl font-black text-white leading-tight mb-3">
+              ${videoData.overview.title}
+            </h2>
+            <div class="flex flex-wrap gap-4 text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+              <span><i class="fa-regular fa-user mr-1 text-slate-300"></i> ${videoData.channel}</span>
+              <span><i class="fa-regular fa-calendar mr-1 text-slate-300"></i> ${videoData.publishDate}</span>
+            </div>
+          </div>
+
+          <!-- Core Summary Card -->
+          <div class="bg-slate-900 rounded-2xl p-6 border border-slate-800 space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-bullseye text-red-500"></i> 內容核心摘要
+            </h3>
+            <p class="text-slate-300 leading-relaxed text-sm md:text-base">
+              ${videoData.overview.summary}
+            </p>
+          </div>
+
+          <!-- Quick Dish Grid Overview -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-list-ol text-orange-500"></i> 排行榜速覽
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${videoData.dishes.map(d => `
+                <div onclick="switchTab('${d.id}')" class="cursor-pointer bg-slate-900/80 hover:bg-slate-800 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between transition-all group">
+                  <div class="flex items-center gap-3">
+                    <span class="w-7 h-7 rounded-lg font-black text-xs flex items-center justify-center ${d.rank <= 3 ? 'bg-red-500 text-white' : 'bg-slate-800 text-slate-400'}">
+                      #${d.rank}
+                    </span>
+                    <div>
+                      <div class="font-bold text-sm text-slate-200 group-hover:text-red-400 transition-colors">${d.name}</div>
+                      <div class="text-xs text-slate-500">${d.badge}</div>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-xs font-bold text-slate-300">${d.calories}</div>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 group-hover:text-slate-400"></i>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Dish Detail Section
+    function renderDishDetail(container, dish) {
+      // Danger Stars SVG Generator
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        if (i <= dish.dangerLevel) {
+          stars += `<i class="fa-solid fa-star text-red-500"></i>`;
+        } else {
+          stars += `<i class="fa-regular fa-star text-slate-600"></i>`;
+        }
+      }
+
+      container.innerHTML = `
+        <div class="space-y-6 animate-fadeIn">
+          <!-- Dish Title Banner -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+              <span class="px-3 py-1 rounded-full text-xs font-black ${dish.rank <= 3 ? 'bg-red-500 text-white' : 'bg-orange-500/20 text-orange-400 border border-orange-500/30'}">
+                爆脂排行榜 第 ${dish.rank} 位
+              </span>
+              <div class="flex items-center gap-1 text-sm">
+                <span class="text-xs text-slate-400 mr-1">爆脂指數：</span>
+                ${stars}
+              </div>
+            </div>
+            
+            <h2 class="text-2xl md:text-3xl font-black text-white mb-2">
+              ${dish.name}
+            </h2>
+            <span class="inline-block bg-slate-800 text-slate-300 text-xs px-3 py-1 rounded-lg border border-slate-700">
+              🏷️ ${dish.badge}
+            </span>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
+              <div class="text-xs text-slate-400 mb-1">估計熱量</div>
+              <div class="text-lg md:text-xl font-black text-red-400">${dish.calories}</div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
+              <div class="text-xs text-slate-400 mb-1">脂肪含量</div>
+              <div class="text-lg md:text-xl font-black text-orange-400">${dish.fat}</div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
+              <div class="text-xs text-slate-400 mb-1">碳水化合物</div>
+              <div class="text-lg md:text-xl font-black text-amber-400">${dish.carbs}</div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
+              <div class="text-xs text-slate-400 mb-1">消耗所需運動</div>
+              <div class="text-xs md:text-sm font-bold text-emerald-400 mt-1">${dish.exerciseNeeded}</div>
+            </div>
+          </div>
+
+          <!-- Fat Traps Breakdown -->
+          <div class="bg-slate-900 rounded-2xl p-6 border border-slate-800 space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+              <i class="fa-solid fa-skull-crossbones text-red-500"></i> 肥胖陷阱深度拆解
+            </h3>
+            <ul class="space-y-3">
+              ${dish.traps.map(trap => `
+                <li class="flex items-start gap-3 text-sm md:text-base text-slate-300">
+                  <div class="w-5 h-5 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                  </div>
+                  <div class="leading-relaxed">${trap}</div>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <!-- Bottom Navigation buttons -->
+          <div class="flex justify-between items-center pt-4">
+            ${dish.rank < 10 ? `
+              <button onclick="switchTab('dish-${dish.rank + 1}')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs md:text-sm font-bold rounded-xl border border-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> 上一位 (#${dish.rank + 1})
+              </button>
+            ` : '<div></div>'}
+
+            ${dish.rank > 1 ? `
+              <button onclick="switchTab('dish-${dish.rank - 1}')" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white text-xs md:text-sm font-bold rounded-xl flex items-center gap-2">
+                下一位 (#${dish.rank - 1}) <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            ` : '<div></div>'}
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Healthy Tips Section
+    function renderTips(container) {
+      container.innerHTML = `
+        <div class="space-y-6 animate-fadeIn">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+            <h2 class="text-2xl font-black text-white flex items-center gap-3">
+              <i class="fa-solid fa-heart-pulse text-emerald-400"></i> 茶餐廳減肥自救三大貼士
+            </h2>
+            <p class="text-xs md:text-sm text-slate-400 mt-1">健身教練 Fred 建議：無須完全遠離茶餐廳，只需掌握以下技巧即可大大降低熱量負擔！</p>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4">
+            ${videoData.tips.map((tip, idx) => `
+              <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl ${tip.color} flex items-center justify-center flex-shrink-0 text-xl">
+                  <i class="fa-solid ${tip.icon}"></i>
+                </div>
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-500">RULE 0${idx + 1}</span>
+                    <h3 class="font-bold text-lg text-white">${tip.title}</h3>
+                  </div>
+                  <p class="text-sm text-slate-300 leading-relaxed">${tip.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="bg-gradient-to-br from-emerald-950/30 to-slate-900 border border-emerald-500/20 rounded-2xl p-6 text-center space-y-3">
+            <i class="fa-solid fa-award text-3xl text-emerald-400"></i>
+            <h3 class="text-lg font-bold text-white">總結迷思拆解</h3>
+            <p class="text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
+              不要盲目相信「蒸飯」或「有蔬菜配搭」就等於低卡路里。只要經過廚房打厚芡、大火過油炸、使用肥肉部位或高糖精華汁撈飯，實際熱量隨時比直接食炸雞髀更驚人！
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // Mobile Navigation Toggle
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      const sidebar = document.getElementById('sidebar');
+      const menuIcon = document.getElementById('menu-icon');
+      
+      if (sidebar.classList.contains('hidden')) {
+        sidebar.classList.remove('hidden');
+        menuIcon.className = 'fa-solid fa-xmark text-xl';
+      } else {
+        sidebar.classList.add('hidden');
+        menuIcon.className = 'fa-solid fa-bars text-xl';
+      }
+    });
+
+    // Initialize application on window load
+    window.onload = function() {
+      initSidebar();
+      switchTab('overview');
+    };
+  </script>
+</body>
+</html>
