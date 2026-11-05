@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026 日本退稅新制｜廣東話深度拆解</title>
+<style>
+:root{
+  --bg:#0b0f14;--panel:#121923;--panel2:#182230;--text:#e9eef5;--muted:#9ba8b7;
+  --accent:#66b3ff;--accent2:#8ee3c7;--border:#263446;--warn:#ffd166;--danger:#ff8b8b;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans CJK TC","Noto Sans TC",system-ui,sans-serif;line-height:1.75}
+a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:rgba(11,15,20,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.top{max-width:1400px;margin:auto;padding:18px 28px;display:flex;gap:18px;align-items:center;justify-content:space-between}
+.brand{font-weight:800;font-size:18px}.brand span{color:var(--accent)}
+.search{width:min(360px,42vw);background:#0d141d;border:1px solid var(--border);border-radius:999px;padding:9px 14px;color:var(--text);outline:none}
+.layout{display:grid;grid-template-columns:300px 1fr;max-width:1500px;margin:auto}
+nav{position:sticky;top:76px;height:calc(100vh - 76px);overflow:auto;padding:26px 20px;border-right:1px solid var(--border)}
+nav h3{font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin:14px 8px}
+nav a{display:block;padding:8px 10px;border-radius:8px;color:#b9c5d3;font-size:14px}
+nav a:hover{background:var(--panel);color:var(--text);text-decoration:none}
+main{padding:44px 54px 80px;max-width:1100px}
+.hero{background:linear-gradient(135deg,#111c2a,#10151d);border:1px solid var(--border);border-radius:18px;padding:38px;margin-bottom:28px}
+.kicker{color:var(--accent2);font-size:13px;font-weight:800;letter-spacing:.1em}
+h1{font-size:42px;line-height:1.2;margin:8px 0 14px}
+h2{font-size:28px;margin:46px 0 16px;border-left:4px solid var(--accent);padding-left:14px}
+h3{font-size:20px;margin-top:28px;color:#dce8f4}
+p{color:#d4dce6}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:20px 0}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px}
+.card strong{display:block;color:var(--accent);font-size:15px;margin-bottom:5px}
+.callout{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:18px;margin:18px 0}
+.callout.warn{border-color:#5c4c27}.callout.danger{border-color:#5c3030}
+.big{font-size:23px;font-weight:800;color:var(--accent2)}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--panel);border-radius:12px;overflow:hidden}
+th,td{border-bottom:1px solid var(--border);padding:11px 13px;text-align:left;vertical-align:top}
+th{background:#172333;color:#dce8f4} td{color:#cfd8e2}
+code{background:#0d141d;border:1px solid var(--border);padding:2px 6px;border-radius:5px}
+.checklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.check{background:var(--panel);border:1px solid var(--border);padding:13px;border-radius:10px}
+.check::before{content:"✓";color:var(--accent2);font-weight:900;margin-right:8px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:22px 0}
+.step{background:var(--panel);border:1px solid var(--border);padding:10px 14px;border-radius:9px}
+.arrow{color:var(--accent);font-weight:900}
+footer{border-top:1px solid var(--border);margin-top:50px;padding-top:25px;color:var(--muted);font-size:13px}
+.progress{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:50;width:0}
+@media(max-width:900px){
+  .layout{display:block}nav{display:none}main{padding:28px 18px}h1{font-size:32px}.top{padding:14px 18px}.search{width:45vw}
+}
+@media print{nav,header,.progress{display:none!important}main{max-width:none;color:#111;background:#fff}body{background:#fff;color:#111}.card,.callout,table{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header>
+  <div class="top">
+    <div class="brand">🇯🇵 <span>2026 日本退稅新制</span></div>
+    <input id="search" class="search" placeholder="搜尋：90日、消耗品、機場、退款…">
+  </div>
+</header>
+
+<div class="layout">
+<nav id="nav">
+<h3>快速導航</h3>
+<a href="#overview">總覽</a>
+<a href="#why">為何改革</a>
+<a href="#change">新舊制度</a>
+<a href="#tax">退稅計算</a>
+<a href="#goods">商品規則</a>
+<a href="#flow">完整流程</a>
+<a href="#airport">機場／海關</a>
+<a href="#risk">常見踩雷</a>
+<a href="#canada">加拿大／香港旅客</a>
+<a href="#checklist">Checklist</a>
+<a href="#conclusion">最終結論</a>
+<h3>實用</h3>
+<a href="#sources">官方資料</a>
+<button id="topBtn" style="margin:12px 8px;padding:8px 12px;border:1px solid #263446;background:#121923;color:#e9eef5;border-radius:8px;cursor:pointer">↑ 返回頂部</button>
+</nav>
+
+<main id="content">
+<section class="hero" id="overview">
+<div class="kicker">CANTONESE TRAVEL GUIDE · 2026</div>
+<h1>2026 日本退稅新制</h1>
+<p class="big">由「即時免稅」變成「先付稅 → 出境確認 → 退款」</p>
+<p>呢份指南將日本2026年11月1日起實施嘅新退稅／Refund Method，用廣東話拆解成一套可以實際旅行使用嘅流程。</p>
+<div class="grid">
+<div class="card"><strong>📅 生效日期</strong>2026年11月1日起購買適用新制</div>
+<div class="card"><strong>💴 核心改變</strong>購物時先支付含稅價格</div>
+<div class="card"><strong>✈️ 真正完成</strong>出境時經海關確認商品離境</div>
+<div class="card"><strong>💳 最後一步</strong>由免稅店／退款業者安排退款</div>
+</div>
+</section>
+
+<section id="why">
+<h2>1｜點解日本要改制度？</h2>
+<p>舊制度本質上係「先免稅，再假設旅客會將貨品帶出日本」。新制度將邏輯反轉：先收取含稅價格，等出境時確認商品確實出口，再退款。</p>
+<div class="callout"><span class="big">Trust → Verification</span><br>由「相信旅客會帶走」轉向「出境時驗證真的帶走」。</div>
+<div class="grid">
+<div class="card"><strong>減少濫用</strong>降低免稅商品喺日本境內被使用、消耗或轉售嘅風險。</div>
+<div class="card"><strong>強化出口驗證</strong>免稅資格同實際離境掛鈎。</div>
+<div class="card"><strong>數碼化</strong>Passport、購買紀錄、退款及海關確認更加容易連結。</div>
+</div>
+</section>
+
+<section id="change">
+<h2>2｜2026/11/1：新舊制度分界</h2>
+<table>
+<tr><th>購買日期</th><th>適用制度</th></tr>
+<tr><td>2026/10/31或之前</td><td>舊制度：購買時即時免稅</td></tr>
+<tr><td><strong>2026/11/1或之後</strong></td><td><strong>新制度：先付含稅價，出境確認後退款</strong></td></tr>
+</table>
+<div class="callout warn"><strong>跨10月底／11月初旅程：</strong>最好將10月31日前同11月1日後嘅收據分開保存，唔好混埋處理。</div>
+</section>
+
+<section id="tax">
+<h2>3｜先畀稅：究竟點計？</h2>
+<p>以10%商品為例：</p>
+<div class="flow">
+<div class="step">未稅 ¥100,000</div><div class="arrow">＋</div>
+<div class="step">消費稅 ¥10,000</div><div class="arrow">＝</div>
+<div class="step"><strong>含稅 ¥110,000</strong></div>
+</div>
+<p>新制下購買時先支付 <strong>¥110,000</strong>，完成出境海關確認後，再退款相當於消費稅嘅金額，即 <strong>¥10,000</strong>。</p>
+<div class="callout"><strong>注意：</strong>10%係稅率，唔係含稅售價嘅10%。¥110,000含稅價內包含嘅10%消費稅係¥10,000。</div>
+<table>
+<tr><th>含稅價格</th><th>10%商品理論稅額</th></tr>
+<tr><td>¥11,000</td><td>¥1,000</td></tr>
+<tr><td>¥55,000</td><td>¥5,000</td></tr>
+<tr><td>¥110,000</td><td>¥10,000</td></tr>
+<tr><td>¥550,000</td><td>¥50,000</td></tr>
+<tr><td>¥1,100,000</td><td>¥100,000</td></tr>
+</table>
+</section>
+
+<section id="goods">
+<h2>4｜商品規則：新制有咩簡化？</h2>
+<div class="grid">
+<div class="card"><strong>取消分類</strong>取消舊制「一般物品／消耗品」分類。</div>
+<div class="card"><strong>取消¥500,000上限</strong>消耗品原有同店同日¥500,000未稅上限取消。</div>
+<div class="card"><strong>取消特殊密封袋</strong>消耗品特殊免稅袋要求取消。</div>
+<div class="card"><strong>但仍須帶出境</strong>取消包裝要求 ≠ 可以喺日本使用消耗品。</div>
+</div>
+<h3>基本門檻</h3>
+<p>一般基本門檻係同一店、同一日、未稅¥5,000以上。取消¥500,000上限亦唔代表可以無限買：商品仍須能夠由旅客實際帶離日本。</p>
+<h3>90日</h3>
+<p>新制要求購買日起90日內完成出境確認。大量購物時，應由購物當日開始保存收據及退款紀錄。</p>
+</section>
+
+<section id="flow">
+<h2>5｜新制度完整流程</h2>
+<div class="flow">
+<div class="step">① 購物</div><div class="arrow">→</div>
+<div class="step">② Passport／免稅登記</div><div class="arrow">→</div>
+<div class="step">③ 先付含稅價</div><div class="arrow">→</div>
+<div class="step">④ 登記退款</div><div class="arrow">→</div>
+<div class="step">⑤ 出境海關確認</div><div class="arrow">→</div>
+<div class="step">⑥ Refund</div>
+</div>
+<h3>購物時問清楚3件事</h3>
+<div class="grid">
+<div class="card"><strong>Refund amount?</strong>最終會退幾多？</div>
+<div class="card"><strong>Refund fee?</strong>有冇第三方手續費？</div>
+<div class="card"><strong>Refund method?</strong>信用卡、銀行、APP定其他方式？</div>
+</div>
+</section>
+
+<section id="airport">
+<h2>6｜機場：新制度最關鍵的一站</h2>
+<p class="big">機場唔係單純「攞錢」，而係「證明貨品已經出口」。</p>
+<div class="grid">
+<div class="card"><strong>① 出境前</strong>保持Passport及免稅商品資料可用。</div>
+<div class="card"><strong>② Scan</strong>按指定免稅／海關程序完成護照確認。</div>
+<div class="card"><strong>③ 查驗</strong>如系統要求，必須向海關出示免稅商品。</div>
+<div class="card"><strong>④ 完成</strong>完成確認後再處理託運／行李安排。</div>
+</div>
+<div class="callout danger"><strong>⚠️ 千祈唔好先寄行李！</strong><br>如果商品已經入咗行李輸送系統，而海關要求查驗，你可能無法即時出示商品。</div>
+</section>
+
+<section id="risk">
+<h2>7｜最容易踩雷的地方</h2>
+<h3>❌ 取消密封袋 ≠ 可以使用消耗品</h3>
+<p>食品、飲料、化妝品、藥妝等仍應以「完整帶出日本」為原則。旅行途中會食／用嘅商品，最好唔申請免稅。</p>
+<h3>❌ 同一張收據其中一件出問題</h3>
+<p>同一購買紀錄內，如果有商品遺失、使用或無法向海關出示，可能影響整個購買紀錄嘅免稅資格。可考慮將「日本使用」同「一定帶走」嘅商品分開結帳。</p>
+<h3>❌ 自己EMS寄返海外</h3>
+<p>唔好將「自己買完再寄返加拿大／香港」直接當成免稅方法。如果商店提供海外直送，要問清楚係由商店如何按規定處理。</p>
+<h3>💎 高價商品</h3>
+<p>單價¥1,000,000以上商品涉及更詳細資訊。手錶、珠寶、精品、高價電子產品應保留收據、型號、序號、保證書及包裝，並確保出境時可供查驗。</p>
+</section>
+
+<section id="canada">
+<h2>8｜加拿大／香港旅客實戰策略</h2>
+<p>如果行程係 Toronto → Japan → Canada，核心問題由「點樣即場免稅」變成「點樣確保每件免稅商品可以順利完成出境確認」。</p>
+<div class="grid">
+<div class="card"><strong>現金流</strong>大量購物要預留先支付含稅價的資金；退款係之後先收到。</div>
+<div class="card"><strong>精品／電器／手錶</strong>放喺容易取出、可供查驗的位置。</div>
+<div class="card"><strong>藥妝／食品</strong>分清楚「日本會使用」與「一定帶返海外」。</div>
+<div class="card"><strong>收據管理</strong>手機記錄：日期、店舖、金額、Refund Provider、退款方式。</div>
+</div>
+<h3>三層行李法</h3>
+<table>
+<tr><th>分類</th><th>例子</th><th>策略</th></tr>
+<tr><td>A｜一定帶出境</td><td>精品、手錶、相機、電器</td><td>易取位置，方便查驗</td></tr>
+<tr><td>B｜可能需要查驗</td><td>高價商品、大量藥妝</td><td>唔好塞得太深</td></tr>
+<tr><td>C｜日本會使用</td><td>即食食品、即用護膚品</td><td>最好唔申請免稅</td></tr>
+</table>
+</section>
+
+<section id="checklist">
+<h2>9｜出發前至離境 Checklist</h2>
+<div class="checklist">
+<div class="check">Passport</div><div class="check">Visit Japan Web</div><div class="check">確認免稅資格</div>
+<div class="check">信用卡／現金流</div><div class="check">同店同日未稅¥5,000門檻</div><div class="check">確認Refund Provider</div>
+<div class="check">問清Refund Fee</div><div class="check">登記退款方式</div><div class="check">保存收據</div>
+<div class="check">消耗品唔好使用</div><div class="check">商品唔好遺失</div><div class="check">高價商品保留文件</div>
+<div class="check">出境前準備商品查驗</div><div class="check">先做海關／免稅確認</div><div class="check">再託運行李</div>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>10｜最終結論：記住5句</h2>
+<div class="card">
+<p class="big">① 11月1日起：唔係即場免稅，而係先畀稅。</p>
+<p class="big">② 真正退款：等出境海關確認。</p>
+<p class="big">③ 免稅品一定要帶出日本；消耗品唔好喺日本使用。</p>
+<p class="big">④ 機場唔好先託運，再搞免稅程序。</p>
+<p class="big">⑤ 記住Refund Provider、退款方式同手續費。</p>
+</div>
+<div class="callout">
+<strong>一句話總結：</strong><br>
+買完只係開始；帶住免稅商品離開日本、完成海關確認，先係新制度真正完成。
+</div>
+</section>
+
+<section id="sources">
+<h2>11｜官方資料</h2>
+<p>以下官方來源應作為最終規則及程序確認依據；旅遊網站適合做實戰整理，但法律／行政細節應以日本官方最新公告為準。</p>
+<ul>
+<li><a href="https://www.customs.go.jp/kaigairyoko/taxrefund.htm" target="_blank">Japan Customs｜Tax Refund</a></li>
+<li><a href="https://www.nta.go.jp/publication/pamph/shohi/menzei/202506/pdf/0025006-106.pdf" target="_blank">Japan National Tax Agency｜免稅制度資料</a></li>
+<li><a href="https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00021.html" target="_blank">Japan Tourism Agency｜Tax-Free制度</a></li>
+<li><a href="https://www.letsgojp.com/archives/782" target="_blank">樂吃購！日本｜2026日本退稅新制整理</a></li>
+</ul>
+<footer>
+本頁為旅行資訊整理，唔構成法律、稅務或海關專業意見。出發前請再次查看日本國稅廳、日本海關及觀光廳最新規定。
+</footer>
+</section>
+</main>
+</div>
+
+<script>
+const progress=document.getElementById('progress');
+window.addEventListener('scroll',()=>{
+ const h=document.documentElement.scrollHeight-window.innerHeight;
+ progress.style.width=(h>0?(scrollY/h*100):0)+'%';
+});
+document.getElementById('topBtn').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+const search=document.getElementById('search');
+const sections=[...document.querySelectorAll('main section')];
+search.addEventListener('input',()=>{
+ const q=search.value.trim().toLowerCase();
+ sections.forEach(s=>{
+   s.style.display=(!q || s.innerText.toLowerCase().includes(q))?'':'none';
+ });
+});
+</script>
+</body>
+</html>
