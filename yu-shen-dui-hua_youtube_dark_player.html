@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>與神對話｜YouTube 導航播放器</title>
+<style>
+:root{--bg:#0b0f14;--panel:#121923;--panel2:#182231;--text:#e8eef7;--muted:#91a0b5;--line:#263344;--accent:#7dd3fc;--accent2:#a78bfa}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",sans-serif}
+body{min-height:100vh}.app{display:grid;grid-template-columns:360px 1fr;min-height:100vh}
+aside{border-right:1px solid var(--line);background:linear-gradient(180deg,#0d131c,#0b1017);padding:20px;overflow:auto;position:sticky;top:0;height:100vh}
+main{padding:24px;min-width:0}.brand h1{font-size:20px;margin:0 0 6px}.brand p{font-size:13px;color:var(--muted);margin:0 0 18px}
+.search{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#0d141d;color:var(--text);outline:none}.search:focus{border-color:var(--accent)}
+.controls{display:flex;gap:8px;margin:10px 0 14px}.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 10px;border-radius:8px;cursor:pointer}.btn:hover{border-color:#4b617c}
+.list{display:flex;flex-direction:column;gap:5px}.item{display:block;width:100%;text-align:left;border:1px solid transparent;background:transparent;color:var(--text);padding:9px 10px;border-radius:9px;cursor:pointer}.item:hover{background:var(--panel)}.item.active{background:var(--panel2);border-color:#35475e}.ep{font-size:11px;color:var(--accent);font-weight:700;margin-bottom:3px}.title{font-size:12px;line-height:1.45;color:#cdd7e5}
+.count{font-size:11px;color:var(--muted);margin:0 0 8px}
+.hero{max-width:1100px;margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}.topbar h2{font-size:18px;margin:0}.meta{font-size:12px;color:var(--muted)}
+.player{background:#000;border-radius:14px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.35)}.ratio{aspect-ratio:16/9}.ratio iframe{width:100%;height:100%;border:0}
+.info{padding:18px 2px}.current-title{font-size:20px;line-height:1.4;margin:0 0 8px}.tags{display:flex;gap:8px;flex-wrap:wrap}.tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 9px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:16px}.nav .btn{flex:1}.nav .btn:last-child{text-align:right}
+.notice{margin-top:18px;padding:12px 14px;border:1px solid #29384c;border-radius:10px;color:var(--muted);font-size:12px;line-height:1.6}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{position:relative;height:auto;max-height:48vh;border-right:0;border-bottom:1px solid var(--line)}main{padding:15px}.topbar{align-items:flex-start;flex-direction:column}.current-title{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand">
+    <h1>與神對話｜YouTube 導航</h1>
+    <p>廣東話有聲書・I / II / III</p>
+  </div>
+  <input id="search" class="search" placeholder="搜尋 Episode、標題、關鍵字…">
+  <div class="controls">
+    <button class="btn" onclick="filterBook('all')">全部</button>
+    <button class="btn" onclick="filterBook('I')">Book I</button>
+    <button class="btn" onclick="filterBook('II')">Book II</button>
+    <button class="btn" onclick="filterBook('III')">Book III</button>
+  </div>
+  <div id="count" class="count"></div>
+  <div id="list" class="list"></div>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="topbar">
+    <div>
+      <h2>內置 YouTube 播放器</h2>
+      <div id="meta" class="meta"></div>
+    </div>
+    <button class="btn" onclick="openYoutube()">↗ YouTube 原頁</button>
+  </div>
+
+  <section class="player">
+    <div class="ratio">
+      <iframe id="player" src="" title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <div class="info">
+    <h1 id="currentTitle" class="current-title"></h1>
+    <div class="tags"><span id="bookTag" class="tag"></span><span class="tag">YouTube</span><span class="tag">廣東話</span></div>
+    <div class="nav">
+      <button class="btn" id="prev">← 上一集</button>
+      <button class="btn" id="next">下一集 →</button>
+    </div>
+    <div class="notice">
+      所有影片直接使用 YouTube embed 播放。部分影片如因版權、嵌入限制或作者設定而不能內嵌播放，可按右上角「YouTube 原頁」開啟。
+    </div>
+  </div>
+</div>
+</main>
+</div>
+
+<script>
+const videos = [{"id": "jorrey7mKNw", "title": "與神對話全集丨廣東話"}, {"id": "AGfNmR2BmqY", "title": "Ep174.與神對話I丨001序言-點解會有呢本書丨一生都等待的書丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨陳老C工作室丨New Age理論根源丨廣東話有聲書"}, {"id": "A7KpkUVo1aI", "title": "Ep175.與神對話I丨002神會用何種方式與人交流？丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "jMOhJy5mcZI", "title": "Ep176.與神對話I丨003顯化的法則丨神會怎樣顯現出來？丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "neFhaG7g9as", "title": "Ep177.與神對話I丨004無條件的愛丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "s2E44g9Z6jQ", "title": "Ep178.與神對話I丨005我是誰？丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "OBmwcYNpzbc", "title": "Ep179.與神對話I丨006為何世間充滿苦難丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨吸引力法則丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "UwKh6ktxZ-M", "title": "Ep180.與神對話I丨007苦的根源丨是非與對錯丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨吸引力法則丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "psjSD3c0r8g", "title": "Ep181.與神對話I丨008何謂地獄丨是非與對錯丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "QVcAPLv322Q", "title": "Ep182.與神對話I丨009靈魂的選擇丨是非與對錯丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "ynHigcRI9xA", "title": "Ep183.與神對話I丨010意識決定實相丨苦難的根源丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨吸引力法則丨陳老C工作室丨廣東話有聲書"}, {"id": "0IXn4s_Yq5w", "title": "Ep184.與神對話I丨011吸引力法則丨思維能創造物質丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "Mkkee56C_k4", "title": "Ep185.與神對話I丨012丨成為最自在的自己丨神的獨白丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "1szr1UdmkPg", "title": "Ep186.與神對話I丨013堅持自己的價值觀丨神的獨白丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "3Y0Rkmxuqlw", "title": "Ep187.與神對話I丨014如何平步青雲丨如何有錢丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "l5o4toi2i3A", "title": "Ep188.與神對話I丨015生與死的對話丨如何看待死亡丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "le3Vlwjh9-A", "title": "Ep189.與神對話I丨016用祝福替代反對丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "NuS7CwBXFmc", "title": "Ep190.與神對話I丨017先感恩後創造丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "2uZJekWOabc", "title": "Ep191.與神對話I丨018顯化豐盛的方法丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "_jDrRvpS50s", "title": "Ep192.與神對話I丨019十誡並不存在丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "PkzKiSJHO4Q", "title": "Ep193.與神對話I丨020生活本是修行丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "QoAN5bL7qTw", "title": "Ep194.與神對話I丨021修行並不意味著受苦丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "Rh47wkhpbjg", "title": "Ep195.與神對話I丨022生活讓我無法喘氣丨父母之道丨我冇時間靈修丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨吸引力法則丨New Age理論丨陳老C工作室丨廣東話有聲書"}, {"id": "TGVNMSAKgKg", "title": "Ep196.與神對話I丨023為何我的不要想要的東西丨你為何要反對這本書丨我冇時間靈修丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨陳老C工作室丨廣東話有聲書"}, {"id": "VS4AzSHkJls", "title": "Ep197.與神對話I丨024以自我為中心的人才懂得愛丨我冇時間靈修丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨陳老C工作室丨廣東話有聲書"}, {"id": "r2lcy62rowI", "title": "Ep198.與神對話I丨025你無須委曲求全丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "xJUoGKRM8EY", "title": "Ep199.與神對話I丨026所有問題都是機會丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "Z6egwzoescg", "title": "Ep200.與神對話I丨027戰爭與殺戮丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "ty9_8ejJuA4", "title": "Ep201.與神對話I丨028如何發達 上丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "zAcroznlMgU", "title": "Ep202.與神對話I丨029如何發達 下丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "vlGLw2-9578", "title": "Ep203.與神對話I丨030用自己喜歡的工作養活自己丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "H5smRBFZNWU", "title": "Ep205.與神對話I丨031你至少要追隨興奮丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "QmWAggSZCBI", "title": "Ep206.《與神對話》032神的終極秘密丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "2-VHdngy6YE", "title": "Ep207.與神對話1丨8小時合集丨一切萬有丨太極丨太虛丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "eZCl5HZ43sM", "title": "Ep208.與神對話II丨001震撼心靈的書丨政治丨戰爭丨教育丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "0B3eVv2csWE", "title": "Ep209.與神對話II丨002感謝你守約而來丨政治丨戰爭丨教育丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "tQxh29UheTg", "title": "Ep210.與神對話II丨003請不斷重複選擇直至你願望成真丨政治丨戰爭丨教育丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨廣東話有聲書"}, {"id": "2D6wqXQbDzs", "title": "Ep211.與神對話II丨004生活是創造的過程丨政治丨戰爭丨教育丨Neale Donald Walsch丨人與人之間的關係丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "IVwFnQaXng4", "title": "Ep212.與神對話II丨005使用任何對你有用的方式創造當下的身份丨政治丨戰爭丨教育丨Neale Donald Walsch丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "PQCKbpHY4WA", "title": "Ep213.與神對話II丨006希特拉上了天堂？丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨吸引力法則丨New Age理論根源丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "A51zO6Olb0g", "title": "Ep214.與神對話II丨007神學的荒謬性丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨陳老C工作室丨粵語有聲書丨廣東話有聲書丨吸引力法則丨New Age理論根源"}, {"id": "utJU1NFm_NU", "title": "Ep215.與神對話II丨008假如集體意識正帶你走向不歸路丨請成為新的集體意識的源頭丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "L54_FpB-Dr8", "title": "Ep216.與神對話II丨009時間簡史丨靈魂之旅丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "KVv4iWRZ-50", "title": "Ep217.與神對話II丨010何謂空間丨靈魂之旅丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "Zs69JH7arAQ", "title": "Ep218.與神對話II丨011取悅自己丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨陳老C工作室丨廣東話有聲書"}, {"id": "qJW_4ZEGvC4", "title": "Ep219.與神對話II丨012以太能量場丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨人與人之間的關係丨自己和自己的關係丨陳老C工作室丨廣東話有聲書"}, {"id": "noT9iJgXKbI", "title": "Ep220.與神對話II丨013永遠將自己放在第一位但不要傷害別人丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "PphvxxMV5UU", "title": "Ep221.與神對話II丨014對孩子最原始的性教育丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "RA-NMv1EnLQ", "title": "Ep222.與神對話II丨015對孩子批判式思考的教育丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "n8F9M8btTVw", "title": "Ep223.與神對話II丨016尋找自己的答案丨覺悟丨誠實丨責任丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨Neale Donald Walsch丨陳老C工作室丨廣東話有聲書"}, {"id": "_UmEzQduwho", "title": "Ep224.與神對話II丨017共情是一種可貴的特質丨冷漠讓我們彼此分離丨世界政府丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "uEt5eUIb9_c", "title": "Ep225.與神對話II丨018內在的和平丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "mkMvKBmpEV8", "title": "Ep226.與神對話II丨019問問自己想成為點樣嘅人丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨陳老C工作室丨廣東話有聲書"}, {"id": "Oqrr8TadQFo", "title": "Ep227.與神對話II丨020伸出援手但請不要削弱對方的能力丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨陳老C工作室丨廣東話有聲書"}, {"id": "TfcwPR3NTj8", "title": "Ep228.與神對話II丨021讓你的心變得透明丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨陳老C工作室丨廣東話有聲書"}, {"id": "QZVxZj4wvzg", "title": "Ep229.與神對話II丨022讓創造內在和外在的理想身份丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨陳老C工作室丨廣東話有聲書"}, {"id": "8N0qH0faueQ", "title": "Ep230.與神對話II丨023最高尚的使命丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨陳老C工作室丨廣東話有聲書"}, {"id": "fXRn7gTwybY", "title": "Ep231.與神對話II丨024你們是原始人丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "NI9YwIKP3ww", "title": "Ep232.與神對話II丨025回歸靈性 忘記宗教丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨教育丨陳老C丨粵語丨廣東話有聲書"}, {"id": "Tf50EO-tNC0", "title": "Ep233.與神對話2丨9小時合集丨地緣政治丨性丨世界政府丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨華爾道夫學校丨性愛丨自慰丨時間並不存在丨對與錯丨政治丨戰爭丨陳老C工作室丨廣東話有聲書"}, {"id": "g290JwY--yE", "title": "Ep248.與神對話III丨001愧疚和恐懼是人類僅有的敵人丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "6Z36GZemF48", "title": "Ep249.與神對話III丨002先豐盛後豐盛 先快樂後快樂丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "xlWDbj1ig_Q", "title": "Ep250.與神對話III丨003善用人類的五種自然情感丨悲傷丨憤怒丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "uNxb4iPQV9w", "title": "Ep251.與神對話III丨004請勿將錯誤傳遞給後代丨你需要一個智慧老人丨悲傷丨憤怒丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨陳老C工作室丨廣東話有聲書"}, {"id": "KVCygtMNMPM", "title": "Ep252.與神對話III丨005神話故事是一次篡權丨悲傷丨憤怒丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "IIZ4lymAj9g", "title": "Ep253.與神對話III丨006宇宙之輪丨神人合一丨褻瀆與神聖相容丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "mNOXvtdXAUs", "title": "Ep255.與神對話III丨007一切都只是視覺的問題丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "vZhnyW2ld7g", "title": "Ep258.與神對話III丨008死後世界丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "C4AUsWaH-KM", "title": "Ep259.與神對話III丨009若你尋求覺悟你就無法覺悟丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "acKbtU5_0aY", "title": "Ep260.與神對話III丨010涅槃與靈魂出體丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "15Fqiu8hSNY", "title": "Ep283.《與神對話III》011丨末日預言 通靈能力丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實"}, {"id": "cBP8P0tpqYo", "title": "Ep293.與神對話III丨012靈媒可信嗎？死去的親人會回來嗎？丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨陳老C工作室丨廣東話有聲書"}, {"id": "vGWBV2oGFmk", "title": "Ep294.與神對話III丨013轉世真的存在嗎？動物有靈魂嗎？丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨陳老C工作室丨廣東話有聲書"}, {"id": "CbChm_WwUfE", "title": "Ep295.與神對話III丨014但凡虛妄 均無痛苦丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "HJFLEynmaxc", "title": "Ep296.與神對話III丨015脈輪與生命能量丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "xllabeukRfQ", "title": "Ep297.與神對話III丨016睡眠與靈魂出體丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "pZX7GMeUhDA", "title": "Ep298.與神對話III丨017我們的靈魂在哪個身體部位？丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨接受現實丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "jQ51vfgy3kY", "title": "Ep299.與神對話III丨018靈魂之間並無邊界丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "tXUqNQS26bE", "title": "Ep300.與神對話III丨019否定自己 即否定神丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "iHKhmjRG48c", "title": "Ep301.與神對話III丨020老靈魂 靈魂的數目丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "VmA61lR118M", "title": "Ep302.與神對話III丨021靈魂伴侶 前世丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "0dRCji9edd0", "title": "Ep303.與神對話III丨022愛是對自由持續的選擇 並非持續不斷的義務丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨陳老C工作室丨廣東話有聲書"}, {"id": "_j9gRzYInF4", "title": "Ep304.與神對話III丨023如若神並無好惡 那宗教就是謊言丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "3ow0vcmlGtQ", "title": "Ep305.與神對話III丨024拋棄性本惡和適者生存的理論丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "gN6liWIVb7I", "title": "Ep306.與神對話III丨025愛的宣言丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "MddV1Id01Ms", "title": "Ep307.與神對話III丨026墮胎有罪嗎？丨生與死丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "Ey-TFmYLpTs", "title": "Ep308.與神對話III丨027通往神的三個步驟丨接受宣佈展現丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "akz-tbGWuPs", "title": "Ep309.與神對話III丨028地外文明丨接受宣佈展現丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "i-WdU8Rzznc", "title": "Ep310.與神對話III丨029高靈丨接受宣佈展現丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "WO6xlAVmuGk", "title": "Ep311.與神對話III丨030心智圈丨接受宣佈展現丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨接受現實丨陳老C工作室丨廣東話有聲書"}, {"id": "JLpOEJVu1gI", "title": "Ep312.與神對話III丨031宇宙的靈性原理丨接受宣佈展現丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨陳老C工作室丨廣東話有聲書"}, {"id": "XfdzGmGkcVQ", "title": "Ep313.與神對話III丨032有意識的進化丨接受宣佈展現丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨毫無所需丨渴望一切丨陳老C工作室丨粵語丨廣東話有聲書"}, {"id": "pwO26aFDdmU", "title": "Ep314.與神對話III丨033耶穌竟然係太空人？人類係并唔係來自地球？丨接受宣佈展現丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨陳老C工作室丨廣東話有聲書"}, {"id": "d3Q8t-Fckv0", "title": "Ep315.與神對話III丨034覺悟 誠實 負責的三角守則丨接受宣佈展現丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "rxHu22lmSUI", "title": "Ep316.與神對話III丨035小靈魂與太陽丨接受宣佈展現丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨陳老C工作室丨粵語有聲書丨廣東話有聲書"}, {"id": "pNVYyOda_dA", "title": "Ep317.與神對話III丨036不要停留在做的狀態 而要成為是的狀態丨宇宙的終極秘密丨時間和空間丨羨慕丨恐懼丨愛丨宇宙的真相丨靈性的實相丨無畏無懼丨無所需是最偉大的自由丨陳老C工作室丨廣東話"}, {"id": "meKPxlcXwF8", "title": "Ep1026.與神對話III-結婚宣言丨廣東話丨陳老C"}];
+let current = 0, bookFilter = 'all';
+
+function getBook(title){
+  const m = title.match(/與神對話(?:I{1,3}|1|2|3)/);
+  if(!m) return '其他';
+  const s=m[0];
+  if(/III|3/.test(s)) return 'III';
+  if(/II|2/.test(s)) return 'II';
+  return 'I';
+}
+function episode(title){
+  const m=title.match(/Ep(\d+)/); return m ? 'Ep'+m[1] : '';
+}
+function filtered(){
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  return videos.map((v,i)=>({...v,index:i,book:getBook(v.title)}))
+    .filter(v=>(bookFilter==='all'||v.book===bookFilter)&&(!q||v.title.toLowerCase().includes(q)||episode(v.title).toLowerCase().includes(q)));
+}
+function renderList(){
+  const arr=filtered(), list=document.getElementById('list');
+  list.innerHTML='';
+  document.getElementById('count').textContent=`顯示 ${arr.length} / ${videos.length} 集`;
+  arr.forEach(v=>{
+    const b=document.createElement('button'); b.className='item'+(v.index===current?' active':'');
+    b.innerHTML=`<div class="ep">${episode(v.title)} · Book ${v.book}</div><div class="title">${escapeHtml(v.title.replace(/^Ep\d+\./,''))}</div>`;
+    b.onclick=()=>play(v.index);
+    list.appendChild(b);
+  });
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function play(i){
+  current=i; const v=videos[i];
+  document.getElementById('player').src=`https://www.youtube.com/embed/${v.id}?rel=0`;
+  document.getElementById('currentTitle').textContent=v.title;
+  document.getElementById('meta').textContent=`${episode(v.title)} · Book ${v.book} · ${i+1}/${videos.length}`;
+  document.getElementById('bookTag').textContent=`Book ${v.book}`;
+  renderList();
+  document.querySelector('main').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function openYoutube(){window.open(`https://www.youtube.com/watch?v=${videos[current].id}`,'_blank','noopener');}
+function filterBook(b){bookFilter=b;renderList();}
+document.getElementById('search').addEventListener('input',renderList);
+document.getElementById('prev').onclick=()=>play((current-1+videos.length)%videos.length);
+document.getElementById('next').onclick=()=>play((current+1)%videos.length);
+
+window.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.key==='ArrowLeft')play((current-1+videos.length)%videos.length);
+  if(e.key==='ArrowRight')play((current+1)%videos.length);
+});
+play(0);
+</script>
+</body>
+</html>
