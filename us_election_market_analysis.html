@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美國中期選舉結果出爐！國會分治點影響美股與債市？拆解4大市場情境</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        cyber: {
+                            dark: '#0b0f19',
+                            card: '#111827',
+                            border: '#1f2937',
+                            accent: '#06b6d4',
+                            purple: '#8b5cf6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-[#0b0f19] text-gray-200 font-sans antialiased selection:bg-amber-500 selection:text-black">
+
+    <!-- Top Reading Progress Bar -->
+    <div id="progress-container" class="fixed top-0 left-0 w-full h-1 z-50 bg-gray-800">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-amber-400 to-amber-500 w-0 transition-all duration-150"></div>
+    </div>
+
+    <!-- Top Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-cyan-500 flex items-center justify-center font-bold text-gray-950 shadow-lg">
+                    <i class="fa-solid font-bold fa-chart-line text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold bg-gradient-to-r from-amber-400 via-amber-200 to-cyan-400 bg-clip-text text-transparent">
+                        富翁電視 MTTV 深度拆解
+                    </h1>
+                    <p class="text-xs text-gray-400 hidden sm:block">美國大選與國會局勢對美股/美債之投資策略</p>
+                </div>
+            </div>
+
+            <!-- Header Controls -->
+            <div class="flex items-center space-x-3">
+                <a href="#video-player" class="hidden md:flex items-center space-x-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600/30 transition">
+                    <i class="fa-brands fa-youtube text-red-500"></i>
+                    <span>原片觀看</span>
+                </a>
+                <button id="mobile-menu-btn" class="lg:hidden text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Sidebar Navigation (Sticky) -->
+            <aside id="sidebar" class="hidden lg:block lg:col-span-3">
+                <div class="sticky top-24 space-y-6">
+                    <nav class="glass-panel rounded-2xl p-4 border border-gray-800 shadow-xl">
+                        <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-2 flex items-center justify-between">
+                            <span><i class="fa-solid fa-list-ol mr-2 text-cyan-400"></i>內容目錄</span>
+                            <span class="text-[10px] bg-gray-800 text-cyan-400 px-2 py-0.5 rounded-full">8章節</span>
+                        </div>
+                        <ul class="space-y-1 text-sm">
+                            <li>
+                                <a href="#video-section" class="nav-link block px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-amber-400 transition flex items-center">
+                                    <i class="fa-solid fa-play text-red-400 w-6"></i> 影片播放與簡介
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#core-philosophy" class="nav-link block px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-amber-400 transition flex items-center">
+                                    <i class="fa-solid fa-filter text-amber-400 w-6"></i> 1. 真相 vs 雜音
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#congress-background" class="nav-link block px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-amber-400 transition flex items-center">
+                                    <i class="fa-solid fa-building-columns text-cyan-400 w-6"></i> 2. 國會結構與魔咒
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#voter-sentiment" class="nav-link block px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-amber-400 transition flex items-center">
+                                    <i class="fa-solid fa-gas-pump text-emerald-400 w-6"></i> 3. 選民情緒背後推手
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#split-government" class="nav-link block px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-amber-400 transition flex items-center">
+                                    <i class="fa-solid fa-scale-balanced text-purple-400 w-6"></i> 4. 分裂政府歷史表現
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#four-scenarios" class="nav-link block px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-amber-400 transition flex items-center">
+                                    <i class="fa-solid fa-chess text-amber-500 w-6"></i> 5. 拆解4大市場情境
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#sector-analysis" class="nav-link block px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-amber-400 transition flex items-center">
+                                    <i class="fa-solid fa-industry text-blue-400 w-6"></i> 6. 行業板塊投資點評
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#bond-and-fed" class="nav-link block px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-amber-400 transition flex items-center">
+                                    <i class="fa-solid fa-coins text-yellow-400 w-6"></i> 7. 美債與聯儲局局勢
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#conclusion" class="nav-link block px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-amber-400 transition flex items-center">
+                                    <i class="fa-solid fa-flag-checkered text-emerald-400 w-6"></i> 8. 總結與投資金句
+                                </a>
+                            </li>
+                            <li class="pt-2 border-t border-gray-800">
+                                <a href="#next-episode" class="nav-link block px-3 py-2 rounded-lg bg-gradient-to-r from-amber-500/10 to-cyan-500/10 border border-amber-500/30 text-amber-300 hover:from-amber-500/20 hover:to-cyan-500/20 transition flex items-center justify-between">
+                                    <span><i class="fa-solid fa-forward text-amber-400 w-6"></i> 下集預告/擴充區</span>
+                                    <span class="text-[10px] bg-amber-500 text-black font-bold px-1.5 py-0.5 rounded">NEW</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <!-- Quick Key Takeaways Card -->
+                    <div class="glass-panel rounded-2xl p-4 border border-amber-500/20 bg-gradient-to-b from-amber-500/5 to-transparent">
+                        <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2 flex items-center">
+                            <i class="fa-solid fa-lightbulb mr-2"></i> 核心結論一覽
+                        </h4>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            國會分裂（Split Govt）政策阻力大，歷史上反而對股市最有利！重點注意非理性情緒引發嘅優質股「黃金買點」。
+                        </p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="lg:col-span-9 space-y-10">
+
+                <!-- Title Banner -->
+                <section class="glass-panel rounded-3xl p-6 sm:p-8 border border-gray-800 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-10 -top-10 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div class="relative z-10">
+                        <div class="inline-flex items-center space-x-2 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full text-amber-400 text-xs font-semibold mb-4">
+                            <i class="fa-solid fa-video"></i>
+                            <span>富翁電視 MTTV · 廣東話文字化總結精華</span>
+                        </div>
+                        <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight mb-4">
+                            美國中期選舉結果出爐！國會分治點影響美股與債市？<br class="hidden sm:inline">
+                            <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-cyan-400 bg-clip-text text-transparent">
+                                拆解4大市場情境：邊啲板塊會因雜音跌出黃金機會？
+                            </span>
+                        </h1>
+                        <div class="flex flex-wrap items-center gap-4 text-xs text-gray-400 pt-2 border-t border-gray-800/80">
+                            <span class="flex items-center"><i class="fa-regular fa-user mr-1 text-cyan-400"></i> 主講人：德兄</span>
+                            <span class="flex items-center"><i class="fa-regular fa-clock mr-1 text-cyan-400"></i> 長篇精華拆解</span>
+                            <span class="flex items-center"><i class="fa-solid fa-tag mr-1 text-amber-400"></i> 美股 / 美債 / 選舉情境</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Video Section -->
+                <section id="video-section" class="scroll-mt-24 glass-panel rounded-3xl p-6 border border-gray-800">
+                    <h2 class="text-lg font-bold text-white mb-4 flex items-center">
+                        <i class="fa-brands fa-youtube text-red-500 text-2xl mr-3"></i>
+                        原片觀看：德兄節目重溫
+                    </h2>
+                    <div id="video-player" class="relative w-full overflow-hidden rounded-2xl shadow-2xl bg-black border border-gray-800" style="padding-top: 56.25%;">
+                        <iframe 
+                            class="absolute top-0 left-0 w-full h-full"
+                            src="https://www.youtube.com/embed/MvdC-MneQXU" 
+                            title="美國中期選舉結果出爐！國會分治點影響美股與債市？拆解4大市場情境" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </section>
+
+                <!-- Section 1: Core Philosophy -->
+                <section id="core-philosophy" class="scroll-mt-24 glass-panel rounded-3xl p-6 sm:p-8 border border-gray-800">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">1</div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white">核心投資哲學：區分「雜音」（Noise）與「真相」（Signal）</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none text-gray-300 leading-relaxed space-y-4">
+                        <p>
+                            每逢大選前後，新聞媒體同政客都會放出無數頭條新聞、政治口號同極端預測。市場情緒極易被短線新聞牽著走。德兄喺影片開首提出咗一個非常關鍵嘅<strong>「投資思考過濾器」</strong>。
+                        </p>
+                        
+                        <div class="bg-gray-900/90 rounded-2xl p-5 border-l-4 border-amber-500 my-6">
+                            <h3 class="text-amber-400 font-bold text-base mb-2 flex items-center">
+                                <i class="fa-solid fa-filter mr-2"></i> 核心思考過濾問題：
+                            </h3>
+                            <p class="text-gray-200 font-medium text-lg italic">
+                                「呢件事／呢條新聞，究竟會唔會真正、實質地改變企業嘅成本或者盈利能力？」
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                            <div class="bg-emerald-950/30 border border-emerald-500/30 rounded-2xl p-5">
+                                <h4 class="text-emerald-400 font-bold text-lg mb-2 flex items-center">
+                                    <i class="fa-solid fa-circle-check mr-2"></i> 如果答案係：「會」
+                                </h4>
+                                <p class="text-sm text-gray-300">
+                                    呢個就係<strong>「真相／真因素」（Signal）</strong>。例如稅率實質改變、政策直接影響產品銷售成本。投資者需要認真評估，並對投資組合做出理性調整。
+                                </p>
+                            </div>
+
+                            <div class="bg-rose-950/30 border border-rose-500/30 rounded-2xl p-5">
+                                <h4 class="text-rose-400 font-bold text-lg mb-2 flex items-center">
+                                    <i class="fa-solid fa-triangle-exclamation mr-2"></i> 如果答案係：「唔會」
+                                </h4>
+                                <p class="text-sm text-gray-300">
+                                    呢啲純粹係<strong>「雜音」（Noise）</strong>。政治嘈吵、短期聽證會、情緒化恐慌都屬此類。聰明嘅投資者應該利用雜音引致嘅非理性股價下跌，尋找被「錯殺」嘅黃金買入機會。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: US Congress Background -->
+                <section id="congress-background" class="scroll-mt-24 glass-panel rounded-3xl p-6 sm:p-8 border border-gray-800">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">2</div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white">美國國會架構與中期選舉背景</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-gray-900/60 rounded-2xl p-6 border border-gray-800">
+                            <h3 class="text-cyan-400 font-bold text-lg mb-3 flex items-center">
+                                <i class="fa-solid fa-landmark mr-2"></i> 眾議院 (House of Representatives)
+                            </h3>
+                            <ul class="space-y-2 text-sm text-gray-300">
+                                <li class="flex items-start"><i class="fa-solid fa-check text-cyan-500 mt-1 mr-2"></i> 掌控<strong>財政預算與撥款權</strong>。</li>
+                                <li class="flex items-start"><i class="fa-solid fa-check text-cyan-500 mt-1 mr-2"></i> 根據美國憲法，所有與稅收相關嘅法案必須由眾議院率先發起。</li>
+                                <li class="flex items-start"><i class="fa-solid fa-check text-cyan-500 mt-1 mr-2"></i> 席位按各州人口比例分配，兩年改選一次。</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-gray-900/60 rounded-2xl p-6 border border-gray-800">
+                            <h3 class="text-purple-400 font-bold text-lg mb-3 flex items-center">
+                                <i class="fa-solid fa-gavel mr-2"></i> 參議院 (Senate)
+                            </h3>
+                            <ul class="space-y-2 text-sm text-gray-300">
+                                <li class="flex items-start"><i class="fa-solid fa-check text-purple-500 mt-1 mr-2"></i> 負責<strong>條約確認與高官／法官人事任命權</strong>。</li>
+                                <li class="flex items-start"><i class="fa-solid fa-check text-purple-500 mt-1 mr-2"></i> 每州固定2席（共100席），任期6年，每兩年改選約三分之一席位。</li>
+                                <li class="flex items-start"><i class="fa-solid fa-check text-purple-500 mt-1 mr-2"></i> 對法案有最終審核權。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Midway Curse Box -->
+                    <div class="bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-transparent p-6 rounded-2xl border border-amber-500/30">
+                        <h4 class="text-amber-400 font-bold text-base mb-2 flex items-center">
+                            <i class="fa-solid fa-ghost mr-2"></i> 歷史規律：執政黨嘅「中期選舉魔咒」
+                        </h4>
+                        <p class="text-sm text-gray-300 leading-relaxed">
+                            自1920年代以來嘅歷史數據顯示，現任總統所屬嘅執政黨喺中期選舉中，平均會失去約 <strong>30個眾議院席位</strong> 同 <strong>4個參議院席位</strong>。原因係選民習慣將執政期間累積嘅經濟不滿（例如物價、通脹、施改失誤）透過選票宣洩，令執政黨好難保持兩院全面控制。
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Section 3: Drivers of Voter Sentiment -->
+                <section id="voter-sentiment" class="scroll-mt-24 glass-panel rounded-3xl p-6 sm:p-8 border border-gray-800">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">3</div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white">選民情緒背後嘅兩大實質推手</h2>
+                    </div>
+
+                    <p class="text-gray-300 mb-6">
+                        影響選民投票意向嘅，從來唔係政客喺台上講嘅口號，而係民眾切身感受得到嘅<strong>生活成本與通脹壓力</strong>：
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-900/80 rounded-2xl p-6 border border-gray-800 hover:border-amber-500/40 transition">
+                            <div class="text-amber-400 text-3xl mb-3"><i class="fa-solid fa-gas-pump"></i></div>
+                            <h3 class="text-white font-bold text-lg mb-2">1. 能源汽油價格（Oil Prices）</h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">
+                                美國人日常出行極度依賴汽車。油價高企直接導致入油費用飆升，歷史經驗證明，油價越貴，選民對執政黨嘅滿意度就越低，中期選舉執政黨輸掉國會嘅概率顯著上升。
+                            </p>
+                        </div>
+
+                        <div class="bg-gray-900/80 rounded-2xl p-6 border border-gray-800 hover:border-cyan-500/40 transition">
+                            <div class="text-cyan-400 text-3xl mb-3"><i class="fa-solid fa-bolt"></i></div>
+                            <h3 class="text-white font-bold text-lg mb-2">2. 民生電費上漲（AI數據中心效應）</h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">
+                                隨住科技巨頭全力推動人工智能（AI），龐大嘅數據中心建設對電力需求呈現爆發式增長。部分地區嘅民生電費顯著加價，造成「科技股好狂熱，但老百姓電費好貴」嘅民怨落差。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4: Split Government -->
+                <section id="split-government" class="scroll-mt-24 glass-panel rounded-3xl p-6 sm:p-8 border border-gray-800">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">4</div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white">分裂政府（Split Government）對美股嘅真實影響</h2>
+                    </div>
+
+                    <p class="text-gray-300 mb-6">
+                        當眾議院與參議院由不同政黨控制，或者國會與總統所屬政黨不同時，就形成<strong>「分裂政府」</strong>。大眾直覺以為「政局對立係壞事」，但歷史數據證明剛好相反！
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-900/90 rounded-2xl p-5 border border-purple-500/30 text-center">
+                            <div class="text-xs text-gray-400 uppercase mb-1">政策死局 (Gridlock)</div>
+                            <div class="text-lg font-bold text-purple-400">極難通過激進法案</div>
+                            <p class="text-xs text-gray-400 mt-2">加稅或大規模改變監管嘅法案幾乎無法順利通過。</p>
+                        </div>
+
+                        <div class="bg-gray-900/90 rounded-2xl p-5 border border-cyan-500/30 text-center">
+                            <div class="text-xs text-gray-400 uppercase mb-1">市場最喜愛環境</div>
+                            <div class="text-lg font-bold text-cyan-400">高度可預測性 (Predictability)</div>
+                            <p class="text-xs text-gray-400 mt-2">企業唔需要擔心政策突然大變，有利長期營運規劃。</p>
+                        </div>
+
+                        <div class="bg-gray-900/90 rounded-2xl p-5 border border-amber-500/30 text-center">
+                            <div class="text-xs text-gray-400 uppercase mb-1">1978–2023 歷史標普回報</div>
+                            <div class="text-2xl font-black text-amber-400">~16% <span class="text-xs font-normal text-gray-400">年化回報</span></div>
+                            <p class="text-xs text-gray-400 mt-2">顯著高於單一政黨全面執政（約9%-12%）。</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: Four Scenarios -->
+                <section id="four-scenarios" class="scroll-mt-24 glass-panel rounded-3xl p-6 sm:p-8 border border-gray-800">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">5</div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white">拆解 4 大大選市場情境與應對策略</h2>
+                    </div>
+
+                    <!-- Responsive Table / Card View -->
+                    <div class="space-y-4">
+                        <!-- Scenario 1 -->
+                        <div class="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-cyan-500/50 transition">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-bold rounded-full">情境一：國會分裂（最常出現）</span>
+                                <span class="text-xs text-gray-400">眾議院共和黨 / 參議院民主黨（或反之）</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">政局僵局 · 市場漸入佳境</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-4">
+                                <div class="bg-black/40 p-3 rounded-xl border border-gray-800">
+                                    <span class="text-amber-400 font-bold block mb-1">新聞雜音與市場反應：</span>
+                                    <p class="text-gray-300">新聞天天報導政黨互相抨擊，短期股市會有心理波動與小幅震盪。</p>
+                                </div>
+                                <div class="bg-black/40 p-3 rounded-xl border border-gray-800">
+                                    <span class="text-emerald-400 font-bold block mb-1">實際基本面與投資策略：</span>
+                                    <p class="text-gray-300">政策無大變動，企業盈利回歸基本面。<strong>分段建倉／保留現金</strong>，利用恐慌低吸優質科技與收息股。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scenario 2 -->
+                        <div class="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-blue-500/50 transition">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-full">情境二：民主黨全面執政（Sweep）</span>
+                                <span class="text-xs text-gray-400">控制總統 + 參眾兩院</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">加稅與監管雜音升溫</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-4">
+                                <div class="bg-black/40 p-3 rounded-xl border border-gray-800">
+                                    <span class="text-amber-400 font-bold block mb-1">新聞雜音與市場反應：</span>
+                                    <p class="text-gray-300">市場擔憂企業利得稅提高、反壟斷監管加嚴，大型科技股或醫療股受壓。</p>
+                                </div>
+                                <div class="bg-black/40 p-3 rounded-xl border border-gray-800">
+                                    <span class="text-emerald-400 font-bold block mb-1">實際基本面與投資策略：</span>
+                                    <p class="text-gray-300">參議院需60票才能通過極端法案，實質加稅阻力大。<strong>逢低收集被政治新聞誤傷嘅優質醫療及科技龍頭</strong>。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scenario 3 -->
+                        <div class="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-red-500/50 transition">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <span class="px-3 py-1 bg-red-500/20 text-red-400 text-xs font-bold rounded-full">情境三：共和黨全面執政（Sweep）</span>
+                                <span class="text-xs text-gray-400">控制總統 + 參眾兩院</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">減稅情緒熱烈 · 赤字與美債受壓</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-4">
+                                <div class="bg-black/40 p-3 rounded-xl border border-gray-800">
+                                    <span class="text-amber-400 font-bold block mb-1">新聞雜音與市場反應：</span>
+                                    <p class="text-gray-300">市場預期放寬監管、延長減稅法案，短期美股（特別係傳統工業、金融）大幅慶祝。</p>
+                                </div>
+                                <div class="bg-black/40 p-3 rounded-xl border border-gray-800">
+                                    <span class="text-emerald-400 font-bold block mb-1">實際基本面與投資策略：</span>
+                                    <p class="text-gray-300">聯邦財政赤字進一步擴大，政府發債激增導致長債收益率飆升（債價跌）。<strong>避開超長年期美債，關注高現金流企業</strong>。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scenario 4 -->
+                        <div class="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-yellow-500/50 transition">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 text-xs font-bold rounded-full">情境四：選票爭議 / 結果延遲</span>
+                                <span class="text-xs text-gray-400">票數過近引發重新點票或訴訟</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">短線恐慌 · 100% 屬純粹雜音</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-4">
+                                <div class="bg-black/40 p-3 rounded-xl border border-gray-800">
+                                    <span class="text-amber-400 font-bold block mb-1">新聞雜音與市場反應：</span>
+                                    <p class="text-gray-300">恐慌指數 VIX 大幅跳升，媒體鋪天蓋地報導憲政危機，美股短線急跌。</p>
+                                </div>
+                                <div class="bg-black/40 p-3 rounded-xl border border-gray-800">
+                                    <span class="text-emerald-400 font-bold block mb-1">實際基本面與投資策略：</span>
+                                    <p class="text-gray-300">歷史（如2000年小布殊對戈爾）證明，爭議過後股市會迅速補升。<strong>絕不盲目割肉，視為純雜音並按原定計劃部署</strong>。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 6: Sector Analysis -->
+                <section id="sector-analysis" class="scroll-mt-24 glass-panel rounded-3xl p-6 sm:p-8 border border-gray-800">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">6</div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white">重點行業板塊點評</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Defense -->
+                        <div class="bg-gray-900/60 p-5 rounded-2xl border border-gray-800 flex space-x-4">
+                            <div class="text-cyan-400 text-2xl pt-1"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div>
+                                <h3 class="text-white font-bold text-base mb-1">國防軍工 (Defense)</h3>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    地緣政治局勢緊張，無論係共和黨定民主黨執政，國防預算大方向都係只增不減。受政治分治影響極小，屬於避險同防守性極佳嘅資產。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Healthcare -->
+                        <div class="bg-gray-900/60 p-5 rounded-2xl border border-gray-800 flex space-x-4">
+                            <div class="text-rose-400 text-2xl pt-1"><i class="fa-solid fa-user-doctor"></i></div>
+                            <div>
+                                <h3 class="text-white font-bold text-base mb-1">醫療 / 藥企 (Healthcare)</h3>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    最容易被政客拿來做政績打擊（例如藥價監管）。但絕大部分提案喺國會都過唔到關，過度跌勢反而提供好價位買入優質醫藥股。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Energy -->
+                        <div class="bg-gray-900/60 p-5 rounded-2xl border border-gray-800 flex space-x-4">
+                            <div class="text-emerald-400 text-2xl pt-1"><i class="fa-solid fa-leaf"></i></div>
+                            <div>
+                                <h3 class="text-white font-bold text-base mb-1">傳統能源 vs 綠能 (Energy)</h3>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    共和黨偏好傳統石油/天然氣，民主黨支持清潔能源。但長期盈利取決於全球原油供求同油價走勢，而非單一補貼政策。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Crypto -->
+                        <div class="bg-gray-900/60 p-5 rounded-2xl border border-gray-800 flex space-x-4">
+                            <div class="text-amber-400 text-2xl pt-1"><i class="fa-solid fa-coins"></i></div>
+                            <div>
+                                <h3 class="text-white font-bold text-base mb-1">加密貨幣與數碼資產</h3>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    行業極度需要明確嘅監管法案。喺國會分治嘅情境下，法案推進速度可能減慢，但長遠規管框架確立有利機構資金入場。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 7: Bond & Fed -->
+                <section id="bond-and-fed" class="scroll-mt-24 glass-panel rounded-3xl p-6 sm:p-8 border border-gray-800">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center font-bold">7</div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white">美債市場與聯儲局（Fed）政策走勢</h2>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800">
+                            <h3 class="text-amber-400 font-bold text-base mb-2 flex items-center">
+                                <i class="fa-solid fa-file-invoice-dollar mr-2"></i> 1. 美債供給過剩與財政赤字
+                            </h3>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                不論政黨誰勝誰負，美國政府嘅財政赤字都居高不下。財政部需要持續大量發行新美債（Treasury Supply），壓制長端債券價格，導致長期國債收益率居高不下。
+                            </p>
+                        </div>
+
+                        <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800">
+                            <h3 class="text-cyan-400 font-bold text-base mb-2 flex items-center">
+                                <i class="fa-solid fa-calculator mr-2"></i> 2. 聯儲局獨立性：依賴經濟數據（Data-Dependent）
+                            </h3>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                德兄提醒，大選政治角力唔會改變美聯儲嘅決策邏輯。鮑威爾與聯儲局官員只會睇 **CPI 通脹數據、非農就業人數及 GDP 增長**。經濟數據先係決定息口降幅與速度嘅「真相」。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 8: Conclusion -->
+                <section id="conclusion" class="scroll-mt-24 glass-panel rounded-3xl p-6 sm:p-8 border border-amber-500/30 bg-gradient-to-b from-amber-500/10 via-transparent to-transparent">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500 text-black flex items-center justify-center font-bold">8</div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white">總結：德兄佛系投資金句</h2>
+                    </div>
+
+                    <div class="space-y-4 text-gray-200">
+                        <p class="leading-relaxed">
+                            大選同政治事件只係投資長河中嘅過客。真正決定美股長遠表現嘅，永遠係<strong>企業嘅盈利能力、創新技術同整體經濟基本面</strong>。
+                        </p>
+
+                        <div class="bg-black/60 p-6 rounded-2xl border border-amber-500/40 space-y-3">
+                            <div class="text-amber-400 font-bold text-lg flex items-center">
+                                <i class="fa-solid fa-quote-left mr-2"></i> 德兄核心提醒：
+                            </div>
+                            <blockquote class="text-gray-300 text-sm italic leading-relaxed pl-4 border-l-2 border-amber-400">
+                                「千祈唔好因為單一選舉結果或者新聞頭條，推翻你經過深思熟慮嘅長期投資計劃。學會過濾噪音，冷靜睇清真相，先至係佛系收息同穩健增長嘅長期致勝之道。」
+                            </blockquote>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Next Episode Placeholder Section -->
+                <section id="next-episode" class="scroll-mt-24 glass-panel rounded-3xl p-6 sm:p-8 border border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 via-gray-900 to-purple-950/20">
+                    <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500 text-black flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-forward"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl sm:text-2xl font-bold text-white">下集預告 / 續集內容留白區</h2>
+                                <p class="text-xs text-gray-400">Next Episode Expansion & Follow-up Analysis</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
+                            待更新 / Dynamic Slot
+                        </span>
+                    </div>
+
+                    <!-- Placeholder Cards for Next Video / Notes -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Upcoming Video Card Placeholder -->
+                        <div class="border-2 border-dashed border-gray-800 hover:border-cyan-500/50 rounded-2xl p-6 flex flex-col items-center justify-center text-center group transition cursor-pointer bg-black/20">
+                            <div class="w-14 h-14 rounded-full bg-gray-800 group-hover:bg-cyan-500/20 text-gray-400 group-hover:text-cyan-400 flex items-center justify-center mb-3 transition">
+                                <i class="fa-solid fa-plus text-xl"></i>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-1">嵌入下集影片 (Next Video Embed)</h3>
+                            <p class="text-xs text-gray-400 max-w-xs">
+                                預留位置：當德兄發佈最新中期選舉後續或美聯儲議息結果拆解時，可隨時替換影片 ID 與連結。
+                            </p>
+                        </div>
+
+                        <!-- Expansion Notes Placeholder -->
+                        <div class="bg-gray-900/50 rounded-2xl p-6 border border-gray-800 space-y-3">
+                            <h3 class="text-amber-400 font-bold text-sm flex items-center">
+                                <i class="fa-regular fa-note-sticky mr-2"></i> 續集重點追蹤事項 (Upcoming Topics)
+                            </h3>
+                            <ul class="space-y-2 text-xs text-gray-300">
+                                <li class="flex items-center text-gray-400">
+                                    <i class="fa-regular fa-square mr-2 text-cyan-500"></i> 最新 CPI 通脹數據與美聯儲降息步伐
+                                </li>
+                                <li class="flex items-center text-gray-400">
+                                    <i class="fa-regular fa-square mr-2 text-cyan-500"></i> 國會法案審議實質進度追蹤
+                                </li>
+                                <li class="flex items-center text-gray-400">
+                                    <i class="fa-regular fa-square mr-2 text-cyan-500"></i> 美股各行業板塊季度業績（Earnings Call）
+                                </li>
+                            </ul>
+                            <div class="pt-2">
+                                <span class="text-[10px] text-gray-500 italic">* 本區塊已做好 CSS Layout 彈性預留，可無縫加入全新章節。</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Back to Top Floating Button -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-amber-500 text-black font-bold flex items-center justify-center shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:bg-amber-400 z-50">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Simple Interactivity Scripts -->
+    <script>
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+
+            // Back to Top button visibility
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (winScroll > 400) {
+                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.add('opacity-100');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.remove('opacity-100');
+            }
+        });
+
+        // Smooth scroll to top
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mobile Sidebar Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        
+        mobileBtn.addEventListener('click', () => {
+            if (sidebar.classList.contains('hidden')) {
+                sidebar.classList.remove('hidden');
+                sidebar.classList.add('block', 'col-span-12', 'mb-6');
+            } else {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('block', 'col-span-12', 'mb-6');
+            }
+        });
+
+        // Highlight Active Nav Link on Scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('bg-gray-800', 'text-amber-400', 'font-bold');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('bg-gray-800', 'text-amber-400', 'font-bold');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

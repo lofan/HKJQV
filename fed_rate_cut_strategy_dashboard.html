@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美聯儲降息週期投資策略導航 Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        cardBorder: '#334155',
+                        accentBlue: '#38bdf8',
+                        accentGreen: '#4ade80',
+                        accentPurple: '#c084fc',
+                        accentYellow: '#facc15'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-darkBg text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-chart-line text-accentBlue text-2xl"></i>
+                <span class="font-bold text-lg sm:text-xl tracking-tight text-white">美聯儲降息週期策略 Navigation Hub</span>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#macro" class="text-slate-300 hover:text-accentBlue transition-colors"><i class="fa-solid fa-globe mr-1"></i> 宏觀邏輯</a>
+                <a href="#sectors" class="text-slate-300 hover:text-accentGreen transition-colors"><i class="fa-solid fa-industry mr-1"></i> 美股板塊</a>
+                <a href="#bonds" class="text-slate-300 hover:text-accentYellow transition-colors"><i class="fa-solid fa-vault mr-1"></i> 美債策略</a>
+                <a href="#portfolio" class="text-slate-300 hover:text-accentPurple transition-colors"><i class="fa-solid fa-pie-chart mr-1"></i> 資產配置</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-12">
+
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-700/60 rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-accentBlue font-bold">FED</div>
+            <div class="relative z-10 max-w-3xl">
+                <div class="inline-flex items-center space-x-2 bg-sky-950/80 border border-sky-500/30 text-sky-400 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+                    <i class="fa-solid fa-bolt"></i> 降息週期投資指南
+                </div>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">美股板塊與長短期美債投資拆解</h1>
+                <p class="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed">
+                    在美聯儲降息週期中，市場的核心取決於降息屬<b>「軟着陸（預防性）」</b>定係<b>「硬着陸（衰退性）」</b>。本導航頁面為你快速整理各類資產的底層邏輯與具體配置策略。
+                </p>
+                <div class="mt-6 flex flex-wrap gap-4">
+                    <a href="#sectors" class="bg-accentBlue hover:bg-sky-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-sm transition-all shadow-lg shadow-sky-500/20">查看美股板塊</a>
+                    <a href="#bonds" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 font-semibold px-5 py-2.5 rounded-lg text-sm transition-all">查看美債策略</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Macro Framework Section -->
+        <section id="macro" class="space-y-6">
+            <div class="flex items-center space-x-3 border-l-4 border-accentBlue pl-3">
+                <h2 class="text-2xl font-bold text-white">1. 宏觀降息邏輯：兩條傳導渠道</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-cardBg border border-cardBorder rounded-xl p-6 hover:border-accentBlue/50 transition-all">
+                    <div class="w-12 h-12 rounded-lg bg-sky-500/10 flex items-center justify-center text-accentBlue mb-4">
+                        <i class="fa-solid fa-money-bill-trend-up text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">渠道一：降低資金與融資成本</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        基準利率下調直接降低企業信貸、發債與運營融資成本。高負債企業、資本密集型產業（如房地產/REITs、電力基礎建設）與浮動利率債務佔比較高的企業直接受益。
+                    </p>
+                </div>
+                <div class="bg-cardBg border border-cardBorder rounded-xl p-6 hover:border-accentBlue/50 transition-all">
+                    <div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center text-accentPurple mb-4">
+                        <i class="fa-solid fa-calculator text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">渠道二：提升估值分母（DCF折現率下降）</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        無風險利率（10年期美債收益率）下降時，現金流折現模型（DCF）中的折現率隨之降低。遠期現金流佔比較高的高成長科技股，估值修復的彈性最大。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sectors Section -->
+        <section id="sectors" class="space-y-6">
+            <div class="flex items-center space-x-3 border-l-4 border-accentGreen pl-3">
+                <h2 class="text-2xl font-bold text-white">2. 美股各大板塊表現同配置策略</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tech -->
+                <div class="bg-cardBg border border-cardBorder rounded-xl p-6 flex flex-col justify-between hover:border-emerald-500/40 transition-all">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-3 py-1 bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 text-xs font-semibold rounded-full">核心配置 (Overweight)</span>
+                            <i class="fa-solid fa-microchip text-slate-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">科技與通訊服務</h3>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                            受惠估值分母下降與 AI 融資成本降低。遠期現金流比重高，極具估值彈性。
+                        </p>
+                    </div>
+                    <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 text-xs text-slate-400">
+                        <strong class="text-slate-200">策略重點：</strong> 聚焦強勁自由現金流（FCF）的大盤龍頭，避免高槓桿非盈利股。
+                    </div>
+                </div>
+
+                <!-- REITs & Utilities -->
+                <div class="bg-cardBg border border-cardBorder rounded-xl p-6 flex flex-col justify-between hover:border-emerald-500/40 transition-all">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-3 py-1 bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 text-xs font-semibold rounded-full">戰術加碼 (Tactical)</span>
+                            <i class="fa-solid fa-building text-slate-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">房地產 (REITs) 與公用事業</h3>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                            高負債結構減輕利息負擔。高股息收益率在貨幣基金回報下滑時吸引尋息資金（Yield-seeking）。
+                        </p>
+                    </div>
+                    <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 text-xs text-slate-400">
+                        <strong class="text-slate-200">策略重點：</strong> 首選數據中心 REITs、醫療 REITs 及 AI 供電概念公用事業。
+                    </div>
+                </div>
+
+                <!-- Cyclicals & Financials -->
+                <div class="bg-cardBg border border-cardBorder rounded-xl p-6 flex flex-col justify-between hover:border-yellow-500/40 transition-all">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-3 py-1 bg-amber-950/80 border border-amber-500/30 text-amber-400 text-xs font-semibold rounded-full">中性偏好 (Neutral)</span>
+                            <i class="fa-solid fa-briefcase text-slate-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">金融與工業/資本品</h3>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                            降息帶動貸款需求與 M&A/IPO 復甦；企業資本支出（CapEx）意願隨融資下降而回升。
+                        </p>
+                    </div>
+                    <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 text-xs text-slate-400">
+                        <strong class="text-slate-200">策略重點：</strong> 偏向資產管理公司、投行以及受益供應鏈重組的工業龍頭。
+                    </div>
+                </div>
+
+                <!-- Small Caps & Staples -->
+                <div class="bg-cardBg border border-cardBorder rounded-xl p-6 flex flex-col justify-between hover:border-rose-500/40 transition-all">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-3 py-1 bg-rose-950/80 border border-rose-500/30 text-rose-400 text-xs font-semibold rounded-full">謹慎觀望 (Underweight)</span>
+                            <i class="fa-solid fa-cubes text-slate-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">小型股與防禦性消費</h3>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                            小型股雖然浮動債務降息彈性大，但盈利品質較差；軟着陸下資金偏好風險資產，防禦消費受冷落。
+                        </p>
+                    </div>
+                    <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 text-xs text-slate-400">
+                        <strong class="text-slate-200">策略重點：</strong> 小型股待經濟數據觸底後再佈局，不盲目重倉。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bonds Section -->
+        <section id="bonds" class="space-y-6">
+            <div class="flex items-center space-x-3 border-l-4 border-accentYellow pl-3">
+                <h2 class="text-2xl font-bold text-white">3. 美債長短期定價與殖利率曲線分析</h2>
+            </div>
+
+            <div class="overflow-x-auto bg-cardBg border border-cardBorder rounded-xl shadow-lg">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-800/80 text-xs uppercase text-slate-400 border-b border-slate-700">
+                        <tr>
+                            <th class="py-4 px-6 font-semibold">美債天期</th>
+                            <th class="py-4 px-6 font-semibold">政策/市場敏感度</th>
+                            <th class="py-4 px-6 font-semibold">核心定價邏輯</th>
+                            <th class="py-4 px-6 font-semibold">風險與配置評價</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr class="hover:bg-slate-800/40 transition-colors">
+                            <td class="py-4 px-6 font-bold text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> 短期 (1-3年)
+                            </td>
+                            <td class="py-4 px-6 text-slate-300">Fed 基準利率 (極高)</td>
+                            <td class="py-4 px-6 text-slate-400">隨降息收益率迅速下行，價格回升。</td>
+                            <td class="py-4 px-6 text-rose-300 font-medium">再投資風險高（4-5%高收益迅速縮水）。</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40 transition-colors bg-sky-950/20">
+                            <td class="py-4 px-6 font-bold text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-accentGreen"></span> 中期 (3-7年)
+                            </td>
+                            <td class="py-4 px-6 text-slate-300">降息 + 長期增長 (均衡)</td>
+                            <td class="py-4 px-6 text-slate-400">黃金腹地，既能鎖息又能賺資本利得。</td>
+                            <td class="py-4 px-6 text-accentGreen font-medium">首選天期，風險回報比最優越 (如 IEI)。</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40 transition-colors">
+                            <td class="py-4 px-6 font-bold text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> 長期 (10-30年)
+                            </td>
+                            <td class="py-4 px-6 text-slate-300">通脹/赤字/發債 (偏離政策)</td>
+                            <td class="py-4 px-6 text-slate-400">受美國財政赤字溢價與長期通脹驅動。</td>
+                            <td class="py-4 px-6 text-amber-300 font-medium">存續期長，價格波動極大 (如 TLT)。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Portfolio Allocation Section -->
+        <section id="portfolio" class="space-y-6">
+            <div class="flex items-center space-x-3 border-l-4 border-accentPurple pl-3">
+                <h2 class="text-2xl font-bold text-white">4. 全局資產配置建議與總結</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-cardBg border border-cardBorder rounded-xl p-6 relative flex flex-col justify-between">
+                    <div>
+                        <div class="text-accentBlue text-4xl font-extrabold mb-2">60%</div>
+                        <h3 class="text-lg font-bold text-white mb-2">優質美股 (Growth & Quality)</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            重倉大盤科技龍頭與具備強勁現金流嘅企業，戰術性搭配高息 REITs 同公用事業。
+                        </p>
+                    </div>
+                    <span class="text-xs text-sky-400 font-semibold uppercase tracking-wider">股票核心層</span>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-cardBg border border-cardBorder rounded-xl p-6 relative flex flex-col justify-between border-accentPurple/40">
+                    <div>
+                        <div class="text-accentPurple text-4xl font-extrabold mb-2">30%</div>
+                        <h3 class="text-lg font-bold text-white mb-2">中天期美債 (3–7年)</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            將資金由短債/貨幣基金轉移至中天期美債，鎖定當前高殖利率，同時避免超長債赤字風險。
+                        </p>
+                    </div>
+                    <span class="text-xs text-purple-400 font-semibold uppercase tracking-wider">防守鎖息層</span>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-cardBg border border-cardBorder rounded-xl p-6 relative flex flex-col justify-between">
+                    <div>
+                        <div class="text-slate-400 text-4xl font-extrabold mb-2">10%</div>
+                        <h3 class="text-lg font-bold text-white mb-2">流動性現金 / 戰術工具</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            保留少量流動資金用於市場短期雜音引起的非理性跌勢中分批抄底優質標的。
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">戰術流動性</span>
+                </div>
+            </div>
+
+            <!-- Conclusion Banner -->
+            <div class="bg-slate-900 border border-slate-700/80 rounded-xl p-6 mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 rounded-full bg-accentYellow/20 text-accentYellow flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-base">核心口訣：鎖定中端、遠離純現金</h4>
+                        <p class="text-slate-400 text-xs sm:text-sm">買優質現金流股票，將短債轉移至 3–7 年期美債鎖定長期收益。</p>
+                    </div>
+                </div>
+                <a href="#macro" class="shrink-0 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 font-medium px-4 py-2 rounded-lg transition-colors">
+                    回到頂部
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>美聯儲降息週期投資策略導航 Hub &bull; Dark Mode Dashboard</p>
+        </div>
+    </footer>
+
+</body>
+</html>
