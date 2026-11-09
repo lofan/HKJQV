@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTCROS Prompt Studio Ultimate v2.6</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --bg-body: #f0f2f5; --bg-panel: #ffffff; --text-main: #1e293b; --text-sub: #64748b;
+            --border: #e2e8f0; --primary: #2563eb; --market: #f59e0b; --history: #64748b;
+            --draw: #ec4899; --danger: #ef4444; --magic: #db2777; --input-bg: #ffffff;
+            --lang-zh: #10b981; --lang-en: #3b82f6; --lang-ja: #f43f5e;
+        }
+        [data-theme="dark"] {
+            --bg-body: #0f172a; --bg-panel: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8;
+            --border: #334155; --input-bg: #0f172a; --market-item: #334155; --market-border: #475569;
+        }
+        body { font-family: 'PingFang HK', 'Microsoft JhengHei', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 10px; height: 100vh; overflow: hidden; box-sizing: border-box; transition: 0.3s; }
+        .main-layout { display: grid; grid-template-columns: 320px 1fr 300px; gap: 12px; height: calc(100vh - 20px); max-width: 1920px; margin: 0 auto; }
+        .panel { background: var(--bg-panel); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); }
+        .panel-header { padding: 12px 15px; border-bottom: 2px solid var(--border); flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); }
+        h3 { margin: 0; font-size: 0.9rem; font-weight: 700; }
+        .scroll-area { flex-grow: 1; overflow-y: auto; padding: 10px; scrollbar-width: thin; }
+
+        /* 分類零件庫 Accordion */
+        .cat-group { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+        .cat-header { width: 100%; padding: 10px; background: rgba(0,0,0,0.03); border: none; text-align: left; font-weight: bold; font-size: 13px; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; }
+        .cat-content { display: none; padding: 8px; flex-wrap: wrap; gap: 6px; border-top: 1px solid var(--border); }
+        .cat-group.active .cat-content { display: flex; }
+        .tag-item { background: var(--bg-body); border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .tag-item:hover { border-color: var(--primary); color: var(--primary); }
+        .tag-del { color: #ccc; cursor: pointer; font-size: 12px; }
+
+        /* 工具列與按鈕 */
+        .ai-bridge { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 10px; }
+        .btn-ai { padding: 8px 0; border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 10px; font-weight: bold; transition: 0.2s; text-align: center; }
+        .lang-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 10px; }
+        .btn-lang { padding: 6px 0; border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 10px; }
+        .btn-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+        .btn { padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 12px; }
+
+        /* 編輯器 */
+        textarea { width: 100%; flex-grow: 1; border: 1px solid var(--border); border-radius: 10px; padding: 15px; font-size: 14px; line-height: 1.6; resize: none; outline: none; background: var(--input-bg); color: var(--text-main); box-sizing: border-box; }
+        .optimize-box { background: #fdf2f8; border: 1px dashed var(--magic); border-radius: 10px; padding: 12px; margin-bottom: 10px; display: none; }
+        [data-theme="dark"] .optimize-box { background: #351628; }
+
+        /* 管理器與列表 */
+        .manager-ui { padding: 10px; border-top: 2px solid var(--border); background: rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 5px; }
+        .manager-ui input { padding: 6px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; background: var(--input-bg); color: var(--text-main); }
+        .item-card { padding: 10px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; position: relative; border: 1px solid var(--border); font-size: 11px; }
+        .market-card { background: #fffbeb; border-color: #fde68a; color: #1e293b; }
+        [data-theme="dark"] .market-card { background: #334155; border-color: #475569; color: #f1f5f9; }
+        .del-icon { position: absolute; top: 5px; right: 8px; color: var(--danger); cursor: pointer; }
+
+        /* ===== AI Prompt Library / Engine Bridge v3 ===== */
+        .library-toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+        .library-toolbar input,.library-toolbar select{flex:1;min-width:120px;padding:8px;border:1px solid var(--border);border-radius:7px;background:var(--input-bg);color:var(--text-main);font-size:11px;outline:none}
+        .library-toolbar button{padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--bg-panel);color:var(--text-main);cursor:pointer;font-size:11px}
+        .library-toolbar button:hover{border-color:var(--primary);color:var(--primary)}
+        .lib-card{border:1px solid var(--border);border-radius:9px;padding:10px;margin-bottom:7px;background:var(--bg-panel);cursor:pointer;transition:.15s}
+        .lib-card:hover{border-color:var(--primary);transform:translateY(-1px)}
+        .lib-title{font-weight:700;font-size:12px;display:flex;justify-content:space-between;gap:8px}
+        .lib-meta{font-size:9px;color:var(--text-sub);margin-top:4px}
+        .lib-preview{font-size:10px;color:var(--text-sub);margin-top:5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .lib-actions{display:flex;gap:5px;margin-top:7px}
+        .lib-actions button{border:1px solid var(--border);background:var(--bg-body);color:var(--text-main);border-radius:6px;padding:4px 7px;font-size:9px;cursor:pointer}
+        .lib-actions button.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+        .engine-settings{font-size:9px;color:var(--text-sub);margin:5px 0 8px}
+        .engine-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
+        .library-empty{padding:18px;text-align:center;color:var(--text-sub);font-size:11px}
+        .source-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 7px;border-radius:999px;background:var(--bg-body);border:1px solid var(--border);font-size:9px;color:var(--text-sub)}
+        .kbd{font-family:monospace;background:var(--bg-body);border:1px solid var(--border);border-radius:4px;padding:1px 4px}
+        @media(max-width:1000px){.main-layout{grid-template-columns:260px 1fr}.main-layout>.panel:last-child{display:none}}
+    </style>
+</head>
+<body data-theme="light">
+
+<div class="main-layout">
+    <div class="panel">
+        <div class="panel-header"><h3>🏗️ 零件庫 v2.6</h3><button onclick="toggleTheme()" style="border:none;background:none;cursor:pointer;">🌓</button></div>
+        <div class="scroll-area" id="partsContainer"></div>
+        
+        <div class="manager-ui">
+            <input type="text" id="newCat" placeholder="分類 (如: 👤角色)">
+            <input type="text" id="newName" placeholder="名稱 (如: 專家)">
+            <input type="text" id="newText" placeholder="Prompt 內容">
+            <button class="btn" style="background:var(--primary); padding:5px;" onclick="addPart()">新增零件</button>
+        </div>
+
+        <div class="panel-header" style="border-top:1px solid var(--border)"><h3>⏳ 版本紀錄</h3></div>
+        <div class="scroll-area" id="historyList"></div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <h3>📝 編輯中心</h3>
+            <div style="display:flex; gap:5px;">
+                <button class="btn" style="background:var(--magic); padding:5px 10px;" onclick="magicOpt('text')">🪄 文字優化</button>
+                <button class="btn" style="background:var(--draw); padding:5px 10px;" onclick="magicOpt('draw')">🎨 繪圖優化</button>
+            </div>
+        </div>
+        
+        <div class="scroll-area" style="display:flex; flex-direction:column;">
+            <div class="ai-bridge" id="engineBridge"></div>
+            <div class="engine-settings">
+                一鍵模式：會先複製目前 Prompt，再開啟 AI。由於瀏覽器的跨網站安全限制，普通 HTML 無法直接把文字自動貼入 ChatGPT / Claude 等第三方輸入框；你只需在新頁面按 <span class="kbd">Ctrl+V</span> / <span class="kbd">⌘V</span>。
+            </div>
+
+            <div class="library-toolbar">
+                <input id="promptSearch" placeholder="🔎 搜尋 Prompt / 關鍵字..." oninput="renderPromptLibrary()">
+                <select id="promptCategory" onchange="renderPromptLibrary()">
+                    <option value="">全部分類</option>
+                </select>
+                <button onclick="toggleFavorites()">★ 收藏</button>
+                <button onclick="document.getElementById('promptFileIn').click()">📥 匯入 JSON</button>
+                <input type="file" id="promptFileIn" accept=".json" style="display:none" onchange="importPromptLibrary(this)">
+            </div>
+            <div id="promptStats" class="engine-settings"></div>
+            <div id="promptLibrary"></div>
+            <div class="library-toolbar" style="margin-top:6px">
+                <button onclick="openAiShort()">🌐 開啟 AiShort</button>
+                <button onclick="exportPromptLibrary()">📤 匯出我的 Prompt</button>
+            </div>
+
+            <div class="lang-grid">
+                <button class="btn-lang" style="background:var(--lang-zh)" onclick="translateTo('zh-TW')">繁中</button>
+                <button class="btn-lang" style="background:var(--lang-en)" onclick="translateTo('en')">EN</button>
+                <button class="btn-lang" style="background:var(--lang-ja)" onclick="translateTo('ja')">JA</button>
+                <button class="btn-lang" style="background:#475569" onclick="translateTo('de')">DE</button>
+                <button class="btn-lang" style="background:#ec4899" onclick="translateTo('ko')">KO</button>
+                <button class="btn-lang" style="background:#6366f1" onclick="translateTo('fr')">FR</button>
+            </div>
+
+            <div id="optBox" class="optimize-box">
+                <div id="optPreview" style="font-size:11px; color:var(--text-sub); margin-bottom:8px;"></div>
+                <button class="btn" style="background:var(--magic); padding:4px 8px; font-size:10px;" onclick="applyOpt()">✅ 採納優化</button>
+            </div>
+
+            <textarea id="mainPrompt" placeholder="在這裡編寫你的 Prompt..." oninput="autoSave()"></textarea>
+            
+            <div style="display:flex; justify-content:space-between; margin-top:8px;">
+                <button class="tag-item" onclick="clearVars()">🧹 清空 [ ]</button>
+                <div style="font-size:11px; color:var(--text-sub)">字數: <span id="wCount">0</span></div>
+            </div>
+
+            <div class="btn-grid">
+                <button class="btn" style="background:var(--primary)" onclick="copyText()">📋 複製</button>
+                <button class="btn" style="background:var(--market)" onclick="saveMarket()">🌟 存市場</button>
+                <button class="btn" style="background:#dc2626" onclick="exportPDF()">📄 PDF</button>
+                <button class="btn" style="background:#64748b" onclick="resetAll()">🧹 清空</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <h3>🛒 我的市場</h3>
+            <div style="display:flex; gap:5px;">
+                <button onclick="exportJSON()" title="備份零件與市場">📤</button>
+                <button onclick="document.getElementById('fIn').click()" title="導入備份">📥</button>
+                <input type="file" id="fIn" style="display:none" onchange="importJSON(this)">
+            </div>
+        </div>
+        <div class="scroll-area" id="mktList"></div>
+    </div>
+</div>
+
+<script>
+    const AI_ENGINES = [
+        {id:"chatgpt",name:"ChatGPT",url:"https://chatgpt.com",color:"#10a37f",shortcut:"GPT"},
+        {id:"claude",name:"Claude",url:"https://claude.ai",color:"#d97706",shortcut:"CL"},
+        {id:"gemini",name:"Gemini",url:"https://gemini.google.com",color:"#4285f4",shortcut:"GM"},
+        {id:"perplexity",name:"Perplexity",url:"https://www.perplexity.ai",color:"#20b2aa",shortcut:"PX"},
+        {id:"grok",name:"Grok",url:"https://grok.com",color:"#000",shortcut:"GK"},
+        {id:"deepseek",name:"DeepSeek",url:"https://chat.deepseek.com",color:"#60a5fa",shortcut:"DS"},
+        {id:"lumo",name:"Proton Lumo",url:"https://lumo.proton.me/",color:"#6d4aff",shortcut:"LU"},
+        {id:"duck",name:"Duck.ai",url:"https://duck.ai/",color:"#de5833",shortcut:"DA"}
+    ];
+
+    const DEFAULT_PROMPT_LIBRARY = [
+        {id:"p1",title:"分析拆解",category:"Analysis",tags:["research","analysis","廣東話"],prompt:"用廣東話分析拆解 [書/文章/影片]。先列出核心論點，再拆解假設、證據、反論、實際應用，最後用 [6000] 字總結。"},
+        {id:"p2",title:"先理解後建議",category:"Reasoning",tags:["reasoning"],prompt:"請先解釋你對以下 [問題] 的理解，列出關鍵假設與限制，然後再給出具體、可執行的建議。"},
+        {id:"p3",title:"第一原理分析",category:"Reasoning",tags:["first-principles"],prompt:"運用第一原理重新拆解 [現象/問題]：1. 已知事實 2. 基本假設 3. 因果鏈 4. 可驗證預測 5. 最可能結論。"},
+        {id:"p4",title:"股票研究",category:"Finance",tags:["stocks","DCF"],prompt:"用廣東話分析 [股票/公司]：fundamental analysis、technical analysis、DCF 合理價值、同業比較、競爭優勢、主要風險及未來 2–3 年催化劑。"},
+        {id:"p5",title:"新聞深度研究",category:"Research",tags:["news","macro"],prompt:"研究 [主題]。分開「已證實事實」「市場觀點」「推測」，列出支持與反對證據，最後說明最值得留意的 5 個變化。"},
+        {id:"p6",title:"技術文件給初學者",category:"Learning",tags:["education","beginner"],prompt:"將以下 [技術文檔] 解釋給 [初學者]：先用白話講，再逐步拆解概念，加入例子、常見誤解及一個小測驗。"},
+        {id:"p7",title:"會議摘要",category:"Productivity",tags:["meeting"],prompt:"幫我總結以下會議紀錄。用 Bullet points 列出：1. 核心決議 2. Action Items 3. 負責人 4. Deadline 5. 未解決問題。"},
+        {id:"p8",title:"內容潤色",category:"Writing",tags:["rewrite","business"],prompt:"請將以下 [內容] 潤色成 [商務/專業/幽默] 風格。保留原意，改善結構、清晰度、說服力及可讀性。"},
+        {id:"p9",title:"方案比較",category:"Planning",tags:["decision"],prompt:"針對 [主題] 提出 [3] 個方案，以表格比較成本、收益、風險、執行難度、時間及適用情境，最後給出推薦方案與理由。"},
+        {id:"p10",title:"輸出格式控制",category:"Output",tags:["table","json"],prompt:"請將結果用 [表格/JSON/CSV] 輸出，必須包含以下欄位：[欄位名稱]。不要遺漏資料，不要加入無關內容。"},
+        {id:"p11",title:"Prompt Engineer",category:"Prompt Engineering",tags:["prompt"],prompt:"你而家係資深 Prompt Engineer。將以下需求改寫成清晰、可驗證、低歧義的 Prompt，加入角色、目標、背景、限制、輸出格式及成功標準。"},
+        {id:"p12",title:"圖片生成 Prompt",category:"Image",tags:["image","visual"],prompt:"將以下構想轉化成高質素 image-generation prompt：主體、人物、服裝、姿勢、場景、鏡頭、光線、材質、構圖、風格及負面要求：[內容]。"}
+    ];
+    let promptLibrary = JSON.parse(localStorage.getItem('rtcros-prompt-library')) || DEFAULT_PROMPT_LIBRARY;
+    let favoritePrompts = JSON.parse(localStorage.getItem('rtcros-prompt-favorites')) || [];
+    let showFavoritesOnly = false;
+
+    let myParts = JSON.parse(localStorage.getItem('rtcros-parts')) || [
+        { cat: "👤 角色", name: "資深專家", text: "你而家係一名資深 [職位/財經] 專家，擁有超過 [10] 年經驗。" },
+        { cat: "👤 角色", name: "毒舌評論員", text: "你而家係一名[某領域]毒舌評論員。" },
+        { cat: "👤 角色", name: "專家辯論", text: "想像一下，一群[某領域]專家正在討論這個問題。不同的專家會在哪些方面有分歧？" },
+        { cat: "👤 角色", name: "講故事官", text: "你而家係一名首席講故事官Chief StoryTeller。" },
+        { cat: "👤 角色", name: "人物模仿", text: "你而家係 [某著名人物] 的分身，請模仿其口吻。" },
+        { cat: "👤 角色", name: "翻譯官", text: "你而家係一名 [語言] 翻譯官，專精於在地化" },
+        { cat: "🎯 任務", name: "分析拆解", text: "用廣東話分析拆解書/文章/影片 [內容]。用[6000]字總結以上内容" },
+        { cat: "🎯 任務", name: "教我", text: "用guided learning，一步一步教我日語[內容]" },
+        { cat: "🎯 任務", name: "重點新聞", text: "今天/下周[AI/財經/娛樂]重點新聞" },
+        { cat: "🎯 任務", name: "潤色風格", text: "請幫我將 [內容] 潤色成 [商務/幽默] 風格" },
+        { cat: "🎯 任務", name: "IG1", text: "A professional and clean modern business infographic template, with [three] distinct [vertical columns], flat vector illustration style. Each column has a large placeholder circle for an icon at the top and a structured rectangular container for text below. The colors are [Blue, Purple, and Green] from left to right. The background is a clean, abstract tech pattern. High quality, zero text or characters. title:[標題]  [內容]。" },
+        { cat: "🎯 任務", name: "IG2", text: "What is the main topic or message of the infographic? What is the desired style or tone? (e.g., modern/clean, playful/cartoonish, minimalist, corporate/professional, illustrative/vintage) What specific information or key points must be included? The more detailed you are, the better the infographic will reflect your specific needs.Who is the intended audience? (e.g., children, professionals, general public, students)Is there any specific data, quotes, or visuals you want incorporated?" },
+        { cat: "🎯 任務", name: "內容總結", text: "將以下 [技術文檔] 總結給 [初學者] 睇。" },
+        { cat: "🎯 任務", name: "分析股票", text: "用廣東話分析拆解 1 fundamental analysis and technical analysis of US stock VRT,  2 你計下佢現價嘅合理價值DCF 估），3 想睇下佢同同類股. 例如 ADI, TXN 嘅對比,  4 想我幫你睇埋 VRT 嚟緊個季嘅「期權異動」，睇下大戶博佢升到幾多" },
+        { cat: "🎯 任務", name: "方案撰寫", text: "針對 [主題]，撰寫一份包含 [3] 個方案的計劃。" },
+        { cat: "🧠 Reasoning (推理邏輯)", name: "先理解後建議", text: "請先解釋你對 [問題] 的理解，然後再給出建議。" },
+        { cat: "🧠 Reasoning (推理邏輯)", name: "思維框架", text: "運用 [第一原理/SCAMPER] 框架來分析 [現象]。" },
+        { cat: "🧠 Reasoning (推理邏輯)", name: "假設標註", text: "請逐步思考，並標註出每個步驟的 [假設]。" },
+        { cat: "📊 Output (格式與終止)", name: "格式指定", text: "請用 [表格/JSON/CSV] 輸出，並確保包含 [欄位名稱]。" },
+        { cat: "📊 Output (格式與終止)", name: "極簡輸出", text: "寫完 [重點] 就停，唔好講任何開場白。" },
+        { cat: "Image", name: "Theme", text: "A masterpiece, of the highest quality, ultra-detailed, high-resolution, photorealistic." },
+        { cat: "Image", name: "Actor", text: "A 21-year-old Hong Kong woman, with a sweet and friendly smile, revealing white teeth, bright eyes, and natural makeup of light pink lipstick and blush, her brown hair tied in a high ponytail, exudes enthusiasm and cheerfulness." }, 
+        { cat: "Image", name: "Wear1", text: "She wears a McDonalds Hong Kong employee uniform, a bright pink short-sleeved polo shirt with the McDonalds logo printed on the chest, a grey-green triangular scarf neatly tied around her neck, and a black skirt or apron skirt, the hem of which reveals black trousers or a skirt, a name tag is optional." },
+        { cat: "Image", name: "Arm", text: "Her arms are crossed in front of her chest, her posture confident." },
+        { cat: "Image", name: "Back1", text: "She stands in front of a row of tall, white self-service ordering machines in a Hong Kong McDonalds restaurant. Large vertical touchscreens display Chinese menus for Fried Chicken, Crispy Fried Food, and promotional images of fried chicken nuggets, a green Safety button, a red Checkout button, and payment icons for Visa, Octopus, and other cards. " },
+        { cat: "Image", name: "Back2", text: "Next to the ordering machines are yellow promotional pillars/signs, prominently displaying in Chinese Movie Ordering Time and Order Here, in vibrant colors. Stickers, posters, fried food, and drinks are displayed against the backdrop of a modern McDonalds restaurant interior. The distinctive red and black walls, counter, kitchen area, blurred employees, and masked customers are all visible." },
+        { cat: "Image", name: "Light", text: "Warm, bright LED lighting from chandeliers and ceiling spotlights, along with reflective dark wood floor tiles, create an urban fast-food atmosphere." },
+        { cat: "Image", name: "Shot", text: "A medium-length full-body shot, taken from a slightly low angle, at eye level with the customers, showcases the employees energetic and proud demeanor. The knitted texture of their sweaters is clearly visible, with V-neck folds and soft shadows, realistic skin pores and fine beads of sweat, radiant smiles, and sparkling eyes. The clear reflection of text and icons on the kiosk, the yellow pillars, and the smooth surfaces all contribute to the cinematic color grading, capturing the vibrant Hong Kong McDonalds palette, dominated by gray, yellow, red, and black. Shot using a Fujifilm X-T5 or Canon EOS R6, with slight professional graininess and 8K resolution." }, 
+        { cat: "⚡ Daily Use", name: "會議摘要", text: "幫我總結呢段會議紀錄。要求：用 Bullet points 列出 1. 核心決議、2. 待辦事項 (Action Items)、3. 負責人及期限。" },
+        { cat: "⚡ Daily Use", name: "內容擴充", text: "根據我提供嘅核心[重點]，將其擴充成一段結構完整、邏輯嚴密嘅論述。要求：增加細節描述，令內容更有說服力" },
+    ];
+    let market = JSON.parse(localStorage.getItem('rtcros-market')) || [];
+    let history = JSON.parse(localStorage.getItem('rtcros-history')) || [];
+    let tempOpt = "", saveTimer;
+
+    // --- 介面渲染 ---
+    function renderParts() {
+        const container = document.getElementById('partsContainer');
+        container.innerHTML = '';
+        const cats = [...new Set(myParts.map(p => p.cat))];
+        cats.forEach(c => {
+            const group = document.createElement('div');
+            group.className = 'cat-group active';
+            group.innerHTML = `<button class="cat-header" onclick="this.parentElement.classList.toggle('active')">${c} <span>▾</span></button><div class="cat-content"></div>`;
+            const content = group.querySelector('.cat-content');
+            myParts.filter(p => p.cat === c).forEach((p, i) => {
+                const tag = document.createElement('div');
+                tag.className = 'tag-item';
+                tag.innerHTML = `<span onclick="addText('${p.text}')">${p.name}</span><span class="tag-del" onclick="delPart(${myParts.indexOf(p)})">✕</span>`;
+                content.appendChild(tag);
+            });
+            container.appendChild(group);
+        });
+    }
+
+    function renderHistory() {
+        const l = document.getElementById('historyList');
+        l.innerHTML = history.map((h, i) => `<div class="item-card" onclick="loadHist(${i})"><div style="font-size:9px;color:var(--text-sub)">${h.time}</div><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h.content}</div></div>`).join('');
+    }
+
+    function renderMarket() {
+        const l = document.getElementById('mktList');
+        l.innerHTML = market.map((m, i) => `<div class="item-card market-card" onclick="loadMkt(${i})"><div class="del-icon" onclick="delMkt(event, ${i})">✕</div><strong>${m.name}</strong><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.content}</div></div>`).join('');
+    }
+
+    // --- 核心功能 ---
+    function addText(t) { const a = document.getElementById('mainPrompt'); a.value += t + "\n"; updateWC(); }
+    function updateWC() { document.getElementById('wCount').innerText = document.getElementById('mainPrompt').value.length; }
+    function copyText() { navigator.clipboard.writeText(document.getElementById('mainPrompt').value); alert("已複製！"); }
+    function copyTextw() { navigator.clipboard.writeText(document.getElementById('mainPrompt').value);}
+    function clearVars() { document.getElementById('mainPrompt').value = document.getElementById('mainPrompt').value.replace(/\[.*?\]/g, "[ ]"); }
+    function resetAll() { if(confirm("確定清空？")) document.getElementById('mainPrompt').value = ""; updateWC(); }
+    function toggleTheme() { const n = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', n); localStorage.setItem('rtcros-theme', n); }
+    function sendToAI(url) {
+        const prompt = document.getElementById('mainPrompt').value.trim();
+        if(!prompt){ alert("請先輸入或選擇 Prompt。"); return; }
+        copyTextw();
+        const w = window.open(url, '_blank', 'noopener,noreferrer');
+        if(!w){ alert("瀏覽器阻擋了新視窗，請允許本網站開啟新分頁。"); }
+    }
+
+    function renderEngines(){
+        const box=document.getElementById('engineBridge');
+        box.innerHTML=AI_ENGINES.map(e=>`<button class="btn-ai" style="background:${e.color}" title="複製 Prompt + 開啟 ${e.name}" onclick="sendToAI('${e.url}')">${e.name}</button>`).join('');
+    }
+
+    function escapeHTML(s){
+        return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    }
+    function normalizePrompt(p,i=0){
+        return {
+            id:p.id || ('import-'+Date.now()+'-'+i),
+            title:p.title || p.name || 'Untitled Prompt',
+            category:p.category || p.cat || 'Imported',
+            tags:Array.isArray(p.tags)?p.tags:(p.tags?[String(p.tags)]:[]),
+            prompt:p.prompt || p.text || p.content || ''
+        };
+    }
+    function renderPromptLibrary(){
+        const q=(document.getElementById('promptSearch').value||'').trim().toLowerCase();
+        const cat=document.getElementById('promptCategory').value;
+        let items=promptLibrary.filter(p=>{
+            const hay=[p.title,p.category,p.prompt,...(p.tags||[])].join(' ').toLowerCase();
+            return (!q||hay.includes(q)) && (!cat||p.category===cat) &&
+                   (!showFavoritesOnly||favoritePrompts.includes(p.id));
+        });
+        document.getElementById('promptStats').innerHTML=`${items.length} / ${promptLibrary.length} 個 Prompt <span class="source-pill">Local Library</span> <span class="source-pill">可匯入 AiShort JSON</span>`;
+        const el=document.getElementById('promptLibrary');
+        if(!items.length){el.innerHTML='<div class="library-empty">找不到 Prompt。試下其他關鍵字，或者匯入 JSON。</div>';return;}
+        el.innerHTML=items.map(p=>`
+            <div class="lib-card" onclick="loadPrompt('${escapeHTML(p.id)}')">
+              <div class="lib-title"><span>${escapeHTML(p.title)}</span><span onclick="toggleFavorite(event,'${escapeHTML(p.id)}')" style="cursor:pointer">${favoritePrompts.includes(p.id)?'★':'☆'}</span></div>
+              <div class="lib-meta">${escapeHTML(p.category)} · ${(p.tags||[]).map(escapeHTML).join(' · ')}</div>
+              <div class="lib-preview">${escapeHTML(p.prompt)}</div>
+              <div class="lib-actions">
+                <button class="primary" onclick="usePrompt(event,'${escapeHTML(p.id)}')">⚡ 使用</button>
+                <button onclick="copyPrompt(event,'${escapeHTML(p.id)}')">📋 Copy</button>
+                <button onclick="editPrompt(event,'${escapeHTML(p.id)}')">✏️ 編輯</button>
+              </div>
+            </div>`).join('');
+    }
+    function loadPrompt(id){
+        const p=promptLibrary.find(x=>String(x.id)===String(id)); if(!p)return;
+        document.getElementById('mainPrompt').value=p.prompt; updateWC();
+    }
+    function usePrompt(e,id){
+        e.stopPropagation(); loadPrompt(id);
+        document.getElementById('mainPrompt').focus();
+        document.getElementById('mainPrompt').scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    async function copyPrompt(e,id){
+        e.stopPropagation(); const p=promptLibrary.find(x=>String(x.id)===String(id)); if(!p)return;
+        await navigator.clipboard.writeText(p.prompt); alert('Prompt 已複製！');
+    }
+    function toggleFavorite(e,id){
+        e.stopPropagation();
+        favoritePrompts=favoritePrompts.includes(id)?favoritePrompts.filter(x=>x!==id):[...favoritePrompts,id];
+        localStorage.setItem('rtcros-prompt-favorites',JSON.stringify(favoritePrompts)); renderPromptLibrary();
+    }
+    function toggleFavorites(){showFavoritesOnly=!showFavoritesOnly;renderPromptLibrary();}
+    function editPrompt(e,id){
+        e.stopPropagation(); const p=promptLibrary.find(x=>String(x.id)===String(id)); if(!p)return;
+        const title=prompt('Prompt 名稱',p.title); if(title===null)return;
+        const promptText=window.prompt('Prompt 內容',p.prompt); if(promptText===null)return;
+        p.title=title||p.title; p.prompt=promptText||p.prompt;
+        localStorage.setItem('rtcros-prompt-library',JSON.stringify(promptLibrary));renderPromptLibrary();
+    }
+    function populatePromptCategories(){
+        const sel=document.getElementById('promptCategory');
+        const cats=[...new Set(promptLibrary.map(p=>p.category))].sort();
+        sel.innerHTML='<option value="">全部分類</option>'+cats.map(c=>`<option>${escapeHTML(c)}</option>`).join('');
+    }
+    function exportPromptLibrary(){
+        const blob=new Blob([JSON.stringify(promptLibrary,null,2)],{type:'application/json'});
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='RTCROS_Prompt_Library.json';a.click();URL.revokeObjectURL(a.href);
+    }
+    function importPromptLibrary(input){
+        const file=input.files[0]; if(!file)return;
+        const r=new FileReader();
+        r.onload=e=>{
+            try{
+                const raw=JSON.parse(e.target.result);
+                const arr=Array.isArray(raw)?raw:(raw.prompts||raw.data||raw.items||[]);
+                if(!Array.isArray(arr)||!arr.length)throw new Error('找不到 prompts 陣列');
+                const imported=arr.map(normalizePrompt).filter(p=>p.prompt);
+                promptLibrary=[...promptLibrary,...imported];
+                const seen=new Set(); promptLibrary=promptLibrary.filter(p=>{const k=p.title+'|'+p.prompt;if(seen.has(k))return false;seen.add(k);return true;});
+                localStorage.setItem('rtcros-prompt-library',JSON.stringify(promptLibrary));
+                populatePromptCategories();renderPromptLibrary();alert(`成功匯入 ${imported.length} 個 Prompt。`);
+            }catch(err){alert('JSON 匯入失敗：'+err.message);}
+        };
+        r.readAsText(file); input.value='';
+    }
+    function openAiShort(){window.open('https://www.aishort.top/en','_blank','noopener,noreferrer');}
+
+    // --- 翻譯與優化 ---
+    async function translateTo(lang) {
+        const a = document.getElementById('mainPrompt'); if(!a.value) return;
+        try {
+            const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(a.value)}`);
+            const data = await res.json(); a.value = data[0].map(x => x[0]).join(''); updateWC();
+        } catch(e) { alert("服務繁忙"); }
+    }
+    function magicOpt(type) {
+        const val = document.getElementById('mainPrompt').value.trim(); if(!val) return;
+        if(type === 'draw') tempOpt = val + ", ultra-detailed, 8k, cinematic lighting, masterpiece --ar 16:9";
+        else tempOpt = "你而家係資深 Prompt 工程師，請根據以下內容生成結構嚴謹的指令：\n\n" + val;
+        document.getElementById('optPreview').innerText = tempOpt; document.getElementById('optBox').style.display = 'block';
+    }
+    function applyOpt() { document.getElementById('mainPrompt').value = tempOpt; document.getElementById('optBox').style.display = 'none'; updateWC(); }
+
+    // --- 零件管理 ---
+    function addPart() {
+        const c = document.getElementById('newCat').value || "未分類";
+        const n = document.getElementById('newName').value;
+        const t = document.getElementById('newText').value;
+        if(!n || !t) return;
+        myParts.push({cat:c, name:n, text:t}); localStorage.setItem('rtcros-parts', JSON.stringify(myParts)); renderParts();
+    }
+    function delPart(i) { myParts.splice(i,1); localStorage.setItem('rtcros-parts', JSON.stringify(myParts)); renderParts(); }
+
+    // --- 歷史與市場 ---
+    function autoSave() {
+        updateWC(); clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+            const v = document.getElementById('mainPrompt').value.trim();
+            if(v.length > 5 && (!history[0] || v !== history[0].content)) {
+                history.unshift({time: new Date().toLocaleTimeString(), content: v});
+                if(history.length > 15) history.pop();
+                localStorage.setItem('rtcros-history', JSON.stringify(history)); renderHistory();
+            }
+        }, 3000);
+    }
+    function loadHist(i) { document.getElementById('mainPrompt').value = history[i].content; updateWC(); }
+    function saveMarket() { const n = prompt("命名 Prompt:"); if(n) { market.unshift({name:n, content:document.getElementById('mainPrompt').value}); localStorage.setItem('rtcros-market', JSON.stringify(market)); renderMarket(); } }
+    function loadMkt(i) { document.getElementById('mainPrompt').value = market[i].content; updateWC(); }
+    function delMkt(e, i) { e.stopPropagation(); market.splice(i,1); localStorage.setItem('rtcros-market', JSON.stringify(market)); renderMarket(); }
+
+    // --- 備份 ---
+    function exportJSON() {
+        const data = { parts: myParts, market: market };
+        const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "RTCROS_Full_Backup.json"; a.click();
+    }
+    function importJSON(input) {
+        const r = new FileReader();
+        r.onload = (e) => {
+            const d = JSON.parse(e.target.result);
+            if(d.parts) { myParts = d.parts; market = d.market; localStorage.setItem('rtcros-parts', JSON.stringify(myParts)); localStorage.setItem('rtcros-market', JSON.stringify(market)); renderParts(); renderMarket(); }
+        };
+        r.readAsText(input.files[0]);
+    }
+
+    function exportPDF() {
+        const { jsPDF } = window.jspdf; const doc = new jsPDF();
+        doc.text(doc.splitTextToSize(document.getElementById('mainPrompt').value, 180), 10, 10); doc.save("prompt.pdf");
+    }
+
+    window.onload = () => {
+        document.body.setAttribute('data-theme', localStorage.getItem('rtcros-theme') || 'light');
+        renderParts(); renderHistory(); renderMarket();
+        renderEngines(); populatePromptCategories(); renderPromptLibrary();
+        document.addEventListener('keydown',e=>{
+            if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){
+                e.preventDefault(); document.getElementById('promptSearch').focus();
+            }
+            if(e.key==='Escape') document.getElementById('promptSearch').blur();
+        });
+    };
+</script>
+</body>
+</html>
