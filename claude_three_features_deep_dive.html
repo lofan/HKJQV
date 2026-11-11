@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Claude 三大新功能深度研究｜Whiteboards、Sheets、Interactive Connectors</title>
+<style>
+:root{
+  --bg:#f4f6fb;--panel:#fff;--panel2:#eef2f8;--text:#172033;--muted:#647089;
+  --line:#dce2ec;--accent:#6d5ce8;--accent2:#18a58a;--warn:#d58a24;
+  --shadow:0 12px 34px rgba(22,32,55,.08);--code:#f0edff;
+}
+[data-theme="dark"]{
+  --bg:#0c1019;--panel:#151c29;--panel2:#1c2636;--text:#e8edf7;--muted:#a1aec4;
+  --line:#2b374b;--accent:#a99bff;--accent2:#55d6b5;--warn:#ffc36d;
+  --shadow:0 14px 38px rgba(0,0,0,.28);--code:#25213b;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.72 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+button{font:inherit;cursor:pointer}
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.topinner{max-width:1240px;margin:auto;padding:12px 22px;display:flex;align-items:center;gap:14px}
+.brand{font-weight:800;letter-spacing:.02em;white-space:nowrap}
+.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:8px 12px;font-weight:650}
+.btn:hover{border-color:var(--accent)}
+.search{width:min(30vw,310px);border:1px solid var(--line);background:var(--panel);color:var(--text);padding:9px 12px;border-radius:12px;outline:none}
+.search:focus{border-color:var(--accent)}
+.layout{max-width:1240px;margin:auto;padding:28px 22px 70px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:28px}
+.sidebar{position:sticky;top:82px;align-self:start;max-height:calc(100vh - 100px);overflow:auto;padding:16px;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.sidebar h3{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:0 0 10px}
+.sidebar a{display:block;padding:7px 10px;border-radius:9px;color:var(--muted);font-size:14px}
+.sidebar a:hover,.sidebar a.active{background:var(--panel2);color:var(--text);text-decoration:none}
+main{min-width:0}
+.hero{border:1px solid var(--line);border-radius:26px;padding:34px;background:linear-gradient(135deg,var(--panel),var(--panel2));box-shadow:var(--shadow);overflow:hidden;position:relative}
+.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+h1{font-size:clamp(30px,4vw,48px);line-height:1.18;letter-spacing:-.035em;margin:10px 0 14px}
+.lead{font-size:18px;color:var(--muted);max-width:780px}
+.hero-art{width:100%;max-height:220px;margin-top:22px;display:block}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);padding:5px 10px;border-radius:99px;color:var(--muted);font-size:12px}
+section{margin-top:42px;scroll-margin-top:90px}
+h2{font-size:28px;line-height:1.3;margin:0 0 16px;letter-spacing:-.02em}
+h3{font-size:20px;margin:24px 0 10px}
+h4{font-size:16px;margin:0 0 8px}
+p{margin:10px 0}
+.muted{color:var(--muted)}
+.callout{border-left:4px solid var(--accent);background:var(--panel);padding:16px 18px;border-radius:0 14px 14px 0;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px;box-shadow:var(--shadow);min-width:0}
+.card p:last-child{margin-bottom:0}
+.feature-art{width:100%;height:150px;display:block;background:var(--panel2);border-radius:13px;margin-bottom:14px}
+.tag{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--accent);text-transform:uppercase}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:14px 0;background:var(--panel);border-radius:14px;overflow:hidden}
+th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--panel2);font-weight:750}
+tr:last-child td{border-bottom:0}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+.table-wrap table{margin:0;min-width:600px}
+.steps{counter-reset:step;display:grid;gap:12px}
+.step{display:grid;grid-template-columns:42px 1fr;gap:13px;align-items:start;background:var(--panel);border:1px solid var(--line);padding:15px;border-radius:15px}
+.step:before{counter-increment:step;content:counter(step);width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--code);color:var(--accent);font-weight:850}
+.prompt{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px;margin:12px 0}
+.prompt-head{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.prompt p{background:var(--panel2);padding:13px;border-radius:10px;font-size:14px}
+.copy{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:9px;padding:6px 10px;font-size:12px;font-weight:750}
+.copy:hover{border-color:var(--accent)}
+.flow{display:grid;grid-template-columns:1fr 42px 1fr 42px 1fr;align-items:center;gap:8px;margin:18px 0}
+.flowbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;text-align:center}
+.arrow{text-align:center;color:var(--accent);font-size:24px}
+.kpi{font-size:27px;font-weight:850;color:var(--accent);line-height:1.2}
+.risk{border-left:4px solid var(--warn)}
+footer{margin-top:52px;padding:22px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+#noResults{display:none;padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+mark{background:#ffe08a;color:#302300;padding:0 2px;border-radius:3px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{position:relative;top:auto;max-height:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px}.sidebar h3{grid-column:1/-1}.grid.three{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.topinner{padding:10px 12px;flex-wrap:wrap}.brand{font-size:14px}.search{order:3;width:100%}.top-actions{gap:5px}.btn{padding:7px 9px;font-size:13px}.layout{padding:16px 12px 48px;gap:16px}.sidebar{grid-template-columns:1fr 1fr;padding:12px}.hero{padding:23px 19px}.lead{font-size:16px}.grid,.grid.three{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}h2{font-size:24px}}
+@media print{.topbar,.sidebar,.copy,.search{display:none!important}.layout{display:block;padding:0}.hero,.card{box-shadow:none;break-inside:avoid}body{background:white;color:#111}}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="topinner">
+  <div class="brand">AI WORKFLOW BRIEFING</div>
+  <input id="search" class="search" type="search" placeholder="搜尋本文內容…" aria-label="搜尋本文內容">
+  <div class="top-actions">
+   <button class="btn" id="themeBtn" aria-label="切換深色模式">☀️ / 🌙</button>
+   <button class="btn" onclick="window.print()">列印 / PDF</button>
+  </div>
+ </div>
+</header>
+<div class="layout">
+<nav class="sidebar" aria-label="文章導覽">
+ <h3>快速導覽</h3>
+ <a href="#overview">總覽與核心判斷</a>
+ <a href="#whiteboards">01｜Whiteboards 白板</a>
+ <a href="#sheets">02｜Sheets 試算表</a>
+ <a href="#connectors">03｜Interactive Connectors</a>
+ <a href="#prompts">10 個實戰 Prompt</a>
+ <a href="#comparison">三大平台比較</a>
+ <a href="#impact">軟件公司商業衝擊</a>
+ <a href="#investment">投資機會與風險</a>
+ <a href="#newsroom">咩事新聞室工作流</a>
+ <a href="#conclusion">五大戰略結論</a>
+ <a href="#sources">官方資料</a>
+</nav>
+<main id="content">
+<section class="hero" id="overview">
+ <div class="eyebrow">Claude product & industry analysis · 2026.11.11</div>
+ <h1>Claude 三大新功能深度研究</h1>
+ <p class="lead">Whiteboards、Sheets、Interactive Connectors：從 AI 聊天工具走向 AI 工作平台，拆解技術、實戰、競爭格局與投資影響。</p>
+ <div class="meta"><span class="pill">繁體中文・廣東話分析</span><span class="pill">產品研究</span><span class="pill">AI Agent</span><span class="pill">SaaS 投資觀察</span></div>
+ <svg class="hero-art" viewBox="0 0 900 220" role="img" aria-label="AI 工作平台連接白板、試算表及第三方應用程式的示意圖">
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#7967ef"/><stop offset="1" stop-color="#24b99b"/></linearGradient></defs>
+  <rect x="10" y="18" width="880" height="184" rx="24" fill="none" stroke="currentColor" opacity=".15"/>
+  <rect x="42" y="52" width="190" height="112" rx="14" fill="#7967ef" opacity=".18" stroke="#8e80ff"/>
+  <rect x="355" y="52" width="190" height="112" rx="14" fill="#24b99b" opacity=".16" stroke="#24b99b"/>
+  <rect x="668" y="52" width="190" height="112" rx="14" fill="#d99a3c" opacity=".16" stroke="#d99a3c"/>
+  <g fill="none" stroke="url(#g)" stroke-width="4" stroke-linecap="round"><path d="M235 108 H344"/><path d="M548 108 H657"/></g>
+  <g fill="url(#g)"><path d="M336 99l12 9-12 9z"/><path d="M649 99l12 9-12 9z"/></g>
+  <g fill="currentColor" font-family="sans-serif" text-anchor="middle"><text x="137" y="93" font-size="19" font-weight="700">Whiteboards</text><text x="137" y="122" font-size="13" opacity=".7">思考・流程・協作</text><text x="450" y="93" font-size="19" font-weight="700">Sheets</text><text x="450" y="122" font-size="13" opacity=".7">數據・公式・模型</text><text x="763" y="93" font-size="19" font-weight="700">Connectors</text><text x="763" y="122" font-size="13" opacity=".7">外部工具・執行</text></g>
+ </svg>
+ <div class="callout"><strong>核心判斷：</strong>未來 AI 平台的競爭，不再只是誰的模型最聰明，而是誰能成為使用者日常工作的主要入口，並可靠地調用資料、軟件及執行能力。</div>
+</section>
+
+<section>
+ <h2>先看三項功能</h2>
+ <div class="grid three">
+  <article class="card">
+   <svg class="feature-art" viewBox="0 0 300 150" role="img" aria-label="白板便利貼與時間線示意圖">
+    <rect x="18" y="18" width="264" height="114" rx="12" fill="none" stroke="#8d80f7" stroke-width="2"/>
+    <rect x="34" y="34" width="62" height="38" rx="5" fill="#f3ce72"/><rect x="112" y="34" width="62" height="38" rx="5" fill="#8bd7c3"/><rect x="190" y="34" width="62" height="38" rx="5" fill="#b9b0ff"/>
+    <path d="M65 92H235" stroke="#8d80f7" stroke-width="3" stroke-linecap="round"/><circle cx="65" cy="92" r="6" fill="#8d80f7"/><circle cx="150" cy="92" r="6" fill="#8d80f7"/><circle cx="235" cy="92" r="6" fill="#8d80f7"/>
+   </svg>
+   <div class="tag">01 · Think visually</div><h3>Whiteboards 白板</h3><p>將零散想法、會議便利貼及任務整理成主題分組、時間線、責任人與行動清單。</p>
+  </article>
+  <article class="card">
+   <svg class="feature-art" viewBox="0 0 300 150" role="img" aria-label="試算表格與公式示意圖">
+    <rect x="26" y="18" width="248" height="114" rx="10" fill="none" stroke="#24a98d" stroke-width="2"/>
+    <path d="M26 48H274M26 76H274M26 104H274M88 18V132M150 18V132M212 18V132" stroke="#24a98d" opacity=".65"/>
+    <rect x="90" y="50" width="58" height="24" rx="3" fill="#24a98d" opacity=".25"/><rect x="152" y="78" width="58" height="24" rx="3" fill="#24a98d" opacity=".25"/>
+    <g fill="currentColor" opacity=".7" font-size="11"><text x="36" y="39">Asset</text><text x="99" y="39">Price</text><text x="161" y="39">Qty</text><text x="222" y="39">P/L</text></g>
+   </svg>
+   <div class="tag">02 · Work with data</div><h3>Sheets 試算表</h3><p>用自然語言建立有分頁、公式、下拉選單及格式的表格，並可檢視 AI 修改的儲存格。</p>
+  </article>
+  <article class="card">
+   <svg class="feature-art" viewBox="0 0 300 150" role="img" aria-label="AI 連接多個應用程式示意圖">
+    <circle cx="150" cy="75" r="29" fill="#8274ed" opacity=".22" stroke="#8274ed" stroke-width="2"/>
+    <g fill="none" stroke="#8274ed" stroke-width="3"><path d="M150 45V22M178 75H252M122 75H48M150 105V128"/></g>
+    <g fill="#24a98d"><rect x="123" y="8" width="54" height="24" rx="6"/><rect x="226" y="63" width="54" height="24" rx="6"/></g>
+    <g fill="#d99a3c"><rect x="20" y="63" width="54" height="24" rx="6"/><rect x="123" y="118" width="54" height="24" rx="6"/></g>
+    <text x="150" y="80" text-anchor="middle" fill="currentColor" font-size="11" font-weight="700">AI</text>
+   </svg>
+   <div class="tag">03 · Take action</div><h3>Interactive Connectors</h3><p>將 Adobe、Notion、Confluence、Box 等合作應用程式的互動介面帶進 Claude 工作空間。</p>
+  </article>
+ </div>
+</section>
+
+<section id="whiteboards">
+ <div class="eyebrow">01 · Visual thinking</div><h2>Whiteboards：由聊天變成視覺化思考平台</h2>
+ <p>傳統流程通常是先跟 AI 討論，再複製內容到 Miro 或 Notion，然後自行分類、畫流程及安排責任人。Whiteboards 的方向，是把整理與視覺化直接放進 Claude 的工作空間。</p>
+ <div class="grid">
+  <div class="card"><h3>可以做甚麼？</h3><ul><li>將口述或文字想法整理成主題</li><li>建立 Timeline、流程圖及任務清單</li><li>把檢討會便利貼按主題分組</li><li>列出負責人、期限及待辦事項</li><li>在畫布上繼續修改及協作</li></ul></div>
+  <div class="card"><h3>典型使用場景</h3><ul><li>商業策劃與項目管理</li><li>新聞事件時間線及人物關係</li><li>投資產業鏈及競爭圖</li><li>會議檢討與改善方案</li><li>讀書筆記與知識地圖</li></ul></div>
+ </div>
+ <h3>背後的工作流程</h3>
+ <div class="steps">
+  <div class="step"><div><strong>自然語言輸入</strong><div class="muted">語音、文字、草圖、便利貼或會議內容。</div></div></div>
+  <div class="step"><div><strong>語意理解與分類</strong><div class="muted">辨認主題、關係、任務、時間及責任人。</div></div></div>
+  <div class="step"><div><strong>視覺化生成</strong><div class="muted">組成節點、箭嘴、分組及時間線。</div></div></div>
+  <div class="step"><div><strong>人工與 AI 持續協作</strong><div class="muted">人手修正，再要求 Claude 重組或延伸。</div></div></div>
+ </div>
+ <div class="callout risk"><strong>限制與風險：</strong>AI 可能把推測當事實；自動分組不等於正確因果關係；Beta 功能可能改變。正式研究仍要核對來源及事件日期。</div>
+ <div class="callout"><strong>對《咩事新聞室》的用途：</strong>先將美國政策、中國反應、供應鏈、企業、香港角色及市場影響放在同一張事件地圖，再整理成影片腳本大綱。</div>
+</section>
+
+<section id="sheets">
+ <div class="eyebrow">02 · Spreadsheet intelligence</div><h2>Sheets：AI 進入試算表工作核心</h2>
+ <p>Claude Sheets 的吸引力，在於使用者不必先懂得所有公式或試算表操作，就可以用白話描述想建立的工作簿。AI 可協助建立分頁、公式、下拉選單及格式，修改時亦可標示變更。</p>
+ <div class="grid">
+  <div class="card"><h3>它處理的結構</h3><ul><li><strong>Schema：</strong>欄位與資料類型</li><li><strong>Formula：</strong>計算邏輯</li><li><strong>Dependency：</strong>欄位依賴關係</li><li><strong>Validation：</strong>資料與公式檢查</li><li><strong>Presentation：</strong>分頁、格式及圖表</li></ul></div>
+  <div class="card"><h3>適合建立的表格</h3><ul><li>投資組合追蹤</li><li>股票估值與情境分析</li><li>CFD 交易日誌</li><li>公司財務比較</li><li>YouTube 內容管理</li><li>宏觀風險監察</li></ul></div>
+ </div>
+ <h3>例子：投資組合公式</h3>
+ <div class="table-wrap"><table><thead><tr><th>指標</th><th>計算方式</th><th>用途</th></tr></thead><tbody>
+ <tr><td>總成本</td><td>買入價 × 持倉數量</td><td>計算投入資金</td></tr>
+ <tr><td>市值</td><td>現價 × 持倉數量</td><td>計算目前資產價值</td></tr>
+ <tr><td>未實現盈虧</td><td>市值 − 總成本</td><td>觀察未平倉盈虧</td></tr>
+ <tr><td>回報率</td><td>(市值 − 總成本) ÷ 總成本</td><td>比較持倉表現</td></tr>
+ </tbody></table></div>
+ <div class="callout risk"><strong>重要限制：</strong>Claude Sheets 不應直接視為完整 Excel 替代品。大型金融模型、VBA、複雜樞紐分析、大量資料處理及審計工作仍需在專業試算表環境驗證。可按實際支援情況匯出 XLSX 或 CSV，再用 Excel 處理。</div>
+ <p><strong>我的判斷：</strong>短期較可能先衝擊大量低至中複雜度的表格工作，而不是取代 Excel 的全部能力。</p>
+</section>
+
+<section id="connectors">
+ <div class="eyebrow">03 · Connected applications</div><h2>Interactive Connectors：AI 直接進入軟件介面</h2>
+ <p>傳統 Connector 常見模式是 AI 搜尋外部資料，再把結果回覆在聊天視窗。Interactive Connectors 的進一步方向，是讓合作應用程式的互動介面直接出現在 Claude 工作空間旁邊，用戶可以自己編輯，也可以要求 Claude 協助操作。</p>
+ <div class="grid three">
+  <div class="card"><h4>Adobe</h4><p class="muted">創意工具、圖片及 PDF 工作流程。</p></div>
+  <div class="card"><h4>Notion</h4><p class="muted">文件、知識庫及資料庫。</p></div>
+  <div class="card"><h4>Atlassian</h4><p class="muted">Jira、Confluence 與團隊流程。</p></div>
+  <div class="card"><h4>Box</h4><p class="muted">企業檔案與內容管理。</p></div>
+  <div class="card"><h4>其他 MCP Apps</h4><p class="muted">可擴展的第三方互動應用。</p></div>
+  <div class="card"><h4>Claude</h4><p class="muted">理解指令、推理、規劃及協調。</p></div>
+ </div>
+ <h3>MCP 與 MCP Apps 的角色</h3>
+ <div class="flow">
+  <div class="flowbox"><strong>Claude AI</strong><br><span class="muted">理解與協調</span></div><div class="arrow">→</div>
+  <div class="flowbox"><strong>MCP / MCP Apps</strong><br><span class="muted">標準化連接層</span></div><div class="arrow">→</div>
+  <div class="flowbox"><strong>第三方軟件</strong><br><span class="muted">資料與執行引擎</span></div>
+ </div>
+ <div class="callout risk"><strong>企業安全要點：</strong>要檢查使用者授權範圍、Connector 工具權限、管理員政策、修改紀錄及版本還原。不能假設所有連接器每次執行修改都會採用相同確認流程。</div>
+ <p><strong>戰略意義：</strong>MCP 的價值在於讓 AI 透過標準化接口使用既有軟件，而不是每個 AI 平台都要重新發明所有工具。</p>
+</section>
+
+<section id="prompts">
+ <div class="eyebrow">Copy & use</div><h2>10 個可直接複製的實戰 Prompt</h2>
+ <p class="muted">按右側「複製 Prompt」即可複製文字。使用時再附上相關資料、文件或數據。</p>
+ <div id="promptList">
+  <div class="prompt"><div class="prompt-head"><h4>01｜Whiteboards：商業項目計劃</h4><button class="copy" data-copy="建立一個互動式 Whiteboard，幫我規劃一個新商業項目。請將想法整理成目標、工作階段、負責人、截止日期、預算及潛在風險。將任務按優先次序排列，並標示哪些資料仍然欠缺。不要自行假設未提供的日期或預算。">複製 Prompt</button></div><p>建立一個互動式 Whiteboard，幫我規劃一個新商業項目。請將想法整理成目標、工作階段、負責人、截止日期、預算及潛在風險。將任務按優先次序排列，並標示哪些資料仍然欠缺。不要自行假設未提供的日期或預算。</p></div>
+  <div class="prompt"><div class="prompt-head"><h4>02｜Whiteboards：新聞事件時間線</h4><button class="copy" data-copy="請將以下新聞事件建立成互動式時間線。分別列出事件日期、人物、機構、政策決定、事件結果及來源。區分已確認事實、媒體報道、當事人聲稱及未經證實的推測。找出事件之間的因果關係，但不要將時間先後當成因果證據。">複製 Prompt</button></div><p>請將以下新聞事件建立成互動式時間線。分別列出事件日期、人物、機構、政策決定、事件結果及來源。區分已確認事實、媒體報道、當事人聲稱及未經證實的推測。找出事件之間的因果關係，但不要將時間先後當成因果證據。</p></div>
+  <div class="prompt"><div class="prompt-head"><h4>03｜Whiteboards：投資產業鏈</h4><button class="copy" data-copy="建立一個產業鏈 Whiteboard，分析 AI 數據中心產業。由晶片、伺服器、散熱、電力、網絡、雲端服務到終端客戶，畫出上下游關係。標示主要企業、收入來源、競爭壁壘、供應瓶頸及潛在風險。將已確認資料與分析假設分開。">複製 Prompt</button></div><p>建立一個產業鏈 Whiteboard，分析 AI 數據中心產業。由晶片、伺服器、散熱、電力、網絡、雲端服務到終端客戶，畫出上下游關係。標示主要企業、收入來源、競爭壁壘、供應瓶頸及潛在風險。將已確認資料與分析假設分開。</p></div>
+  <div class="prompt"><div class="prompt-head"><h4>04｜Whiteboards：會議檢討及改善</h4><button class="copy" data-copy="將以下會議筆記整理成 Whiteboard。請將意見分類為問題、原因、改善方案及待決定事項。為每項行動列出負責人、期限及成功指標。沒有明確負責人的項目請標示為待確認。">複製 Prompt</button></div><p>將以下會議筆記整理成 Whiteboard。請將意見分類為問題、原因、改善方案及待決定事項。為每項行動列出負責人、期限及成功指標。沒有明確負責人的項目請標示為待確認。</p></div>
+  <div class="prompt"><div class="prompt-head"><h4>05｜Whiteboards：建立知識地圖</h4><button class="copy" data-copy="請將這本書的核心思想建立成知識地圖。分成作者主要論點、支持證據、關鍵概念、反對觀點、未解決問題及可實踐的原則。將不同概念之間的關係畫出來，並標示哪些是作者的主張、哪些是你的分析。">複製 Prompt</button></div><p>請將這本書的核心思想建立成知識地圖。分成作者主要論點、支持證據、關鍵概念、反對觀點、未解決問題及可實踐的原則。將不同概念之間的關係畫出來，並標示哪些是作者的主張、哪些是你的分析。</p></div>
+  <div class="prompt"><div class="prompt-head"><h4>06｜Sheets：投資組合管理</h4><button class="copy" data-copy="建立一個投資組合追蹤試算表。需要以下欄位：股票名稱、Ticker、買入日期、買入價格、持倉數量、現價、總成本、市值、未實現盈虧及回報率。建立資產類別分頁，加入總資產及資產配置統計。所有公式請使用可檢查的方式建立，沒有即時價格資料時不要虛構。">複製 Prompt</button></div><p>建立一個投資組合追蹤試算表。需要以下欄位：股票名稱、Ticker、買入日期、買入價格、持倉數量、現價、總成本、市值、未實現盈虧及回報率。建立資產類別分頁，加入總資產及資產配置統計。所有公式請使用可檢查的方式建立，沒有即時價格資料時不要虛構。</p></div>
+  <div class="prompt"><div class="prompt-head"><h4>07｜Sheets：公司財務分析</h4><button class="copy" data-copy="根據我提供的公司財務資料，建立一份三年財務分析試算表。包括收入增長、毛利率、營業利潤率、自由現金流、負債比率及現金流變化。建立 Base、Bull、Bear 三種情境，清楚列出假設，不可將預測數字當成實際業績。">複製 Prompt</button></div><p>根據我提供的公司財務資料，建立一份三年財務分析試算表。包括收入增長、毛利率、營業利潤率、自由現金流、負債比率及現金流變化。建立 Base、Bull、Bear 三種情境，清楚列出假設，不可將預測數字當成實際業績。</p></div>
+  <div class="prompt"><div class="prompt-head"><h4>08｜Sheets：CFD 交易日誌</h4><button class="copy" data-copy="建立一份 CFD 交易日誌，欄位包括交易日期、交易品種、方向、入場價、止蝕價、止賺價、手數、風險金額、實際盈虧、持倉時間及交易心理。自動計算勝率、平均盈虧、Profit Factor、最大回撤及連續虧損次數。將策略執行錯誤與市場正常虧損分開記錄。">複製 Prompt</button></div><p>建立一份 CFD 交易日誌，欄位包括交易日期、交易品種、方向、入場價、止蝕價、止賺價、手數、風險金額、實際盈虧、持倉時間及交易心理。自動計算勝率、平均盈虧、Profit Factor、最大回撤及連續虧損次數。將策略執行錯誤與市場正常虧損分開記錄。</p></div>
+  <div class="prompt"><div class="prompt-head"><h4>09｜Sheets：YouTube 內容管理</h4><button class="copy" data-copy="建立一份 YouTube 頻道內容管理試算表。分頁包括選題、資料來源、腳本、製作進度、發布日期、觀看次數、平均觀看時間、點擊率及訂閱增長。加入影片製作成本、每小時工作量及每條影片的表現比較。建立每月 KPI 摘要。">複製 Prompt</button></div><p>建立一份 YouTube 頻道內容管理試算表。分頁包括選題、資料來源、腳本、製作進度、發布日期、觀看次數、平均觀看時間、點擊率及訂閱增長。加入影片製作成本、每小時工作量及每條影片的表現比較。建立每月 KPI 摘要。</p></div>
+  <div class="prompt"><div class="prompt-head"><h4>10｜Sheets：宏觀風險監察</h4><button class="copy" data-copy="建立一份全球宏觀經濟風險監察表。包括美國利率、通脹、失業率、美元指數、國債孳息率、能源價格、信用利差、AI 資本開支及地緣政治風險。每項指標列出最新數值、資料日期、來源、警戒水平、風險方向及影響市場。缺少數據時標示 N/A，不要自行填入數值。">複製 Prompt</button></div><p>建立一份全球宏觀經濟風險監察表。包括美國利率、通脹、失業率、美元指數、國債孳息率、能源價格、信用利差、AI 資本開支及地緣政治風險。每項指標列出最新數值、資料日期、來源、警戒水平、風險方向及影響市場。缺少數據時標示 N/A，不要自行填入數值。</p></div>
+ </div>
+ <div class="callout"><strong>實戰技巧：</strong>要求 AI 先提出工作簿結構及計算邏輯，待你確認後才修改資料；並要求列出假設、來源及無法確認的欄位。</div>
+</section>
+
+<section id="comparison">
+ <div class="eyebrow">Competitive landscape</div><h2>Claude vs ChatGPT vs Gemini</h2>
+ <p>比較重點不應只放在聊天回答質素，而要看三個平台如何連接工作資料、操作應用程式、執行任務及交付成果。</p>
+ <div class="grid three">
+  <div class="card"><h3>Claude</h3><p class="tag">工作空間整合型</p><p>Whiteboards、Sheets、Artifacts、Interactive Connectors、Cowork 及 MCP Apps，將 AI、內容與第三方應用放在同一工作環境。</p></div>
+  <div class="card"><h3>ChatGPT</h3><p class="tag">多用途 Agent 型</p><p>Work、Apps、深度研究、Agent 工作流程，以及 Excel 和 Google Sheets 整合，強調跨檔案及應用程式完成多步驟工作。</p></div>
+  <div class="card"><h3>Gemini</h3><p class="tag">生態系統原生型</p><p>Gmail、Drive、Docs、Sheets、Slides 與 Gemini 深度整合，並擴展第三方 MCP 整合。</p></div>
+ </div>
+ <div class="table-wrap"><table><thead><tr><th>比較面向</th><th>Claude</th><th>ChatGPT</th><th>Gemini</th></tr></thead><tbody>
+ <tr><td>AI 白板／視覺化</td><td>Whiteboards</td><td>互動視覺內容及工作產物</td><td>Canvas / Workspace 工具</td></tr>
+ <tr><td>AI 試算表</td><td>Sheets</td><td>Excel / Google Sheets 整合</td><td>Google Sheets</td></tr>
+ <tr><td>第三方整合</td><td>MCP Apps / Connectors</td><td>Apps / Connectors</td><td>Workspace / MCP</td></tr>
+ <tr><td>跨工具工作</td><td>有</td><td>有</td><td>有</td></tr>
+ <tr><td>主要優勢方向</td><td>工作空間與互動整合</td><td>多用途工具與 Agent 工作流</td><td>Google 生態系統與分發</td></tr>
+ </tbody></table></div>
+ <div class="callout"><strong>關鍵分別：</strong>模型能力與產品能力是兩回事。企業真正關心的是資料是否正確、操作是否可靠、權限是否可控、出錯能否追蹤還原，以及每項工作成本多少。</div>
+ <h3>按使用情境選擇</h3>
+ <div class="table-wrap"><table><thead><tr><th>使用者／工作</th><th>優先測試方向</th></tr></thead><tbody>
+ <tr><td>研究、分析、內容創作</td><td>Claude、ChatGPT 交叉驗證</td></tr>
+ <tr><td>跨應用程式研究及執行</td><td>ChatGPT Work、Claude Connectors</td></tr>
+ <tr><td>大量 Excel 工作</td><td>ChatGPT + Excel、Microsoft Copilot</td></tr>
+ <tr><td>Google Workspace 公司</td><td>Gemini</td></tr>
+ <tr><td>文件、流程及知識庫</td><td>Claude + Notion / Atlassian</td></tr>
+ <tr><td>自動化及軟件開發</td><td>Claude / ChatGPT，按工具鏈實測</td></tr>
+ </tbody></table></div>
+</section>
+
+<section id="impact">
+ <div class="eyebrow">Business impact</div><h2>對大型軟件公司的商業衝擊</h2>
+ <div class="card">
+  <h3>Microsoft｜Excel 的護城河會否被削弱？</h3>
+  <p>Microsoft 的優勢不只是 Excel，而是 Microsoft 365、Azure、Power BI、Power Automate、Teams、SharePoint 及企業資料整合。Claude Sheets 可能降低建立一般試算表的門檻，但不等於能取代 Excel 的完整功能、企業流程及龐大生態。</p>
+  <p><strong>觀察問題：</strong>Microsoft 能否將 AI 變成 Microsoft 365 的升級理由，而不是讓 AI 成為用戶離開 Microsoft 365 的理由？</p>
+ </div>
+ <div class="card">
+  <h3>Google｜資料與分發渠道是優勢</h3>
+  <p>Gmail、Drive、Docs、Sheets、Meet 與 Gemini 形成原生整合。Google 可在用戶本身已使用的工具內提供 AI，減少切換成本。關鍵在於 Workspace Intelligence、資料權限及企業部署能否形成持續優勢。</p>
+ </div>
+ <div class="card">
+  <h3>Notion｜可能由入口變成後台知識層</h3>
+  <p>Claude 可以協助建立及修改 Notion 文件和資料庫，可能令部分使用者減少直接開啟 Notion；另一方面，AI 亦可能降低資料庫建立門檻，增加 Notion 作為知識儲存層的價值。風險是產品差異化及定價能力受壓。</p>
+ </div>
+ <div class="card">
+  <h3>Adobe｜AI 可能成為新的分發渠道</h3>
+  <p>Adobe 的價值包括專業編輯引擎、Creative Cloud、字體與設計資源、企業內容管理及專業工作流程。AI 平台可以成為使用者入口，而 Adobe 保留專業執行能力。這既有合作機會，也有介面及客戶關係被平台化的風險。</p>
+ </div>
+ <div class="callout"><strong>總結：</strong>不要簡化成「AI 取代軟件」。更值得研究的是軟件公司的定位、收費模式、使用者入口，以及是否仍然掌握不可替代的資料或執行能力。</div>
+</section>
+
+<section id="investment">
+ <div class="eyebrow">Investment lens</div><h2>投資機會與風險</h2>
+ <p>可把投資觀察分成三層，並用不同情境檢查，而不是因為某家公司推出新功能便推論另一家公司必然輸家。</p>
+ <div class="grid">
+  <div class="card"><div class="tag">第一層 · AI 基礎設施</div><h3>NVIDIA（NVDA）</h3><p>AI 算力、GPU 及軟硬件生態系統。需留意資本開支週期、競爭、客戶集中度及估值。</p></div>
+  <div class="card"><div class="tag">第二層 · AI 平台</div><h3>Microsoft（MSFT）</h3><p>Office、Azure、企業客戶與工作流程。需觀察 AI 能否帶來增量收入及維持利潤率。</p></div>
+  <div class="card"><div class="tag">第二層 · AI 平台</div><h3>Alphabet（GOOGL / GOOG）</h3><p>Gemini、Workspace、雲端及分發渠道。需留意 AI 投資回報、雲端競爭及核心業務受影響程度。</p></div>
+  <div class="card"><div class="tag">第三層 · 應用軟件</div><h3>Adobe（ADBE）</h3><p>專業創意工具及企業工作流程。需留意生成式 AI 是否壓低工具價格或提高訂閱價值。</p></div>
+  <div class="card"><div class="tag">第三層 · 企業工作流</div><h3>Salesforce（CRM）</h3><p>CRM、企業資料及 Agent 工作流程。需觀察 Agent 對傳統按席位收費的影響。</p></div>
+ </div>
+ <h3>三種產業情境</h3>
+ <div class="grid three">
+  <div class="card"><div class="tag">情境 A</div><h4>AI 成為增長引擎</h4><p>AI 功能成為付費升級理由，企業軟件公司提高每位客戶收入，傳統軟件與模型公司共同增長。</p></div>
+  <div class="card"><div class="tag">情境 B</div><h4>AI 取代部分 SaaS 工作</h4><p>用戶減少直接開啟傳統軟件，企業重新評估授權席位，軟件公司需要重新設計收費模式。</p></div>
+  <div class="card"><div class="tag">情境 C</div><h4>AI Agent 成為新入口</h4><p>用戶主要與 AI 助手溝通，後台軟件提供資料與執行能力；掌握入口、資料及權限的平台議價能力提升。</p></div>
+ </div>
+ <div class="callout risk"><strong>投資風險：</strong>AI Agent 可能令軟件公司增加高價值 AI 收入，也可能減少人類使用席位。應追蹤淨收入留存率、每客戶收入、席位數、AI 毛利率、自由現金流及資本開支，而非只看新增 AI 功能。</div>
+</section>
+
+<section id="newsroom">
+ <div class="eyebrow">Practical workflow</div><h2>《咩事新聞室》：把三項功能組成製作系統</h2>
+ <p>建議不是把所有工作交給同一個 AI，而是讓研究、視覺整理、數據、腳本及剪輯各自有清楚角色。</p>
+ <div class="steps">
+  <div class="step"><div><strong>新聞研究｜ChatGPT / Claude</strong><div class="muted">搜集新聞來源、官方文件、公司公告及數據；區分已證實事實與推測。</div></div></div>
+  <div class="step"><div><strong>事件整理｜Claude Whiteboards</strong><div class="muted">建立時間線、人物關係、政策脈絡及因果假設。</div></div></div>
+  <div class="step"><div><strong>數據整理｜Claude Sheets / ChatGPT</strong><div class="muted">整理企業數據、財務資料、市場指標及比較圖表。</div></div></div>
+  <div class="step"><div><strong>腳本製作｜ChatGPT / Claude</strong><div class="muted">撰寫 5–10 分鐘廣東話旁白，加入來源及事實核查標記。</div></div></div>
+  <div class="step"><div><strong>素材處理｜Adobe / Notion Connectors</strong><div class="muted">整理研究、處理 PDF、圖片及視覺素材。</div></div></div>
+  <div class="step"><div><strong>影片製作｜AI 語音與剪輯工具</strong><div class="muted">生成旁白、字幕、圖表及影片，人工檢查發音與畫面。</div></div></div>
+  <div class="step"><div><strong>發布及分析｜YouTube Analytics</strong><div class="muted">追蹤 CTR、平均觀看時間、訂閱增長及製作成本。</div></div></div>
+ </div>
+ <h3>每條影片的時間預算估算</h3>
+ <div class="table-wrap"><table><thead><tr><th>工作</th><th>時間</th></tr></thead><tbody>
+ <tr><td>新聞研究及核實</td><td>45 分鐘</td></tr><tr><td>Whiteboards 整理</td><td>20 分鐘</td></tr><tr><td>Sheets 數據整理</td><td>15 分鐘</td></tr><tr><td>廣東話腳本</td><td>30 分鐘</td></tr><tr><td>AI 配音</td><td>15 分鐘</td></tr><tr><td>圖片及圖表</td><td>30 分鐘</td></tr><tr><td>剪輯及字幕</td><td>60 分鐘</td></tr><tr><td>核查及發布</td><td>15 分鐘</td></tr><tr><th>合計</th><th>約 3.8 小時</th></tr>
+ </tbody></table></div>
+ <p class="muted">以上是流程設計目標的時間估算，並非經過實測的工具效能。實際時間會受題材、素材、剪輯複雜度及人工核查影響。</p>
+</section>
+
+<section id="conclusion">
+ <div class="eyebrow">Strategic takeaways</div><h2>五大戰略結論</h2>
+ <div class="steps">
+  <div class="step"><div><strong>AI 正由聊天工具進化成工作平台</strong><div class="muted">核心價值由回答問題擴展到建立成果及執行任務。</div></div></div>
+  <div class="step"><div><strong>MCP 可能成為 AI 與軟件的重要接口標準</strong><div class="muted">標準化連接有機會降低整合成本，但安全、權限及可靠性仍是門檻。</div></div></div>
+  <div class="step"><div><strong>SaaS 按人頭收費可能受到挑戰</strong><div class="muted">Agent 可能提升每個人類使用者產能，同時減少部分軟件席位需求。</div></div></div>
+  <div class="step"><div><strong>傳統軟件不會立即消失，但需要重新定位</strong><div class="muted">資料、專業執行引擎、企業流程及安全仍可能形成護城河。</div></div></div>
+  <div class="step"><div><strong>AI Agent 的競爭核心是執行、權限及工作流程</strong><div class="muted">能否可靠地完成任務，比 Demo 是否漂亮更重要。</div></div></div>
+ </div>
+ <div class="callout"><strong>最重要的觀點：</strong>過去軟件公司的護城河來自用戶習慣、資料生態及功能壁壘；AI Agent 時代，還要加入「誰掌握使用者的工作入口（Workflow Ownership）」這個因素。</div>
+</section>
+
+<section>
+ <h2>實戰測試清單：同一任務比較三個平台</h2>
+ <p>不要只看官方 Demo。用同一個任務測試 Claude、ChatGPT 及 Gemini，記錄完成時間、人工修改次數、數據準確度、來源可靠性及成果可用程度。</p>
+ <div class="card">
+  <h3>任務：製作 AI 半導體產業投資研究報告</h3>
+  <label><input type="checkbox"> 建立 AI 半導體產業鏈 Whiteboard</label><br>
+  <label><input type="checkbox"> 整理 NVIDIA、AMD、Broadcom 財務數據</label><br>
+  <label><input type="checkbox"> 建立三家公司比較試算表</label><br>
+  <label><input type="checkbox"> 建立 Bull / Base / Bear 三種情境</label><br>
+  <label><input type="checkbox"> 整理新聞來源及資料引用</label><br>
+  <label><input type="checkbox"> 產生 5–10 分鐘廣東話影片腳本</label>
+ </div>
+</section>
+
+<section id="sources">
+ <div class="eyebrow">References</div><h2>官方資料及延伸閱讀</h2>
+ <ol>
+  <li><a href="https://www.anthropic.com/" target="_blank" rel="noopener">Anthropic 官方網站</a> — Claude 產品及公告。</li>
+  <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic News</a> — Whiteboards、Sheets 及產品更新。</li>
+  <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">Model Context Protocol 官方文件</a> — MCP 規格及生態系統。</li>
+  <li><a href="https://openai.com/" target="_blank" rel="noopener">OpenAI 官方網站</a> — ChatGPT Work、Apps 及試算表整合。</li>
+  <li><a href="https://blog.google/products/workspace/" target="_blank" rel="noopener">Google Workspace 官方 Blog</a> — Gemini 與 Workspace 更新。</li>
+  <li><a href="https://news.adobe.com/" target="_blank" rel="noopener">Adobe Newsroom</a> — Adobe AI 及 Creative Cloud 更新。</li>
+ </ol>
+ <p class="muted">資料截止：2026 年 11 月 11 日。功能、價格、Beta 狀態及地區開放情況可能改變。投資部分屬產業研究，不構成個人投資建議。正式採用前請以各公司最新官方文件及帳戶實際功能為準。</p>
+</section>
+<footer>
+ <strong>Claude 三大新功能深度研究</strong><br>
+ 本頁為自包含 HTML：樣式、示意圖及互動功能均內嵌；不依賴外部圖片 CDN 或 JavaScript 套件。可離線開啟、切換深色模式、搜尋內容、複製 Prompt 及列印成 PDF。
+</footer>
+<div id="noResults">找不到符合的內容。請嘗試其他關鍵字。</div>
+</main>
+</div>
+<script>
+(function(){
+ const root=document.documentElement,btn=document.getElementById('themeBtn');
+ const saved=localStorage.getItem('claude-research-theme');
+ root.dataset.theme=saved|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+ btn.addEventListener('click',()=>{
+  root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';
+  localStorage.setItem('claude-research-theme',root.dataset.theme);
+ });
+ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{
+  const old=b.textContent;
+  try{await navigator.clipboard.writeText(b.dataset.copy);b.textContent='已複製 ✓';}
+  catch(e){const t=document.createElement('textarea');t.value=b.dataset.copy;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();b.textContent='已複製 ✓';}
+  setTimeout(()=>b.textContent=old,1500);
+ }));
+ const search=document.getElementById('search'),sections=[...document.querySelectorAll('main section')],none=document.getElementById('noResults');
+ search.addEventListener('input',()=>{
+  const q=search.value.trim().toLowerCase();let count=0;
+  sections.forEach(s=>{const hit=!q||s.innerText.toLowerCase().includes(q);s.style.display=hit?'':'none';if(hit)count++;});
+  none.style.display=count?'none':'block';
+ });
+ const links=[...document.querySelectorAll('.sidebar a')];
+ const observer=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.hash==='#'+e.target.id));}
+ }),{rootMargin:'-20% 0px -70% 0px'});
+ document.querySelectorAll('main section[id]').forEach(s=>observer.observe(s));
+})();
+</script>
+</body>
+</html>
