@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to January 11, 2027</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono for tabular numbers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 antialiased selection:bg-indigo-500 selection:text-white overflow-x-hidden relative">
+
+    <!-- Ambient Subtle Background Glow -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center">
+        <div class="w-[32rem] h-[32rem] sm:w-[45rem] sm:h-[45rem] bg-indigo-600/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-center text-center">
+        
+        <!-- Status Pill -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-800/80 shadow-sm mb-6 backdrop-blur-md">
+            <span class="relative flex h-2.5 w-2.5">
+                <span id="status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span id="status-dot" class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <span id="status-text" class="text-xs font-medium tracking-wider uppercase text-slate-300">Live Countdown</span>
+        </div>
+
+        <!-- Title & Target Date -->
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2">
+            January 11, 2027
+        </h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-md mb-8 sm:mb-10">
+            Time remaining until midnight on Monday, January 11, 2027
+        </p>
+
+        <!-- Countdown Display Grid -->
+        <div id="countdown-wrapper" class="w-full space-y-4 sm:space-y-6">
+            
+            <!-- Primary Hero Card: Days -->
+            <div class="w-full rounded-3xl bg-gradient-to-b from-slate-900 to-slate-900/60 border border-slate-800/90 p-8 sm:p-12 shadow-2xl shadow-black/50 backdrop-blur-xl relative overflow-hidden group transition-all duration-300 hover:border-indigo-500/40">
+                <!-- Subtle top highlight line -->
+                <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+                
+                <div class="flex flex-col items-center justify-center">
+                    <span id="days" class="font-mono text-7xl sm:text-8xl md:text-9xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-100 to-indigo-300 tabular-nums leading-none">
+                        00
+                    </span>
+                    <span id="days-label" class="mt-4 text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase text-indigo-400">
+                        Days Remaining
+                    </span>
+                </div>
+            </div>
+
+            <!-- Secondary Cards: Hours, Minutes, Seconds -->
+            <div id="hms-grid" class="grid grid-cols-3 gap-3 sm:gap-5 w-full transition-all duration-300">
+                <!-- Hours Card -->
+                <div class="rounded-2xl bg-slate-900/80 border border-slate-800/80 p-4 sm:p-6 shadow-lg backdrop-blur-md flex flex-col items-center justify-center transition-colors hover:border-slate-700">
+                    <span id="hours" class="font-mono text-3xl sm:text-4xl md:text-5xl font-bold text-slate-100 tabular-nums">
+                        00
+                    </span>
+                    <span class="mt-2 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-slate-400">
+                        Hours
+                    </span>
+                </div>
+
+                <!-- Minutes Card -->
+                <div class="rounded-2xl bg-slate-900/80 border border-slate-800/80 p-4 sm:p-6 shadow-lg backdrop-blur-md flex flex-col items-center justify-center transition-colors hover:border-slate-700">
+                    <span id="minutes" class="font-mono text-3xl sm:text-4xl md:text-5xl font-bold text-slate-100 tabular-nums">
+                        00
+                    </span>
+                    <span class="mt-2 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-slate-400">
+                        Minutes
+                    </span>
+                </div>
+
+                <!-- Seconds Card -->
+                <div class="rounded-2xl bg-slate-900/80 border border-slate-800/80 p-4 sm:p-6 shadow-lg backdrop-blur-md flex flex-col items-center justify-center transition-colors hover:border-slate-700">
+                    <span id="seconds" class="font-mono text-3xl sm:text-4xl md:text-5xl font-bold text-indigo-400 tabular-nums">
+                        00
+                    </span>
+                    <span class="mt-2 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-slate-400">
+                        Seconds
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Arrival Banner (Hidden until target reached) -->
+        <div id="complete-banner" class="hidden w-full rounded-3xl bg-gradient-to-br from-indigo-950/80 to-slate-900 border border-indigo-500/40 p-8 sm:p-10 shadow-2xl text-center mt-4">
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">January 11, 2027 Has Arrived!</h2>
+            <p class="text-slate-300 text-sm sm:text-base">The countdown has reached zero.</p>
+        </div>
+
+        <!-- Footer Controls & Info -->
+        <div class="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-between w-full gap-4 px-2 text-xs text-slate-500">
+            <div id="local-time-display" class="font-mono text-slate-400">
+                Loading current time...
+            </div>
+
+            <!-- Toggle for Days-Only vs Full Breakdown -->
+            <button id="toggle-hms-btn" type="button" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition-all cursor-pointer active:scale-95">
+                <svg id="eye-icon" class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+                <span id="toggle-hms-text">Days-Only View</span>
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        /**
+         * Countdown Timer Logic
+         * Target: January 11, 2027 at 00:00:00 (Local Time)
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Target date: Month is 0-indexed (0 = January), Day = 11, Year = 2027
+            const targetDate = new Date(2027, 0, 11, 0, 0, 0, 0).getTime();
+
+            // DOM Elements
+            const daysEl = document.getElementById('days');
+            const daysLabelEl = document.getElementById('days-label');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            const localTimeEl = document.getElementById('local-time-display');
+            const hmsGridEl = document.getElementById('hms-grid');
+            const toggleBtn = document.getElementById('toggle-hms-btn');
+            const toggleText = document.getElementById('toggle-hms-text');
+            const completeBanner = document.getElementById('complete-banner');
+            const statusPing = document.getElementById('status-ping');
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+
+            let showHMS = true;
+            let timerInterval = null;
+
+            // Helper to pad numbers with leading zeros (e.g., 5 -> "05")
+            const padZero = (num) => String(Math.max(0, num)).padStart(2, '0');
+
+            // Format current date/time cleanly
+            const updateCurrentTimeDisplay = (nowDate) => {
+                try {
+                    const options = {
+                        weekday: 'short',
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    };
+                    localTimeEl.textContent = `Now: ${nowDate.toLocaleDateString(undefined, options)}`;
+                } catch (err) {
+                    localTimeEl.textContent = `Now: ${nowDate.toLocaleString()}`;
+                }
+            };
+
+            // Main tick function
+            const updateCountdown = () => {
+                const nowDate = new Date();
+                const now = nowDate.getTime();
+                const distance = targetDate - now;
+
+                updateCurrentTimeDisplay(nowDate);
+
+                // Check if countdown has finished
+                if (distance <= 0) {
+                    daysEl.textContent = '00';
+                    hoursEl.textContent = '00';
+                    minutesEl.textContent = '00';
+                    secondsEl.textContent = '00';
+                    daysLabelEl.textContent = 'Days Remaining';
+
+                    completeBanner.classList.remove('hidden');
+                    statusPing.classList.add('hidden');
+                    statusDot.classList.remove('bg-emerald-500');
+                    statusDot.classList.add('bg-indigo-500');
+                    statusText.textContent = 'Target Reached';
+
+                    if (timerInterval) clearInterval(timerInterval);
+                    return;
+                }
+
+                // Time calculations
+                const msInSecond = 1000;
+                const msInMinute = msInSecond * 60;
+                const msInHour = msInMinute * 60;
+                const msInDay = msInHour * 24;
+
+                const days = Math.floor(distance / msInDay);
+                const hours = Math.floor((distance % msInDay) / msInHour);
+                const minutes = Math.floor((distance % msInHour) / msInMinute);
+                const seconds = Math.floor((distance % msInMinute) / msInSecond);
+
+                // Update DOM
+                daysEl.textContent = days < 10 ? padZero(days) : days.toLocaleString();
+                daysLabelEl.textContent = days === 1 ? 'Day Remaining' : 'Days Remaining';
+                hoursEl.textContent = padZero(hours);
+                minutesEl.textContent = padZero(minutes);
+                secondsEl.textContent = padZero(seconds);
+            };
+
+            // Toggle between full breakdown and prominent days-only view
+            toggleBtn.addEventListener('click', () => {
+                showHMS = !showHMS;
+                if (showHMS) {
+                    hmsGridEl.classList.remove('hidden');
+                    toggleText.textContent = 'Days-Only View';
+                } else {
+                    hmsGridEl.classList.add('hidden');
+                    toggleText.textContent = 'Show Hours / Min / Sec';
+                }
+            });
+
+            // Initialize immediately and update every second
+            updateCountdown();
+            timerInterval = setInterval(updateCountdown, 1000);
+        });
+    </script>
+</body>
+</html>
