@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Major Christmas Markets in Tokyo (2026)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            festive: {
+              gold: '#F59E0B',
+              red: '#E11D48',
+              emerald: '#10B981',
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased transition-colors duration-300 selection:bg-amber-500/30 selection:text-amber-300">
+
+  <!-- Toast Notification (replaces alert()) -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-slate-900 dark:bg-slate-800 text-white border border-slate-700 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-sm font-medium">
+      <span class="text-emerald-400">✓</span>
+      <span id="toast-message">Copied to clipboard!</span>
+    </div>
+  </div>
+
+  <!-- Sticky Top Header & Navigation -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/85 dark:bg-slate-950/85 border-b border-slate-200 dark:border-slate-800/80 transition-colors duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3">
+      <div class="flex items-center justify-between gap-4">
+        <!-- Brand / Title -->
+        <a href="#top" class="flex items-center gap-2.5 group">
+          <span class="text-2xl sm:text-3xl filter drop-shadow">🎄</span>
+          <div>
+            <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+              Tokyo Christmas Markets
+            </h1>
+            <p class="text-[11px] sm:text-xs font-medium text-slate-500 dark:text-slate-400">
+              2026 Interactive Navigation Guide
+            </p>
+          </div>
+        </a>
+
+        <!-- Right Controls: Theme Toggle & Copy Info -->
+        <div class="flex items-center gap-2">
+          <button
+            id="theme-toggle"
+            type="button"
+            aria-label="Toggle Dark or Light Mode"
+            class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-amber-300 border border-slate-200 dark:border-slate-800 transition-all shadow-sm active:scale-95"
+          >
+            <span id="theme-icon" class="text-base">☀️</span>
+            <span id="theme-label" class="hidden sm:inline">Light Mode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick-Jump Navigation Pills -->
+      <nav aria-label="Quick jump to markets" class="mt-3 pt-2.5 border-t border-slate-200/70 dark:border-slate-800/70 flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 shrink-0 mr-1">Jump to:</span>
+        <a href="#ueno" class="nav-pill shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-amber-500 hover:text-white dark:bg-slate-900 dark:hover:bg-amber-500 dark:hover:text-slate-950 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-800 transition-all">
+          1. Ueno Park
+        </a>
+        <a href="#skytree" class="nav-pill shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-amber-500 hover:text-white dark:bg-slate-900 dark:hover:bg-amber-500 dark:hover:text-slate-950 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-800 transition-all">
+          2. Tokyo Skytree
+        </a>
+        <a href="#yokohama" class="nav-pill shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-amber-500 hover:text-white dark:bg-slate-900 dark:hover:bg-amber-500 dark:hover:text-slate-950 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-800 transition-all">
+          3. Yokohama Red Brick
+        </a>
+        <a href="#meiji" class="nav-pill shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-amber-500 hover:text-white dark:bg-slate-900 dark:hover:bg-amber-500 dark:hover:text-slate-950 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-800 transition-all">
+          4. Meiji Jingu Gaien
+        </a>
+        <a href="#roppongi" class="nav-pill shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-amber-500 hover:text-white dark:bg-slate-900 dark:hover:bg-amber-500 dark:hover:text-slate-950 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-800 transition-all">
+          5. Roppongi Hills
+        </a>
+        <a href="#azabudai" class="nav-pill shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-amber-500 hover:text-white dark:bg-slate-900 dark:hover:bg-amber-500 dark:hover:text-slate-950 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-800 transition-all">
+          6. Azabudai Hills
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="top" class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+    
+    <!-- Hero & Filter Controls -->
+    <section class="mb-8 sm:mb-10 bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/40 dark:from-slate-900 dark:via-slate-900/90 dark:to-amber-950/30 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3">
+            <span>✨ Holiday Season 2026</span>
+            <span>•</span>
+            <span>6 Featured Venues</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Major Christmas Markets in Tokyo (2026)
+          </h2>
+          <p class="mt-2 text-sm sm:text-base text-slate-300 leading-relaxed">
+            Explore dates, opening hours, nearest train stations, direct Google Maps links, and official event pages in one clean dashboard.
+          </p>
+        </div>
+
+        <!-- Search & Filter Box -->
+        <div class="w-full lg:w-96 flex flex-col gap-2.5">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-3.5 flex items-center text-slate-400 pointer-events-none">🔍</span>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Search market, station, line, or date..."
+              class="w-full pl-10 pr-9 py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all"
+            />
+            <button
+              id="clear-search"
+              type="button"
+              title="Clear search"
+              class="hidden absolute inset-y-0 right-2.5 px-1.5 flex items-center text-slate-400 hover:text-white text-sm"
+            >
+              ✕
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-1.5" id="filter-buttons">
+            <button data-filter="all" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition-all">
+              All (6)
+            </button>
+            <button data-filter="early" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/90 hover:bg-slate-700 text-slate-300 transition-all">
+              Starts Early Nov
+            </button>
+            <button data-filter="late" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/90 hover:bg-slate-700 text-slate-300 transition-all">
+              Starts Nov 20–21
+            </button>
+            <button data-filter="daytrip" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/90 hover:bg-slate-700 text-slate-300 transition-all">
+              Day Trip
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Empty Search State -->
+    <div id="no-results" class="hidden text-center py-16 px-4 bg-white dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-800">
+      <div class="text-4xl mb-3">❄️</div>
+      <h3 class="text-lg font-bold text-slate-900 dark:text-white">No matching markets found</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Try clearing your search or selecting "All (6)" above.</p>
+      <button id="reset-filters-btn" type="button" class="mt-4 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-colors">
+        Reset Filters
+      </button>
+    </div>
+
+    <!-- Markets Grid -->
+    <div id="markets-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- 1. Ueno Park market -->
+      <article
+        id="ueno"
+        data-category="early"
+        data-search="ueno park market hakamagoshi plaza keisei ueno shinobazu pond november 6 december 25"
+        class="market-card scroll-mt-32 flex flex-col justify-between bg-white dark:bg-slate-900/90 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all duration-300"
+      >
+        <div>
+          <!-- Top Meta -->
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/25">
+              📅 November 6 – December 25, 2026 (Market)
+            </span>
+            <span class="text-xs font-semibold text-slate-400 dark:text-slate-500">#01</span>
+          </div>
+
+          <!-- Title -->
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-start gap-2">
+            <span>📍</span>
+            <span>Ueno Park market</span>
+          </h3>
+
+          <!-- Nearest Station -->
+          <div class="mt-4 flex items-start gap-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200/80 dark:border-slate-800/80">
+            <span class="text-base mt-0.5">🚉</span>
+            <div class="text-sm">
+              <span class="font-bold text-slate-800 dark:text-slate-200">Nearest Station:</span>
+              <span class="text-slate-600 dark:text-slate-300"> Ueno Station (??? Line)</span>
+              <button
+                type="button"
+                onclick="copyText('Ueno Station', 'Copied station name!')"
+                class="ml-2 inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Detailed Schedule Areas -->
+          <div class="mt-4 space-y-3 text-sm">
+            <div class="p-3.5 rounded-2xl bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20">
+              <div class="font-bold text-slate-900 dark:text-amber-200">
+                Hakamagoshi Plaza (by Keisei Ueno Station)
+              </div>
+              <div class="text-slate-600 dark:text-slate-300 mt-1 space-y-0.5">
+                <p><span class="font-medium text-slate-800 dark:text-slate-200">Dates:</span> November 6 – December 25</p>
+                <p><span class="font-medium text-slate-800 dark:text-slate-200">Hours:</span> 12 p.m.–11 p.m. daily (last orders 10:30 p.m.)</p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/70 dark:border-slate-800/70">
+              <div class="font-bold text-slate-900 dark:text-slate-100">
+                Shinobazu Pond area
+              </div>
+              <div class="text-slate-600 dark:text-slate-300 mt-1 space-y-0.5">
+                <p><span class="font-medium text-slate-800 dark:text-slate-200">Dates:</span> November 18 – December 25</p>
+                <p><span class="font-medium text-slate-800 dark:text-slate-200">Hours:</span> Mon.–Thu. 3 p.m.–10 p.m.; Fri., weekends and holidays 12 p.m.–10 p.m. (last orders 9:30 p.m.). Opens at 5 p.m. on November 18 only.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 pt-4 border-t border-slate-200/80 dark:border-slate-800 flex flex-wrap gap-3">
+          <a
+            href="https://maps.app.goo.gl/5bAbh2DZVDbHiiPf9"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm transition-all active:scale-95"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+          <a
+            href="https://www.yokohama-akarenga.jp/christmas/"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 transition-all active:scale-95"
+          >
+            <span>🔗</span>
+            <span>Official Website</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 2. TOKYO SKYTREE TOWN Dream Christmas 2026 -->
+      <article
+        id="skytree"
+        data-category="early"
+        data-search="tokyo skytree town dream christmas 2026 oshiage hanzomon line sky arena stollen free november 5 december 25"
+        class="market-card scroll-mt-32 flex flex-col justify-between bg-white dark:bg-slate-900/90 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all duration-300"
+      >
+        <div>
+          <!-- Top Meta -->
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/25">
+              📅 November 5th – December 25, 2026
+            </span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25">
+              🎟️ Free Admission
+            </span>
+          </div>
+
+          <!-- Title -->
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-start gap-2">
+            <span>📍</span>
+            <span>TOKYO SKYTREE TOWN Dream Christmas 2026</span>
+          </h3>
+          <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-1 ml-7">
+            Tokyo Skytree Town, Oshiage
+          </p>
+
+          <!-- Nearest Station -->
+          <div class="mt-4 flex items-start gap-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200/80 dark:border-slate-800/80">
+            <span class="text-base mt-0.5">🚉</span>
+            <div class="text-sm">
+              <span class="font-bold text-slate-800 dark:text-slate-200">Nearest Station:</span>
+              <span class="text-slate-600 dark:text-slate-300"> Oshiage Station (Tokyo Skytree Line / Hanzomon Line)</span>
+              <button
+                type="button"
+                onclick="copyText('Oshiage Station', 'Copied station name!')"
+                class="ml-2 inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Highlights & Admission -->
+          <div class="mt-4 space-y-3 text-sm">
+            <div class="p-3.5 rounded-2xl bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20">
+              <div class="font-bold text-slate-900 dark:text-amber-200">✨ Highlights</div>
+              <p class="text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                European-style wooden huts at the Sky Arena, 400,000 holiday lights, festive food, and a massive 4-meter stollen.
+              </p>
+            </div>
+            <div class="px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/70 dark:border-slate-800/70 text-slate-700 dark:text-slate-300">
+              <span class="font-bold text-slate-900 dark:text-white">Admission:</span> Free to enter the market area.
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 pt-4 border-t border-slate-200/80 dark:border-slate-800 flex flex-wrap gap-3">
+          <a
+            href="https://maps.app.goo.gl/CyH8srXyphypQQQv5"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm transition-all active:scale-95"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+          <a
+            href="https://en.www.tokyo-solamachi.jp/event/20261105_dreamxmas/"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 transition-all active:scale-95"
+          >
+            <span>🔗</span>
+            <span>Official Website</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 3. Yokohama Red Brick Warehouse -->
+      <article
+        id="yokohama"
+        data-category="late daytrip"
+        data-search="yokohama red brick warehouse 横浜 bashamichi nihon-odori minatomirai line nearby day trip november 20 december 25"
+        class="market-card scroll-mt-32 flex flex-col justify-between bg-white dark:bg-slate-900/90 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all duration-300"
+      >
+        <div>
+          <!-- Top Meta -->
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/25">
+              📅 November 20 – December 25, 2026 (Market)
+            </span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/25">
+              🚆 Nearby Day Trip
+            </span>
+          </div>
+
+          <!-- Title -->
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-start gap-2">
+            <span>📍</span>
+            <span>横浜 Yokohama Red Brick Warehouse</span>
+          </h3>
+          <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-1 ml-7">
+            (Nearby day trip)
+          </p>
+
+          <!-- Nearest Station -->
+          <div class="mt-4 flex items-start gap-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200/80 dark:border-slate-800/80">
+            <span class="text-base mt-0.5">🚉</span>
+            <div class="text-sm">
+              <span class="font-bold text-slate-800 dark:text-slate-200">Nearest Station:</span>
+              <span class="text-slate-600 dark:text-slate-300"> Bashamichi / Nihon-Ōdōri Station (Minatomirai Line)</span>
+              <button
+                type="button"
+                onclick="copyText('Bashamichi / Nihon-Ōdōri Station', 'Copied station name!')"
+                class="ml-2 inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Extra Context Box -->
+          <div class="mt-4 p-3.5 rounded-2xl bg-sky-500/5 dark:bg-sky-500/10 border border-sky-500/20 text-sm text-slate-600 dark:text-slate-300">
+            <span class="font-bold text-slate-900 dark:text-sky-200">Day Trip Tip:</span> Easily accessible from central Tokyo via the Tokyu Toyoko Line directly onto the Minatomirai Line.
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 pt-4 border-t border-slate-200/80 dark:border-slate-800 flex flex-wrap gap-3">
+          <a
+            href="https://maps.app.goo.gl/5bAbh2DZVDbHiiPf9"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm transition-all active:scale-95"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+          <a
+            href="https://www.yokohama-akarenga.jp/christmas/"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 transition-all active:scale-95"
+          >
+            <span>🔗</span>
+            <span>Official Website</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 4. Meiji Jingu Gaien -->
+      <article
+        id="meiji"
+        data-category="late"
+        data-search="meiji jingu gaien 明治神宮外苑 shinanomachi gaienmae aoyama-itchome tokyo metro shin-toyosu shiba park november 20 december 4 december 25"
+        class="market-card scroll-mt-32 flex flex-col justify-between bg-white dark:bg-slate-900/90 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all duration-300"
+      >
+        <div>
+          <!-- Top Meta -->
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/25">
+              📅 November 20 – December 25, 2026
+            </span>
+            <span class="text-xs font-semibold text-slate-400 dark:text-slate-500">#04</span>
+          </div>
+
+          <!-- Title -->
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-start gap-2">
+            <span>📍</span>
+            <span>明治神宮外苑 Meiji Jingu Gaien</span>
+          </h3>
+
+          <!-- Nearest Station -->
+          <div class="mt-4 flex items-start gap-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200/80 dark:border-slate-800/80">
+            <span class="text-base mt-0.5">🚉</span>
+            <div class="text-sm">
+              <span class="font-bold text-slate-800 dark:text-slate-200">Nearest Station:</span>
+              <span class="text-slate-600 dark:text-slate-300"> Shinanomachi Station / Gaienmae / Aoyama-itchome Station (Tokyo Metro)</span>
+              <button
+                type="button"
+                onclick="copyText('Gaienmae / Aoyama-itchome Station', 'Copied station name!')"
+                class="ml-2 inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Sister Venues & Dates -->
+          <div class="mt-4 p-3.5 rounded-2xl bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 text-sm space-y-1.5">
+            <div class="font-bold text-slate-900 dark:text-amber-200">🗓️ Related Venue Dates</div>
+            <p class="text-slate-600 dark:text-slate-300">
+              <span class="font-semibold text-slate-800 dark:text-slate-200">Shin-Toyosu Dates:</span> November 20 – December 25, 2026
+            </p>
+            <p class="text-slate-600 dark:text-slate-300">
+              <span class="font-semibold text-slate-800 dark:text-slate-200">Shiba Park Dates:</span> December 4 – December 25, 2026
+            </p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 pt-4 border-t border-slate-200/80 dark:border-slate-800 flex flex-wrap gap-3">
+          <a
+            href="https://maps.app.goo.gl/aYx1U7fLHUt2FQ2T9"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm transition-all active:scale-95"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+          <a
+            href="https://tokyochristmas.net/"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 transition-all active:scale-95"
+          >
+            <span>🔗</span>
+            <span>Official Website</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 5. Roppongi Hills O-Yane Plaza -->
+      <article
+        id="roppongi"
+        data-category="late"
+        data-search="roppongi hills o-yane plaza 六本木 hibiya line toei oedo line 11:00 21:00 november 21 december 25"
+        class="market-card scroll-mt-32 flex flex-col justify-between bg-white dark:bg-slate-900/90 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all duration-300"
+      >
+        <div>
+          <!-- Top Meta -->
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/25">
+              📅 November 21 – December 25, 2026
+            </span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-rose-500/15 text-rose-700 dark:text-rose-300 border border-rose-500/25">
+              🕚 11:00–21:00
+            </span>
+          </div>
+
+          <!-- Title -->
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-start gap-2">
+            <span>📍</span>
+            <span>六本木 Roppongi Hills O-Yane Plaza</span>
+          </h3>
+
+          <!-- Nearest Station -->
+          <div class="mt-4 flex items-start gap-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200/80 dark:border-slate-800/80">
+            <span class="text-base mt-0.5">🚉</span>
+            <div class="text-sm">
+              <span class="font-bold text-slate-800 dark:text-slate-200">Nearest Station:</span>
+              <span class="text-slate-600 dark:text-slate-300"> Roppongi Station (Tokyo Metro Hibiya Line / Toei Oedo Line)</span>
+              <button
+                type="button"
+                onclick="copyText('Roppongi Station', 'Copied station name!')"
+                class="ml-2 inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Hours Detail -->
+          <div class="mt-4 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/70 dark:border-slate-800/70 text-sm text-slate-600 dark:text-slate-300">
+            <span class="font-bold text-slate-900 dark:text-white">Opening Hours:</span> 11:00 – 21:00 daily throughout the market period (Nov 21 – Dec 25, 2026).
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 pt-4 border-t border-slate-200/80 dark:border-slate-800 flex flex-wrap gap-3">
+          <a
+            href="https://maps.app.goo.gl/cy5DWdTSW7Ts34DT7"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm transition-all active:scale-95"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+          <a
+            href="https://www.roppongihills.com/sp/christmashills/101/"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 transition-all active:scale-95"
+          >
+            <span>🔗</span>
+            <span>Official Website</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 6. Azabudai Hills Central Green -->
+      <article
+        id="azabudai"
+        data-category="late"
+        data-search="azabudai hills central green 麻布台 kamiyacho roppongi-itchome azabujuban modern elegance november 21 december 25"
+        class="market-card scroll-mt-32 flex flex-col justify-between bg-white dark:bg-slate-900/90 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all duration-300"
+      >
+        <div>
+          <!-- Top Meta -->
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/25">
+              📅 November 21 – December 25, 2026
+            </span>
+            <span class="text-xs font-semibold text-slate-400 dark:text-slate-500">#06</span>
+          </div>
+
+          <!-- Title -->
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-start gap-2">
+            <span>📍</span>
+            <span>麻布台 Azabudai Hills Central Green</span>
+          </h3>
+
+          <!-- Nearest Station -->
+          <div class="mt-4 flex items-start gap-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200/80 dark:border-slate-800/80">
+            <span class="text-base mt-0.5">🚉</span>
+            <div class="text-sm">
+              <span class="font-bold text-slate-800 dark:text-slate-200">Nearest Station:</span>
+              <span class="text-slate-600 dark:text-slate-300"> Kamiyacho Station / Roppongi-Itchome Station / Azabujuban Station</span>
+              <button
+                type="button"
+                onclick="copyText('Kamiyacho Station / Roppongi-Itchome Station / Azabujuban Station', 'Copied station names!')"
+                class="ml-2 inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mt-4 p-3.5 rounded-2xl bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            In Tokyo’s newest urban landmark, the Azabudai Hills Christmas Market brings modern elegance to the season.
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 pt-4 border-t border-slate-200/80 dark:border-slate-800 flex flex-wrap gap-3">
+          <a
+            href="https://maps.app.goo.gl/pfmqx8deNyo6owhY8"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm transition-all active:scale-95"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+          <a
+            href="https://www.azabudai-hills.com/sp/christmashills/201/"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 transition-all active:scale-95"
+          >
+            <span>🔗</span>
+            <span>Official Page</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Quick Comparison Table for Easy Planning -->
+    <section class="mt-10 bg-white dark:bg-slate-900/90 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+        <div>
+          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
+            🗓️ Quick At-a-Glance Schedule
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Compare opening dates and key stations across all 2026 venues.
+          </p>
+        </div>
+        <a href="#top" class="self-start sm:self-auto text-xs font-semibold text-amber-600 dark:text-amber-400 hover:underline">
+          ↑ Back to Top
+        </a>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="border-b border-slate-200 dark:border-slate-800 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <th class="py-3 pr-4 font-bold">Market</th>
+              <th class="py-3 px-4 font-bold">2026 Dates</th>
+              <th class="py-3 px-4 font-bold">Nearest Station</th>
+              <th class="py-3 pl-4 font-bold text-right">Links</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200/70 dark:divide-slate-800/70">
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+              <td class="py-3.5 pr-4 font-semibold text-slate-900 dark:text-white">
+                <a href="#ueno" class="hover:text-amber-500">Ueno Park market</a>
+              </td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Nov 6 – Dec 25 (Pond: Nov 18–Dec 25)</td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Ueno Station</td>
+              <td class="py-3.5 pl-4 text-right whitespace-nowrap space-x-2">
+                <a href="https://maps.app.goo.gl/5bAbh2DZVDbHiiPf9" target="_blank" rel="noreferrer noopener" class="text-amber-600 dark:text-amber-400 font-semibold hover:underline">Map</a>
+                <span class="text-slate-400">•</span>
+                <a href="https://www.yokohama-akarenga.jp/christmas/" target="_blank" rel="noreferrer noopener" class="text-slate-600 dark:text-slate-300 hover:underline">Site</a>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+              <td class="py-3.5 pr-4 font-semibold text-slate-900 dark:text-white">
+                <a href="#skytree" class="hover:text-amber-500">TOKYO SKYTREE TOWN</a>
+              </td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Nov 5 – Dec 25</td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Oshiage Station</td>
+              <td class="py-3.5 pl-4 text-right whitespace-nowrap space-x-2">
+                <a href="https://maps.app.goo.gl/CyH8srXyphypQQQv5" target="_blank" rel="noreferrer noopener" class="text-amber-600 dark:text-amber-400 font-semibold hover:underline">Map</a>
+                <span class="text-slate-400">•</span>
+                <a href="https://en.www.tokyo-solamachi.jp/event/20261105_dreamxmas/" target="_blank" rel="noreferrer noopener" class="text-slate-600 dark:text-slate-300 hover:underline">Site</a>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+              <td class="py-3.5 pr-4 font-semibold text-slate-900 dark:text-white">
+                <a href="#yokohama" class="hover:text-amber-500">Yokohama Red Brick</a>
+              </td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Nov 20 – Dec 25</td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Bashamichi / Nihon-Ōdōri</td>
+              <td class="py-3.5 pl-4 text-right whitespace-nowrap space-x-2">
+                <a href="https://maps.app.goo.gl/5bAbh2DZVDbHiiPf9" target="_blank" rel="noreferrer noopener" class="text-amber-600 dark:text-amber-400 font-semibold hover:underline">Map</a>
+                <span class="text-slate-400">•</span>
+                <a href="https://www.yokohama-akarenga.jp/christmas/" target="_blank" rel="noreferrer noopener" class="text-slate-600 dark:text-slate-300 hover:underline">Site</a>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+              <td class="py-3.5 pr-4 font-semibold text-slate-900 dark:text-white">
+                <a href="#meiji" class="hover:text-amber-500">Meiji Jingu Gaien</a>
+              </td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Nov 20 – Dec 25 (Shiba Park: Dec 4–25)</td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Shinanomachi / Gaienmae / Aoyama-itchome</td>
+              <td class="py-3.5 pl-4 text-right whitespace-nowrap space-x-2">
+                <a href="https://maps.app.goo.gl/aYx1U7fLHUt2FQ2T9" target="_blank" rel="noreferrer noopener" class="text-amber-600 dark:text-amber-400 font-semibold hover:underline">Map</a>
+                <span class="text-slate-400">•</span>
+                <a href="https://tokyochristmas.net/" target="_blank" rel="noreferrer noopener" class="text-slate-600 dark:text-slate-300 hover:underline">Site</a>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+              <td class="py-3.5 pr-4 font-semibold text-slate-900 dark:text-white">
+                <a href="#roppongi" class="hover:text-amber-500">Roppongi Hills O-Yane Plaza</a>
+              </td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Nov 21 – Dec 25 (11:00–21:00)</td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Roppongi Station</td>
+              <td class="py-3.5 pl-4 text-right whitespace-nowrap space-x-2">
+                <a href="https://maps.app.goo.gl/cy5DWdTSW7Ts34DT7" target="_blank" rel="noreferrer noopener" class="text-amber-600 dark:text-amber-400 font-semibold hover:underline">Map</a>
+                <span class="text-slate-400">•</span>
+                <a href="https://www.roppongihills.com/sp/christmashills/101/" target="_blank" rel="noreferrer noopener" class="text-slate-600 dark:text-slate-300 hover:underline">Site</a>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+              <td class="py-3.5 pr-4 font-semibold text-slate-900 dark:text-white">
+                <a href="#azabudai" class="hover:text-amber-500">Azabudai Hills Central Green</a>
+              </td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Nov 21 – Dec 25</td>
+              <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">Kamiyacho / Roppongi-Itchome / Azabujuban</td>
+              <td class="py-3.5 pl-4 text-right whitespace-nowrap space-x-2">
+                <a href="https://maps.app.goo.gl/pfmqx8deNyo6owhY8" target="_blank" rel="noreferrer noopener" class="text-amber-600 dark:text-amber-400 font-semibold hover:underline">Map</a>
+                <span class="text-slate-400">•</span>
+                <a href="https://www.azabudai-hills.com/sp/christmashills/201/" target="_blank" rel="noreferrer noopener" class="text-slate-600 dark:text-slate-300 hover:underline">Site</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-6xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200 dark:border-slate-800/80 text-center text-xs text-slate-500 dark:text-slate-400">
+    <p>Major Christmas Markets in Tokyo (2026) • Designed for fast mobile & desktop trip navigation.</p>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script>
+    // 1. Dark / Light Mode Toggle (Defaults to Dark Mode)
+    const htmlEl = document.documentElement;
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const themeLabel = document.getElementById('theme-label');
+
+    function updateThemeUI() {
+      const isDark = htmlEl.classList.contains('dark');
+      themeIcon.textContent = isDark ? '☀️' : '🌙';
+      themeLabel.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      htmlEl.classList.toggle('dark');
+      updateThemeUI();
+    });
+
+    // Initialize UI on load
+    updateThemeUI();
+
+    // 2. Search & Category Filter Logic
+    const searchInput = document.getElementById('search-input');
+    const clearSearchBtn = document.getElementById('clear-search');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const marketCards = document.querySelectorAll('.market-card');
+    const noResultsEl = document.getElementById('no-results');
+    const resetFiltersBtn = document.getElementById('reset-filters-btn');
+
+    let activeFilter = 'all';
+
+    function filterMarkets() {
+      const query = searchInput.value.trim().toLowerCase();
+      clearSearchBtn.classList.toggle('hidden', query.length === 0);
+
+      let visibleCount = 0;
+
+      marketCards.forEach((card) => {
+        const categories = card.getAttribute('data-category') || '';
+        const searchableText = (card.getAttribute('data-search') + ' ' + card.textContent).toLowerCase();
+
+        const matchesCategory = activeFilter === 'all' || categories.includes(activeFilter);
+        const matchesQuery = query === '' || searchableText.includes(query);
+
+        if (matchesCategory && matchesQuery) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      noResultsEl.classList.toggle('hidden', visibleCount > 0);
+    }
+
+    searchInput.addEventListener('input', filterMarkets);
+
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      filterMarkets();
+      searchInput.focus();
+    });
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        activeFilter = btn.getAttribute('data-filter');
+
+        filterBtns.forEach((b) => {
+          b.classList.remove('bg-amber-500', 'text-slate-950');
+          b.classList.add('bg-slate-800/90', 'text-slate-300');
+        });
+
+        btn.classList.remove('bg-slate-800/90', 'text-slate-300');
+        btn.classList.add('bg-amber-500', 'text-slate-950');
+
+        filterMarkets();
+      });
+    });
+
+    resetFiltersBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      activeFilter = 'all';
+      filterBtns.forEach((b) => {
+        const isAll = b.getAttribute('data-filter') === 'all';
+        b.classList.toggle('bg-amber-500', isAll);
+        b.classList.toggle('text-slate-950', isAll);
+        b.classList.toggle('bg-slate-800/90', !isAll);
+        b.classList.toggle('text-slate-300', !isAll);
+      });
+      filterMarkets();
+    });
+
+    // 3. Copy Station Name Helper (using execCommand fallback for iframe safety)
+    let toastTimeout;
+    function copyText(text, message) {
+      try {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = text;
+        tempInput.style.position = 'fixed';
+        tempInput.style.opacity = '0';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        showToast(message || 'Copied!');
+      } catch (err) {
+        showToast('Unable to copy text');
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      toastMsg.textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2200);
+    }
+
+    // 4. Smooth Scrolling for Anchor Links
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId.length > 1) {
+          const targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            e.preventDefault();
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
